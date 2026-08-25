@@ -1,18 +1,29 @@
 import rss from '@astrojs/rss';
-import { feed, ROOMS } from '../lib/content';
+import { live } from '../lib/publish';
+import { ROOMS } from '../lib/publish';
+import site from '../data/site.json';
 
 export async function GET(context) {
-  const items = (await feed()).map(({ room, entry }) => ({
-    title: entry.data.title,
-    pubDate: entry.data.publishAt,
-    description: entry.data.summary,
-    link: `${ROOMS[room].path}/${entry.id}/`,
-    categories: [ROOMS[room].label],
-  }));
+  const rooms = ['essays', 'leaders', 'moments', 'frameworks'];
+  const items = [];
+  for (const room of rooms) {
+    for (const e of await live(room)) {
+      items.push({
+        title: e.data.title,
+        description: e.data.dek,
+        pubDate: e.data.publishAt,
+        link: `/${ROOMS[room].path}/${e.id}/`,
+        categories: [ROOMS[room].label, ...(e.data.tags ?? [])],
+      });
+    }
+  }
+  items.sort((a, b) => b.pubDate - a.pubDate);
+
   return rss({
-    title: 'Denvil Lee — Now and Not Yet',
-    description: 'Essays, devotionals, frameworks, and notes for leaders.',
+    title: site.name,
+    description: site.footerBlurb,
     site: context.site,
     items,
+    customData: '<language>en-us</language>',
   });
 }

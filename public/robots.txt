@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /kit/
 
-Sitemap: https://denvillee.com/sitemap-index.xml
+# Phase A. Swap the host when denvillee.com becomes primary.
+Sitemap: https://pastordenvil.com/sitemap-index.xml

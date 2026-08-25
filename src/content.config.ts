@@ -1,135 +1,101 @@
-import { defineCollection, reference, z } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-/* ------------------------------------------------------------------
-   Fields every publishable room shares.
-
-   publishAt is the spine of the scheduled-publishing model: content is
-   written and committed weeks early, and simply does not appear in a
-   build that runs before its date. Nothing is "live" until the clock
-   says so. See BACKEND.md.
-   ------------------------------------------------------------------ */
-const base = {
+/* Shared shape for every "room". Field names follow BACKEND.md / the hosting runbook. */
+const roomSchema = z.object({
   title: z.string(),
+  dek: z.string(),
   publishAt: z.coerce.date(),
-  summary: z.string(),
-  week: reference('weeks').optional(),
-  topics: z.array(z.string()).default([]),
   draft: z.boolean().default(false),
+  week: z.number().optional(),
+  series: z.string().optional(),
+  scripture: z.string().optional(),
+  tags: z.array(z.string()).default([]),
+  ogImage: z.string().optional(),
+  /* Attribution block. Rendered as "Where this comes from" under the article.
+     Required in practice for frameworks: see claude/theological-spine.md. */
+  notes: z.string().optional(),
+  /* A drawing, by component name — see src/components/diagrams and src/lib/diagrams.ts.
+     Available in every room so a framework can live inside the piece that uses it
+     rather than only in its own room. Blank means no drawing. */
+  diagram: z.string().optional(),
+  diagramCaption: z.string().optional(),
+});
+
+const room = (base: string, extend = {}) =>
+  defineCollection({
+    loader: glob({ pattern: '**/*.md', base: `./src/content/${base}` }),
+    schema: roomSchema.extend(extend),
+  });
+
+const pages = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/pages' }),
+  schema: z.object({
+    title: z.string(),
+    dek: z.string(),
+    publishAt: z.coerce.date(),
+    draft: z.boolean().default(false),
+  }),
+});
+
+export const collections = {
+  pages,
+  essays: room('essays'),
+  leaders: room('leaders'),
+  moments: room('moments'),
+
+  frameworks: room('frameworks', {
+    order: z.number(),
+    summary: z.string().optional(),
+    guide: z.string().optional(),        // /assets/guides/*.pdf
+    essay: z.string().optional(),        // slug of the companion essay
+    clip: z.string().optional(),         // id of the companion clip
+  }),
+
+  watch: defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/watch' }),
+    schema: z.object({
+      title: z.string(),
+      caption: z.string(),
+      week: z.number().optional(),
+      day: z.enum(['monday', 'wednesday', 'friday', 'saturday']).optional(),
+      durationSeconds: z.number(),
+      scripture: z.string().optional(),
+      poster: z.string(),
+      youtube: z.string().default(''),
+      tiktok: z.string().default(''),
+      instagram: z.string().default(''),
+      publishAt: z.coerce.date(),
+      draft: z.boolean().default(false),
+    }),
+  }),
+
+  reading: defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/reading' }),
+    schema: z.object({
+      title: z.string(),
+      author: z.string(),
+      year: z.number().optional(),
+      shelfStatus: z.enum(['now', 'shelf', 'next', 'finished']),
+      progress: z.string().optional(),
+      spine: z.enum(['cobalt', 'ivy', 'brass', 'ember', 'ink']).default('ivy'),
+      link: z.string().default(''),
+      order: z.number().default(0),
+      publishAt: z.coerce.date(),
+      draft: z.boolean().default(false),
+    }),
+  }),
+
+  weeks: defineCollection({
+    loader: glob({ pattern: '**/*.md', base: './src/content/weeks' }),
+    schema: z.object({
+      number: z.number(),
+      start: z.coerce.date(),
+      end: z.coerce.date(),
+      movement: z.string(),
+      konigPhase: z.enum(['for us', 'in us', 'with us']).nullable().default(null),
+      idea: z.string(),
+      source: z.string().optional(),
+    }),
+  }),
 };
-
-const dir = (name: string) => glob({ pattern: '**/*.md', base: `./src/content/${name}` });
-
-/* Week — the editorial spine. One idea, carried across every room.
-   Everything else points at a week; the week never points back. */
-const weeks = defineCollection({
-  loader: dir('weeks'),
-  schema: z.object({
-    number: z.number(),
-    season: z.string().default('Season One'),
-    movement: z.string(),
-    idea: z.string(),
-    startsOn: z.coerce.date(),
-    source: z.string().optional(),
-    reading: z.string().optional(),
-    mondayNote: z.string().optional(),
-  }),
-});
-
-/* The Essay — weekly, 1,000-1,400 words. */
-const essays = defineCollection({
-  loader: dir('essays'),
-  schema: z.object({
-    ...base,
-    scripture: z.string().optional(),
-    readingTime: z.number().optional(),
-    featured: z.boolean().default(false),
-  }),
-});
-
-/* Moments — the devotional room. Ken Gire's three moves, as three fields,
-   so the template can never drift from the form. */
-const moments = defineCollection({
-  loader: dir('moments'),
-  schema: z.object({
-    ...base,
-    passage: z.string(),
-    passageText: z.string().optional(),
-    scene: z.string(),
-    response: z.string(),
-  }),
-});
-
-/* Leaders Corner — every other week, ~600 words, written to the person carrying something. */
-const leaders = defineCollection({
-  loader: dir('leaders'),
-  schema: z.object({
-    ...base,
-    anchor: z.boolean().default(false),
-  }),
-});
-
-/* Frameworks — a theological system, drawn. Monthly.
-   One framework fans out into a diagram, an essay, a clip, and a guide. */
-const frameworks = defineCollection({
-  loader: dir('frameworks'),
-  schema: z.object({
-    ...base,
-    number: z.number(),
-    diagram: z.string().optional(),
-    beats: z.array(z.string()).default([]),
-    guide: z.string().optional(),
-    clip: reference('watch').optional(),
-    essay: reference('essays').optional(),
-  }),
-});
-
-/* Watch — vertical clips. Embedded, never re-hosted. */
-const watch = defineCollection({
-  loader: dir('watch'),
-  schema: z.object({
-    ...base,
-    kind: z.enum(['hook', 'micro-teaching', 'human', 'question']),
-    provider: z.enum(['youtube', 'vimeo', 'instagram']).default('youtube'),
-    videoId: z.string(),
-    seconds: z.number().optional(),
-    captionsBurnedIn: z.boolean().default(true),
-    sourceCredit: z.string().optional(),
-  }),
-});
-
-/* Reading shelf — what is actually being read. Honest or it does not work. */
-const reading = defineCollection({
-  loader: dir('reading'),
-  schema: z.object({
-    title: z.string(),
-    author: z.string(),
-    week: reference('weeks').optional(),
-    startedOn: z.coerce.date().optional(),
-    status: z.enum(['reading', 'finished', 'abandoned', 'returning-to']).default('reading'),
-    note: z.string().optional(),
-    link: z.string().url().optional(),
-  }),
-});
-
-/* Archive — the 4,555-file teaching index. PRIVATE.
-   Deferred from launch by decision. Nothing here renders a public page
-   until the standardization pass in claude/sermon-notes-standardization.md
-   is done. It exists so the engine can feed the rooms above. */
-const archive = defineCollection({
-  loader: dir('archive'),
-  schema: z.object({
-    title: z.string(),
-    preachedOn: z.coerce.date().optional(),
-    venue: z.string().optional(),
-    series: z.string().optional(),
-    scripture: z.string().optional(),
-    bigIdea: z.string().optional(),
-    audio: z.string().url().optional(),
-    video: z.string().url().optional(),
-    standardized: z.boolean().default(false),
-    privacyCleared: z.boolean().default(false),
-  }),
-});
-
-export const collections = { weeks, essays, moments, leaders, frameworks, watch, reading, archive };

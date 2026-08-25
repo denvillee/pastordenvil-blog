@@ -1,39 +1,37 @@
 ---
 import Base from '../../layouts/Base.astro';
-import Card from '../../components/Card.astro';
 import Signup from '../../components/Signup.astro';
-import { published } from '../../lib/content';
-const items = await published('essays');
+import { live, readMinutes, displayDate, isoDate } from '../../lib/publish';
+import site from '../../data/site.json';
+import labels from '../../data/labels.json';
+const entries = await live('essays');
+const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
+const byYear = years.map((y) => ({ year: y, items: entries.filter((e: any) => e.data.publishAt.getFullYear() === y) }));
+const title = labels.essaysHeading;
+const dek = labels.essaysDek;
 ---
-<Base title="The Essay" description="Weekly essays from Denvil Lee — a sermon's central argument, freed from the room it was preached in.">
-  <section class="ph">
-    <div class="wrap">
-      <p class="label">Weekly · 1,000 to 1,400 words</p>
-      <h1 class="ph__h">The Essay</h1>
-      <p class="ph__dek">
-        Each week's central argument, freed from the room it was preached in.
-        A sermon has twenty-eight minutes and a congregation that did not choose
-        the topic. An essay has neither constraint.
-      </p>
+<Base title={`${title} — ${site.name}`} description={dek}>
+  <section class="band shell">
+    <div class="sec-head">
+      <h1>{title}</h1>
+      <span class="label">{entries.length} published</span>
     </div>
+    <p class="art-dek" style="margin-bottom:1.6rem">{dek}</p>
+    {byYear.map((group) => (
+      <section class="arc-year">
+        {years.length > 1 && <h2 class="arc-year-h">{group.year}<span>{group.items.length}</span></h2>}
+        <div class="list">
+          {group.items.map((e: any) => (
+            <a class="list-item" href={`/essays/${e.id}/`}>
+              <span class="date"><time datetime={isoDate(e.data.publishAt)}>{displayDate(e.data.publishAt)}</time></span>
+              <span class="t">{e.data.title}<span class="d">{e.data.dek}</span></span>
+              <span class="r">{readMinutes(e.body)} min</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+    {entries.length === 0 && <p class="art-dek">{labels.essaysEmpty}</p>}
   </section>
-  <section class="band">
-    <div class="wrap">
-      {items.length === 0
-        ? <p class="empty">The first essay publishes September 2.</p>
-        : <div class="grid grid--2">
-            {items.map((e) => (
-              <Card href={`/essays/${e.id}/`} room="Essay" title={e.data.title}
-                summary={e.data.summary} date={e.data.publishAt} accent="accent" />
-            ))}
-          </div>}
-    </div>
-  </section>
-  <Signup tone="plain" />
+  <Signup />
 </Base>
-<style>
-  .ph { padding-block: clamp(2.8rem, 2.2rem + 3vw, 5rem) clamp(1.8rem, 1.4rem + 1.6vw, 2.8rem); border-bottom: 1px solid var(--line); }
-  .ph__h { font-size: var(--step-5); margin-top: 1rem; font-variation-settings: "wdth" 100; }
-  .ph__dek { margin-top: 1.2rem; max-width: 54ch; font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.65; color: var(--fg-muted); }
-  .empty { color: var(--fg-muted); font-family: var(--font-warm); font-size: var(--step-1); }
-</style>

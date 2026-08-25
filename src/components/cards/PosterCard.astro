@@ -1,0 +1,9 @@
+---
+interface Props { title: string; sub: string; label?: string }
+const { title, sub, label = 'Series poster' } = Astro.props;
+---
+<div class="card card-poster">
+  <span class="sig">{label}</span>
+  <p class="q">{title}</p>
+  <span class="sig">{sub}</span>
+</div>

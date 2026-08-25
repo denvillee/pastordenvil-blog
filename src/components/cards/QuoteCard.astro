@@ -1,0 +1,9 @@
+---
+interface Props { quote: string; accent?: string; sig?: string; foot?: string }
+const { quote, accent = '', sig = 'Denvil Lee · Moments', foot = 'denvillee.com' } = Astro.props;
+---
+<div class="card card-quote">
+  <span class="sig">{sig}</span>
+  <p class="q">{quote} {accent && <span class="accent">{accent}</span>}</p>
+  <span class="sig">{foot}</span>
+</div>

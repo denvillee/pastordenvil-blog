@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import site from '../../data/site.json';
+import QuoteCard from '../../components/cards/QuoteCard.astro';
+import VerseCard from '../../components/cards/VerseCard.astro';
+import MemeCard from '../../components/cards/MemeCard.astro';
+import TextThreadCard from '../../components/cards/TextThreadCard.astro';
+import PosterCard from '../../components/cards/PosterCard.astro';
+import StillCard from '../../components/cards/StillCard.astro';
+import { KIT, CARD_SIZES } from '../../lib/kit';
+---
+<Base title={`Card studio — ${site.name}`} description="The six shareable card templates at export sizes." noindex={true}>
+  <section class="band shell">
+    <div class="sec-head">
+      <h2>Card studio</h2>
+      <span class="label">Internal &middot; noindex</span>
+    </div>
+    <p class="art-dek">
+      The six templates at real export sizes. Pick a size, then screenshot a card at 2&times; device
+      pixel ratio, or print to PDF and crop. Text lives in <code>src/lib/kit.ts</code>, so editing
+      one file changes the home page band and this page together.
+    </p>
+
+    <div class="studio-bar">
+      <span class="label">Size</span>
+      {CARD_SIZES.map((s, i) => (
+        <button class={`chip-btn${i === 0 ? ' on' : ''}`} data-w={s.w} data-h={s.h}>
+          {s.label} <b>{s.w}&times;{s.h}</b>
+        </button>
+      ))}
+    </div>
+
+    <div class="studio" id="studio" style="--card-w:1080px;--card-h:1350px">
+      <figure class="stage"><div class="stage-card"><QuoteCard {...KIT.quote} /></div><figcaption>Quote card</figcaption></figure>
+      <figure class="stage"><div class="stage-card"><VerseCard {...KIT.verse} /></div><figcaption>Scripture card</figcaption></figure>
+      <figure class="stage"><div class="stage-card"><MemeCard {...KIT.meme} /></div><figcaption>Two panel relatable</figcaption></figure>
+      <figure class="stage"><div class="stage-card"><TextThreadCard {...KIT.thread} /></div><figcaption>Text thread</figcaption></figure>
+      <figure class="stage"><div class="stage-card"><PosterCard {...KIT.poster} /></div><figcaption>Series poster</figcaption></figure>
+      <figure class="stage"><div class="stage-card"><StillCard {...KIT.still} /></div><figcaption>Clip cover</figcaption></figure>
+    </div>
+
+    <p class="art-dek" style="margin-top:2rem">
+      <b>Rule for this page:</b> borrow the format, never the picture. The recognizable meme
+      photographs are copyrighted press and stock images. The two panel setup, the text thread, and
+      the burned in caption are formats, and formats are free.
+    </p>
+  </section>
+
+  <script>
+    document.querySelectorAll('.chip-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        document.querySelectorAll('.chip-btn').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        var s = document.getElementById('studio');
+        s.style.setProperty('--card-w', b.dataset.w + 'px');
+        s.style.setProperty('--card-h', b.dataset.h + 'px');
+      });
+    });
+  </script>
+</Base>

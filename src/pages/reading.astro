@@ -1,47 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
-import { getCollection } from 'astro:content';
-const books = (await getCollection('reading')).sort((a, b) =>
-  (b.data.startedOn?.valueOf() ?? 0) - (a.data.startedOn?.valueOf() ?? 0));
-const STATUS: Record<string, string> = {
-  reading: 'Reading now', finished: 'Finished', abandoned: 'Put down', 'returning-to': 'Back to it',
-};
+import ReadingShelf from '../components/ReadingShelf.astro';
+import Signup from '../components/Signup.astro';
+import { live } from '../lib/publish';
+import site from '../data/site.json';
+import home from '../data/home.json';
+const books = await live('reading');
+const nowEntry = books.find((b: any) => b.data.shelfStatus === 'now');
+const now = nowEntry ? { ...nowEntry.data, note: nowEntry.body?.trim() ?? '' } : undefined;
+const shelf = books.filter((b: any) => b.data.shelfStatus !== 'now')
+  .sort((a: any, b: any) => a.data.order - b.data.order)
+  .map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }));
 ---
-<Base title="Reading" description="What is actually open on the desk, and what it is doing to the week's idea.">
-  <section class="ph">
-    <div class="wrap">
-      <p class="label">The shelf</p>
-      <h1 class="ph__h">Reading</h1>
-      <p class="ph__dek">
-        What is actually open, honestly. The point of this page is that you get
-        to watch an idea travel from a book into a sermon into a Tuesday.
-      </p>
-    </div>
-  </section>
-  <section class="band">
-    <div class="wrap">
-      <ul class="shelf">
-        {books.map((b) => (
-          <li class="bk reveal">
-            <div class="bk__top">
-              <span class="chip chip--outline">{STATUS[b.data.status]}</span>
-            </div>
-            <h2 class="bk__t">{b.data.title}</h2>
-            <p class="bk__a">{b.data.author}</p>
-            {b.data.note && <p class="bk__n">{b.data.note}</p>}
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
+<Base title={`Reading — ${site.name}`} description="What I am reading now, and how it is feeding this week's writing.">
+  <ReadingShelf now={now} shelf={shelf} tie={home.readingTie} />
+  <Signup />
 </Base>
-<style>
-  .ph { padding-block: clamp(2.8rem, 2.2rem + 3vw, 5rem) clamp(1.8rem, 1.4rem + 1.6vw, 2.8rem); border-bottom: 1px solid var(--line); }
-  .ph__h { font-size: var(--step-5); margin-top: 1rem; }
-  .ph__dek { margin-top: 1.2rem; max-width: 52ch; font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.65; color: var(--fg-muted); }
-  .shelf { list-style: none; padding: 0; display: grid; gap: 1.2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
-  .bk { padding: 1.4rem 1.4rem 1.5rem; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--ground-raised); }
-  .bk__t { font-family: var(--font-warm); font-size: var(--step-2); font-weight: 600; letter-spacing: -0.01em; line-height: 1.2; margin-top: 0.9rem; }
-  .bk__a { margin-top: 0.4rem; font-size: var(--step--1); color: var(--fg-muted); }
-  .bk__n { margin-top: 0.9rem; font-family: var(--font-warm); font-size: var(--step--1); line-height: 1.6; color: var(--fg-muted); }
-</style>

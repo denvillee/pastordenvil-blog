@@ -1,0 +1,14 @@
+---
+/* Two panel relatable format. Typography only.
+   Borrow the FORMAT, never the copyrighted photograph. See claude/visual-and-social-system.md. */
+interface Row { who: string; said: string }
+interface Props { rows: Row[]; foot?: string }
+const { rows, foot = 'denvillee.com · For Leaders' } = Astro.props;
+---
+<div class="card card-meme">
+  <span class="sig">Relatable format</span>
+  {rows.map((r) => (
+    <div class="meme-row"><span class="who">{r.who}</span><span class="said">{r.said}</span></div>
+  ))}
+  <span class="sig">{foot}</span>
+</div>

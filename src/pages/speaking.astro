@@ -1,78 +1,40 @@
 ---
+import { getEntry, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
-const topics = [
-  ['Now and Not Yet', 'The two ages, and what changes in a church that learns to name the overlap instead of pretending one side of it away.'],
-  ['The Exodus Pattern', 'Cry, remember, send, deliver, dwell. The shape every rescue in Scripture takes, and how to pray it.'],
-  ['Formation before position', 'What the cave does that the throne room cannot. Built for leaders in a waiting season.'],
-  ['The Table', 'Communion as a leadership practice, not a monthly add-on.'],
-];
-const formats = [
-  ['Weekend services', 'One to four messages, single or multi-site'],
-  ['Retreats', 'Men’s, leadership, or all-church, two to four sessions'],
-  ['Staff intensives', 'A half or full day with a leadership team'],
-  ['Coaching cohort', 'A small group, meeting over several months'],
-];
+import site from '../data/site.json';
+import labels from '../data/labels.json';
+const entry = await getEntry('pages', 'speaking');
+const { Content } = await render(entry!);
+/* Netlify Forms. data-netlify="true" registers the form at build time.
+   Submissions land in Netlify and forward to hello@denvillee.com
+   (Cloudflare Email Routing, hosting runbook §5). */
 ---
-<Base title="Speaking" description="Invite Denvil Lee to teach — weekend services, retreats, staff intensives, and a small coaching cohort.">
-  <section class="ph">
-    <div class="wrap">
-      <p class="label">Speaking &amp; coaching</p>
-      <h1 class="ph__h">Bring me into the room.</h1>
-      <p class="ph__dek">
-        I would rather build something for what your people are actually walking
-        through than drop in a talk I already have. Tell me the situation first
-        and the topic second.
-      </p>
-      <div class="ph__cta">
-        <a class="btn btn--primary" href="mailto:hello@denvillee.com?subject=Speaking%20inquiry">hello@denvillee.com</a>
-        <a class="btn btn--ghost" href="/essays/">Read something first</a>
+<Base title={`${entry!.data.title} — ${site.name}`} description={entry!.data.dek}>
+  <section class="band shell">
+    <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label">{labels.speakingLabel}</span></div>
+    <div class="speak">
+      <div class="speak-copy prose">
+        <Content />
       </div>
-    </div>
-  </section>
-
-  <section class="band">
-    <div class="wrap">
-      <p class="label">What I teach on</p>
-      <div class="grid grid--2 tp">
-        {topics.map(([t, d]) => (
-          <div class="topic reveal"><h2 class="topic__h">{t}</h2><p class="topic__d">{d}</p></div>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="band band--sunk">
-    <div class="wrap fm">
-      <div>
-        <p class="label">Formats</p>
-        <h2 class="fm__h">However it fits your calendar</h2>
-        <p class="fm__d">
-          Honoraria and travel get worked out case by case, and I would rather
-          have that conversation early and plainly than leave it awkward. If
-          budget is the obstacle, say so — it often is not the obstacle you think.
-        </p>
-      </div>
-      <dl class="fl">
-        {formats.map(([n, d]) => (<div class="fl__r"><dt>{n}</dt><dd>{d}</dd></div>))}
-      </dl>
+      <form class="speak-form" name="speaking" method="POST" data-netlify="true" netlify-honeypot="company" action="/speaking/thanks/">
+        <input type="hidden" name="form-name" value="speaking" />
+        <p class="hp"><label>Leave this empty <input name="company" /></label></p>
+        <label>Your name<input type="text" name="name" required autocomplete="name" /></label>
+        <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+        <label>Church or organization<input type="text" name="organization" /></label>
+        <label>Date or window<input type="text" name="eventDate" placeholder="Second weekend in March" /></label>
+        <label>What kind of event
+          <select name="eventType">
+            <option>Weekend teaching</option>
+            <option>Conference or retreat</option>
+            <option>Staff or leadership intensive</option>
+            <option>Coaching cohort question</option>
+            <option>Something else</option>
+          </select>
+        </label>
+        <label>What are you hoping for<textarea name="message" rows="5" required></textarea></label>
+        <button class="btn btn-primary" type="submit">Send it</button>
+      </form>
     </div>
   </section>
 </Base>
-<style>
-  .ph { padding-block: clamp(2.8rem, 2.2rem + 3vw, 5rem); border-bottom: 1px solid var(--line); }
-  .ph__h { font-size: var(--step-5); margin-top: 1rem; max-width: 14ch; }
-  .ph__dek { margin-top: 1.2rem; max-width: 52ch; font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.65; color: var(--fg-muted); }
-  .ph__cta { margin-top: 1.9rem; display: flex; gap: 0.7rem; flex-wrap: wrap; }
-  .tp { margin-top: 1.6rem; }
-  .topic { padding: 1.5rem 1.4rem; border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: var(--radius-lg); background: var(--ground-raised); }
-  .topic__h { font-size: var(--step-1); }
-  .topic__d { margin-top: 0.6rem; font-family: var(--font-warm); font-size: var(--step--1); line-height: 1.6; color: var(--fg-muted); }
-  .fm { display: grid; gap: clamp(2rem, 1.5rem + 3vw, 4rem); grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); align-items: start; }
-  @media (max-width: 860px) { .fm { grid-template-columns: 1fr; } }
-  .fm__h { font-size: var(--step-3); margin-top: 0.9rem; }
-  .fm__d { margin-top: 0.9rem; font-family: var(--font-warm); font-size: var(--step--1); line-height: 1.65; color: var(--fg-muted); max-width: 44ch; }
-  .fl__r { padding-block: 1rem; border-bottom: 1px solid var(--line); }
-  .fl__r:first-child { padding-top: 0; }
-  .fl dt { font-size: var(--step-1); font-weight: 700; letter-spacing: -0.02em; }
-  .fl dd { margin: 0.3rem 0 0; font-size: var(--step--1); color: var(--fg-muted); }
-</style>

@@ -1,72 +1,16 @@
 ---
+import { getEntry, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Signup from '../components/Signup.astro';
+import site from '../data/site.json';
+import labels from '../data/labels.json';
+const entry = await getEntry('pages', 'about');
+const { Content } = await render(entry!);
 ---
-<Base title="About" description="Denvil Lee — ten years in law enforcement, twelve in ministry, a ThM from Fuller, and a long interest in what it means that the kingdom has already started.">
-  <section class="ab">
-    <div class="wrap ab__grid">
-      <div class="ab__intro">
-        <p class="label">About</p>
-        <h1 class="ab__h">I came to ministry the long way around.</h1>
-      </div>
-      <div class="prose ab__body">
-        <p>
-          For ten years I carried a badge. For twelve I have carried a text. Both
-          jobs put you in rooms on the worst day of somebody's life, and both
-          teach you the same thing from opposite directions: people are rarely
-          helped by abstractions.
-        </p>
-        <p>
-          I hold a ThM from Fuller Theological Seminary. I have served as a campus
-          pastor, a teaching pastor, a young adults pastor, a residency director,
-          and a leadership formation pastor. My wife Krista and I have three
-          children, and we recently moved the family to South Florida.
-        </p>
-        <h2>Why "Now and Not Yet"</h2>
-        <p>
-          It is the assumption underneath the whole New Testament and almost
-          nobody says it out loud. The age to come broke into this one at the
-          resurrection and has not finished arriving. That is why the same week
-          can hold a healing and a funeral without either one being a mistake.
-        </p>
-        <p>
-          Everything on this site is written from inside that overlap. It is not a
-          mood. It is an address.
-        </p>
-        <h2>A note on what this is not</h2>
-        <p>
-          This is a personal site. It is not published on behalf of any church,
-          it carries no church's branding, and nothing here should be read as an
-          official statement from anywhere I serve.
-        </p>
-      </div>
-      <aside class="ab__side">
-        <div class="fact">
-          <h2 class="label">At a glance</h2>
-          <dl class="facts">
-            <div><dt>Education</dt><dd>ThM, Fuller Theological Seminary</dd></div>
-            <div><dt>Earlier</dt><dd>Ten years in law enforcement</dd></div>
-            <div><dt>Since</dt><dd>Twelve years in pastoral ministry</dd></div>
-            <div><dt>Home</dt><dd>South Florida</dd></div>
-          </dl>
-          <a class="btn btn--primary fact__cta" href="/speaking/">Invite me to teach</a>
-        </div>
-      </aside>
-    </div>
+<Base title={`${entry!.data.title} — ${site.name}`} description={entry!.data.dek}>
+  <section class="band shell">
+    <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label">{labels.aboutLabel}</span></div>
+    <div class="prose"><Content /></div>
   </section>
-  <Signup tone="plain" />
+  <Signup />
 </Base>
-<style>
-  .ab { padding-block: clamp(2.8rem, 2.2rem + 3vw, 5rem) clamp(3rem, 2.5rem + 3vw, 5.5rem); }
-  .ab__grid { display: grid; gap: clamp(2rem, 1.5rem + 3vw, 4rem); grid-template-columns: minmax(0, 1fr) minmax(0, 20rem); align-items: start; }
-  .ab__intro { grid-column: 1 / -1; }
-  .ab__h { font-size: var(--step-4); margin-top: 1rem; max-width: 18ch; }
-  @media (max-width: 900px) { .ab__grid { grid-template-columns: 1fr; } }
-  .ab__side { position: sticky; top: 92px; }
-  @media (max-width: 900px) { .ab__side { position: static; } }
-  .fact { border: 1px solid var(--line); border-top: 3px solid var(--accent); border-radius: var(--radius-lg); background: var(--ground-raised); padding: 1.4rem; }
-  .facts { margin-top: 1.2rem; display: flex; flex-direction: column; gap: 1rem; }
-  .facts dt { font-size: var(--step--2); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.25rem; }
-  .facts dd { margin: 0; font-size: var(--step--1); color: var(--fg-muted); line-height: 1.5; }
-  .fact__cta { margin-top: 1.5rem; width: 100%; justify-content: center; }
-</style>
