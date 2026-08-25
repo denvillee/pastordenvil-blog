@@ -1,0 +1,185 @@
+---
+import Base from '../layouts/Base.astro';
+import Card from '../components/Card.astro';
+import Signup from '../components/Signup.astro';
+import { feed, currentWeek, weekBundle, ROOMS, fmtDate } from '../lib/content';
+
+const items = (await feed()).slice(0, 6);
+const week = await currentWeek();
+const bundle = week ? await weekBundle(week.id) : null;
+
+const accentFor: Record<string, 'accent' | 'ember' | 'brass' | 'outline'> = {
+  essays: 'accent', moments: 'outline', leaders: 'ember', frameworks: 'brass', watch: 'outline',
+};
+const hrefFor = (room: string, id: string) => `${ROOMS[room as keyof typeof ROOMS].path}/${id}/`;
+---
+<Base title="__home">
+  <!-- ===== KINETIC HERO ===== -->
+  <section class="hero on-dark">
+    <div class="wrap hero__in">
+      <p class="hero__eyebrow">Denvil Lee</p>
+      <h1 class="hero__type">
+        <span class="hero__now">NOW</span>
+        <span class="hero__not">NOT YET</span>
+      </h1>
+      <p class="hero__dek">
+        The kingdom already started and it has not finished. Everything here is
+        written from inside that overlap — essays, devotionals, frameworks, and
+        notes for whoever is carrying something heavy this week.
+      </p>
+      <div class="hero__cta">
+        <a class="btn btn--brass" href="/subscribe/">Get the Monday Note</a>
+        <a class="btn btn--ghost" href="/essays/">Read the essays</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THIS WEEK'S IDEA ===== -->
+  {week && (
+    <section class="band band--tight week">
+      <div class="wrap">
+        <div class="week__head">
+          <p class="label">
+            {week.data.season} · Week {week.data.number} · {week.data.movement}
+          </p>
+          <p class="week__dates tabular">Beginning {fmtDate(week.data.startsOn)}</p>
+        </div>
+        <p class="week__idea">{week.data.idea}</p>
+        {bundle && (
+          <ul class="week__rooms">
+            {Object.entries(ROOMS).map(([k, v]) => {
+              const n = bundle[k]?.length ?? 0;
+              return (
+                <li class:list={['week__room', { 'is-empty': n === 0 }]}>
+                  <span>{v.label}</span>
+                  <span class="week__n tabular">{n}</span>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+    </section>
+  )}
+
+  <!-- ===== LATEST ===== -->
+  <section class="band band--sunk">
+    <div class="wrap">
+      <div class="sec__head">
+        <h2 class="sec__h">Lately</h2>
+        <p class="sec__note">One idea a week, in five registers.</p>
+      </div>
+      {items.length === 0 ? (
+        <p class="empty">
+          Nothing has passed its publish date yet. Content is banked and scheduled —
+          it appears here on its own.
+        </p>
+      ) : (
+        <div class="grid grid--3">
+          {items.map(({ room, entry }) => (
+            <Card
+              href={hrefFor(room, entry.id)}
+              room={ROOMS[room as keyof typeof ROOMS].label}
+              title={entry.data.title}
+              summary={entry.data.summary}
+              date={entry.data.publishAt}
+              accent={accentFor[room]}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- ===== THE FIVE ROOMS ===== -->
+  <section class="band">
+    <div class="wrap">
+      <div class="sec__head"><h2 class="sec__h">Five rooms</h2></div>
+      <div class="grid grid--3 rooms">
+        {Object.entries(ROOMS).map(([k, v]) => (
+          <a class="room reveal" href={v.path + '/'}>
+            <span class="room__label">{v.label}</span>
+            <span class="room__cadence label">{v.cadence}</span>
+          </a>
+        ))}
+        <a class="room reveal" href="/reading/">
+          <span class="room__label">Reading</span>
+          <span class="room__cadence label">What is actually open</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Signup tone="brass" />
+</Base>
+
+<style>
+  /* ---- hero ---- */
+  .hero { padding-block: clamp(3.5rem, 2.5rem + 6vw, 8rem) clamp(3rem, 2rem + 4vw, 6rem); overflow: hidden; }
+  .hero__eyebrow {
+    font-size: var(--step--2); font-weight: 600; letter-spacing: 0.22em;
+    text-transform: uppercase; color: var(--brass); font-variation-settings: "wdth" 86;
+  }
+  .hero__type {
+    display: flex; flex-direction: column; margin-top: 1.6rem;
+    font-size: var(--step-6); font-weight: 800; line-height: 0.86; letter-spacing: -0.045em;
+  }
+  .hero__now, .hero__not { display: block; font-variation-settings: "wdth" 62; }
+  .hero__now { align-self: flex-start; color: var(--bone); }
+  .hero__not { align-self: flex-end; color: var(--brass); text-align: right; }
+
+  /* The width axis is the animation. Archivo's wdth runs 62 to 125. */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__now { animation: widen 1100ms var(--ease-out) 120ms both; }
+    .hero__not { animation: widen 1100ms var(--ease-out) 280ms both; }
+  }
+  @keyframes widen {
+    from { font-variation-settings: "wdth" 62; opacity: 0; letter-spacing: 0.04em; }
+    to   { font-variation-settings: "wdth" 125; opacity: 1; letter-spacing: -0.045em; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__now, .hero__not { font-variation-settings: "wdth" 118; }
+  }
+
+  .hero__dek {
+    margin-top: 2.2rem; max-width: 52ch;
+    font-family: var(--font-warm); font-size: var(--step-1);
+    line-height: 1.65; color: var(--fg-muted);
+  }
+  .hero__cta { margin-top: 2rem; display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  /* ---- week ---- */
+  .week { border-bottom: 1px solid var(--line); }
+  .week__head { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+  .week__dates { font-size: var(--step--2); color: var(--fg-faint); }
+  .week__idea {
+    margin-top: 1.1rem; max-width: 30ch;
+    font-size: var(--step-3); font-weight: 700; letter-spacing: -0.03em; line-height: 1.08;
+    text-wrap: balance;
+  }
+  .week__rooms { list-style: none; padding: 0; margin-top: 1.8rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .week__room {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    font-size: var(--step--1); padding: 0.35rem 0.8rem;
+    border: 1px solid var(--line-strong); border-radius: 999px;
+  }
+  .week__room.is-empty { opacity: 0.4; }
+  .week__n { font-weight: 700; color: var(--accent); }
+
+  /* ---- sections ---- */
+  .sec__head { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+  .sec__h { font-size: var(--step-3); font-variation-settings: "wdth" 96; }
+  .sec__note { font-size: var(--step--1); color: var(--fg-faint); }
+  .empty { color: var(--fg-muted); font-family: var(--font-warm); font-size: var(--step-1); max-width: 46ch; }
+
+  /* ---- rooms ---- */
+  .room {
+    display: flex; flex-direction: column; gap: 0.4rem;
+    padding: 1.6rem 1.4rem;
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+    text-decoration: none; background: var(--ground-raised);
+    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease);
+  }
+  .room:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .room__label { font-size: var(--step-2); font-weight: 700; letter-spacing: -0.03em; font-variation-settings: "wdth" 92; }
+</style>

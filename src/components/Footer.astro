@@ -1,0 +1,63 @@
+---
+import { ROOMS } from '../lib/content';
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="wrap ftr__in">
+    <div>
+      <p class="ftr__mark">Now and Not Yet</p>
+      <p class="ftr__blurb">
+        Essays, devotionals, and frameworks from Denvil Lee. Written for people
+        living in the overlap between the kingdom that has come and the kingdom
+        that has not finished coming.
+      </p>
+    </div>
+
+    <nav class="ftr__col" aria-label="Rooms">
+      <h2 class="label">Rooms</h2>
+      {Object.entries(ROOMS).map(([k, v]) => <a href={v.path + '/'}>{v.label}</a>)}
+      <a href="/reading/">Reading</a>
+    </nav>
+
+    <nav class="ftr__col" aria-label="More">
+      <h2 class="label">More</h2>
+      <a href="/speaking/">Speaking &amp; coaching</a>
+      <a href="/mark/">The Mark reading plan</a>
+      <a href="/subscribe/">Subscribe</a>
+      <a href="/rss.xml">RSS</a>
+      <a href="/podcast.xml">Podcast feed</a>
+    </nav>
+  </div>
+
+  <div class="wrap ftr__base">
+    <p>&copy; {year} Denvil Lee.</p>
+    <p>A personal site. Not affiliated with, or published on behalf of, any church.</p>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    border-top: 1px solid var(--line);
+    background: var(--ground-sunk);
+    padding-block: clamp(2.5rem, 2rem + 2.5vw, 4.5rem) 1.5rem;
+  }
+  .ftr__in {
+    display: grid; gap: 2.5rem;
+    grid-template-columns: minmax(0, 1.7fr) repeat(2, minmax(0, 1fr));
+  }
+  @media (max-width: 760px) {
+    .ftr__in { grid-template-columns: 1fr 1fr; }
+    .ftr__in > :first-child { grid-column: 1 / -1; }
+  }
+  .ftr__mark { font-weight: 800; font-size: var(--step-1); letter-spacing: -0.025em; font-variation-settings: "wdth" 90; }
+  .ftr__blurb { margin-top: 0.7rem; color: var(--fg-muted); font-size: var(--step--1); max-width: 42ch; line-height: 1.6; }
+  .ftr__col { display: flex; flex-direction: column; gap: 0.5rem; }
+  .ftr__col .label { margin-bottom: 0.3rem; }
+  .ftr__col a { font-size: var(--step--1); color: var(--fg-muted); text-decoration: none; width: fit-content; }
+  .ftr__col a:hover { color: var(--accent); }
+  .ftr__base {
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    margin-top: 3rem; padding-top: 1.3rem; border-top: 1px solid var(--line);
+    font-size: var(--step--2); color: var(--fg-faint);
+  }
+</style>

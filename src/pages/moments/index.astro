@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import Card from '../../components/Card.astro';
+import Signup from '../../components/Signup.astro';
+import { published } from '../../lib/content';
+const items = await published('moments');
+---
+<Base title="Moments" description="The devotional room. The passage, the scene retold, and the response.">
+  <section class="ph">
+    <div class="wrap">
+      <p class="label">Twice weekly · Monday and Thursday</p>
+      <h1 class="ph__h">Moments</h1>
+      <p class="ph__dek">
+        Three moves, every time. The passage as it stands. The scene retold, with
+        imagination and restraint. Then the question it puts to you. Nothing more
+        than that, on purpose.
+      </p>
+    </div>
+  </section>
+  <section class="band">
+    <div class="wrap">
+      {items.length === 0
+        ? <p class="empty">The first entry publishes August 31.</p>
+        : <div class="grid grid--3">
+            {items.map((e) => (
+              <Card href={`/moments/${e.id}/`} room={e.data.passage} title={e.data.title}
+                summary={e.data.summary} date={e.data.publishAt} accent="outline" />
+            ))}
+          </div>}
+    </div>
+  </section>
+  <Signup tone="plain" />
+</Base>
+<style>
+  .ph { padding-block: clamp(2.8rem, 2.2rem + 3vw, 5rem) clamp(1.8rem, 1.4rem + 1.6vw, 2.8rem); border-bottom: 1px solid var(--line); }
+  .ph__h { font-size: var(--step-5); margin-top: 1rem; }
+  .ph__dek { margin-top: 1.2rem; max-width: 54ch; font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.65; color: var(--fg-muted); }
+  .empty { color: var(--fg-muted); font-family: var(--font-warm); font-size: var(--step-1); }
+</style>

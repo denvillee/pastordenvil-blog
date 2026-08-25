@@ -1,0 +1,72 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Embed from '../../components/Embed.astro';
+import Signup from '../../components/Signup.astro';
+import { isLive, fmtDate } from '../../lib/content';
+export async function getStaticPaths() {
+  const all = await getCollection('frameworks');
+  return all.filter((e) => isLive(e.data)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const clip = d.clip ? await getEntry(d.clip) : null;
+const essay = d.essay ? await getEntry(d.essay) : null;
+---
+<Base title={d.title} description={d.summary} ogType="article">
+  <header class="fh on-dark">
+    <div class="wrap wrap--read">
+      <a class="back" href="/frameworks/">&larr; Frameworks</a>
+      <p class="label fh__num">Framework {String(d.number).padStart(2, '0')}</p>
+      <h1 class="fh__h">{d.title}</h1>
+      <p class="fh__dek">{d.summary}</p>
+    </div>
+  </header>
+
+  <div class="wrap wrap--read fb">
+    {d.diagram && <img class="fb__diagram" src={d.diagram} alt={`Diagram: ${d.title}`} loading="lazy" />}
+
+    {d.beats.length > 0 && (
+      <ol class="beats">
+        {d.beats.map((b) => <li class="beat">{b}</li>)}
+      </ol>
+    )}
+
+    <div class="prose"><Content /></div>
+
+    {clip && (
+      <section class="fb__clip">
+        <p class="label">The sixty-second version</p>
+        <Embed provider={clip.data.provider} videoId={clip.data.videoId} title={clip.data.title} vertical />
+      </section>
+    )}
+
+    <div class="fb__links">
+      {d.guide && <a class="btn btn--brass" href={d.guide}>Download the one-page guide</a>}
+      {essay && <a class="btn btn--ghost" href={`/essays/${essay.id}/`}>Read the essay</a>}
+    </div>
+    <p class="fb__date">{fmtDate(d.publishAt)}</p>
+  </div>
+
+  <Signup tone="brass" />
+</Base>
+<style>
+  .fh { padding-block: clamp(2rem, 1.6rem + 2vw, 3.4rem) clamp(2.2rem, 1.8rem + 2vw, 3.6rem); }
+  .back { display: inline-block; font-size: var(--step--1); color: var(--fg-muted); text-decoration: none; margin-bottom: 2rem; }
+  .fh__num { color: var(--brass); }
+  .fh__h { font-size: var(--step-4); margin-top: 0.8rem; }
+  .fh__dek { margin-top: 1.1rem; font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.6; color: var(--fg-muted); }
+  .fb { padding-block: clamp(2.2rem, 1.8rem + 2vw, 3.6rem) clamp(3rem, 2.5rem + 3vw, 5.5rem); }
+  .fb__diagram { width: 100%; border-radius: var(--radius-lg); border: 1px solid var(--line); }
+  .beats { list-style: none; counter-reset: b; padding: 0; margin-block: 2rem; display: grid; gap: 0.6rem; }
+  .beat {
+    counter-increment: b; display: grid; grid-template-columns: 2rem 1fr; gap: 0.9rem; align-items: baseline;
+    font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.5;
+  }
+  .beat::before { content: counter(b); font-family: var(--font-loud); font-weight: 700; font-size: var(--step--1); color: var(--accent); }
+  .fb__clip { margin-top: 2.8rem; max-width: 340px; }
+  .fb__clip .label { margin-bottom: 0.8rem; }
+  .fb__links { margin-top: 2.5rem; display: flex; gap: 0.7rem; flex-wrap: wrap; }
+  .fb__date { margin-top: 1.6rem; font-size: var(--step--2); color: var(--fg-faint); }
+</style>

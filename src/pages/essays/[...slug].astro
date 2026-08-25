@@ -1,0 +1,41 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Signup from '../../components/Signup.astro';
+import { isLive, fmtDate } from '../../lib/content';
+
+export async function getStaticPaths() {
+  const all = await getCollection('essays');
+  return all.filter((e) => isLive(e.data)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const week = entry.data.week ? await getEntry(entry.data.week) : null;
+---
+<Base title={entry.data.title} description={entry.data.summary} ogType="article">
+  <article>
+    <header class="eh">
+      <div class="wrap wrap--read">
+        <a class="back" href="/essays/">&larr; The Essay</a>
+        {week && <p class="label">Week {week.data.number} · {week.data.idea}</p>}
+        <h1 class="eh__h">{entry.data.title}</h1>
+        <p class="eh__meta">
+          <time datetime={entry.data.publishAt.toISOString()}>{fmtDate(entry.data.publishAt)}</time>
+          {entry.data.scripture && <span class="scripture">{entry.data.scripture}</span>}
+        </p>
+      </div>
+    </header>
+    <div class="wrap wrap--read eb">
+      <div class="prose"><Content /></div>
+    </div>
+  </article>
+  <Signup tone="plain" />
+</Base>
+<style>
+  .eh { padding-block: clamp(2rem, 1.6rem + 2vw, 3.2rem) 0; }
+  .back { display: inline-block; font-size: var(--step--1); color: var(--fg-muted); text-decoration: none; margin-bottom: 2rem; }
+  .back:hover { color: var(--accent); }
+  .eh__h { font-size: var(--step-4); margin-top: 0.9rem; }
+  .eh__meta { display: flex; gap: 1.1rem; flex-wrap: wrap; margin-top: 1.2rem; font-size: var(--step--1); color: var(--fg-faint); }
+  .eb { padding-block: clamp(1.8rem, 1.5rem + 1.5vw, 2.8rem) clamp(3rem, 2.5rem + 3vw, 5.5rem); }
+</style>

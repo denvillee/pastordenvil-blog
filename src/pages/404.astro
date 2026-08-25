@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Not found" description="That page does not exist.">
+  <section class="nf">
+    <div class="wrap wrap--read">
+      <p class="label">404</p>
+      <h1 class="nf__h">Not yet.</h1>
+      <p class="nf__d">
+        Either that link is old, or the thing you are looking for has not passed
+        its publish date. Both happen here.
+      </p>
+      <div class="nf__a">
+        <a class="btn btn--primary" href="/">Back to the start</a>
+        <a class="btn btn--ghost" href="/essays/">The essays</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { padding-block: clamp(4rem, 3rem + 6vw, 9rem); text-align: center; }
+  .nf__h { font-size: var(--step-5); margin-top: 0.8rem; }
+  .nf__d { margin: 1.2rem auto 0; max-width: 40ch; font-family: var(--font-warm); font-size: var(--step-1); color: var(--fg-muted); }
+  .nf__a { margin-top: 2rem; display: flex; gap: 0.7rem; justify-content: center; flex-wrap: wrap; }
+</style>

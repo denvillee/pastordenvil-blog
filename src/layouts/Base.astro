@@ -1,0 +1,77 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: string;
+  dark?: boolean;
+}
+const {
+  title,
+  description = 'Now and Not Yet — essays, devotionals, frameworks, and notes for leaders, from Denvil Lee.',
+  ogType = 'website',
+  dark = false,
+} = Astro.props;
+
+const fullTitle = title === '__home' ? 'Denvil Lee — Now and Not Yet' : `${title} · Denvil Lee`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Denvil Lee" href="/rss.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Denvil Lee — audio" href="/podcast.xml" />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Denvil Lee" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="preload" href="/fonts/archivo-100_900-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/spectral-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>document.documentElement.classList.remove('no-js');</script>
+  </head>
+  <body class={dark ? 'on-dark' : undefined}>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+
+    <script>
+      // Scroll reveal. This adds an entrance; it must never be the reason
+      // content is missing. Three guards: no observer support reveals
+      // everything, reduced motion reveals everything, and a hard timeout
+      // reveals everything regardless of what the observer did.
+      const els = Array.from(document.querySelectorAll('.reveal'));
+      const showAll = () => els.forEach((el) => el.classList.add('is-in'));
+
+      if (!els.length) {
+        /* nothing to do */
+      } else if (!('IntersectionObserver' in window) ||
+                 window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        showAll();
+      } else {
+        const io = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          }
+        }, { rootMargin: '200px 0px 0px 0px', threshold: 0.01 });
+        els.forEach((el) => io.observe(el));
+        // Safety net: if anything goes wrong, the page still shows its content.
+        setTimeout(showAll, 2500);
+      }
+    </script>
+  </body>
+</html>

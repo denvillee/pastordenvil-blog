@@ -1,0 +1,54 @@
+---
+/* Video is EMBEDDED, never re-hosted.
+   Sermons preached on a church platform are that church's asset; copying
+   them is a relational and legal problem in a succession year. This is the
+   only sanctioned way video appears on the site. See BACKEND.md §6. */
+interface Props {
+  provider?: 'youtube' | 'vimeo' | 'instagram';
+  videoId: string;
+  title: string;
+  vertical?: boolean;
+  credit?: string;
+}
+const { provider = 'youtube', videoId, title, vertical = false, credit } = Astro.props;
+const src =
+  provider === 'youtube'
+    ? `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`
+    : provider === 'vimeo'
+      ? `https://player.vimeo.com/video/${videoId}?dnt=1`
+      : `https://www.instagram.com/reel/${videoId}/embed`;
+const placeholder = videoId === 'REPLACE_ME';
+---
+<figure class:list={['embed', { 'embed--v': vertical }]}>
+  {placeholder ? (
+    <div class="embed__todo">
+      <p class="label">Clip not linked yet</p>
+      <p>Set <code>videoId</code> in the entry's front matter.</p>
+    </div>
+  ) : (
+    <iframe
+      src={src}
+      title={title}
+      loading="lazy"
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+    ></iframe>
+  )}
+  {credit && <figcaption class="embed__credit">{credit}</figcaption>}
+</figure>
+
+<style>
+  .embed { margin: 0; }
+  .embed iframe, .embed__todo {
+    width: 100%; aspect-ratio: 16 / 9; border: 0;
+    border-radius: var(--radius-lg); background: var(--ground-sunk);
+  }
+  .embed--v iframe, .embed--v .embed__todo { aspect-ratio: 9 / 16; }
+  .embed__todo {
+    display: grid; place-content: center; text-align: center; gap: 0.4rem;
+    border: 1px dashed var(--line-strong); color: var(--fg-faint); padding: 1rem;
+  }
+  .embed__todo code { font-size: 0.85em; background: var(--ground); padding: 0.1em 0.35em; border-radius: 3px; }
+  .embed__credit { margin-top: 0.6rem; font-size: var(--step--2); color: var(--fg-faint); }
+</style>

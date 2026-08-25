@@ -1,0 +1,161 @@
+/* ==========================================================================
+   NOW AND NOT YET — design tokens
+   Source of truth: claude/visual-and-social-system.md
+   Every colour and type decision on the site comes from this file.
+   Do not hard-code a colour in a component. Add a token here instead.
+   ========================================================================== */
+
+:root {
+  /* ---- brand, as specified. These six never change. ---------------- */
+  --ink:    #0E1211;   /* hero, video rail, shareable cards            */
+  --ivy:    #14342B;   /* secondary dark band                         */
+  --bone:   #F3F1EA;   /* reading ground, quote cards                 */
+  --cobalt: #2B4CF0;   /* links, buttons, scripture cards. The energy. */
+  --ember:  #FF6A2B;   /* stickers, tags. ONE per screen. Never two.   */
+  --brass:  #ECC46E;   /* light in imagery, signup band, "NOT YET"     */
+
+  /* ---- CONTRAST LAW -------------------------------------------------
+     Measured, not guessed. Obey these and every screen clears WCAG AA.
+
+       Cobalt as TEXT   → only on Bone or lighter        (5.47:1)
+       Bone  as TEXT    → on Cobalt (5.47) or Ivy (11.94)
+       Ember as TEXT    → NEVER on Bone (2.53:1, fails)
+       Ember as SURFACE → carries Ink text only          (6.60:1)
+       Brass as TEXT    → NEVER on Bone (1.46:1, fails)
+       Brass as SURFACE → carries Ink text only         (11.40:1)
+       Ivy   as SURFACE → carries Bone text only        (11.94:1)
+
+     In dark mode Cobalt is lifted to --accent because raw Cobalt on Ink
+     is only 3.05:1. Ember and Brass become legible as text on Ink and
+     may be used that way.
+     ------------------------------------------------------------------ */
+
+  /* ---- semantic surfaces (light) ---- */
+  --ground:        var(--bone);
+  --ground-raised: #FBFAF5;
+  --ground-sunk:   #E7E4DA;
+  --ground-deep:   var(--ink);      /* full-bleed dark bands           */
+  --ground-band:   var(--ivy);      /* secondary dark band             */
+
+  /* ---- semantic ink (light) ---- */
+  --fg:        var(--ink);
+  --fg-muted:  #4A534F;             /* 7.03:1 on bone                  */
+  --fg-faint:  #586460;             /* 5.45 on bone, 4.85 on sunk */
+  --fg-on-dark:      var(--bone);
+  --fg-on-dark-muted:#B9BDB6;
+
+  /* ---- accent + state ---- */
+  --accent:       var(--cobalt);
+  --accent-hover: #1E39C8;
+  --accent-on:    var(--bone);      /* text placed on --accent         */
+  --accent-wash:  #E4E8FE;
+
+  --sticker:      var(--ember);     /* surface only                    */
+  --sticker-on:   var(--ink);
+  --highlight:    var(--brass);     /* surface only                    */
+  --highlight-on: var(--ink);
+
+  --line:        #DBD7CB;
+  --line-strong: #C2BCAB;
+
+  /* ---- type ---------------------------------------------------------
+     Archivo carries width AND weight axes. The width axis is what makes
+     the kinetic hero possible; do not swap it for a static face.
+     ------------------------------------------------------------------ */
+  --font-loud: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-warm: "Spectral", ui-serif, Georgia, "Times New Roman", serif;
+
+  --step--2: clamp(0.76rem, 0.74rem + 0.10vw, 0.82rem);
+  --step--1: clamp(0.86rem, 0.83rem + 0.15vw, 0.94rem);
+  --step-0:  clamp(1.00rem, 0.96rem + 0.20vw, 1.13rem);
+  --step-1:  clamp(1.22rem, 1.14rem + 0.40vw, 1.48rem);
+  --step-2:  clamp(1.49rem, 1.33rem + 0.78vw, 1.94rem);
+  --step-3:  clamp(1.82rem, 1.54rem + 1.38vw, 2.55rem);
+  --step-4:  clamp(2.22rem, 1.76rem + 2.30vw, 3.34rem);
+  --step-5:  clamp(2.71rem, 1.98rem + 3.65vw, 4.38rem);
+  --step-6:  clamp(3.30rem, 2.13rem + 5.85vw, 6.50rem);
+
+  /* ---- space, shape, motion ---- */
+  --gutter: clamp(1.15rem, 0.85rem + 1.5vw, 2.5rem);
+  --measure: 66ch;
+  --radius: 3px;
+  --radius-lg: 12px;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast: 160ms;
+  --dur: 320ms;
+  --dur-slow: 900ms;
+  --shadow: 0 1px 2px rgb(14 18 17 / 0.05), 0 12px 28px -10px rgb(14 18 17 / 0.16);
+  --grain-opacity: 0.055;
+}
+
+/* ---- dark ------------------------------------------------------------
+   Ink becomes the ground. Cobalt lifts so it stays legible; Ember and
+   Brass become usable as text, which they are not in light mode.
+   --------------------------------------------------------------------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground:        var(--ink);
+    --ground-raised: #171B1A;
+    --ground-sunk:   #090C0B;
+    --ground-deep:   #060908;
+    --ground-band:   var(--ivy);
+
+    --fg:        var(--bone);
+    --fg-muted:  #9FA8A4;
+    --fg-faint:  #7F8884;
+
+    --accent:       #7D97FF;
+    --accent-hover: #9BB0FF;
+    --accent-on:    #060B1F;
+    --accent-wash:  #141B33;
+
+    --sticker-on:   var(--ink);
+    --highlight-on: var(--ink);
+
+    --line:        #262B29;
+    --line-strong: #3A413E;
+    --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 28px -10px rgb(0 0 0 / 0.65);
+    --grain-opacity: 0.075;
+  }
+}
+
+:root[data-theme="dark"] {
+  --ground:        var(--ink);
+  --ground-raised: #171B1A;
+  --ground-sunk:   #090C0B;
+  --ground-deep:   #060908;
+  --ground-band:   var(--ivy);
+  --fg:        var(--bone);
+  --fg-muted:  #9FA8A4;
+  --fg-faint:  #7F8884;
+  --accent:       #7D97FF;
+  --accent-hover: #9BB0FF;
+  --accent-on:    #060B1F;
+  --accent-wash:  #141B33;
+  --sticker-on:   var(--ink);
+  --highlight-on: var(--ink);
+  --line:        #262B29;
+  --line-strong: #3A413E;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.5), 0 12px 28px -10px rgb(0 0 0 / 0.65);
+  --grain-opacity: 0.075;
+}
+
+/* Sections that are always dark regardless of theme (hero, video rail,
+   cards) opt in with .on-dark, which re-points the semantic tokens so
+   nested components keep working without knowing where they sit. */
+.on-dark {
+  --ground:        var(--ink);
+  --ground-raised: #171B1A;
+  --ground-sunk:   #090C0B;
+  --fg:        var(--bone);
+  --fg-muted:  #B9BDB6;
+  --fg-faint:  #8E9793;
+  --accent:       #7D97FF;
+  --accent-hover: #9BB0FF;
+  --accent-on:    #060B1F;
+  --line:        #262B29;
+  --line-strong: #3A413E;
+  color: var(--fg);
+  background: var(--ground);
+}

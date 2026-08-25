@@ -1,0 +1,76 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Signup from '../../components/Signup.astro';
+import { isLive, fmtDate } from '../../lib/content';
+
+/* The Ken Gire form is enforced by the schema, so the template can render
+   the three moves as three fixed sections. The form is the point; it must
+   not drift entry to entry. */
+export async function getStaticPaths() {
+  const all = await getCollection('moments');
+  return all.filter((e) => isLive(e.data)).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+const { entry } = Astro.props;
+const d = entry.data;
+const { Content } = await render(entry);
+const week = d.week ? await getEntry(d.week) : null;
+---
+<Base title={d.title} description={d.summary} ogType="article">
+  <article class="m">
+    <header class="m__head">
+      <div class="wrap wrap--read">
+        <a class="back" href="/moments/">&larr; Moments</a>
+        {week && <p class="label">Week {week.data.number}</p>}
+        <h1 class="m__h">{d.title}</h1>
+        <p class="m__meta">
+          <time datetime={d.publishAt.toISOString()}>{fmtDate(d.publishAt)}</time>
+        </p>
+      </div>
+    </header>
+
+    <div class="wrap wrap--read m__body">
+      <section class="move">
+        <p class="label">The passage</p>
+        <p class="move__ref">{d.passage}</p>
+        {d.passageText && <blockquote class="move__text">{d.passageText}</blockquote>}
+      </section>
+
+      <section class="move">
+        <p class="label">The scene</p>
+        <p class="move__scene">{d.scene}</p>
+      </section>
+
+      <section class="move move--response">
+        <p class="label">The response</p>
+        <p class="move__response">{d.response}</p>
+      </section>
+
+      <div class="prose m__extra"><Content /></div>
+    </div>
+  </article>
+  <Signup tone="plain" />
+</Base>
+
+<style>
+  .m__head { padding-block: clamp(2rem, 1.6rem + 2vw, 3.2rem) 0; }
+  .back { display: inline-block; font-size: var(--step--1); color: var(--fg-muted); text-decoration: none; margin-bottom: 2rem; }
+  .m__h { font-size: var(--step-4); margin-top: 0.9rem; }
+  .m__meta { margin-top: 1.1rem; font-size: var(--step--1); color: var(--fg-faint); }
+  .m__body { padding-block: clamp(2rem, 1.6rem + 2vw, 3.2rem) clamp(3rem, 2.5rem + 3vw, 5.5rem); }
+
+  .move + .move { margin-top: clamp(2.2rem, 1.8rem + 1.8vw, 3.4rem); padding-top: clamp(2.2rem, 1.8rem + 1.8vw, 3.4rem); border-top: 1px solid var(--line); }
+  .move__ref { margin-top: 0.7rem; font-family: var(--font-warm); font-style: italic; font-size: var(--step-1); color: var(--accent); }
+  .move__text {
+    margin-top: 1rem; border-left: 3px solid var(--accent); padding-left: 1.3rem;
+    font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.65; color: var(--fg-muted);
+  }
+  .move__scene { margin-top: 0.9rem; font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.75; }
+  .move--response { }
+  .move__response {
+    margin-top: 0.9rem; font-family: var(--font-warm); font-size: var(--step-2);
+    line-height: 1.45; text-wrap: pretty;
+  }
+  .m__extra:empty { display: none; }
+  .m__extra { margin-top: 2.5rem; }
+</style>

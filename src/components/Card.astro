@@ -1,0 +1,44 @@
+---
+import { fmtShort } from '../lib/content';
+interface Props {
+  href: string;
+  room: string;
+  title: string;
+  summary: string;
+  date: Date;
+  accent?: 'accent' | 'ember' | 'brass' | 'outline';
+  idea?: string;
+}
+const { href, room, title, summary, date, accent = 'accent', idea } = Astro.props;
+const chip = accent === 'ember' ? 'chip chip--ember' : accent === 'brass' ? 'chip chip--brass' : accent === 'outline' ? 'chip chip--outline' : 'chip';
+---
+<article class="c reveal">
+  <div class="c__top">
+    <span class={chip}>{room}</span>
+    <time class="c__date tabular" datetime={date.toISOString()}>{fmtShort(date)}</time>
+  </div>
+  <h3 class="c__h"><a href={href}>{title}</a></h3>
+  <p class="c__dek">{summary}</p>
+  {idea && <p class="c__idea">{idea}</p>}
+</article>
+
+<style>
+  .c {
+    position: relative; display: flex; flex-direction: column; gap: 0.6rem; height: 100%;
+    padding: 1.35rem 1.4rem 1.5rem;
+    background: var(--ground-raised);
+    border: 1px solid var(--line); border-radius: var(--radius-lg);
+    transition: transform var(--dur) var(--ease), border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+  }
+  .c:hover { transform: translateY(-3px); border-color: var(--line-strong); box-shadow: var(--shadow); }
+  .c__top { display: flex; align-items: center; justify-content: space-between; gap: 0.75rem; }
+  .c__date { font-size: var(--step--2); color: var(--fg-faint); }
+  .c__h { font-size: var(--step-1); letter-spacing: -0.025em; }
+  .c__h a { text-decoration: none; }
+  .c__h a::after { content: ''; position: absolute; inset: 0; }
+  .c__dek { font-family: var(--font-warm); font-size: var(--step--1); line-height: 1.6; color: var(--fg-muted); }
+  .c__idea {
+    margin-top: auto; padding-top: 0.9rem; border-top: 1px solid var(--line);
+    font-size: var(--step--2); color: var(--fg-faint);
+  }
+</style>

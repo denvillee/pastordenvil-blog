@@ -1,0 +1,85 @@
+---
+/* The email list is the only asset owned outright. It is deliberately not
+   a third-party embed widget: this posts straight to Kit's form endpoint,
+   so the markup, the styling, and the consent copy stay under our control
+   and the list stays portable. Set PUBLIC_KIT_FORM_ID to go live. */
+interface Props {
+  heading?: string;
+  dek?: string;
+  cta?: string;
+  offer?: 'mark' | 'letter';
+  tone?: 'brass' | 'ivy' | 'plain';
+}
+const {
+  heading = 'The Monday Note',
+  dek = 'One idea a week, named plainly, with whatever it produced — the essay, the devotional, the clip. Roughly 500 words. Unsubscribe in one click.',
+  cta = 'Subscribe',
+  offer = 'letter',
+  tone = 'brass',
+} = Astro.props;
+
+const formId = import.meta.env.PUBLIC_KIT_FORM_ID;
+const action = formId ? `https://app.kit.com/forms/${formId}/subscriptions` : '#';
+---
+<section id="subscribe" class:list={['su', `su--${tone}`]}>
+  <div class="wrap su__in">
+    <div>
+      <p class="label su__label">{offer === 'mark' ? 'January cohort' : 'Every Monday'}</p>
+      <h2 class="su__h">{heading}</h2>
+      <p class="su__dek">{dek}</p>
+    </div>
+
+    <form class="su__form" action={action} method="post" data-sv-form>
+      <label class="visually-hidden" for="su-email">Email address</label>
+      <input id="su-email" type="email" name="email_address" required autocomplete="email" placeholder="you@example.com" />
+      {offer === 'mark' && <input type="hidden" name="fields[offer]" value="mark-reading-plan" />}
+      <button type="submit" class="btn btn--primary">{cta}</button>
+      <p class="su__fine">
+        {formId
+          ? 'Delivered by Kit. Your address is never sold or shared, and never used for anything but this.'
+          : 'Not wired yet — set PUBLIC_KIT_FORM_ID in the Netlify environment to activate.'}
+      </p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .su { padding-block: clamp(3rem, 2.2rem + 3vw, 5.5rem); }
+  /* Brass and Ivy are surfaces. Their text colour is fixed by the contrast law. */
+  .su--brass { background: var(--highlight); color: var(--highlight-on); }
+  .su--ivy   { background: var(--ground-band); color: var(--bone); }
+  .su--plain { background: var(--ground-sunk); color: var(--fg); }
+
+  .su__in {
+    display: grid; gap: 2.2rem; align-items: center;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  }
+  @media (max-width: 840px) { .su__in { grid-template-columns: 1fr; } }
+
+  .su__label { color: inherit; opacity: 0.68; }
+  .su__h { font-size: var(--step-3); margin-top: 0.8rem; }
+  .su__dek { margin-top: 0.8rem; max-width: 46ch; font-size: var(--step--1); line-height: 1.65; opacity: 0.85; }
+
+  .su__form { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+  /* The plain tone follows the page theme. Brass and Ivy are fixed
+     surfaces, so their fields are pinned to what the contrast law allows. */
+  .su__form input {
+    flex: 1 1 15rem; min-width: 0; padding: 0.82rem 1rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--line-strong);
+    background: var(--ground-raised);
+    color: var(--fg);
+  }
+  .su--brass .su__form input {
+    border-color: color-mix(in srgb, var(--ink) 30%, transparent);
+    background: color-mix(in srgb, #FFFFFF 62%, transparent);
+    color: var(--ink);
+  }
+  .su--ivy .su__form input {
+    border-color: color-mix(in srgb, var(--bone) 34%, transparent);
+    background: color-mix(in srgb, var(--bone) 10%, transparent);
+    color: var(--bone);
+  }
+  .su__form input::placeholder { color: currentColor; opacity: 0.55; }
+  .su__fine { flex-basis: 100%; font-size: var(--step--2); line-height: 1.5; opacity: 0.7; }
+</style>

@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import Card from '../../components/Card.astro';
+import Signup from '../../components/Signup.astro';
+import { published } from '../../lib/content';
+const items = await published('leaders');
+---
+<Base title="Leaders Corner" description="Written to the person carrying something. Practical, direct, every other week.">
+  <section class="ph">
+    <div class="wrap">
+      <p class="label">Every other week · about 600 words</p>
+      <h1 class="ph__h">Leaders Corner</h1>
+      <p class="ph__dek">
+        Written to the person carrying something. Usually it is the point I had
+        to cut from Sunday for time — the leadership implication underneath the
+        message, said plainly and without a framework.
+      </p>
+    </div>
+  </section>
+  <section class="band">
+    <div class="wrap">
+      {items.length === 0
+        ? <p class="empty">The first note publishes September 4.</p>
+        : <div class="grid grid--2">
+            {items.map((e) => (
+              <Card href={`/leaders/${e.id}/`} room={e.data.anchor ? 'Anchor' : 'Leaders'}
+                title={e.data.title} summary={e.data.summary} date={e.data.publishAt} accent="ember" />
+            ))}
+          </div>}
+    </div>
+  </section>
+  <Signup tone="ivy" heading="Leaders Corner, in your inbox"
+    dek="If you lead anything, this is the one to get. It goes out with the Monday Note and nothing else." />
+</Base>
+<style>
+  .ph { padding-block: clamp(2.8rem, 2.2rem + 3vw, 5rem) clamp(1.8rem, 1.4rem + 1.6vw, 2.8rem); border-bottom: 1px solid var(--line); }
+  .ph__h { font-size: var(--step-5); margin-top: 1rem; }
+  .ph__dek { margin-top: 1.2rem; max-width: 54ch; font-family: var(--font-warm); font-size: var(--step-1); line-height: 1.65; color: var(--fg-muted); }
+  .empty { color: var(--fg-muted); font-family: var(--font-warm); font-size: var(--step-1); }
+</style>
