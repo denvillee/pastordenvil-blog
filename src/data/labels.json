@@ -67,7 +67,7 @@
   "subscribeLabel": "Free &middot; weekly",
   "notFoundHeading": "404",
   "notFoundBody": "Not yet, and also not here. Try the <a href=\"/essays/\">essays</a> or the <a href=\"/frameworks/\">frameworks</a>.",
-  "showDesignNotes": true,
+  "showDesignNotes": false,
   "showFrameworksBand": true,
   "designNotesHeading": "Why it is built this way",
   "designNotesLabel": "Design notes",
