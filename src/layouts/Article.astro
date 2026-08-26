@@ -12,12 +12,13 @@ interface Props {
   title: string; dek: string;
   publishAt: Date; scripture?: string; series?: string;
   week?: number; idea?: string | null; movement?: string | null;
+  part?: number;
   readMinutes: number; notes?: string;
   ogImage?: string; siblings?: Sibling[];
 }
 const {
   room, title, dek, publishAt, scripture, series,
-  week, idea, movement, readMinutes, notes, ogImage, siblings = [],
+  week, idea, movement, readMinutes, notes, ogImage, siblings = [], part,
 } = Astro.props;
 
 const meta = ROOMS[room];
@@ -57,7 +58,7 @@ const passages = await getPassages(scripture);
         <span><time datetime={isoDate(publishAt)}>{displayDate(publishAt)}</time></span>
         {scripture && <span>{scripture}</span>}
         <span>{readMinutes} min read</span>
-        {series && <span>{series}</span>}
+        {series && <span>{series}{part ? ` · Part ${part}` : ''}</span>}
       </div>
       {passages.length > 0 && (
         <div class="art-verse" data-verse>
