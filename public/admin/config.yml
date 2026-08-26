@@ -31,7 +31,7 @@ collections:
     extension: md
     format: frontmatter
     preview_path: essays/{{slug}}/
-    summary: '{{title}}  ·  week {{week}}'
+    summary: '{{title}}'
     fields:
       - { label: Title, name: title, widget: string, hint: 'The web address is built from this. Two pieces in the same room with the exact same title would collide, so give each one its own title.' }
       - { label: Standfirst, name: dek, widget: text, hint: 'One or two sentences. Shows under the headline, in lists, and in link previews.' }
