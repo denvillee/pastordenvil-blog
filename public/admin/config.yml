@@ -39,6 +39,7 @@ collections:
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false, hint: 'On means it never publishes, whatever the date says.' }
       - { label: Season week, name: week, widget: number, value_type: int, required: false, hint: 'Ties this to the week idea and the “rest of this week” block.' }
       - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
+      - { label: Part in the set, name: part, widget: number, value_type: int, required: false, hint: 'When an essay belongs to a set, its number in the set — 1, 2, 3. Leave blank for a standalone essay. The set itself is named in Series.' }
       - { label: Scripture, name: scripture, widget: string, required: false, hint: 'Free text, e.g. Acts 2:17; Mark 1:15' }
       - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
       - { label: Diagram caption, name: diagramCaption, widget: string, required: false, hint: 'One line under the drawing. Only used when a diagram is chosen.' }
@@ -134,7 +135,8 @@ collections:
       - { label: Year, name: year, widget: number, value_type: int, required: false }
       - { label: Shelf status, name: shelfStatus, widget: select, options: ['now', 'shelf', 'next', 'finished'], default: 'shelf', hint: 'Only one book should be “now”.' }
       - { label: Progress, name: progress, widget: string, required: false, hint: 'e.g. Chapter 6 of 12' }
-      - { label: Spine colour, name: spine, widget: select, options: ['cobalt', 'ivy', 'brass', 'ember', 'ink'], default: 'ivy' }
+      - { label: Spine colour, name: spine, widget: select, options: ['cobalt', 'ivy', 'brass', 'ember', 'ink'], default: 'ivy', hint: 'Only shows if there is no cover image.' }
+      - { label: Cover image, name: cover, widget: image, required: false, hint: 'The book cover. If there is one it replaces the coloured spine.' }
       - { label: Order on the shelf, name: order, widget: number, value_type: int, default: 1 }
       - { label: Link, name: link, widget: string, required: false, default: '' }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
@@ -217,8 +219,8 @@ collections:
         label: Home page copy
         file: /src/data/home.json
         fields:
-          - { label: Hero word one, name: heroK1, widget: string, hint: 'The first line of the kinetic headline, e.g. “Now”.' }
-          - { label: Hero word two, name: heroK2, widget: string, hint: 'The second line, e.g. “Not Yet”. Keep both short — they set the type size on the page.' }
+          - { label: 'Hero — fixed words', name: heroFixed, widget: string, hint: 'The half of the headline that does not move, e.g. “Good news”.' }
+          - { label: 'Hero — rotating phrases', name: heroPhrases, widget: list, hint: 'Each one completes the fixed words. They roll every few seconds. Five is the right number.' }
           - { label: Hero paragraph, name: heroLead, widget: text, hint: '<b>bold</b> is allowed.' }
           - { label: Primary button label, name: heroPrimaryLabel, widget: string }
           - { label: Primary button link, name: heroPrimaryHref, widget: string }
@@ -256,7 +258,6 @@ collections:
           - { label: 'Menu — Moments', name: navMoments, widget: string, hint: 'The Moments link in the top menu.' }
           - { label: 'Menu — Watch', name: navWatch, widget: string, hint: 'The Watch link. Currently phone menu and footer only, until there are clips to show.' }
           - { label: 'Menu — Bookshelf', name: navReading, widget: string, hint: 'The Bookshelf link in the top menu. Matches /bookshelf/.' }
-          - { label: 'Menu — Start Here', name: navStartHere, widget: string, hint: 'First link in the top menu. Matches /start-here/.' }
           - { label: 'Menu — Studies', name: navStudies, widget: string, hint: 'The Studies link in the top menu. Matches /studies/, which hands off to grabyourbibles.com.' }
           - { label: 'Menu — About', name: navAbout, widget: string, hint: 'Only appears in the phone menu, not the desktop bar.' }
           - { label: 'Menu — Speaking', name: navSpeaking, widget: string, hint: 'Only appears in the phone menu, not the desktop bar.' }
@@ -272,10 +273,10 @@ collections:
           - { label: 'Footer — Watch link', name: footWatch, widget: string, hint: 'The Watch link in the footer.' }
           - { label: 'Footer — Reading link', name: footReading, widget: string, hint: 'The Reading link in the footer.' }
           - { label: 'Footer — Archive link', name: footArchive, widget: string, hint: 'The Archive link in the footer.' }
-          - { label: 'Footer — second column heading', name: footElsewhereHeading, widget: string, hint: 'The heading above the About / Speaking / Monday Note column.' }
+          - { label: 'Footer — second column heading', name: footElsewhereHeading, widget: string, hint: 'The heading above the About / Speaking / Subscribe column.' }
           - { label: 'Footer — About link', name: footAbout, widget: string, hint: 'The About link in the footer.' }
           - { label: 'Footer — Speaking link', name: footSpeaking, widget: string, hint: 'The Speaking link in the footer.' }
-          - { label: 'Footer — subscribe link', name: footSubscribe, widget: string, hint: 'The Monday Note link in the footer.' }
+          - { label: 'Footer — subscribe link', name: footSubscribe, widget: string, hint: 'The Subscribe link in the footer.' }
           - { label: 'Footer — RSS link', name: footRss, widget: string, hint: 'The RSS link in the footer.' }
 
           # ----------------------------------------------------- home page bands
