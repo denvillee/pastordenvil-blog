@@ -1,0 +1,409 @@
+# Sveltia CMS. Edits commit straight to the repo, Netlify rebuilds, the site updates.
+# Nothing here is a database. Every field below writes to a real file you can read in Git.
+backend:
+  name: github
+  repo: denvillee/pastordenvil-blog
+  branch: main
+  commit_messages:
+    create: 'Add {{collection}} “{{slug}}”'
+    update: 'Update {{collection}} “{{slug}}”'
+    delete: 'Delete {{collection}} “{{slug}}”'
+    uploadMedia: 'Upload “{{path}}”'
+    deleteMedia: 'Delete “{{path}}”'
+
+site_url: https://pastordenvil.com
+display_url: https://pastordenvil.com
+logo_url: /favicon.svg
+
+media_folder: /public/assets/img/uploads
+public_folder: /assets/img/uploads
+
+publish_mode: simple
+
+collections:
+  # ------------------------------------------------------------------ writing
+  - name: essays
+    label: Essays
+    label_singular: Essay
+    folder: /src/content/essays
+    create: true
+    slug: '{{title}}'
+    extension: md
+    format: frontmatter
+    preview_path: essays/{{slug}}/
+    summary: '{{title}}  ·  week {{week}}'
+    fields:
+      - { label: Title, name: title, widget: string, hint: 'The web address is built from this. Two pieces in the same room with the exact same title would collide, so give each one its own title.' }
+      - { label: Standfirst, name: dek, widget: text, hint: 'One or two sentences. Shows under the headline, in lists, and in link previews.' }
+      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false, hint: 'Set a future date and it stays hidden until then. The daily build publishes it.' }
+      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false, hint: 'On means it never publishes, whatever the date says.' }
+      - { label: Season week, name: week, widget: number, value_type: int, required: false, hint: 'Ties this to the week idea and the “rest of this week” block.' }
+      - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
+      - { label: Scripture, name: scripture, widget: string, required: false, hint: 'Free text, e.g. Acts 2:17; Mark 1:15' }
+      - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
+      - { label: Diagram caption, name: diagramCaption, widget: string, required: false, hint: 'One line under the drawing. Only used when a diagram is chosen.' }
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - { label: Social image, name: ogImage, widget: image, required: false, hint: 'Optional. Leave blank to use the site default.' }
+      - { label: Where this comes from, name: notes, widget: text, required: false, hint: 'Attribution block under the article. Simple HTML is allowed: <em>, <b>, <a href>.' }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: leaders
+    label: Leaders Corner
+    label_singular: Leaders Corner piece
+    folder: /src/content/leaders
+    create: true
+    slug: '{{title}}'
+    extension: md
+    format: frontmatter
+    preview_path: leaders/{{slug}}/
+    fields:
+      - { label: Title, name: title, widget: string, hint: 'The web address is built from this. Two pieces in the same room with the exact same title would collide, so give each one its own title.' }
+      - { label: Standfirst, name: dek, widget: text }
+      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
+      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: Season week, name: week, widget: number, value_type: int, required: false }
+      - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
+      - { label: Scripture, name: scripture, widget: string, required: false }
+      - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
+      - { label: Diagram caption, name: diagramCaption, widget: string, required: false, hint: 'One line under the drawing. Only used when a diagram is chosen.' }
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - { label: Social image, name: ogImage, widget: image, required: false }
+      - { label: Where this comes from, name: notes, widget: text, required: false }
+      - { label: Body, name: body, widget: markdown }
+
+  - name: moments
+    label: Moments
+    label_singular: Moments entry
+    folder: /src/content/moments
+    create: true
+    slug: '{{title}}'
+    extension: md
+    format: frontmatter
+    preview_path: moments/{{slug}}/
+    fields:
+      - { label: Title, name: title, widget: string, hint: 'The web address is built from this. Two pieces in the same room with the exact same title would collide, so give each one its own title.' }
+      - { label: Standfirst, name: dek, widget: text }
+      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
+      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: Season week, name: week, widget: number, value_type: int, required: false }
+      - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
+      - { label: Scripture, name: scripture, widget: string, required: false }
+      - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
+      - { label: Diagram caption, name: diagramCaption, widget: string, required: false, hint: 'One line under the drawing. Only used when a diagram is chosen.' }
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - { label: Social image, name: ogImage, widget: image, required: false }
+      - { label: Where this comes from, name: notes, widget: text, required: false }
+      - { label: 'Body — the Scripture, the Scene, the Response', name: body, widget: markdown }
+
+  - name: frameworks
+    label: Frameworks
+    label_singular: Framework
+    folder: /src/content/frameworks
+    create: true
+    slug: '{{title}}'
+    extension: md
+    format: frontmatter
+    preview_path: frameworks/{{slug}}/
+    fields:
+      - { label: Title, name: title, widget: string, hint: 'The web address is built from this. Two pieces in the same room with the exact same title would collide, so give each one its own title.' }
+      - { label: Standfirst, name: dek, widget: text }
+      - { label: One line summary, name: summary, widget: string, required: false, hint: 'Shows in the numbered list on the home page.' }
+      - { label: Order, name: order, widget: number, value_type: int, default: 1 }
+      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
+      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: Season week, name: week, widget: number, value_type: int, required: false }
+      - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
+      - { label: Scripture, name: scripture, widget: string, required: false }
+      - label: Diagram
+        name: diagram
+        widget: select
+        required: false
+        options: ['TwoAges']
+        hint: 'Diagrams are hand built components. Ask the design side to add a new one before selecting it here.'
+      - label: One page guide (PDF)
+        name: guide
+        widget: file
+        required: false
+        # Guides are not images. Keep them out of the image uploads folder so the paths
+        # written into the file match /assets/guides/, which is where the site looks.
+        media_folder: /public/assets/guides
+        public_folder: /assets/guides
+      - { label: Tags, name: tags, widget: list, required: false, default: [] }
+      - { label: Social image, name: ogImage, widget: image, required: false }
+      - { label: Where this comes from, name: notes, widget: text, required: false, hint: 'Frameworks lean on other people’s work. Credit them here, every time.' }
+      - { label: Body, name: body, widget: markdown }
+
+  # ------------------------------------------------------------------ the rest
+  - name: watch
+    label: Watch (clips)
+    label_singular: Clip
+    folder: /src/content/watch
+    create: true
+    slug: '{{title}}'
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Clip title, name: title, widget: string, hint: 'The big line on the clip tile, on the home page rail and the Watch page.' }
+      - { label: Burned in caption, name: caption, widget: string, hint: 'The smaller line under the title on the tile. Keep it short.' }
+      - { label: Length in seconds, name: durationSeconds, widget: number, value_type: int, default: 45 }
+      - { label: Scripture, name: scripture, widget: string, required: false }
+      - { label: Cover image, name: poster, widget: image, default: '/assets/img/clip1.jpg' }
+      - { label: YouTube URL, name: youtube, widget: string, required: false, default: '' }
+      - { label: TikTok URL, name: tiktok, widget: string, required: false, default: '' }
+      - { label: Instagram URL, name: instagram, widget: string, required: false, default: '' }
+      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
+      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+
+  - name: reading
+    label: Reading shelf
+    label_singular: Book
+    folder: /src/content/reading
+    create: true
+    slug: '{{title}}'
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Author, name: author, widget: string }
+      - { label: Year, name: year, widget: number, value_type: int, required: false }
+      - { label: Shelf status, name: shelfStatus, widget: select, options: ['now', 'shelf', 'next', 'finished'], default: 'shelf', hint: 'Only one book should be “now”.' }
+      - { label: Progress, name: progress, widget: string, required: false, hint: 'e.g. Chapter 6 of 12' }
+      - { label: Spine colour, name: spine, widget: select, options: ['cobalt', 'ivy', 'brass', 'ember', 'ink'], default: 'ivy' }
+      - { label: Order on the shelf, name: order, widget: number, value_type: int, default: 1 }
+      - { label: Link, name: link, widget: string, required: false, default: '' }
+      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
+      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: 'Your line about it', name: body, widget: markdown, hint: 'One or two sentences. This is the whole point of the shelf.' }
+
+  - name: weeks
+    label: Season weeks
+    label_singular: Week
+    folder: /src/content/weeks
+    create: true
+    slug: 'week-{{number}}'
+    extension: md
+    format: frontmatter
+    summary: 'Week {{number}} — {{idea}}'
+    fields:
+      - { label: Week number, name: number, widget: number, value_type: int }
+      - { label: Starts, name: start, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: false, hint: 'The Monday this week begins. Not shown on the site — it is how a week is filed.' }
+      - { label: Ends, name: end, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: false, hint: 'The Sunday this week ends. Not shown on the site — it is how a week is filed.' }
+      - { label: Movement, name: movement, widget: string, hint: 'e.g. II. The Rescue. Shows next to “Season one · week N” at the top of every piece published this week.' }
+      - { label: The one idea, name: idea, widget: text, hint: 'One sentence. It appears above every piece published this week.' }
+
+  - name: pages
+    label: Standing pages
+    label_singular: Page
+    folder: /src/content/pages
+    create: false
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Standfirst, name: dek, widget: text }
+      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
+      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: Body, name: body, widget: markdown }
+
+  # ------------------------------------------------------------------ site copy
+  - name: settings
+    label: Site copy
+    files:
+      - name: home
+        label: Home page copy
+        file: /src/data/home.json
+        fields:
+          - { label: Hero word one, name: heroK1, widget: string, hint: 'The first line of the kinetic headline, e.g. “Now”.' }
+          - { label: Hero word two, name: heroK2, widget: string, hint: 'The second line, e.g. “Not Yet”. Keep both short — they set the type size on the page.' }
+          - { label: Hero paragraph, name: heroLead, widget: text, hint: '<b>bold</b> is allowed.' }
+          - { label: Primary button label, name: heroPrimaryLabel, widget: string }
+          - { label: Primary button link, name: heroPrimaryHref, widget: string }
+          - { label: Secondary button label, name: heroSecondaryLabel, widget: string }
+          - { label: Secondary button link, name: heroSecondaryHref, widget: string }
+          - { label: Scrolling ticker, name: marquee, widget: list, hint: 'Series names and passages. Keep them short.' }
+          - { label: Feature sticker — fresh, name: featureLabel, widget: string, hint: 'Shown on the home page feature while the newest essay is less than a week old.' }
+          - { label: Feature sticker — a couple of weeks on, name: featureLabelRecent, widget: string, hint: 'Replaces it automatically once that essay is 8 to 21 days old, so the page never claims "this week" about older writing.' }
+          - { label: Feature sticker — older, name: featureLabelOlder, widget: string, hint: 'Used once the newest essay is over three weeks old. Nothing looks stale or wrong during a quiet stretch.' }
+          - { label: Streams heading, name: streamsHeading, widget: string }
+          - { label: Streams label, name: streamsLabel, widget: string }
+          - { label: Essay cadence, name: essayCadence, widget: string }
+          - { label: Leaders cadence, name: leadersCadence, widget: string }
+          - { label: Moments cadence, name: momentsCadence, widget: string }
+          - { label: 'Watch note — under the home page clip rail', name: watchNote, widget: text, hint: 'The paragraph under the three clips on the home page. The Watch page has its own note, below.' }
+          - { label: 'Watch note — bottom of the Watch page', name: watchPageNote, widget: text, hint: 'The paragraph at the bottom of the Watch page. This is the rights and hosting note, not the home page one.' }
+          - { label: Framework caption, name: frameworksCaption, widget: text }
+          - { label: Framework intro, name: frameworksLead, widget: text }
+          - { label: 'Framework “parked” note', name: frameworksParked, widget: text }
+          - { label: Reading shelf note, name: readingTie, widget: text, hint: 'Shows under the shelf in both places it appears: the home page band and the Reading page.' }
+          - { label: Card kit note, name: kitNote, widget: text }
+      - name: labels
+        label: Section titles
+        file: /src/data/labels.json
+        fields:
+          # ---------------------------------------------------------------- menu
+          - { label: 'Menu — Essays', name: navEssays, widget: string, hint: 'The Essays link in the top menu. Renaming it here does not change the web address.' }
+          - { label: 'Menu — Leaders Corner', name: navLeaders, widget: string, hint: 'The Leaders Corner link in the top menu.' }
+          - { label: 'Menu — Moments', name: navMoments, widget: string, hint: 'The Moments link in the top menu.' }
+          - { label: 'Menu — Watch', name: navWatch, widget: string, hint: 'The Watch link in the top menu.' }
+          - { label: 'Menu — Reading', name: navReading, widget: string, hint: 'The Reading link in the top menu.' }
+          - { label: 'Menu — About', name: navAbout, widget: string, hint: 'Only appears in the phone menu, not the desktop bar.' }
+          - { label: 'Menu — Speaking', name: navSpeaking, widget: string, hint: 'Only appears in the phone menu, not the desktop bar.' }
+          - { label: 'Menu — Archive', name: navArchive, widget: string, hint: 'Only appears in the phone menu, not the desktop bar.' }
+          - { label: 'Menu — subscribe button', name: navCta, widget: string, hint: 'The dark button on the right of the top menu.' }
+
+          # -------------------------------------------------------------- footer
+          - { label: 'Footer — first column heading', name: footRoomsHeading, widget: string, hint: 'The heading above the list of rooms in the footer.' }
+          - { label: 'Footer — Essays link', name: footEssays, widget: string, hint: 'The Essays link in the footer.' }
+          - { label: 'Footer — Leaders Corner link', name: footLeaders, widget: string, hint: 'The Leaders Corner link in the footer.' }
+          - { label: 'Footer — Moments link', name: footMoments, widget: string, hint: 'The Moments link in the footer.' }
+          - { label: 'Footer — Frameworks link', name: footFrameworks, widget: string, hint: 'The Frameworks link in the footer.' }
+          - { label: 'Footer — Watch link', name: footWatch, widget: string, hint: 'The Watch link in the footer.' }
+          - { label: 'Footer — Reading link', name: footReading, widget: string, hint: 'The Reading link in the footer.' }
+          - { label: 'Footer — Archive link', name: footArchive, widget: string, hint: 'The Archive link in the footer.' }
+          - { label: 'Footer — second column heading', name: footElsewhereHeading, widget: string, hint: 'The heading above the About / Speaking / Monday Note column.' }
+          - { label: 'Footer — About link', name: footAbout, widget: string, hint: 'The About link in the footer.' }
+          - { label: 'Footer — Speaking link', name: footSpeaking, widget: string, hint: 'The Speaking link in the footer.' }
+          - { label: 'Footer — subscribe link', name: footSubscribe, widget: string, hint: 'The Monday Note link in the footer.' }
+          - { label: 'Footer — RSS link', name: footRss, widget: string, hint: 'The RSS link in the footer.' }
+
+          # ----------------------------------------------------- home page bands
+          - { label: 'Home — feature sticker on the essay', name: homeFeaturePill, widget: string, hint: 'The small tag on the big feature essay near the top of the home page.' }
+          - { label: 'Home — feature essay link', name: homeFeatureReadLink, widget: string, hint: 'The link under the feature essay. The arrow after it is added automatically.' }
+          - { label: 'Home — tag on the essay card', name: homeStreamEssayTag, widget: string, hint: 'The small tag on the first of the three cards in the “Three things every week” band.' }
+          - { label: 'Home — tag on the Leaders Corner card', name: homeStreamLeadersTag, widget: string, hint: 'The small tag on the second of the three cards.' }
+          - { label: 'Home — tag on the Moments card', name: homeStreamMomentsTag, widget: string, hint: 'The small tag on the third of the three cards.' }
+          - { label: 'Room tag — the essay room', name: roomEssayTag, widget: string, hint: 'The small tag on top of every piece in this room, and on the Archive page. Renaming it here renames it in both places at once.' }
+          - { label: 'Room tag — Leaders Corner', name: roomLeadersTag, widget: string, hint: 'The same tag, for the Leaders Corner room.' }
+          - { label: 'Room tag — Moments', name: roomMomentsTag, widget: string, hint: 'The same tag, for the Moments room.' }
+          - { label: 'Room tag — Frameworks', name: roomFrameworkTag, widget: string, hint: 'The same tag, for the Frameworks room.' }
+          - { label: 'Home — Watch heading', name: homeWatchHeading, widget: string, hint: 'The heading above the video clips on the home page.' }
+          - { label: 'Home — Watch small line', name: homeWatchLabel, widget: string, hint: 'The small line beside that heading. Type &middot; for the dot between phrases.' }
+          - { label: 'Home — Frameworks heading', name: homeFrameworksHeading, widget: string, hint: 'The heading above the diagram band on the home page.' }
+          - { label: 'Home — Frameworks small line', name: homeFrameworksLabel, widget: string, hint: 'The small line beside that heading. Type &middot; for the dot between phrases.' }
+          - { label: 'Home — card kit heading', name: homeKitHeading, widget: string, hint: 'The heading above the six shareable card templates.' }
+          - { label: 'Home — card kit small line', name: homeKitLabel, widget: string, hint: 'The small line beside that heading. Type &middot; for the dot between phrases.' }
+          - { label: 'Home — card studio link', name: homeKitLink, widget: string, hint: 'The link at the end of the card kit note. Type &rarr; for the arrow.' }
+
+          # -------------------------------------------------- reading shelf band
+          - { label: 'Reading shelf — heading', name: readingHeading, widget: string, hint: 'Used in two places: the shelf band on the home page and the Reading page.' }
+          - { label: 'Reading shelf — small line', name: readingLabel, widget: string, hint: 'The small line beside that heading, in both places.' }
+          - { label: 'Reading shelf — “now reading” label', name: readingNowLabel, widget: string, hint: 'The little label above the book you are currently reading.' }
+          - { label: 'Reading shelf — empty message', name: readingEmpty, widget: text, hint: 'Only shows if there are no books on the shelf at all.' }
+
+          # ------------------------------------------------------- Essays page
+          - { label: 'Essays page — heading', name: essaysHeading, widget: string, hint: 'The big heading on the Essays page. Also used in the browser tab title.' }
+          - { label: 'Essays page — standfirst', name: essaysDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
+          - { label: 'Essays page — empty message', name: essaysEmpty, widget: text, hint: 'Shows on the Essays page while nothing is published there yet.' }
+
+          # ----------------------------------------------- Leaders Corner page
+          - { label: 'Leaders Corner page — heading', name: leadersHeading, widget: string, hint: 'The big heading on the Leaders Corner page. Also used in the browser tab title.' }
+          - { label: 'Leaders Corner page — standfirst', name: leadersDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
+          - { label: 'Leaders Corner page — empty message', name: leadersEmpty, widget: text, hint: 'Shows on the Leaders Corner page while nothing is published there yet.' }
+
+          # ------------------------------------------------------ Moments page
+          - { label: 'Moments page — heading', name: momentsHeading, widget: string, hint: 'The big heading on the Moments page. Also used in the browser tab title.' }
+          - { label: 'Moments page — standfirst', name: momentsDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
+          - { label: 'Moments page — empty message', name: momentsEmpty, widget: text, hint: 'Shows on the Moments page while nothing is published there yet.' }
+
+          # --------------------------------------------------- Frameworks page
+          - { label: 'Frameworks page — heading', name: frameworksHeading, widget: string, hint: 'The big heading on the Frameworks page. Also used in the browser tab title.' }
+          - { label: 'Frameworks page — standfirst', name: frameworksDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
+          - { label: 'Frameworks page — empty message', name: frameworksEmpty, widget: text, hint: 'Shows on the Frameworks page while nothing is published there yet.' }
+
+          # -------------------------------------------------------- Watch page
+          - { label: 'Watch page — heading', name: watchHeading, widget: string, hint: 'The big heading on the Watch page. Also used in the browser tab title.' }
+          - { label: 'Watch page — standfirst', name: watchDek, widget: text, hint: 'Not shown on the page itself. This is the sentence Google and link previews use.' }
+          - { label: 'Watch page — empty message', name: watchEmpty, widget: text, hint: 'Shows on the Watch page while there are no clips yet.' }
+
+          # ------------------------------------------------------ Archive page
+          - { label: 'Archive page — heading', name: archiveHeading, widget: string, hint: 'The big heading on the Archive page. Also used in the browser tab title.' }
+          - { label: 'Archive page — standfirst', name: archiveDek, widget: text, hint: 'Not shown on the page itself. This is the sentence Google and link previews use.' }
+          - { label: 'Archive page — empty message', name: archiveEmpty, widget: text, hint: 'Shows on the Archive page while nothing at all is published.' }
+
+          # ------------------------------------------------- inside every piece
+          - { label: 'Article — week idea label', name: articleIdeaLabel, widget: string, hint: 'The little label above the one sentence idea at the top of every piece.' }
+          - { label: 'Article — attribution heading', name: articleNotesHeading, widget: string, hint: 'The heading above the “where this comes from” credits under every piece.' }
+          - { label: 'Article — share label', name: articleShareLabel, widget: string, hint: 'The word before the Facebook / X / Email / Copy link row.' }
+
+          # ---------------------------------------------------- standing pages
+          - { label: 'About page — small line', name: aboutLabel, widget: string, hint: 'The small line beside the heading on the About page.' }
+          - { label: 'Speaking page — small line', name: speakingLabel, widget: string, hint: 'The small line beside the heading on the Speaking page.' }
+          - { label: 'Subscribe page — small line', name: subscribeLabel, widget: string, hint: 'The small line beside the heading on the Subscribe page. Type &middot; for the dot.' }
+          - { label: 'Page not found — headline', name: notFoundHeading, widget: string, hint: 'The big line people see when a web address does not exist.' }
+          - { label: 'Page not found — paragraph', name: notFoundBody, widget: text, hint: 'The sentence under it. Links are allowed, e.g. <a href="/essays/">essays</a>.' }
+
+          # ------------------------------------------- “why it is built this way”
+          - { label: 'Show the “Why it is built this way” band', name: showDesignNotes, widget: boolean, default: true, hint: 'Off hides the whole “Why it is built this way” band from the bottom of the home page. It is written about the site rather than for the reader, so turn it off once the site speaks for itself.' }
+          - { label: 'Show the frameworks band on the home page', name: showFrameworksBand, widget: boolean, default: true, hint: 'Turns the diagram band on the home page on or off. The frameworks pages themselves stay live and linked from the footer either way.' }
+          - { label: 'Design notes — heading', name: designNotesHeading, widget: string, hint: 'The heading of that band.' }
+          - { label: 'Design notes — small line', name: designNotesLabel, widget: string, hint: 'The small line beside that heading.' }
+          - { label: 'Design notes — note 1 heading', name: designNote1Heading, widget: string, hint: 'First of the four notes. <b>bold</b> is allowed.' }
+          - { label: 'Design notes — note 1 paragraph', name: designNote1Body, widget: text, hint: '<b>bold</b> is allowed.' }
+          - { label: 'Design notes — note 2 heading', name: designNote2Heading, widget: string, hint: 'Second of the four notes. <b>bold</b> is allowed.' }
+          - { label: 'Design notes — note 2 paragraph', name: designNote2Body, widget: text, hint: '<b>bold</b> is allowed.' }
+          - { label: 'Design notes — note 3 heading', name: designNote3Heading, widget: string, hint: 'Third of the four notes. <b>bold</b> is allowed.' }
+          - { label: 'Design notes — note 3 paragraph', name: designNote3Body, widget: text, hint: '<b>bold</b> is allowed.' }
+          - { label: 'Design notes — note 4 heading', name: designNote4Heading, widget: string, hint: 'Fourth of the four notes. <b>bold</b> is allowed.' }
+          - { label: 'Design notes — note 4 paragraph', name: designNote4Body, widget: text, hint: '<b>bold</b> is allowed.' }
+      - name: site
+        label: Site wide copy
+        file: /src/data/site.json
+        fields:
+          - { label: Name, name: name, widget: string }
+          - { label: Tagline, name: tagline, widget: string }
+          - { label: Meta description, name: metaDescription, widget: text }
+          - { label: Footer blurb, name: footerBlurb, widget: text }
+          - { label: Footer line, name: footerLine, widget: string }
+          - { label: Signup heading, name: signupHeading, widget: string }
+          - { label: Signup copy, name: signupCopy, widget: text }
+          - { label: Signup button, name: signupButton, widget: string }
+          - { label: Signup small print, name: signupSmallPrint, widget: string }
+      - name: kit
+        label: Shareable cards
+        file: /src/data/kit.json
+        fields:
+          - label: Quote card
+            name: quote
+            widget: object
+            fields:
+              - { label: Quote, name: quote, widget: text }
+              - { label: Accent line, name: accent, widget: string, required: false }
+              - { label: Top signature, name: sig, widget: string }
+              - { label: Bottom signature, name: foot, widget: string }
+          - label: Scripture card
+            name: verse
+            widget: object
+            fields:
+              - { label: Verse, name: verse, widget: text }
+              - { label: Reference, name: ref, widget: string }
+          - label: Two panel card
+            name: meme
+            widget: object
+            fields:
+              - label: Panels
+                name: rows
+                widget: list
+                fields:
+                  - { label: Who, name: who, widget: string }
+                  - { label: Said, name: said, widget: string }
+          - label: Text thread card
+            name: thread
+            widget: object
+            fields:
+              - label: Bubbles
+                name: bubbles
+                widget: list
+                fields:
+                  - { label: From, name: from, widget: select, options: ['them', 'me'] }
+                  - { label: Text, name: text, widget: string }
+          - label: Series poster
+            name: poster
+            widget: object
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Subtitle, name: sub, widget: string }
+          - label: Clip cover
+            name: still
+            widget: object
+            fields:
+              - { label: Line, name: line, widget: string }
