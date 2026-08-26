@@ -1,0 +1,143 @@
+---
+/*
+  Start Here — the week, arranged as a path.
+
+  Build packet / build-spec-start-here §4. This is not a welcome page. It is
+  the seven-move session Denvil already prints in every booklet, with each move
+  pointing at the room that carries it. Someone can walk all seven in twenty
+  minutes or drop into one.
+
+  Every move renders only if there is something real behind it. Anything not
+  ready yet shows an honest under-construction line instead of an instruction
+  for content that does not exist. Denvil, 26 Aug: "if a section isn't ready,
+  lets take out the instruction and put under construction or coming soon".
+*/
+import Base from '../layouts/Base.astro';
+import Signup from '../components/Signup.astro';
+import UnderConstruction from '../components/UnderConstruction.astro';
+import { live, readMinutes, weekIdea } from '../lib/publish';
+import site from '../data/site.json';
+
+const essays  = await live('essays');
+const leaders = await live('leaders');
+const moments = await live('moments');
+
+const essay  = essays[0]  ?? null;
+const leader = leaders[0] ?? null;
+const moment = moments[0] ?? null;
+
+const week = await weekIdea(essay?.data.week ?? moment?.data.week);
+---
+<Base
+  title={`Start Here — ${site.name}`}
+  description="The week, arranged as a path. Read, reflect, pray, and take one next step."
+>
+  <section class="band shell">
+    <div class="sec-head">
+      <h1>Start Here</h1>
+      <span class="label">Seven moves</span>
+    </div>
+    <p class="art-dek" style="margin-bottom:2rem">
+      This is the shape every study I write follows. Walk the whole thing in about twenty
+      minutes, or drop into the one move you have time for.
+    </p>
+
+    <ol class="sh-list">
+
+      <li class="sh-step">
+        <span class="sh-n">1</span>
+        <div class="sh-body">
+          <h2>Read</h2>
+          {moment ? (
+            <>
+              {moment.data.scripture && <p class="sh-ref">{moment.data.scripture}</p>}
+              <p class="dek">{moment.data.dek}</p>
+              <a class="readlink" href={`/moments/${moment.id}/`}>Open the passage <span aria-hidden="true">&rarr;</span></a>
+            </>
+          ) : (
+            <UnderConstruction line="The passage for the week, printed in full, lands here." />
+          )}
+        </div>
+      </li>
+
+      <li class="sh-step">
+        <span class="sh-n">2</span>
+        <div class="sh-body">
+          <h2>Reflect</h2>
+          {essay ? (
+            <>
+              <p class="sh-ref">{essay.data.scripture} &middot; {readMinutes(essay.body)} min</p>
+              <h3 class="sh-title"><a href={`/essays/${essay.id}/`}>{essay.data.title}</a></h3>
+              <p class="dek">{essay.data.dek}</p>
+              <a class="readlink" href={`/essays/${essay.id}/`}>Read the essay <span aria-hidden="true">&rarr;</span></a>
+            </>
+          ) : (
+            <UnderConstruction line="The week&rsquo;s essay &mdash; an idea worked out in writing &mdash; lands here." />
+          )}
+        </div>
+      </li>
+
+      <li class="sh-step">
+        <span class="sh-n">3</span>
+        <div class="sh-body">
+          <h2>Key truth</h2>
+          {week?.idea ? (
+            <blockquote class="sh-truth">{week.idea}</blockquote>
+          ) : (
+            <UnderConstruction line="One sentence to carry through the week lands here, with the season." />
+          )}
+        </div>
+      </li>
+
+      <li class="sh-step">
+        <span class="sh-n">4</span>
+        <div class="sh-body">
+          <h2>Growing deeper</h2>
+          <UnderConstruction line="Two or three further passages, and the drawing when the week has one." />
+        </div>
+      </li>
+
+      <li class="sh-step">
+        <span class="sh-n">5</span>
+        <div class="sh-body">
+          <h2>Respond</h2>
+          {moment ? (
+            <p class="dek">One question, at the end of the passage. It is in the Moments piece &mdash; do not rush past it.</p>
+          ) : (
+            <UnderConstruction line="One question addressed to you, not to a group, lands here." />
+          )}
+        </div>
+      </li>
+
+      <li class="sh-step">
+        <span class="sh-n">6</span>
+        <div class="sh-body">
+          <h2>Breakthrough <span class="sh-alt">Let&rsquo;s pray together</span></h2>
+          {leader ? (
+            <>
+              <h3 class="sh-title"><a href={`/leaders/${leader.id}/`}>{leader.data.title}</a></h3>
+              <p class="dek">{leader.data.dek}</p>
+              <a class="readlink" href={`/leaders/${leader.id}/`}>For whoever is carrying something <span aria-hidden="true">&rarr;</span></a>
+            </>
+          ) : (
+            <UnderConstruction line="A few lines to pray, and the piece for whoever is carrying something this week." />
+          )}
+        </div>
+      </li>
+
+      <li class="sh-step">
+        <span class="sh-n">7</span>
+        <div class="sh-body">
+          <h2>Next step</h2>
+          <p class="dek">
+            One concrete thing to do with it. If you want to keep going with other people,
+            the studies are where that happens.
+          </p>
+          <a class="readlink" href="/studies/">Take it into a study <span aria-hidden="true">&rarr;</span></a>
+        </div>
+      </li>
+
+    </ol>
+  </section>
+  <Signup />
+</Base>
