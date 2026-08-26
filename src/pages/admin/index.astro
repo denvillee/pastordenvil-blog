@@ -2,20 +2,95 @@
 // The CMS. Sveltia is bundled first-party (npm, not CDN) so the site's
 // script-src 'self' Content-Security-Policy still holds.
 // Config lives in /public/admin/config.yml.
+//
+// The status bar below is ours, not Sveltia's. It exists because the CMS
+// gives no indication of WHICH branch you are editing. Everything saved here
+// lands on `staging` and is private until it is merged to `main`.
+const PREVIEW = 'https://staging--dainty-queijadas-becadc.netlify.app';
+const PUBLISH = 'https://github.com/denvillee/pastordenvil-blog/compare/main...staging';
 ---
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Edit denvillee.com</title>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Edit denvillee.com</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<style>
+#deskbar{
+position:fixed; left:0; right:0; bottom:0; z-index:2147483000;
+display:flex; align-items:center; gap:14px;
+padding:0 14px; height:44px;
+background:#0E1211; color:#F3F1EA;
+border-top:2px solid #ECC46E;
+font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+font-size:12.5px; box-shadow:0 -6px 18px rgba(0,0,0,.22);
+}
+#deskbar[hidden]{display:none}
+#deskbar .dot{width:8px; height:8px; border-radius:50%; background:#ECC46E; flex:none}
+#deskbar .msg{font-weight:700; letter-spacing:.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+#deskbar .msg small{display:block; font-weight:500; opacity:.7; font-size:11px; letter-spacing:.01em}
+#deskbar .spacer{flex:1}
+#deskbar a{
+display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
+text-decoration:none; border-radius:3px; padding:7px 12px;
+font-weight:800; letter-spacing:.06em; text-transform:uppercase; font-size:11px;
+}
+#deskbar a.ghost{color:#F3F1EA; border:1px solid rgba(243,241,234,.32)}
+#deskbar a.ghost:hover{border-color:#ECC46E; color:#ECC46E}
+#deskbar a.go{background:#ECC46E; color:#0E1211}
+#deskbar a.go:hover{background:#fff}
+#deskbar a:focus-visible{outline:2px solid #2B4CF0; outline-offset:2px}
+#deskbar button{background:none; border:0; color:rgba(243,241,234,.55); cursor:pointer; font-size:17px; line-height:1; padding:6px 4px}
+#deskbar button:hover{color:#F3F1EA}
+#deskpeek{
+position:fixed; right:12px; bottom:12px; z-index:2147483000;
+background:#0E1211; color:#ECC46E; border:1px solid #ECC46E;
+border-radius:3px; padding:7px 11px; cursor:pointer;
+font-family:'Archivo',system-ui,sans-serif; font-size:11px;
+font-weight:800; letter-spacing:.07em; text-transform:uppercase;
+}
+#deskpeek[hidden]{display:none}
+@media (max-width:720px){
+#deskbar .msg small{display:none}
+#deskbar{gap:8px; padding:0 8px}
+}
+</style>
 </head>
 <body>
-  <script>
-    import { init } from '@sveltia/cms';
-    init();
-  </script>
+<script>
+import { init } from '@sveltia/cms';
+init();
+</script>
+
+<div id="deskbar">
+<span class="dot" aria-hidden="true"></span>
+<span class="msg">
+Editing your private preview
+<small>Saving here does not put anything on denvillee.com</small>
+</span>
+<span class="spacer"></span>
+<a class="ghost" href={PREVIEW} target="_blank" rel="noopener">See preview</a>
+<a class="go" href={PUBLISH} target="_blank" rel="noopener">Publish to the site</a>
+<button type="button" id="deskhide" title="Hide this bar" aria-label="Hide this bar">&times;</button>
+</div>
+<button id="deskpeek" type="button" hidden>Preview &amp; publish</button>
+
+<script is:inline>
+(function () {
+var bar = document.getElementById('deskbar');
+var peek = document.getElementById('deskpeek');
+var KEY = 'dl-deskbar-hidden';
+function set(hidden) {
+bar.hidden = hidden;
+peek.hidden = !hidden;
+try { localStorage.setItem(KEY, hidden ? '1' : '0'); } catch (e) {}
+}
+try { if (localStorage.getItem(KEY) === '1') set(true); } catch (e) {}
+document.getElementById('deskhide').addEventListener('click', function () { set(true); });
+peek.addEventListener('click', function () { set(false); });
+})();
+</script>
 </body>
 </html>
