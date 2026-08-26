@@ -1,5 +1,0 @@
-# Legacy Wix and WordPress paths -> new library
-/post/*        /writing/     301
-/blog/*        /writing/     301
-/sermons/*     /teaching/    301
-/media/*       /teaching/    301
