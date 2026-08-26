@@ -1,9 +1,0 @@
----
-interface Props { verse: string; ref: string; label?: string }
-const { verse, ref, label = 'Scripture card' } = Astro.props;
----
-<div class="card card-verse">
-  <span class="sig">{label}</span>
-  <p class="q">{verse}</p>
-  <span class="sig">{ref}</span>
-</div>
