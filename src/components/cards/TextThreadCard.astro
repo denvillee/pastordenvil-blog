@@ -1,0 +1,10 @@
+---
+interface Bubble { from: 'them' | 'me'; text: string }
+interface Props { bubbles: Bubble[]; foot?: string }
+const { bubbles, foot = 'Full essay in bio' } = Astro.props;
+---
+<div class="card card-text">
+  <span class="sig">Text thread format</span>
+  {bubbles.map((b) => <span class={`bubble ${b.from}`}>{b.text}</span>)}
+  <span class="sig">{foot}</span>
+</div>

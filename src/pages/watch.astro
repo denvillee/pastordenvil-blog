@@ -1,0 +1,50 @@
+---
+import Base from '../layouts/Base.astro';
+import Signup from '../components/Signup.astro';
+import { live, displayDate } from '../lib/publish';
+import { webpFor } from '../lib/img';
+import site from '../data/site.json';
+import home from '../data/home.json';
+import labels from '../data/labels.json';
+const clips = await live('watch');
+const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+---
+<Base title={`${labels.watchHeading} — ${site.name}`} description={labels.watchDek}>
+  <section class="band watch">
+    <div class="shell">
+      <div class="sec-head">
+        <h1>{labels.watchHeading}</h1>
+        <span class="label">{clips.length} clips &middot; captions burned in</span>
+      </div>
+      <div class="rail">
+        {clips.map((c: any) => {
+          /* A clip that is filmed but not posted anywhere yet is a tile, not a link. */
+          const href = c.data.youtube || c.data.instagram || c.data.tiktok || '';
+          const webp = webpFor(c.data.poster);
+          const Tile = href ? 'a' : 'div';
+          return (
+            <Tile class="clip" href={href || undefined} rel={href ? 'noopener' : undefined}>
+              <picture>
+                {webp && <source srcset={webp} type="image/webp" />}
+                <img src={c.data.poster} alt="" width="540" height="960" loading="lazy" decoding="async" />
+              </picture>
+              <span class="veil"></span>
+              {href && <span class="play" aria-hidden="true">&#9654;</span>}
+              <span class="cap">
+                <span class="burn">{c.data.title}</span>
+                <span class="len">{c.data.caption}</span>
+                <span class="len">
+                  {mmss(c.data.durationSeconds)}{c.data.scripture ? ` · ${c.data.scripture}` : ''}
+                  {!href && ' · Clip coming'}
+                </span>
+              </span>
+            </Tile>
+          );
+        })}
+      </div>
+      {clips.length === 0 && <p class="watch-note">{labels.watchEmpty}</p>}
+      <p class="watch-note" set:html={home.watchPageNote}></p>
+    </div>
+  </section>
+  <Signup />
+</Base>

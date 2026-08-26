@@ -1,0 +1,13 @@
+---
+import Base from '../../layouts/Base.astro';
+import site from '../../data/site.json';
+---
+<Base title={`Thank you — ${site.name}`} description="Your note is in." noindex={true}>
+  <section class="band shell err">
+    <div>
+      <h1 style="font-size:clamp(2rem,7vw,4rem)">Got it</h1>
+      <p class="art-dek" style="margin-inline:auto">I read these myself and reply to all of them, usually within a week.</p>
+      <p><a class="btn btn-primary" href="/">Back home</a></p>
+    </div>
+  </section>
+</Base>

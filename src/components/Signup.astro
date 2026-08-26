@@ -1,0 +1,34 @@
+---
+import site from '../data/site.json';
+
+// Kit, per the hosting runbook. A real form post, not Kit's embed script:
+// the embed pulls its own CSS and rewrites the markup, which breaks this band.
+// If Kit needs different field names, change them here, not at runtime.
+const formId = import.meta.env.PUBLIC_KIT_FORM_ID;
+const action = formId
+  ? 'https://app.kit.com/forms/' + formId + '/subscriptions'
+  : '/subscribe/thanks/';
+
+interface Props { source?: string }
+const { source = Astro.url.pathname } = Astro.props;
+---
+<section class="band signup" id="signup">
+  <div class="shell signup-in">
+    <div>
+      <h2>{site.signupHeading}</h2>
+      <p>{site.signupCopy}</p>
+    </div>
+    <div>
+      <form class="form" method="post" action={action}>
+        <label class="sr-only" for="email">Email address</label>
+        <input class="fake" id="email" name="email_address" type="email" required
+               placeholder="you@example.com" autocomplete="email" />
+        <input type="hidden" name="fields[source]" value={source} />
+        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true"
+               style="position:absolute;left:-9999px" />
+        <button class="btn btn-dark" type="submit">{site.signupButton}</button>
+      </form>
+      <small>{site.signupSmallPrint}</small>
+    </div>
+  </div>
+</section>

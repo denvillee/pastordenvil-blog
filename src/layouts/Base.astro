@@ -1,0 +1,152 @@
+---
+import '../styles/fonts.css';
+import '../styles/site.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import site from '../data/site.json';
+
+interface Props {
+  title: string;
+  description: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
+  noindex?: boolean;
+  progress?: boolean;
+}
+const {
+  title, description,
+  ogImage = '/assets/img/og-default.jpg',
+  ogType = 'website',
+  publishedTime, noindex = false, progress = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogAbs = new URL(ogImage, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogAbs} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
+
+  <link rel="preload" href="/fonts/archivo-100_900-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/spectral-400-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+  <slot name="head" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="grain" aria-hidden="true"></div>
+  {progress && <div class="progress" id="progress" aria-hidden="true"></div>}
+
+  <Nav />
+  <main id="main">
+    <slot />
+  </main>
+  <Footer />
+
+  <script>
+    /* scroll reveal */
+    (function () {
+      var els = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (e) { e.classList.add('in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      els.forEach(function (e, i) { e.style.transitionDelay = (i % 3) * 70 + 'ms'; io.observe(e); });
+    })();
+
+    /* reading progress */
+    (function () {
+      var bar = document.getElementById('progress');
+      var art = document.querySelector('article');
+      if (!bar || !art) return;
+      var tick = function () {
+        var r = art.getBoundingClientRect();
+        var total = r.height - window.innerHeight;
+        var done = Math.min(Math.max(-r.top, 0), Math.max(total, 1));
+        bar.style.width = (total > 0 ? (done / total) * 100 : 0) + '%';
+      };
+      window.addEventListener('scroll', tick, { passive: true });
+      window.addEventListener('resize', tick);
+      tick();
+    })();
+
+    /* nav condenses once the hero is behind you */
+    (function () {
+      var nav = document.querySelector('.nav');
+      if (!nav) return;
+      var tick = function () {
+        nav.classList.toggle('is-stuck', window.scrollY > 24);
+      };
+      window.addEventListener('scroll', tick, { passive: true });
+      tick();
+    })();
+
+    /* archive counters count up the first time they scroll into view */
+    (function () {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var nums = document.querySelectorAll('.arc-count .n');
+      if (!nums.length || reduce || !('IntersectionObserver' in window)) return;
+      var run = function (el) {
+        var target = parseInt(el.textContent, 10);
+        if (!target || target < 2) return;
+        var dur = 900, t0 = null;
+        el.textContent = '0';
+        var step = function (t) {
+          if (t0 === null) t0 = t;
+          var p = Math.min((t - t0) / dur, 1);
+          var eased = 1 - Math.pow(1 - p, 3);
+          el.textContent = Math.round(target * eased);
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = target;
+        };
+        requestAnimationFrame(step);
+      };
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { run(en.target); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.6 });
+      nums.forEach(function (n) { io.observe(n); });
+    })();
+
+    /* copy link */
+    (function () {
+      var el = document.querySelector('[data-copy-link]');
+      if (!el || !navigator.clipboard) return;
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        navigator.clipboard.writeText(el.getAttribute('href')).then(function () {
+          var t = el.textContent; el.textContent = 'Copied';
+          setTimeout(function () { el.textContent = t; }, 1600);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

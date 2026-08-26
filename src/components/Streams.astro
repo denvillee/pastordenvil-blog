@@ -1,0 +1,24 @@
+---
+interface Item { room: string; cls: string; href: string; title: string; dek: string; foot: string }
+interface Props { items: Item[] }
+import home from '../data/home.json';
+const { items } = Astro.props;
+---
+{items.length > 0 && (
+  <section class="band shell" id="streams">
+    <div class="sec-head reveal">
+      <h2>{home.streamsHeading}</h2>
+      <span class="label">{home.streamsLabel}</span>
+    </div>
+    <div class="streams">
+      {items.map((it) => (
+        <article class={`stream ${it.cls} reveal`}>
+          <span class="tag">{it.room}</span>
+          <h3><a href={it.href}>{it.title}</a></h3>
+          <p>{it.dek}</p>
+          <span class="foot">{it.foot}</span>
+        </article>
+      ))}
+    </div>
+  </section>
+)}

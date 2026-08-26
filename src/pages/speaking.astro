@@ -1,0 +1,40 @@
+---
+import { getEntry, render } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import site from '../data/site.json';
+import labels from '../data/labels.json';
+const entry = await getEntry('pages', 'speaking');
+const { Content } = await render(entry!);
+/* Netlify Forms. data-netlify="true" registers the form at build time.
+   Submissions land in Netlify and forward to hello@denvillee.com
+   (Cloudflare Email Routing, hosting runbook §5). */
+---
+<Base title={`${entry!.data.title} — ${site.name}`} description={entry!.data.dek}>
+  <section class="band shell">
+    <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label">{labels.speakingLabel}</span></div>
+    <div class="speak">
+      <div class="speak-copy prose">
+        <Content />
+      </div>
+      <form class="speak-form" name="speaking" method="POST" data-netlify="true" netlify-honeypot="company" action="/speaking/thanks/">
+        <input type="hidden" name="form-name" value="speaking" />
+        <p class="hp"><label>Leave this empty <input name="company" /></label></p>
+        <label>Your name<input type="text" name="name" required autocomplete="name" /></label>
+        <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+        <label>Church or organization<input type="text" name="organization" /></label>
+        <label>Date or window<input type="text" name="eventDate" placeholder="Second weekend in March" /></label>
+        <label>What kind of event
+          <select name="eventType">
+            <option>Weekend teaching</option>
+            <option>Conference or retreat</option>
+            <option>Staff or leadership intensive</option>
+            <option>Coaching cohort question</option>
+            <option>Something else</option>
+          </select>
+        </label>
+        <label>What are you hoping for<textarea name="message" rows="5" required></textarea></label>
+        <button class="btn btn-primary" type="submit">Send it</button>
+      </form>
+    </div>
+  </section>
+</Base>

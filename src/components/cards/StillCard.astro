@@ -1,0 +1,16 @@
+---
+import { webpFor } from '../../lib/img';
+interface Props { line: string; image?: string; label?: string }
+const { line, image = '/assets/img/portrait.jpg', label = 'Clip cover' } = Astro.props;
+const webp = webpFor(image);
+---
+<div class="card card-still">
+  <picture>
+    {webp && <source srcset={webp} type="image/webp" />}
+    <img src={image} alt="" width="720" height="900" loading="lazy" decoding="async" />
+  </picture>
+  <span class="inner">
+    <span class="sig">{label}</span>
+    <span class="q still-line">{line}</span>
+  </span>
+</div>

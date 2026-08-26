@@ -1,0 +1,32 @@
+---
+import labels from '../data/labels.json';
+interface Props {
+  href: string; title: string; dek: string;
+  scripture?: string; readMinutes: number; label?: string;
+}
+const { href, title, dek, scripture, readMinutes, label = 'This week' } = Astro.props;
+---
+<section class="band shell" id="week">
+  <div class="feature reveal">
+    <div class="feature-media">
+      <span class="sticker">{label}</span>
+      <a href={href}>
+        <picture>
+          <source srcset="/assets/img/feature.webp" type="image/webp" />
+          <img src="/assets/img/feature.jpg" width="1200" height="800" loading="lazy" decoding="async"
+               alt="Abstract arcs in cobalt and ember over bone" />
+        </picture>
+      </a>
+    </div>
+    <div class="feature-body">
+      <div class="meta">
+        <span class="pill">{labels.homeFeaturePill}</span>
+        {scripture && <span>{scripture}</span>}
+        <span>{readMinutes} min</span>
+      </div>
+      <h2><a href={href}>{title}</a></h2>
+      <p class="dek">{dek}</p>
+      <a class="readlink" href={href}>{labels.homeFeatureReadLink} <span>&rarr;</span></a>
+    </div>
+  </div>
+</section>
