@@ -13,11 +13,12 @@
   [context.production.environment]
     COMING_SOON = "1"
 
-# www -> apex. Netlify also 301s domain aliases to the primary domain automatically,
-# which is how pastordenvil.com will redirect to denvillee.com in Phase B.
+# denvillee.com is the canonical domain. pastordenvil.com stays attached as an
+# alias so old links keep working, but every request to it is sent to the real
+# domain. Netlify handles www.denvillee.com -> denvillee.com on its own.
 [[redirects]]
-  from = "https://www.pastordenvil.com/*"
-  to = "https://pastordenvil.com/:splat"
+  from = "https://pastordenvil.com/*"
+  to = "https://denvillee.com/:splat"
   status = 301
   force = true
 
