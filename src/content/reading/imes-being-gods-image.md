@@ -8,4 +8,4 @@ order: 6
 publishAt: 2026-08-26T06:00:00-04:00
 draft: false
 ---
-Imes reads the preposition as <i>as</i>, not <i>in</i>. You do not carry the image. You are it. Which means nothing that happens to you can take it.
+Imes traces the image of God through Scripture: being God&rsquo;s image is humanity&rsquo;s identity and vocation, not a capacity that can be lost.

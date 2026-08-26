@@ -4,8 +4,9 @@ author: "Michelle A. Gonzalez"
 year: 2007
 shelfStatus: shelf
 spine: ember
+cover: /assets/covers/gonzalez-created-in-gods-image.jpg
 order: 9
 publishAt: 2026-08-26T06:00:00-04:00
 draft: false
 ---
-&ldquo;The human being is not self-contained but rather is constituted by relationships.&rdquo; The line I keep coming back to about why alone was the first <i>not good</i>.
+A survey of theological anthropology from the early church to feminist and Latin American theology, centered on what it means to be created in God&rsquo;s image.
