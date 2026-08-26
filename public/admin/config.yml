@@ -11,8 +11,8 @@ backend:
     uploadMedia: 'Upload “{{path}}”'
     deleteMedia: 'Delete “{{path}}”'
 
-site_url: https://pastordenvil.com
-display_url: https://pastordenvil.com
+site_url: https://denvillee.com
+display_url: https://denvillee.com
 logo_url: /favicon.svg
 
 media_folder: /public/assets/img/uploads
@@ -48,8 +48,8 @@ collections:
       - { label: Body, name: body, widget: markdown }
 
   - name: leaders
-    label: Leaders Corner
-    label_singular: Leaders Corner piece
+    label: For Leaders
+    label_singular: For Leaders piece
     folder: /src/content/leaders
     create: true
     slug: '{{title}}'
@@ -155,7 +155,7 @@ collections:
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
 
   - name: reading
-    label: Reading shelf
+    label: Bookshelf
     label_singular: Book
     folder: /src/content/reading
     create: true
