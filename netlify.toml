@@ -48,8 +48,7 @@
   for = "/admin/*"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob: https://avatars.githubusercontent.com https://raw.githubusercontent.com; connect-src 'self' https://api.github.com https://raw.githubusercontent.com https://api.netlify.com; frame-ancestors 'none'; base-uri 'none'"
-
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data: https://cdn.jsdelivr.net; img-src 'self' data: blob: https://avatars.githubusercontent.com https://raw.githubusercontent.com; connect-src 'self' https://api.github.com https://raw.githubusercontent.com https://api.netlify.com; frame-ancestors 'none'; base-uri 'none'"
 [[headers]]
   for = "/kit/*"
   [headers.values]
