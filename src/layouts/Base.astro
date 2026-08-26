@@ -3,6 +3,7 @@ import '../styles/fonts.css';
 import '../styles/site.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
+import Signup from '../components/Signup.astro';
 import site from '../data/site.json';
 
 interface Props {
@@ -23,16 +24,27 @@ const {
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogAbs = new URL(ogImage, Astro.site).href;
+
+/* Site-wide holding pattern. Set COMING_SOON=1 as a build environment variable
+   (Netlify: only on the Production context, so branch deploys/previews keep
+   showing the real site) and every public page renders this instead of its
+   real content — nav, footer, and all. /admin isn't touched: it's a separate
+   bare page that never goes through this layout, so the CMS keeps working
+   wherever it's reached from. Unset the variable (or delete the context
+   override) to go live with no code change needed. */
+const comingSoon =
+  (typeof process !== 'undefined' && process.env?.COMING_SOON === '1') ||
+  import.meta.env.COMING_SOON === '1';
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{title}</title>
-  <meta name="description" content={description} />
+  <title>{comingSoon ? site.name : title}</title>
+  <meta name="description" content={comingSoon ? site.tagline : description} />
   <link rel="canonical" href={canonical} />
-  {noindex && <meta name="robots" content="noindex" />}
+  {(noindex || comingSoon) && <meta name="robots" content="noindex" />}
 
   <meta property="og:type" content={ogType} />
   <meta property="og:site_name" content={site.name} />
@@ -56,13 +68,26 @@ const ogAbs = new URL(ogImage, Astro.site).href;
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="grain" aria-hidden="true"></div>
-  {progress && <div class="progress" id="progress" aria-hidden="true"></div>}
 
-  <Nav />
-  <main id="main">
-    <slot />
-  </main>
-  <Footer />
+  {comingSoon ? (
+    <main id="main" class="soon">
+      <section class="soon-hero">
+        <p class="soon-mark">{site.name}</p>
+        <h1>Something is being built here.</h1>
+        <p class="soon-dek">{site.tagline} — the site's still being put together. Leave your email and I'll let you know the moment it's live.</p>
+      </section>
+      <Signup source="coming-soon" />
+    </main>
+  ) : (
+    <Fragment>
+      {progress && <div class="progress" id="progress" aria-hidden="true"></div>}
+      <Nav />
+      <main id="main">
+        <slot />
+      </main>
+      <Footer />
+    </Fragment>
+  )}
 
   <script>
     /* scroll reveal */
