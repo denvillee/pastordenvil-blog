@@ -3,7 +3,7 @@
 backend:
   name: github
   repo: denvillee/pastordenvil-blog
-  branch: main
+  branch: staging
   commit_messages:
     create: 'Add {{collection}} “{{slug}}”'
     update: 'Update {{collection}} “{{slug}}”'
@@ -12,7 +12,7 @@ backend:
     deleteMedia: 'Delete “{{path}}”'
 
 site_url: https://denvillee.com
-display_url: https://denvillee.com
+display_url: https://staging--dainty-queijadas-becadc.netlify.app
 logo_url: /favicon.svg
 
 media_folder: /public/assets/img/uploads
