@@ -40,7 +40,10 @@ const pages = defineCollection({
 
 export const collections = {
   pages,
-  essays: room('essays'),
+  /* Essays can arrive as a set — a named series in parts (the anthropology set
+     runs 10-12). `series` names the set, `part` numbers the essay inside it.
+     A standalone essay leaves both blank and sits outside any set. */
+  essays: room('essays', { part: z.number().optional() }),
   leaders: room('leaders'),
   moments: room('moments'),
 
@@ -77,6 +80,7 @@ export const collections = {
       author: z.string(),
       year: z.number().optional(),
       shelfStatus: z.enum(['now', 'shelf', 'next', 'finished']),
+      cover: z.string().optional(),        // /assets/covers/*.jpg — spine colour is the fallback
       progress: z.string().optional(),
       spine: z.enum(['cobalt', 'ivy', 'brass', 'ember', 'ink']).default('ivy'),
       link: z.string().default(''),

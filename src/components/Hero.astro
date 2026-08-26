@@ -1,6 +1,14 @@
 ---
+/*
+  Hero, build packet 6.1. Line one is "Good news" fixed in bone with the
+  rotating half in brass — vertical roll, 2.8s per phrase, pauses on hover,
+  first phrase static under prefers-reduced-motion. The five phrases are
+  final per the packet and live in home.json so the CMS can edit them.
+  No pronoun in the headline on purpose.
+*/
 import home from '../data/home.json';
 const line = home.marquee.join(' · ');
+const phrases = home.heroPhrases;
 ---
 <header class="hero" id="top">
   <div class="hero-img">
@@ -10,9 +18,14 @@ const line = home.marquee.join(' · ');
     </picture>
   </div>
   <div class="hero-in">
-    <h1 class="kinetic">
-      <span class="k1">{home.heroK1}</span>
-      <span class="k2">{home.heroK2}</span>
+    <h1 class="gn">
+      <span class="gn-fixed">{home.heroFixed}</span>
+      <span class="gn-roll">
+        <span class="gn-track" style={`--n:${phrases.length}`}>
+          {phrases.map((p) => <span class="gn-item">{p}</span>)}
+          <span class="gn-item" aria-hidden="true">{phrases[0]}</span>
+        </span>
+      </span>
     </h1>
     <div class="hero-copy">
       <p class="lead" set:html={home.heroLead}></p>

@@ -1,0 +1,56 @@
+---
+/*
+  The handoff page. Build packet 6.5 and Part 5.4: one paragraph in Denvil's
+  voice, one card for the current study, one button across to grabyourbibles.com.
+  It NEVER lists sessions and NEVER republishes study content — every session
+  lives at exactly one URL, on the study site. Canonical stays there.
+*/
+import Base from '../layouts/Base.astro';
+import Signup from '../components/Signup.astro';
+import UnderConstruction from '../components/UnderConstruction.astro';
+import site from '../data/site.json';
+
+const STUDY_SITE = 'https://grabyourbibles.com';
+---
+<Base
+  title={`Studies — ${site.name}`}
+  description="Guided Bible studies you can walk through on your own or with a group."
+>
+  <section class="band shell">
+    <div class="sec-head">
+      <h1>Studies</h1>
+      <span class="label">grabyourbibles.com</span>
+    </div>
+
+    <p class="art-dek" style="margin-bottom:1.4rem">
+      The studies live on their own site, because they are a different kind of thing than
+      an essay. An essay is me working an idea out in writing. A study is you with your
+      Bible open, marking the text yourself, on your own or with a room full of people.
+    </p>
+
+    <div class="studies-card reveal" style="margin-bottom:2rem">
+      <div class="studies-body">
+        <span class="pill">How it works</span>
+        <h2>You read it. You mark it. You say what you noticed.</h2>
+        <p class="dek">
+          Underline what God is doing or saying. Circle a word that repeats, or one you do
+          not understand. Highlight whatever gets your attention, even if you cannot say
+          why. Then say it out loud. If you know why it stood out, say so. If you do not,
+          &ldquo;it just stood out&rdquo; is a complete answer.
+        </p>
+        <p class="studies-note"><b>Pay attention to what gets your attention.</b></p>
+        <a class="btn btn-primary" href={STUDY_SITE} target="_blank" rel="noopener">
+          Go to the studies <span aria-hidden="true">&nearr;</span>
+        </a>
+      </div>
+      <div class="studies-aside" aria-hidden="true">
+        <span class="studies-mark">Grab<br />Your<br />Bibles</span>
+      </div>
+    </div>
+
+    <UnderConstruction
+      line="The first study &mdash; <b>seven sessions in Ruth</b> &mdash; is being set now. Leave your email and I will let you know the moment it opens."
+    />
+  </section>
+  <Signup />
+</Base>

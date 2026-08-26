@@ -5,17 +5,36 @@
 [build.environment]
   NODE_VERSION = "20"
 
-  # Holding pattern. Only the Production context (pastordenvil.com) builds with
-  # COMING_SOON set, so every branch deploy and deploy preview — including the
-  # staging branch — always shows the real, in-progress site. To go live for
-  # real, delete this [context.production.environment] block (or set the value
-  # to "0") and push; no other code change is needed.
-  [context.production.environment]
-    COMING_SOON = "1"
+  # LIVE as of 26 Aug 2026. The holding pattern is off: production now builds
+  # the real site. To put the holding page back, set COMING_SOON = "1" under a
+  # [context.production.environment] block here and push — the layout still
+  # supports it, nothing else has to change.
 
 # denvillee.com is the canonical domain. pastordenvil.com stays attached as an
 # alias so old links keep working, but every request to it is sent to the real
 # domain. Netlify handles www.denvillee.com -> denvillee.com on its own.
+# The Reading room was renamed Bookshelf so the tab, the section heading and the
+# address all say the same word. Anything already shared at the old path still lands.
+# /start-here/ shipped briefly on 26 Aug and was retired the same day — the
+# seven-move app-style journey belongs to the study site, not here.
+[[redirects]]
+  from = "/start-here/*"
+  to = "/studies/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/reading"
+  to = "/bookshelf/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/reading/*"
+  to = "/bookshelf/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "https://pastordenvil.com/*"
   to = "https://denvillee.com/:splat"

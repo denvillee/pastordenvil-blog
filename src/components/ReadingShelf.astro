@@ -2,7 +2,7 @@
 import labels from '../data/labels.json';
 interface Book {
   title: string; author: string; year?: number; progress?: string;
-  spine: string; note: string; link: string; shelfStatus: string;
+  spine: string; note: string; link: string; shelfStatus: string; cover?: string;
 }
 interface Props { now?: Book; shelf: Book[]; tie: string }
 const { now, shelf, tie } = Astro.props;
@@ -36,7 +36,9 @@ const hasBooks = Boolean(now) || shelf.length > 0;
     <div class={now ? 'read' : 'read read-solo'}>
       {now && (
         <div class="now-read reveal">
-          <span class={`spine sp-${now.spine}`}><span>{now.title}</span></span>
+          {now.cover
+            ? <img class="cover" src={now.cover} alt={`Cover of ${now.title}`} width="96" loading="lazy" decoding="async" />
+            : <span class={`spine sp-${now.spine}`}><span>{now.title}</span></span>}
           <span class="bk">
             <span class="ba">{labels.readingNowLabel}</span>
             <span class="bt">{now.link ? <a href={now.link} rel="noopener">{now.title}</a> : now.title}</span>
@@ -56,7 +58,9 @@ const hasBooks = Boolean(now) || shelf.length > 0;
           <div class="shelf">
             {shelf.map((b) => (
               <div class="shelf-row">
-                <span class={`mini sp-${b.spine}`}></span>
+                {b.cover
+                  ? <img class="mini-cover" src={b.cover} alt="" width="38" loading="lazy" decoding="async" />
+                  : <span class={`mini sp-${b.spine}`}></span>}
                 <span>
                   <span class="st">{b.title}<span class="sa">{b.author}</span></span>
                   <span class="sv" set:html={b.note}></span>

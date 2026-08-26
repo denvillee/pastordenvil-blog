@@ -12,7 +12,7 @@ const shelf = books.filter((b: any) => b.data.shelfStatus !== 'now')
   .sort((a: any, b: any) => a.data.order - b.data.order)
   .map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }));
 ---
-<Base title={`Reading — ${site.name}`} description="What I am reading now, and how it is feeding this week's writing.">
+<Base title={`Bookshelf — ${site.name}`} description="What I am reading now, and the books behind the writing.">
   <ReadingShelf now={now} shelf={shelf} tie={home.readingTie} />
   <Signup />
 </Base>

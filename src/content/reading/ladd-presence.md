@@ -4,8 +4,9 @@ author: "George Eldon Ladd"
 year: 1974
 shelfStatus: shelf
 spine: ivy
+cover: /assets/covers/ladd-presence.jpg
 order: 1
-publishAt: 2026-08-25T06:00:00-04:00
+publishAt: 2026-08-26T06:00:00-04:00
 draft: false
 ---
-Read against König on purpose. Ladd draws the timeline. König says the timeline is what eclipsed Christ. Week one came out of that argument.
+Ladd&rsquo;s study of the kingdom of God in the New Testament: already present in the person and work of Jesus, still awaiting its consummation.

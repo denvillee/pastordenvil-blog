@@ -1,11 +1,14 @@
 ---
 import labels from '../data/labels.json';
+/* The bar is the home page scroll order, in the same words. Denvil, 26 Aug:
+   the name of the section has to match the CMS and the address, and the tabs
+   have to run in the same order as the page. Change one, change all three. */
 const links = [
   { label: labels.navEssays, href: '/essays/' },
   { label: labels.navLeaders, href: '/leaders/' },
   { label: labels.navMoments, href: '/moments/' },
-  { label: labels.navWatch, href: '/watch/' },
-  { label: labels.navReading, href: '/reading/' },
+  { label: labels.navStudies, href: '/studies/' },
+  { label: labels.navReading, href: '/bookshelf/' },
 ];
 /* Frameworks is deliberately not in the bar. The drawings now live inside the
    writing that uses them; the room still exists at /frameworks/ and is linked
@@ -14,6 +17,7 @@ const links = [
 /* The rooms live in the bar on desktop; the standing pages only ever appear in the
    mobile panel and the footer, so the bar stays short. */
 const standing = [
+  { label: labels.navWatch, href: '/watch/' },
   { label: labels.navAbout, href: '/about/' },
   { label: labels.navSpeaking, href: '/speaking/' },
   { label: labels.navArchive, href: '/archive/' },

@@ -657,3 +657,143 @@ div.clip:hover{transform:none}
 .soon .signup{padding:0;background:none;width:100%;max-width:30rem}
 .soon .signup-in{grid-template-columns:1fr;text-align:left;gap:.9rem}
 .soon .signup h2,.soon .signup>.signup-in>div:first-child{display:none}
+
+/* ── Studies handoff card ───────────────────────────────────────────────────
+   The one place denvillee.com points at the study site. Never lists sessions. */
+.studies-card{
+  display:grid; grid-template-columns:1.6fr .9fr; gap:clamp(1.4rem,4vw,3rem);
+  align-items:center; background:var(--ink); color:var(--ink-fg);
+  border-radius:4px; padding:clamp(1.6rem,4vw,3rem); overflow:hidden;
+}
+.studies-card .pill{background:var(--brass);color:var(--ink)}
+.studies-card h2{
+  font-family:var(--serif); font-weight:600; margin-top:.7rem;
+  font-size:clamp(1.6rem,3.6vw,2.4rem); line-height:1.12;
+}
+.studies-card .dek{color:var(--ink-muted); margin-top:.7rem; max-width:52ch}
+.studies-note{color:var(--brass); margin-top:1rem; font-family:var(--sans); font-size:.95rem}
+.studies-card .btn{margin-top:1.5rem}
+.studies-aside{display:flex; justify-content:flex-end}
+.studies-mark{
+  font-family:var(--sans); font-weight:900; text-transform:uppercase;
+  letter-spacing:.02em; line-height:.92; font-size:clamp(1.5rem,4.6vw,3rem);
+  color:transparent; -webkit-text-stroke:1.5px var(--ink-line); text-align:right;
+}
+@media(max-width:760px){
+  .studies-card{grid-template-columns:1fr}
+  .studies-aside{display:none}
+}
+
+/* ── Honest empty state ─────────────────────────────────────────────────────
+   Replaces every bare "coming soon". Says what lands here and offers the list. */
+.uc{
+  border:1px dashed var(--line); border-radius:4px;
+  padding:clamp(1.2rem,3vw,2rem); background:var(--surface); max-width:60ch;
+}
+.uc-tag{
+  display:inline-block; font-family:var(--sans); font-weight:800; font-size:.62rem;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+}
+.uc-line{margin:.6rem 0 1rem; color:var(--fg)}
+
+/* ── Footnotes ──────────────────────────────────────────────────────────────
+   Markdown [^1] references. The essays carry real citations and they have to
+   read like citations, not like leftover markup. */
+.footnotes{
+  max-width:68ch; margin-top:2.6rem; padding-top:1.2rem;
+  border-top:1px solid var(--line); font-size:.86rem; color:var(--muted);
+}
+.footnotes h2, .footnotes .sr-only{
+  font-family:var(--sans); font-size:.66rem; font-weight:800; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); margin-bottom:.8rem;
+  position:static; width:auto; height:auto; clip:auto; white-space:normal;
+}
+.footnotes ol{padding-left:1.2rem; display:flex; flex-direction:column; gap:.7rem}
+.footnotes li{line-height:1.55}
+.footnotes li::marker{color:var(--cobalt-ink); font-family:var(--sans); font-weight:700}
+.footnotes p{margin:0}
+.footnotes a{color:var(--cobalt-ink)}
+.footnotes .data-footnote-backref{text-decoration:none; margin-left:.25rem}
+sup[id^="user-content-fnref"] a, a[data-footnote-ref]{
+  color:var(--cobalt-ink); text-decoration:none; font-family:var(--sans);
+  font-weight:700; font-size:.72em; padding:0 .12em;
+}
+a[data-footnote-ref]:hover{text-decoration:underline}
+
+/* ── Start Here — the seven moves ───────────────────────────────────────────
+   Numbered path down the page. Each move is a step, not a card, so the eye
+   reads it as one journey rather than seven unrelated things. */
+.sh-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0}
+.sh-step{
+  display:grid; grid-template-columns:auto 1fr; gap:clamp(1rem,3vw,2rem);
+  padding:clamp(1.4rem,3.4vw,2.2rem) 0; border-top:1px solid var(--line);
+}
+.sh-step:last-child{border-bottom:1px solid var(--line)}
+.sh-n{
+  font-family:var(--sans); font-weight:900; font-size:clamp(1.6rem,4vw,2.6rem);
+  line-height:1; color:transparent; -webkit-text-stroke:1.5px var(--cobalt);
+  min-width:1.6ch;
+}
+.sh-body h2{
+  font-family:var(--sans); font-weight:800; letter-spacing:.03em;
+  text-transform:uppercase; font-size:.78rem; color:var(--muted);
+}
+.sh-alt{
+  text-transform:none; letter-spacing:0; font-weight:500; font-size:.78rem;
+  color:var(--muted); opacity:.8;
+}
+.sh-alt::before{content:"· "}
+.sh-ref{
+  font-family:var(--sans); font-size:.76rem; letter-spacing:.04em;
+  color:var(--cobalt-ink); margin-top:.5rem;
+}
+.sh-title{font-family:var(--serif); font-weight:600; font-size:1.35rem; margin-top:.3rem; line-height:1.2}
+.sh-body .dek{color:var(--muted); margin-top:.5rem; max-width:62ch}
+.sh-body .readlink{margin-top:.8rem; display:inline-block}
+.sh-body .uc{margin-top:.7rem}
+.sh-truth{
+  margin:.8rem 0 0; padding:1rem 1.2rem; border-left:3px solid var(--cobalt);
+  background:var(--surface); font-family:var(--serif); font-size:1.15rem;
+  line-height:1.45; max-width:56ch;
+}
+@media(max-width:560px){ .sh-step{grid-template-columns:1fr; gap:.4rem} }
+
+/* ── Hero: "Good news …" rotation (build packet 6.1) ────────────────────────
+   Fixed half bone, rotating half brass. 2.8s per phrase, vertical roll,
+   pauses on hover, first phrase static when the visitor prefers less motion.
+   The track carries the first phrase twice so the loop lands seamlessly. */
+.gn{
+  display:flex; flex-direction:column; gap:.05em; margin:0;
+  font-family:var(--sans); font-weight:900; text-transform:uppercase;
+  letter-spacing:.01em; line-height:1.06;
+  font-size:clamp(1.9rem,5.4vw,3.7rem);
+}
+.gn-fixed{color:#F3F1EA}
+.gn-roll{display:block; height:1.18em; overflow:hidden}
+.gn-track{display:flex; flex-direction:column; color:var(--brass);
+  animation:gn-roll calc(var(--n) * 2.8s) infinite}
+.gn-item{display:block; height:1.18em}
+.hero:hover .gn-track{animation-play-state:paused}
+@keyframes gn-roll{
+  0%,17%   {transform:translateY(0)}
+  20%,37%  {transform:translateY(-1.18em)}
+  40%,57%  {transform:translateY(-2.36em)}
+  60%,77%  {transform:translateY(-3.54em)}
+  80%,97%  {transform:translateY(-4.72em)}
+  100%     {transform:translateY(-5.9em)}
+}
+@media (prefers-reduced-motion:reduce){
+  .gn-track{animation:none}
+}
+
+/* ── Bookshelf covers ───────────────────────────────────────────────────────
+   A real cover replaces the drawn spine when one exists; the colour spine is
+   the fallback so a book with no cover art still sits on the shelf. */
+.cover{
+  width:96px; height:auto; border-radius:2px; flex:none;
+  box-shadow:var(--shadow); display:block;
+}
+.mini-cover{
+  width:38px; height:auto; border-radius:2px; flex:none;
+  box-shadow:0 1px 3px rgba(14,18,17,.25); display:block;
+}
