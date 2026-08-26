@@ -1,0 +1,20 @@
+---
+/*
+  The honest empty state. Used anywhere a room or section has nothing real in
+  it yet. Build packet Part 6.3: rewrite every "coming soon" as a signup plus
+  one line about what actually lands there — never a dead end, never a lie
+  about a date we have not committed to.
+*/
+interface Props { heading?: string; line: string; cta?: string; href?: string }
+const {
+  heading = 'Under construction',
+  line,
+  cta = 'Tell me when it lands',
+  href = '/subscribe/',
+} = Astro.props;
+---
+<div class="uc">
+  <span class="uc-tag">{heading}</span>
+  <p class="uc-line" set:html={line}></p>
+  <a class="readlink" href={href}>{cta} <span aria-hidden="true">&rarr;</span></a>
+</div>

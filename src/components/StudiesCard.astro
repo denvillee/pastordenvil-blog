@@ -1,0 +1,27 @@
+---
+/*
+  The handoff to the study site. Build packet Part 6.5 and Part 5.4:
+  this card DESCRIBES and LINKS. It never lists sessions and never republishes
+  a single line of study content — each session lives at exactly one URL, on
+  grabyourbibles.com. Getting this wrong makes the two domains compete in
+  search and both lose.
+*/
+import home from '../data/home.json';
+const { href = 'https://grabyourbibles.com', target = '_blank' } = Astro.props;
+---
+<section class="band shell" id="studies">
+  <div class="studies-card reveal">
+    <div class="studies-body">
+      <span class="pill">{home.studiesPill}</span>
+      <h2>{home.studiesHeading}</h2>
+      <p class="dek" set:html={home.studiesDek}></p>
+      <p class="studies-note" set:html={home.studiesNote}></p>
+      <a class="btn btn-primary" href={href} target={target} rel="noopener">
+        {home.studiesCta} <span aria-hidden="true">&nearr;</span>
+      </a>
+    </div>
+    <div class="studies-aside" aria-hidden="true">
+      <span class="studies-mark">Grab<br />Your<br />Bibles</span>
+    </div>
+  </div>
+</section>
