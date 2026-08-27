@@ -219,14 +219,18 @@ collections:
         label: Home page copy
         file: /src/data/home.json
         fields:
-          - { label: 'Hero — fixed words', name: heroFixed, widget: string, hint: 'The half of the headline that does not move, e.g. “Good news”.' }
-          - { label: 'Hero — rotating phrases', name: heroPhrases, widget: list, hint: 'Each one completes the fixed words. They roll every few seconds. Five is the right number.' }
-          - { label: Hero paragraph, name: heroLead, widget: text, hint: '<b>bold</b> is allowed.' }
+          - { label: 'Hero, fixed words', name: heroFixed, widget: string, hint: 'The part that never changes.' }
+          - { label: 'Hero, rotating phrases', name: heroRotations, widget: list, hint: 'These cycle in order. Keep them short and end each with a full stop. Five to seven works best.' }
+          - { label: 'Hero, phrases on the bench', name: heroRotationsReserve, widget: list, hint: 'Not shown. Swap one up into the list above when you want a change.' }
+          - { label: 'Hero, the line underneath', name: heroGospelLine, widget: text, hint: 'Use a vertical bar to break the line. Wrap a phrase in <em> to make it gold.' }
+          - { label: 'Hero, small paragraph', name: heroLead, widget: text }
+          - { label: 'Essays section header', name: essaysHeader, widget: text, hint: 'Shows above the featured essay on the home page and at the top of the Essays page.' }
           - { label: Primary button label, name: heroPrimaryLabel, widget: string }
           - { label: Primary button link, name: heroPrimaryHref, widget: string }
           - { label: Secondary button label, name: heroSecondaryLabel, widget: string }
           - { label: Secondary button link, name: heroSecondaryHref, widget: string }
-          - { label: Scrolling ticker, name: marquee, widget: list, hint: 'Series names and passages. Keep them short.' }
+          - { label: 'Ticker, showing now', name: ticker, widget: list, hint: 'Five is the right number.' }
+          - { label: 'Ticker, on the bench', name: tickerReserve, widget: list, hint: 'Move lines up into the list above to swap the set.' }
           - { label: Feature sticker — fresh, name: featureLabel, widget: string, hint: 'Shown on the home page feature while the newest essay is less than a week old.' }
           - { label: Feature sticker — a couple of weeks on, name: featureLabelRecent, widget: string, hint: 'Replaces it automatically once that essay is 8 to 21 days old, so the page never claims "this week" about older writing.' }
           - { label: Feature sticker — older, name: featureLabelOlder, widget: string, hint: 'Used once the newest essay is over three weeks old. Nothing looks stale or wrong during a quiet stretch.' }
