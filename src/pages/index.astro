@@ -4,7 +4,7 @@ import Hero from '../components/Hero.astro';
 import FeatureEssay from '../components/FeatureEssay.astro';
 import Streams from '../components/Streams.astro';
 import StudiesCard from '../components/StudiesCard.astro';
-import ReadingShelf from '../components/ReadingShelf.astro';
+import NowReading from '../components/NowReading.astro';
 import Signup from '../components/Signup.astro';
 import DesignNotes from '../components/DesignNotes.astro';
 import { live, readMinutes, ROOMS } from '../lib/publish';
@@ -43,7 +43,7 @@ const shelf = books.filter((b: any) => b.data.shelfStatus !== 'now')
 
 ---
 <Base
-  title={`${site.name} — ${site.tagline}`}
+  title={`${site.name} · ${site.tagline}`}
   description={site.metaDescription}
 >
   <Hero />
@@ -63,7 +63,7 @@ const shelf = books.filter((b: any) => b.data.shelfStatus !== 'now')
 
   <StudiesCard />
 
-  <ReadingShelf now={now ? { ...now, note: books.find((b: any) => b.data.shelfStatus === 'now')?.body?.trim() ?? '' } : undefined} shelf={shelf} tie={home.readingTie} />
+  <NowReading book={now ? { ...now, note: books.find((b: any) => b.data.shelfStatus === 'now')?.body?.trim() ?? '' } : undefined} />
 
   <Signup />
   {labels.showDesignNotes && <DesignNotes />}
