@@ -115,6 +115,7 @@ collections:
       - { label: Author, name: author, widget: string }
       - { label: Year, name: year, widget: number, value_type: int, required: false }
       - { label: Shelf status, name: shelfStatus, widget: select, options: ['now', 'shelf', 'next', 'finished'], default: 'shelf', hint: 'Only one book should be “now”.' }
+      - { label: 'Shelf month', name: shelfMonth, widget: string, required: false, hint: 'Which month this book sits on, as YYYY-MM (for example 2026-09). The Bookshelf page shows the newest month; Every Book groups by it.' }
       - { label: Progress, name: progress, widget: string, required: false, hint: 'e.g. Chapter 6 of 12' }
       - { label: Spine colour, name: spine, widget: select, options: ['cobalt', 'ivy', 'brass', 'ember', 'ink'], default: 'ivy', hint: 'Only shows if there is no cover image.' }
       - { label: Cover image, name: cover, widget: image, required: false, hint: 'The book cover. If there is one it replaces the coloured spine.' }
