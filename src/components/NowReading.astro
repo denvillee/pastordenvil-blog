@@ -1,0 +1,49 @@
+---
+/*
+  Layer 1 of the Bookshelf: the home page carries exactly one book.
+  One book, one idea, one door. The rest lives at /bookshelf/.
+*/
+import labels from '../data/labels.json';
+interface Book {
+  title: string; author: string; year?: number; progress?: string;
+  spine: string; note: string; link: string; cover?: string;
+}
+interface Props { book?: Book }
+const { book } = Astro.props;
+
+function progressPct(s?: string): number | null {
+  if (!s) return null;
+  const pct = s.match(/(\d{1,3}(?:\.\d+)?)\s*%/);
+  if (pct) { const v = Number(pct[1]); return v >= 0 && v <= 100 ? v : null; }
+  const frac = s.match(/(\d+)\s*(?:of|\/)\s*(\d+)/i);
+  if (frac) { const a = Number(frac[1]), b = Number(frac[2]); return b > 0 && a <= b ? (a / b) * 100 : null; }
+  return null;
+}
+const pct = progressPct(book?.progress);
+---
+{book && (
+  <section class="band shell band-tight" id="reading">
+    <div class="sec-head reveal">
+      <h2>{labels.readingHeading}</h2>
+      <span class="label">{labels.readingLabel}</span>
+    </div>
+    <div class="now-read reveal">
+      {book.cover
+        ? <img class="cover" src={book.cover} alt={`Cover of ${book.title}`} width="96" loading="lazy" decoding="async" />
+        : <span class={`spine sp-${book.spine}`}><span>{book.title}</span></span>}
+      <span class="bk">
+        <span class="ba">{labels.readingNowLabel}</span>
+        <span class="bt">{book.link ? <a href={book.link} rel="noopener">{book.title}</a> : book.title}</span>
+        <span class="ba" style="letter-spacing:.08em">{book.author}{book.year ? ` · ${book.year}` : ''}</span>
+        <span class="bn" set:html={book.note}></span>
+        {book.progress && (
+          <>
+            {pct !== null && <span class="bar"><i style={`width:${pct.toFixed(1)}%`}></i></span>}
+            <span class="bar-l">{book.progress}</span>
+          </>
+        )}
+        <a class="readlink" href="/bookshelf/">This month&rsquo;s shelf <span aria-hidden="true">&rarr;</span></a>
+      </span>
+    </div>
+  </section>
+)}
