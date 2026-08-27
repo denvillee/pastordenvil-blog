@@ -913,3 +913,8 @@ a[data-footnote-ref]:hover{text-decoration:underline}
 .feature-body{justify-content:flex-start; gap:.85rem}
 .feature-body .readlink{margin-top:auto; padding-top:.8rem}
 @media(max-width:880px){ .feature-body .readlink{margin-top:0} }
+
+/* The band that used to be headed "The Rooms" carries no label now: the four
+   cards name themselves. A hairline does the separating the words were doing,
+   and it sits on the same line the section heads used. */
+.band-rule{border:0; height:1px; background:var(--line); margin:0 0 1.8rem}
