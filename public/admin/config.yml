@@ -235,7 +235,6 @@ collections:
           - { label: 'Studies card — small label', name: studiesPill, widget: string, hint: 'The little tag on the dark Studies card on the home page.' }
           - { label: 'Studies card — heading', name: studiesHeading, widget: string }
           - { label: 'Studies card — paragraph', name: studiesDek, widget: text, hint: '<b>bold</b> is allowed.' }
-          - { label: 'Studies card — the line', name: studiesNote, widget: text, hint: 'The brass line under the paragraph.' }
           - { label: 'Studies card — button', name: studiesCta, widget: string, hint: 'Sends people to grabyourbibles.com. The studies are never republished here.' }
       - name: labels
         label: Section titles
