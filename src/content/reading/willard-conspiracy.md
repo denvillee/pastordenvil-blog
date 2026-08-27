@@ -3,6 +3,7 @@ title: "The Divine Conspiracy"
 author: "Dallas Willard"
 year: 1998
 shelfStatus: shelf
+shelfMonth: "2026-08"
 spine: brass
 cover: /assets/covers/willard-conspiracy.jpg
 order: 2

@@ -1,6 +1,6 @@
 ---
 title: "More Than Body and Breath"
-dek: "Genesis 1 and the goal of being human. First in a series on biblical anthropology."
+dek: "Genesis 1 and the goal of being human. First in a series."
 publishAt: 2026-08-26T06:00:00-04:00
 draft: false
 series: "Biblical anthropology"

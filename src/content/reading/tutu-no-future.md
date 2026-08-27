@@ -3,6 +3,7 @@ title: "No Future Without Forgiveness"
 author: "Desmond Tutu"
 year: 1999
 shelfStatus: shelf
+shelfMonth: "2026-08"
 spine: cobalt
 cover: /assets/covers/tutu-no-future.jpg
 order: 12

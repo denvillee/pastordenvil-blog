@@ -3,6 +3,7 @@ title: "The Presence of the Future"
 author: "George Eldon Ladd"
 year: 1974
 shelfStatus: shelf
+shelfMonth: "2026-08"
 spine: ivy
 cover: /assets/covers/ladd-presence.jpg
 order: 1

@@ -31,7 +31,7 @@ const counts = (Object.keys(ROOMS) as RoomKey[]).map((k) => ({
   n: rows.filter((r) => r.room === k).length,
 }));
 ---
-<Base title={`${labels.archiveHeading} — ${site.name}`} description={labels.archiveDek}>
+<Base title={`${labels.archiveHeading} · ${site.name}`} description={labels.archiveDek}>
   <section class="band shell">
     <div class="sec-head">
       <h1>{labels.archiveHeading}</h1>

@@ -9,7 +9,7 @@ const { Content } = await render(entry!);
    Submissions land in Netlify and forward to hello@denvillee.com
    (Cloudflare Email Routing, hosting runbook §5). */
 ---
-<Base title={`${entry!.data.title} — ${site.name}`} description={entry!.data.dek}>
+<Base title={`${entry!.data.title} · ${site.name}`} description={entry!.data.dek}>
   <section class="band shell">
     <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label">{labels.speakingLabel}</span></div>
     <div class="speak">

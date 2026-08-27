@@ -3,6 +3,7 @@ title: "Being God's Image"
 author: "Carmen Joy Imes"
 year: 2023
 shelfStatus: shelf
+shelfMonth: "2026-08"
 spine: brass
 order: 6
 publishAt: 2026-08-26T06:00:00-04:00
