@@ -3,6 +3,7 @@ title: "The Prophetic Imagination"
 author: "Walter Brueggemann"
 year: 1978
 shelfStatus: next
+shelfMonth: "2026-08"
 spine: cobalt
 cover: /assets/covers/brueggemann-prophetic.jpg
 order: 4
