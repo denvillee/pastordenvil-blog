@@ -74,6 +74,10 @@ const gospelParts = home.heroGospelLine.split('|');
       const next = items[i];
       prev.classList.remove('is-on'); prev.classList.add('is-out');
       next.classList.add('is-on');
+      /* the rule under the blank pulses as the new word lands */
+      box.classList.remove('is-pulse');
+      void box.offsetWidth;
+      box.classList.add('is-pulse');
       window.setTimeout(() => prev.classList.remove('is-out'), 520);
     };
     const timer = window.setInterval(step, 2600);

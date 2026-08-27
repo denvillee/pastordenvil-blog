@@ -1,34 +1,46 @@
 ---
+/*
+  The latest essay, as a card that sits ON the line where the hero ends.
+  Before this it was a bare two-column block below a hard horizontal edge, and
+  the edge read as a seam. An object crossing the line turns the seam into
+  depth, so the card is pulled up over the hero and carries its own surface.
+
+  The overlap line that used to float above this block is gone from here. It
+  was unlabelled and had no job in this position; it heads the Essays room at
+  /essays/, which is what it was written for.
+*/
 import labels from '../data/labels.json';
-import home from '../data/home.json';
 interface Props {
   href: string; title: string; dek: string;
   scripture?: string; readMinutes: number; label?: string;
 }
-const { href, title, dek, scripture, readMinutes, label = 'This week' } = Astro.props;
+const { href, title, dek, scripture, readMinutes, label = 'Latest' } = Astro.props;
 ---
-<section class="band shell" id="week">
-  <p class="ess-head reveal">{home.essaysHeader}</p>
-  <div class="feature reveal">
-    <div class="feature-media">
-      <span class="sticker">{label}</span>
-      <a href={href}>
-        <picture>
-          <source srcset="/assets/img/feature.webp" type="image/webp" />
-          <img src="/assets/img/feature.jpg" width="1200" height="800" loading="lazy" decoding="async"
-               alt="Abstract arcs in cobalt and ember over bone" />
-        </picture>
-      </a>
-    </div>
-    <div class="feature-body">
-      <div class="meta">
-        <span class="pill">{labels.homeFeaturePill}</span>
-        {scripture && <span>{scripture}</span>}
-        <span>{readMinutes} min</span>
+<section class="band feature-band" id="week">
+  <div class="shell">
+    <div class="feature-card reveal">
+      <div class="feature">
+        <div class="feature-media">
+          <span class="sticker">{label}</span>
+          <a href={href}>
+            <picture>
+              <source srcset="/assets/img/feature.webp" type="image/webp" />
+              <img src="/assets/img/feature.jpg" width="1200" height="800" loading="lazy" decoding="async"
+                   alt="Abstract arcs in cobalt and ember over bone" />
+            </picture>
+          </a>
+        </div>
+        <div class="feature-body">
+          <div class="meta">
+            <span class="pill">{labels.homeFeaturePill}</span>
+            {scripture && <span>{scripture}</span>}
+            <span>{readMinutes} min</span>
+          </div>
+          <h2><a href={href}>{title}</a></h2>
+          <p class="dek">{dek}</p>
+          <a class="readlink" href={href}>{labels.homeFeatureReadLink} <span>&rarr;</span></a>
+        </div>
       </div>
-      <h2><a href={href}>{title}</a></h2>
-      <p class="dek">{dek}</p>
-      <a class="readlink" href={href}>{labels.homeFeatureReadLink} <span>&rarr;</span></a>
     </div>
   </div>
 </section>
