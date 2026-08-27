@@ -758,32 +758,46 @@ a[data-footnote-ref]:hover{text-decoration:underline}
 }
 @media(max-width:560px){ .sh-step{grid-template-columns:1fr; gap:.4rem} }
 
-/* ── Hero: "Good news …" rotation (build packet 6.1) ────────────────────────
-   Fixed half bone, rotating half brass. 2.8s per phrase, vertical roll,
-   pauses on hover, first phrase static when the visitor prefers less motion.
-   The track carries the first phrase twice so the loop lands seamlessly. */
+/* ── Hero rotator, 26 Aug CHANGE SPEC ───────────────────────────────────────
+   Fixed-height inline block, items absolutely positioned, min-width set from
+   the longest phrase by script — the container never resizes. Outgoing rises
+   and fades; incoming rises from below. Reduced motion: item one, static. */
 .gn{
-  display:flex; flex-direction:column; gap:.05em; margin:0;
+  display:flex; flex-direction:column; gap:.12em; margin:0;
   font-family:var(--sans); font-weight:900; text-transform:uppercase;
-  letter-spacing:.01em; line-height:1.06;
-  font-size:clamp(1.9rem,5.4vw,3.7rem);
+  letter-spacing:.01em; line-height:1.1;
+  font-size:clamp(1.5rem,4.4vw,2.8rem);
+  font-variation-settings:"wdth" 108;
 }
 .gn-fixed{color:#F3F1EA}
-.gn-roll{display:block; height:1.18em; overflow:hidden}
-.gn-track{display:flex; flex-direction:column; color:var(--brass);
-  animation:gn-roll calc(var(--n) * 2.8s) infinite}
-.gn-item{display:block; height:1.18em}
-.hero:hover .gn-track{animation-play-state:paused}
-@keyframes gn-roll{
-  0%,17%   {transform:translateY(0)}
-  20%,37%  {transform:translateY(-1.18em)}
-  40%,57%  {transform:translateY(-2.36em)}
-  60%,77%  {transform:translateY(-3.54em)}
-  80%,97%  {transform:translateY(-4.72em)}
-  100%     {transform:translateY(-5.9em)}
+.gn-rotator{
+  position:relative; display:inline-block; height:1.25em; overflow:hidden;
+  color:var(--brass); outline:none;
 }
+.gn-item{
+  position:absolute; left:0; top:0; white-space:nowrap;
+  opacity:0; transform:translateY(.55em);
+  transition:opacity 400ms ease, transform 500ms cubic-bezier(.2,.7,.2,1);
+  pointer-events:none;
+}
+.gn-item.is-on{opacity:1; transform:translateY(0)}
+.gn-item.is-out{opacity:0; transform:translateY(-.55em)}
 @media (prefers-reduced-motion:reduce){
-  .gn-track{animation:none}
+  .gn-item{transition:none}
+}
+
+/* Gospel line — Spectral, two lines, brass on the em. */
+.gospel{
+  margin:.9em 0 0; font-family:var(--serif); font-weight:600;
+  font-size:clamp(1.2rem,3vw,1.85rem); line-height:1.3; color:#EFEDE4;
+}
+.gospel-l{display:block}
+.gospel em{font-style:normal; color:var(--brass)}
+
+/* Essays band header — the overlap line, moved out of the hero. */
+.ess-head{
+  font-family:var(--serif); font-weight:600; font-size:clamp(1.05rem,2.2vw,1.4rem);
+  line-height:1.4; color:var(--muted); max-width:56ch; margin-bottom:1.4rem;
 }
 
 /* ── Bookshelf covers ───────────────────────────────────────────────────────
