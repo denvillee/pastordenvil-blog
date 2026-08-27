@@ -851,3 +851,12 @@ a[data-footnote-ref]:hover{text-decoration:underline}
 .st-title{font-family:var(--serif); font-weight:600; font-size:1.5rem; line-height:1.2; color:var(--bone); margin-bottom:.5rem}
 .st-dek{font-family:var(--serif); color:#C9CDC4; line-height:1.6; max-width:52ch}
 .st-meta{font-family:var(--sans); font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:#9AA096; margin-top:.7rem}
+
+/* Bookshelf layers */
+.shelf-tie{margin-top:1.6rem; color:var(--muted); font-size:.92rem; max-width:56ch; line-height:1.55}
+.shelf-month{margin-bottom:2.2rem}
+.shelf-month-h{
+  font-family:var(--sans); font-weight:800; text-transform:uppercase; letter-spacing:.12em;
+  font-size:.78rem; color:var(--muted); border-bottom:1px solid var(--line); padding-bottom:.5rem; margin-bottom:.4rem;
+}
+.now-read .readlink{margin-top:.9rem; display:inline-block}
