@@ -60,7 +60,7 @@ const hasBooks = Boolean(now) || shelf.length > 0;
               <div class="shelf-row">
                 {b.cover
                   ? <img class="mini-cover" src={b.cover} alt="" width="38" loading="lazy" decoding="async" />
-                  : <span class={`mini sp-${b.spine}`}></span>}
+                  : <span class="mini plate" aria-hidden="true">{b.title.split(/\s+/).filter((w: string) => /^[A-Za-z]/.test(w)).slice(0, 3).map((w: string) => w[0].toUpperCase()).join('')}</span>}
                 <span>
                   <span class="st">{b.title}<span class="sa">{b.author}</span></span>
                   <span class="sv" set:html={b.note}></span>
