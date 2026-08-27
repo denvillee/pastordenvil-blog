@@ -342,10 +342,10 @@ div.clip:hover{transform:none}
 .note p{color:var(--muted);font-size:.97rem}
 .note b{color:var(--fg);font-weight:600}
 
-.reveal{opacity:0;transform:translateY(18px)}
-.reveal.in{opacity:1;transform:none;transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+.reveal.pre{transform:translateY(14px)}
+.reveal.in{transform:none;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
 @media(prefers-reduced-motion:reduce){
-  .reveal,.reveal.in{opacity:1;transform:none;transition:none}
+  .reveal.pre,.reveal.in{transform:none;transition:none}
   .kinetic span{animation:none;opacity:1;font-variation-settings:"wdth" 118}
   .marquee-track{animation:none}
   .clip:hover,.stream:hover{transform:none}
@@ -470,7 +470,7 @@ div.clip:hover{transform:none}
 .idea-rail .v{font-family:var(--serif);font-size:1.02rem;line-height:1.4}
 
 .prose{max-width:68ch;font-size:1.16rem;line-height:1.72;display:flex;flex-direction:column;gap:1.35rem}
-.prose>p:first-of-type::first-letter{float:left;font-family:var(--sans);font-weight:900;
+article .prose>p:first-of-type::first-letter{float:left;font-family:var(--sans);font-weight:900;
   font-size:3.5em;line-height:.82;padding:.06em .09em 0 0;color:var(--cobalt-ink)}
 .prose h2{font-family:var(--sans);font-size:.82rem;font-weight:800;letter-spacing:.16em;
   text-transform:uppercase;color:var(--muted);margin-top:1.4rem}
@@ -811,3 +811,33 @@ a[data-footnote-ref]:hover{text-decoration:underline}
   width:38px; height:auto; border-radius:2px; flex:none;
   box-shadow:0 1px 3px rgba(14,18,17,.25); display:block;
 }
+
+/* /subscribe/ inline form — the page owns its form; the global band is suppressed there */
+.sub-inline{margin-top:2rem; max-width:34rem}
+.sub-inline .form{display:flex; gap:.6rem; flex-wrap:wrap}
+.sub-inline .form .fake{flex:1 1 14rem}
+.sub-inline small{display:block; margin-top:.7rem; color:var(--muted)}
+
+/* designed fallback plate for a book with no cover art — never a blank swatch */
+.mini.plate{
+  display:flex; align-items:center; justify-content:center;
+  background:var(--ivy); border-top:3px solid var(--brass);
+  color:var(--bone); font-family:var(--sans); font-weight:800;
+  font-size:.6rem; letter-spacing:.08em;
+}
+
+/* The Rooms directory */
+.band-tight{padding-block:clamp(2.4rem,5.5vw,4.8rem)}
+.rooms-dir{display:grid; grid-template-columns:repeat(2,1fr); gap:1rem}
+@media(max-width:680px){.rooms-dir{grid-template-columns:1fr}}
+.room-link{
+  position:relative; display:flex; flex-direction:column; gap:.35rem;
+  background:var(--surface); border:1px solid var(--line); border-radius:4px;
+  padding:1.2rem 2.6rem 1.2rem 1.3rem; transition:border-color .18s, transform .18s;
+}
+.room-link:hover{border-color:var(--cobalt); transform:translateY(-2px)}
+.rl-name{font-family:var(--sans); font-weight:900; text-transform:uppercase; letter-spacing:.04em; font-size:1.05rem; color:var(--fg)}
+.rl-dek{font-family:var(--serif); color:var(--muted); line-height:1.5; font-size:.95rem}
+.rl-go{position:absolute; right:1.1rem; top:50%; transform:translateY(-50%); color:var(--cobalt); font-weight:800; font-family:var(--sans)}
+/* the studies CTA needs air under the brass line, everywhere the card appears */
+.studies-body .btn{margin-top:1.75rem}

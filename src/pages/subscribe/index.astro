@@ -3,14 +3,29 @@ import { getEntry, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 const entry = await getEntry('pages', 'subscribe');
 const { Content } = await render(entry!);
-import Signup from '../../components/Signup.astro';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
+
+const formId = import.meta.env.PUBLIC_KIT_FORM_ID;
+const action = formId
+  ? 'https://app.kit.com/forms/' + formId + '/subscriptions'
+  : '/subscribe/thanks/';
 ---
 <Base title={`${entry!.data.title} — ${site.name}`} description={entry!.data.dek}>
   <section class="band shell">
     <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label" set:html={labels.subscribeLabel}></span></div>
     <div class="prose"><Content /></div>
+    <div class="sub-inline">
+      <form class="form" method="post" action={action}>
+        <label class="sr-only" for="email">Email address</label>
+        <input class="fake" id="email" name="email_address" type="email" required
+               placeholder="you@example.com" autocomplete="email" />
+        <input type="hidden" name="fields[source]" value="/subscribe/" />
+        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true"
+               style="position:absolute;left:-9999px" />
+        <button class="btn btn-primary" type="submit">{site.signupButton}</button>
+      </form>
+      <small>{site.signupSmallPrint}</small>
+    </div>
   </section>
-  <Signup source="/subscribe/" />
 </Base>

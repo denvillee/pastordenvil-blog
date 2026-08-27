@@ -1,24 +1,31 @@
 ---
-interface Item { room: string; cls: string; href: string; title: string; dek: string; foot: string }
-interface Props { items: Item[] }
+/*
+  The Rooms — a directory, not a feed. With little published, a "latest from
+  the rooms" feed can only echo the feature above it; a directory stays true
+  at any content volume. Empty rooms simply say "Under construction." on
+  arrival, per the standing rule.
+*/
 import home from '../data/home.json';
-const { items } = Astro.props;
+import labels from '../data/labels.json';
+const rooms = [
+  { name: labels.essaysHeading, dek: labels.essaysDek, href: '/essays/' },
+  { name: labels.leadersHeading, dek: labels.leadersDek, href: '/leaders/' },
+  { name: labels.momentsHeading, dek: labels.momentsDek, href: '/moments/' },
+  { name: labels.readingHeading, dek: labels.readingDek, href: '/bookshelf/' },
+];
 ---
-{items.length > 0 && (
-  <section class="band shell" id="streams">
-    <div class="sec-head reveal">
-      <h2>{home.streamsHeading}</h2>
-      <span class="label">{home.streamsLabel}</span>
-    </div>
-    <div class="streams">
-      {items.map((it) => (
-        <article class={`stream ${it.cls} reveal`}>
-          <span class="tag">{it.room}</span>
-          <h3><a href={it.href}>{it.title}</a></h3>
-          <p>{it.dek}</p>
-          <span class="foot">{it.foot}</span>
-        </article>
-      ))}
-    </div>
-  </section>
-)}
+<section class="band shell band-tight" id="streams">
+  <div class="sec-head reveal">
+    <h2>{home.streamsHeading}</h2>
+    <span class="label">{home.streamsLabel}</span>
+  </div>
+  <div class="rooms-dir">
+    {rooms.map((r) => (
+      <a class="room-link reveal" href={r.href}>
+        <span class="rl-name">{r.name}</span>
+        {r.dek && <span class="rl-dek">{r.dek}</span>}
+        <span class="rl-go" aria-hidden="true">&rarr;</span>
+      </a>
+    ))}
+  </div>
+</section>

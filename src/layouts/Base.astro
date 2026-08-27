@@ -102,7 +102,9 @@ const comingSoon =
           if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
         });
       }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
-      els.forEach(function (e, i) { e.style.transitionDelay = (i % 3) * 70 + 'ms'; io.observe(e); });
+      els.forEach(function (e, i) { e.style.transitionDelay = (i % 3) * 70 + 'ms'; e.classList.add('pre'); io.observe(e); });
+      /* failsafe: nothing stays hidden if the observer never fires */
+      setTimeout(function () { els.forEach(function (e) { e.classList.add('in'); }); }, 2500);
     })();
 
     /* reading progress */

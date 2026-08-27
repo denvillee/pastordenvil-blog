@@ -33,14 +33,7 @@ const featureLabel =
   featureAgeDays <= 21 ? home.featureLabelRecent :
                          home.featureLabelOlder;
 
-const streamItems = [
-  essays[0] && { room: labels.homeStreamEssayTag, cls: 's1', href: `/essays/${essays[0].id}/`,
-    title: essays[0].data.title, dek: essays[0].data.dek, foot: home.essayCadence },
-  leaders[0] && { room: labels.homeStreamLeadersTag, cls: 's2', href: `/leaders/${leaders[0].id}/`,
-    title: leaders[0].data.title, dek: leaders[0].data.dek, foot: home.leadersCadence },
-  moments[0] && { room: labels.homeStreamMomentsTag, cls: 's3', href: `/moments/${moments[0].id}/`,
-    title: moments[0].data.title, dek: moments[0].data.dek, foot: home.momentsCadence },
-].filter(Boolean) as any[];
+
 
 const now = books.find((b: any) => b.data.shelfStatus === 'now')?.data;
 const shelf = books.filter((b: any) => b.data.shelfStatus !== 'now')
@@ -66,7 +59,7 @@ const shelf = books.filter((b: any) => b.data.shelfStatus !== 'now')
     />
   )}
 
-  {streamItems.length > 0 && <Streams items={streamItems} />}
+  <Streams />
 
   <StudiesCard />
 
