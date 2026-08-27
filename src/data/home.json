@@ -1,5 +1,4 @@
 {
-  "heroLead": "One idea a week, worked out from twenty years of preaching. Read it, sit with it, do something with it.",
   "heroPrimaryLabel": "Studies",
   "heroPrimaryHref": "https://grabyourbibles.com",
   "heroSecondaryLabel": "Read this week",
@@ -41,20 +40,5 @@
     "honest doubt."
   ],
   "heroGospelLine": "Jesus is King.|His freedom, peace and purpose are <em>available now.</em>",
-  "essaysHeader": "The kingdom already started. It has not finished. We are living in the overlap.",
-  "ticker": [
-    "Pay attention to what gets your attention.",
-    "God calls us from where we are, not from where we think we should be.",
-    "Worship and doubt can coexist.",
-    "Faithfulness in the present prepares us for what's next.",
-    "Jesus rescues us from this present age into God's purpose."
-  ],
-  "tickerReserve": [
-    "Holiness involves reorienting our values, not just our behavior.",
-    "Good things become distractions if they overshadow God's bigger purpose.",
-    "Contentment comes from trusting God as our Shepherd, not from striving.",
-    "Green pastures and still waters are not idyllic scenes. They are God's invitation to rest.",
-    "Saying yes to Jesus is where transformation begins.",
-    "Our identity is in Christ, not in our past or present circumstances."
-  ]
+  "essaysHeader": "The kingdom already started. It has not finished. We are living in the overlap."
 }

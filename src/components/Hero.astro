@@ -15,7 +15,6 @@ import home from '../data/home.json';
 const rotations: string[] = home.heroRotations;
 const srAll = rotations.map((r) => r.replace(/\.$/, '')).join(', ') + '.';
 const gospelParts = home.heroGospelLine.split('|');
-const line = home.ticker.join(' · ');
 ---
 <header class="hero" id="top">
   <div class="hero-img">
@@ -38,17 +37,10 @@ const line = home.ticker.join(' · ');
       {gospelParts.map((part) => <span class="gospel-l" set:html={part}></span>)}
     </p>
     <div class="hero-copy">
-      <p class="lead">{home.heroLead}</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href={home.heroPrimaryHref}>{home.heroPrimaryLabel}</a>
         <a class="btn btn-ghost" href={home.heroSecondaryHref}>{home.heroSecondaryLabel}</a>
       </div>
-    </div>
-  </div>
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track">
-      <span>{line} &middot;&nbsp;</span>
-      <span>{line} &middot;&nbsp;</span>
     </div>
   </div>
 </header>
