@@ -57,7 +57,12 @@ const comingSoon =
   {publishedTime && <meta property="article:published_time" content={publishedTime} />}
   <meta name="twitter:card" content="summary_large_image" />
 
+  <!-- The .ico is not decoration. Browsers, bookmark bars, link previews and
+       Google's favicon service all request /favicon.ico by convention, and when
+       it is missing they keep serving whatever they cached for the domain. -->
+  <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
 
   <link rel="preload" href="/fonts/archivo-100_900-latin.woff2" as="font" type="font/woff2" crossorigin />
@@ -123,10 +128,14 @@ const comingSoon =
       tick();
     })();
 
-    /* nav condenses once the hero is behind you */
+    /* nav condenses once the hero is behind you. Over a hero it starts fully
+       transparent; on a bone page it keeps its backing, or the light text in it
+       would sit on light paper. The class is only added where a hero exists, so
+       with no JavaScript every page keeps the readable opaque bar. */
     (function () {
       var nav = document.querySelector('.nav');
       if (!nav) return;
+      if (document.querySelector('.hero')) nav.classList.add('over-hero');
       var tick = function () {
         nav.classList.toggle('is-stuck', window.scrollY > 24);
       };
