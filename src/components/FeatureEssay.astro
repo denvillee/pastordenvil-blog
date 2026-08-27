@@ -1,5 +1,6 @@
 ---
 import labels from '../data/labels.json';
+import home from '../data/home.json';
 interface Props {
   href: string; title: string; dek: string;
   scripture?: string; readMinutes: number; label?: string;
@@ -7,6 +8,7 @@ interface Props {
 const { href, title, dek, scripture, readMinutes, label = 'This week' } = Astro.props;
 ---
 <section class="band shell" id="week">
+  <p class="ess-head reveal">{home.essaysHeader}</p>
   <div class="feature reveal">
     <div class="feature-media">
       <span class="sticker">{label}</span>
