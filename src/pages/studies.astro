@@ -1,13 +1,13 @@
 ---
 /*
-  The handoff page. Build packet 6.5 and Part 5.4: one paragraph in Denvil's
-  voice, one card for the current study, one button across to grabyourbibles.com.
-  It NEVER lists sessions and NEVER republishes study content — every session
-  lives at exactly one URL, on the study site. Canonical stays there.
+  The handoff page. One card, one offer: what Grab Your Bibles is, the study
+  that is open, one button across. The observe instructions live on the study
+  site's How page — never here. This page NEVER lists sessions and NEVER
+  republishes study content; canonical stays on grabyourbibles.com.
 */
 import Base from '../layouts/Base.astro';
 import Signup from '../components/Signup.astro';
-import UnderConstruction from '../components/UnderConstruction.astro';
+import home from '../data/home.json';
 import site from '../data/site.json';
 
 const STUDY_SITE = 'https://grabyourbibles.com';
@@ -28,32 +28,28 @@ const STUDY_SITE = 'https://grabyourbibles.com';
       Bible open, marking the text yourself, on your own or with a room full of people.
     </p>
 
-    <div class="studies-card reveal" style="margin-bottom:2rem">
+    <div class="studies-card reveal">
       <div class="studies-body">
-        <span class="pill">How it works</span>
-        <h2>You read it. You mark it. You say what you noticed.</h2>
-        <p class="dek">
-          Underline what God is doing or saying. Circle a word that repeats, or one you do
-          not understand. Highlight whatever gets your attention, even if you cannot say
-          why. Then say it out loud. If you know why it stood out, say so. If you do not,
-          &ldquo;it just stood out&rdquo; is a complete answer.
+        <h2>{home.studiesHeading}</h2>
+        <p class="dek" set:html={home.studiesDek}></p>
+
+        <hr class="studies-rule" />
+
+        <span class="st-kicker">Now open &middot; The Book of Ruth</span>
+        <h3 class="st-title">God&rsquo;s Presence in Every Season</h3>
+        <p class="st-dek">
+          Seven sessions in the book of Ruth. God never speaks out loud in Ruth &mdash; and He
+          never stops working. Learn to be rooted deeply enough to see it.
         </p>
-        <p class="studies-note"><b>Pay attention to what gets your attention.</b></p>
-        <a class="btn btn-primary" style="margin-top:1.5rem" href={STUDY_SITE} target="_blank" rel="noopener">
-          Go to the studies <span aria-hidden="true">&nearr;</span>
+        <p class="st-meta">7 sessions &middot; on your own or with a group</p>
+        <a class="btn btn-primary" href={STUDY_SITE} target="_blank" rel="noopener">
+          {home.studiesCta} <span aria-hidden="true">&nearr;</span>
         </a>
       </div>
       <div class="studies-aside" aria-hidden="true">
         <span class="studies-mark">Grab<br />Your<br />Bibles</span>
       </div>
     </div>
-
-    <UnderConstruction
-      heading="Now open"
-      line="The first study &mdash; <b>God's Presence in Every Season</b>, seven sessions in Ruth &mdash; is open now."
-      cta="Start the study"
-      href={STUDY_SITE}
-    />
   </section>
   <Signup />
 </Base>
