@@ -1,0 +1,43 @@
+---
+/*
+  Layer 3 of the Bookshelf: every book, forever. Grouped by month, newest
+  first, compact rows. This page only grows; nothing is ever removed.
+*/
+import Base from '../../layouts/Base.astro';
+import Signup from '../../components/Signup.astro';
+import { live } from '../../lib/publish';
+import { monthLabel } from '../../lib/shelf';
+import site from '../../data/site.json';
+
+const entries = await live('reading');
+const books = entries.map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }));
+const months = [...new Set(books.map((b: any) => b.shelfMonth).filter(Boolean))].sort().reverse() as string[];
+const firstYear = months.length ? months[months.length - 1].slice(0, 4) : '';
+---
+<Base title={`Every Book · ${site.name}`} description="Every book on the shelf, grouped by month.">
+  <section class="band shell">
+    <div class="sec-head">
+      <h1>Every Book</h1>
+      <span class="label">{books.length} {books.length === 1 ? 'book' : 'books'}{firstYear ? ` since ${firstYear}` : ''}</span>
+    </div>
+    {months.map((m) => (
+      <section class="shelf-month">
+        <h2 class="shelf-month-h">{monthLabel(m)}</h2>
+        <div class="shelf">
+          {books.filter((b: any) => b.shelfMonth === m).sort((a: any, b: any) => a.order - b.order).map((b: any) => (
+            <div class="shelf-row">
+              {b.cover
+                ? <img class="mini-cover" src={b.cover} alt="" width="38" loading="lazy" decoding="async" />
+                : <span class="mini plate" aria-hidden="true">{b.title.split(/\s+/).filter((w: string) => /^[A-Za-z]/.test(w)).slice(0, 3).map((w: string) => w[0].toUpperCase()).join('')}</span>}
+              <span>
+                <span class="st">{b.title}<span class="sa">{b.author}</span></span>
+                <span class="sv" set:html={b.note}></span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+    ))}
+  </section>
+  <Signup />
+</Base>
