@@ -1,11 +1,18 @@
 ---
 /*
-  The Rooms — a directory, not a feed. With little published, a "latest from
-  the rooms" feed can only echo the feature above it; a directory stays true
-  at any content volume. Empty rooms simply say "Under construction." on
+  A directory of the four writing rooms, not a feed. With little published, a
+  "latest" feed can only echo the featured essay above it; a directory stays
+  true at any content volume. Empty rooms simply say "Under construction." on
   arrival, per the standing rule.
+
+  There is deliberately no heading over these cards. Each card already names
+  itself and says what it holds, so a label announcing that they are sections
+  told the reader something the cards were already showing. A hairline
+  separates the band from the featured essay instead.
+
+  The class names below are internal and keep the old word; nothing a reader
+  ever sees says "rooms".
 */
-import home from '../data/home.json';
 import labels from '../data/labels.json';
 const rooms = [
   { name: labels.essaysHeading, dek: labels.essaysDek, href: '/essays/' },
@@ -15,10 +22,7 @@ const rooms = [
 ];
 ---
 <section class="band shell band-tight" id="streams">
-  <div class="sec-head reveal">
-    <h2>{home.streamsHeading}</h2>
-    <span class="label">{home.streamsLabel}</span>
-  </div>
+  <hr class="band-rule" />
   <div class="rooms-dir">
     {rooms.map((r) => (
       <a class="room-link reveal" href={r.href}>
