@@ -11,7 +11,7 @@ const action = formId
   ? 'https://app.kit.com/forms/' + formId + '/subscriptions'
   : '/subscribe/thanks/';
 ---
-<Base title={`${entry!.data.title} — ${site.name}`} description={entry!.data.dek}>
+<Base title={`${entry!.data.title} · ${site.name}`} description={entry!.data.dek}>
   <section class="band shell">
     <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label" set:html={labels.subscribeLabel}></span></div>
     <div class="prose"><Content /></div>
