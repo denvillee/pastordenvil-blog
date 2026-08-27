@@ -840,4 +840,14 @@ a[data-footnote-ref]:hover{text-decoration:underline}
 .rl-dek{font-family:var(--serif); color:var(--muted); line-height:1.5; font-size:.95rem}
 .rl-go{position:absolute; right:1.1rem; top:50%; transform:translateY(-50%); color:var(--cobalt); font-weight:800; font-family:var(--sans)}
 /* the studies CTA needs air under the brass line, everywhere the card appears */
-.studies-body .btn{margin-top:1.75rem}
+.studies-body .btn{display:inline-block; margin-top:1.75rem}
+
+/* /studies/ — the study block inside the ink card */
+.studies-rule{border:0; height:1px; background:rgba(236,196,110,.25); margin:2rem 0}
+.st-kicker{
+  display:block; font-family:var(--sans); font-weight:800; font-size:.68rem;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--brass); margin-bottom:.55rem;
+}
+.st-title{font-family:var(--serif); font-weight:600; font-size:1.5rem; line-height:1.2; color:var(--bone); margin-bottom:.5rem}
+.st-dek{font-family:var(--serif); color:#C9CDC4; line-height:1.6; max-width:52ch}
+.st-meta{font-family:var(--sans); font-size:.74rem; letter-spacing:.06em; text-transform:uppercase; color:#9AA096; margin-top:.7rem}
