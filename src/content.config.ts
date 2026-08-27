@@ -80,6 +80,7 @@ export const collections = {
       author: z.string(),
       year: z.number().optional(),
       shelfStatus: z.enum(['now', 'shelf', 'next', 'finished']),
+      shelfMonth: z.string().regex(/^\d{4}-\d{2}$/).optional(),  // which month's shelf this book belongs to
       cover: z.string().optional(),        // /assets/covers/*.jpg — spine colour is the fallback
       progress: z.string().optional(),
       spine: z.enum(['cobalt', 'ivy', 'brass', 'ember', 'ink']).default('ivy'),
