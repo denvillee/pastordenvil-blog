@@ -220,8 +220,6 @@ collections:
           - { label: Feature sticker — fresh, name: featureLabel, widget: string, hint: 'Shown on the home page feature while the newest essay is less than a week old.' }
           - { label: Feature sticker — a couple of weeks on, name: featureLabelRecent, widget: string, hint: 'Replaces it automatically once that essay is 8 to 21 days old, so the page never claims "this week" about older writing.' }
           - { label: Feature sticker — older, name: featureLabelOlder, widget: string, hint: 'Used once the newest essay is over three weeks old. Nothing looks stale or wrong during a quiet stretch.' }
-          - { label: Streams heading, name: streamsHeading, widget: string }
-          - { label: Streams label, name: streamsLabel, widget: string }
           - { label: Essay cadence, name: essayCadence, widget: string }
           - { label: Leaders cadence, name: leadersCadence, widget: string }
           - { label: Moments cadence, name: momentsCadence, widget: string }
@@ -254,7 +252,7 @@ collections:
           - { label: 'Menu — subscribe button', name: navCta, widget: string, hint: 'The dark button on the right of the top menu.' }
 
           # -------------------------------------------------------------- footer
-          - { label: 'Footer — first column heading', name: footRoomsHeading, widget: string, hint: 'The heading above the list of rooms in the footer.' }
+          - { label: 'Footer — first column heading', name: footRoomsHeading, widget: string, hint: 'The heading above the first list of links in the footer.' }
           - { label: 'Footer — Essays link', name: footEssays, widget: string, hint: 'The Essays link in the footer.' }
           - { label: 'Footer — Leaders Corner link', name: footLeaders, widget: string, hint: 'The Leaders Corner link in the footer.' }
           - { label: 'Footer — Moments link', name: footMoments, widget: string, hint: 'The Moments link in the footer.' }
