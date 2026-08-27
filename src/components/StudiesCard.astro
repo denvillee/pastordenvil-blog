@@ -15,7 +15,6 @@ const { href = 'https://grabyourbibles.com', target = '_blank' } = Astro.props;
       <span class="pill">{home.studiesPill}</span>
       <h2>{home.studiesHeading}</h2>
       <p class="dek" set:html={home.studiesDek}></p>
-      <p class="studies-note" set:html={home.studiesNote}></p>
       <a class="btn btn-primary" href={href} target={target} rel="noopener">
         {home.studiesCta} <span aria-hidden="true">&nearr;</span>
       </a>
