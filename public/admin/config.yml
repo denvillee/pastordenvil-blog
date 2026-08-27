@@ -24,6 +24,7 @@ collections:
   # ------------------------------------------------------------------ writing
   - name: essays
     label: Essays
+    description: 'Long-form writing. Each essay publishes at denvillee.com/essays/ and the newest one leads the home page. Essays in a set share a Series name and get a Part number.'
     label_singular: Essay
     folder: /src/content/essays
     create: true
@@ -31,13 +32,12 @@ collections:
     extension: md
     format: frontmatter
     preview_path: essays/{{slug}}/
-    summary: '{{title}}  ·  week {{week}}'
+    summary: '{{title}}'
     fields:
       - { label: Title, name: title, widget: string, hint: 'The web address is built from this. Two pieces in the same room with the exact same title would collide, so give each one its own title.' }
       - { label: Standfirst, name: dek, widget: text, hint: 'One or two sentences. Shows under the headline, in lists, and in link previews.' }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false, hint: 'Set a future date and it stays hidden until then. The daily build publishes it.' }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false, hint: 'On means it never publishes, whatever the date says.' }
-      - { label: Season week, name: week, widget: number, value_type: int, required: false, hint: 'Ties this to the week idea and the “rest of this week” block.' }
       - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
       - { label: Part in the set, name: part, widget: number, value_type: int, required: false, hint: 'When an essay belongs to a set, its number in the set — 1, 2, 3. Leave blank for a standalone essay. The set itself is named in Series.' }
       - { label: Scripture, name: scripture, widget: string, required: false, hint: 'Free text, e.g. Acts 2:17; Mark 1:15' }
@@ -50,6 +50,7 @@ collections:
 
   - name: leaders
     label: For Leaders
+    description: 'Short, direct pieces for whoever is carrying something this week. Publishes at /leaders/. The page says Under construction until the first piece goes live — it fills itself, nothing else to switch on.'
     label_singular: For Leaders piece
     folder: /src/content/leaders
     create: true
@@ -62,7 +63,6 @@ collections:
       - { label: Standfirst, name: dek, widget: text }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
-      - { label: Season week, name: week, widget: number, value_type: int, required: false }
       - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
       - { label: Scripture, name: scripture, widget: string, required: false }
       - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
@@ -74,6 +74,7 @@ collections:
 
   - name: moments
     label: Moments
+    description: 'A passage, the scene retold, and what it asks of you. Publishes at /moments/. The page says Under construction until the first one goes live.'
     label_singular: Moments entry
     folder: /src/content/moments
     create: true
@@ -86,7 +87,6 @@ collections:
       - { label: Standfirst, name: dek, widget: text }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
-      - { label: Season week, name: week, widget: number, value_type: int, required: false }
       - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
       - { label: Scripture, name: scripture, widget: string, required: false }
       - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
@@ -98,28 +98,9 @@ collections:
 
 
   # ------------------------------------------------------------------ the rest
-  - name: watch
-    label: Watch
-    label_singular: Clip
-    folder: /src/content/watch
-    create: true
-    slug: '{{title}}'
-    extension: md
-    format: frontmatter
-    fields:
-      - { label: Clip title, name: title, widget: string, hint: 'The big line on the clip tile, on the home page rail and the Watch page.' }
-      - { label: Burned in caption, name: caption, widget: string, hint: 'The smaller line under the title on the tile. Keep it short.' }
-      - { label: Length in seconds, name: durationSeconds, widget: number, value_type: int, default: 45 }
-      - { label: Scripture, name: scripture, widget: string, required: false }
-      - { label: Cover image, name: poster, widget: image, default: '/assets/img/clip1.jpg' }
-      - { label: YouTube URL, name: youtube, widget: string, required: false, default: '' }
-      - { label: TikTok URL, name: tiktok, widget: string, required: false, default: '' }
-      - { label: Instagram URL, name: instagram, widget: string, required: false, default: '' }
-      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
-      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
-
   - name: reading
     label: Bookshelf
+    description: 'The books on /bookshelf/ and the home page shelf. Keep the synopsis to what the book or its author actually says — never an invented take. Add a cover image when one exists; without one the site draws a plain spine.'
     label_singular: Book
     folder: /src/content/reading
     create: true
@@ -143,8 +124,30 @@ collections:
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
       - { label: 'Your line about it', name: body, widget: markdown, hint: 'One or two sentences. This is the whole point of the shelf.' }
 
+  - name: watch
+    label: Watch
+    description: 'Clips. Publishes at /watch/. The page says Under construction until the first clip goes live.'
+    label_singular: Clip
+    folder: /src/content/watch
+    create: true
+    slug: '{{title}}'
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: Clip title, name: title, widget: string, hint: 'The big line on the clip tile, on the home page rail and the Watch page.' }
+      - { label: Burned in caption, name: caption, widget: string, hint: 'The smaller line under the title on the tile. Keep it short.' }
+      - { label: Length in seconds, name: durationSeconds, widget: number, value_type: int, default: 45 }
+      - { label: Scripture, name: scripture, widget: string, required: false }
+      - { label: Cover image, name: poster, widget: image, default: '/assets/img/clip1.jpg' }
+      - { label: YouTube URL, name: youtube, widget: string, required: false, default: '' }
+      - { label: TikTok URL, name: tiktok, widget: string, required: false, default: '' }
+      - { label: Instagram URL, name: instagram, widget: string, required: false, default: '' }
+      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
+      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+
   - name: frameworks
     label: Frameworks
+    description: 'Drawn systems. Publishes at /frameworks/, linked from the footer. The page says Under construction until the first one goes live.'
     label_singular: Framework
     folder: /src/content/frameworks
     create: true
@@ -159,7 +162,6 @@ collections:
       - { label: Order, name: order, widget: number, value_type: int, default: 1 }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
-      - { label: Season week, name: week, widget: number, value_type: int, required: false }
       - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
       - { label: Scripture, name: scripture, widget: string, required: false }
       - label: Diagram
@@ -181,24 +183,9 @@ collections:
       - { label: Where this comes from, name: notes, widget: text, required: false, hint: 'Frameworks lean on other people’s work. Credit them here, every time.' }
       - { label: Body, name: body, widget: markdown }
 
-  - name: weeks
-    label: Season weeks
-    label_singular: Week
-    folder: /src/content/weeks
-    create: true
-    slug: 'week-{{number}}'
-    extension: md
-    format: frontmatter
-    summary: 'Week {{number}} — {{idea}}'
-    fields:
-      - { label: Week number, name: number, widget: number, value_type: int }
-      - { label: Starts, name: start, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: false, hint: 'The Monday this week begins. Not shown on the site — it is how a week is filed.' }
-      - { label: Ends, name: end, widget: datetime, format: 'YYYY-MM-DD', date_format: 'YYYY-MM-DD', time_format: false, picker_utc: false, hint: 'The Sunday this week ends. Not shown on the site — it is how a week is filed.' }
-      - { label: Movement, name: movement, widget: string, hint: 'e.g. II. The Rescue. Shows next to “Season one · week N” at the top of every piece published this week.' }
-      - { label: The one idea, name: idea, widget: text, hint: 'One sentence. It appears above every piece published this week.' }
-
   - name: pages
     label: Standing pages
+    description: 'The About page and the Subscribe page.'
     label_singular: Page
     folder: /src/content/pages
     create: false
@@ -214,19 +201,24 @@ collections:
   # ------------------------------------------------------------------ site copy
   - name: settings
     label: Site copy
+    description: 'Every fixed line on the site — the home page (hero, rotating phrases, ticker), section titles, buttons, empty-state lines, and the shareable card templates.'
     files:
       - name: home
         label: Home page copy
         file: /src/data/home.json
         fields:
-          - { label: 'Hero — fixed words', name: heroFixed, widget: string, hint: 'The half of the headline that does not move, e.g. “Good news”.' }
-          - { label: 'Hero — rotating phrases', name: heroPhrases, widget: list, hint: 'Each one completes the fixed words. They roll every few seconds. Five is the right number.' }
-          - { label: Hero paragraph, name: heroLead, widget: text, hint: '<b>bold</b> is allowed.' }
+          - { label: 'Hero, fixed words', name: heroFixed, widget: string, hint: 'The part that never changes.' }
+          - { label: 'Hero, rotating phrases', name: heroRotations, widget: list, hint: 'These cycle in order. Keep them short and end each with a full stop. Five to seven works best.' }
+          - { label: 'Hero, phrases on the bench', name: heroRotationsReserve, widget: list, hint: 'Not shown. Swap one up into the list above when you want a change.' }
+          - { label: 'Hero, the line underneath', name: heroGospelLine, widget: text, hint: 'Use a vertical bar to break the line. Wrap a phrase in <em> to make it gold.' }
+          - { label: 'Hero, small paragraph', name: heroLead, widget: text }
+          - { label: 'Essays section header', name: essaysHeader, widget: text, hint: 'Shows above the featured essay on the home page and at the top of the Essays page.' }
           - { label: Primary button label, name: heroPrimaryLabel, widget: string }
           - { label: Primary button link, name: heroPrimaryHref, widget: string }
           - { label: Secondary button label, name: heroSecondaryLabel, widget: string }
           - { label: Secondary button link, name: heroSecondaryHref, widget: string }
-          - { label: Scrolling ticker, name: marquee, widget: list, hint: 'Series names and passages. Keep them short.' }
+          - { label: 'Ticker, showing now', name: ticker, widget: list, hint: 'Five is the right number.' }
+          - { label: 'Ticker, on the bench', name: tickerReserve, widget: list, hint: 'Move lines up into the list above to swap the set.' }
           - { label: Feature sticker — fresh, name: featureLabel, widget: string, hint: 'Shown on the home page feature while the newest essay is less than a week old.' }
           - { label: Feature sticker — a couple of weeks on, name: featureLabelRecent, widget: string, hint: 'Replaces it automatically once that essay is 8 to 21 days old, so the page never claims "this week" about older writing.' }
           - { label: Feature sticker — older, name: featureLabelOlder, widget: string, hint: 'Used once the newest essay is over three weeks old. Nothing looks stale or wrong during a quiet stretch.' }

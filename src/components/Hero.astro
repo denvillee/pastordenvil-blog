@@ -1,14 +1,21 @@
 ---
 /*
-  Hero, build packet 6.1. Line one is "Good news" fixed in bone with the
-  rotating half in brass — vertical roll, 2.8s per phrase, pauses on hover,
-  first phrase static under prefers-reduced-motion. The five phrases are
-  final per the packet and live in home.json so the CMS can edit them.
-  No pronoun in the headline on purpose.
+  Hero, per the 26 Aug CHANGE SPEC (supersedes build packet 6.1/6.2).
+  Three elements only: rotating line, gospel line, lead paragraph. Buttons.
+
+  Accessibility, per the spec: the h1 contains stable text — the fixed words
+  plus the full phrase set in a visually hidden span. The animated rotator is
+  decoration (aria-hidden, no aria-live). Reduced motion shows phrase one,
+  static, with no interval running.
+
+  Everything editable lives in src/data/home.json; nothing is hard-coded here.
 */
 import home from '../data/home.json';
-const line = home.marquee.join(' · ');
-const phrases = home.heroPhrases;
+
+const rotations: string[] = home.heroRotations;
+const srAll = rotations.map((r) => r.replace(/\.$/, '')).join(', ') + '.';
+const gospelParts = home.heroGospelLine.split('|');
+const line = home.ticker.join(' · ');
 ---
 <header class="hero" id="top">
   <div class="hero-img">
@@ -20,15 +27,18 @@ const phrases = home.heroPhrases;
   <div class="hero-in">
     <h1 class="gn">
       <span class="gn-fixed">{home.heroFixed}</span>
-      <span class="gn-roll">
-        <span class="gn-track" style={`--n:${phrases.length}`}>
-          {phrases.map((p) => <span class="gn-item">{p}</span>)}
-          <span class="gn-item" aria-hidden="true">{phrases[0]}</span>
-        </span>
+      <span class="sr-only">{srAll}</span>
+      <span class="gn-rotator" id="gn-rotator" aria-hidden="true" tabindex="0">
+        {rotations.map((r, i) => (
+          <span class={`gn-item${i === 0 ? ' is-on' : ''}`}>{r}</span>
+        ))}
       </span>
     </h1>
+    <p class="gospel">
+      {gospelParts.map((part) => <span class="gospel-l" set:html={part}></span>)}
+    </p>
     <div class="hero-copy">
-      <p class="lead" set:html={home.heroLead}></p>
+      <p class="lead">{home.heroLead}</p>
       <div class="hero-actions">
         <a class="btn btn-primary" href={home.heroPrimaryHref}>{home.heroPrimaryLabel}</a>
         <a class="btn btn-ghost" href={home.heroSecondaryHref}>{home.heroSecondaryLabel}</a>
@@ -42,3 +52,45 @@ const phrases = home.heroPhrases;
     </div>
   </div>
 </header>
+
+<script>
+  /* Rotator, per spec: 2600ms interval, array order, looping. Pause on hover
+     AND focus. prefers-reduced-motion: show item one, no interval at all. */
+  (function () {
+    const box = document.getElementById('gn-rotator');
+    if (!box) return;
+    const items = Array.from(box.querySelectorAll('.gn-item')) as HTMLElement[];
+    if (items.length < 2) return;
+
+    /* No layout shift, ever: min-width comes from the widest phrase. */
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap';
+    box.appendChild(probe);
+    let w = 0;
+    for (const it of items) { probe.textContent = it.textContent; w = Math.max(w, probe.offsetWidth); }
+    probe.remove();
+    box.style.minWidth = Math.ceil(w) + 'px';
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let i = 0;
+    let paused = false;
+    const step = () => {
+      if (paused) return;
+      const prev = items[i];
+      i = (i + 1) % items.length;
+      const next = items[i];
+      prev.classList.remove('is-on'); prev.classList.add('is-out');
+      next.classList.add('is-on');
+      window.setTimeout(() => prev.classList.remove('is-out'), 520);
+    };
+    const timer = window.setInterval(step, 2600);
+    const pause = () => { paused = true; };
+    const resume = () => { paused = false; };
+    box.addEventListener('mouseenter', pause);
+    box.addEventListener('mouseleave', resume);
+    box.addEventListener('focus', pause);
+    box.addEventListener('blur', resume);
+    window.addEventListener('pagehide', () => window.clearInterval(timer));
+  })();
+</script>

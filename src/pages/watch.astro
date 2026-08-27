@@ -14,7 +14,7 @@ const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, 
     <div class="shell">
       <div class="sec-head">
         <h1>{labels.watchHeading}</h1>
-        <span class="label">{clips.length} clips &middot; captions burned in</span>
+        <span class="label">{clips.length > 0 ? `${clips.length} clips` : ''}</span>
       </div>
       <div class="rail">
         {clips.map((c: any) => {

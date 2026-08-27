@@ -4,11 +4,12 @@ import Signup from '../../components/Signup.astro';
 import { live, readMinutes, displayDate, isoDate } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
+import home from '../../data/home.json';
 const entries = await live('essays');
 const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
 const byYear = years.map((y) => ({ year: y, items: entries.filter((e: any) => e.data.publishAt.getFullYear() === y) }));
 const title = labels.essaysHeading;
-const dek = labels.essaysDek;
+const dek = home.essaysHeader;
 ---
 <Base title={`${title} — ${site.name}`} description={dek}>
   <section class="band shell">

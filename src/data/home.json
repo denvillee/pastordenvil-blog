@@ -1,17 +1,9 @@
 {
-  "heroLead": "The kingdom already started. It has not finished. <b>We are living in the overlap.</b>",
-  "heroPrimaryLabel": "Start here",
-  "heroPrimaryHref": "/studies/",
+  "heroLead": "One idea a week, worked out from twenty years of preaching. Read it, sit with it, do something with it.",
+  "heroPrimaryLabel": "Studies",
+  "heroPrimaryHref": "https://grabyourbibles.com",
   "heroSecondaryLabel": "Read this week",
   "heroSecondaryHref": "/essays/",
-  "marquee": [
-    "God calls us from where we are, not from where we think we should be.",
-    "Worship and doubt can coexist.",
-    "The kingdom of God is already at work and still on the way.",
-    "Pay attention to what gets your attention.",
-    "Contentment comes from trusting God as our Shepherd, not from striving or achieving.",
-    "Saying yes to Jesus is where transformation begins."
-  ],
   "featureLabel": "This week",
   "featureLabelRecent": "Latest essay",
   "featureLabelOlder": "From the archive",
@@ -32,12 +24,37 @@
   "studiesDek": "Guided studies you can walk through on your own or with a group. You read the passage, you mark it yourself, and the discussion is built from what you noticed &mdash; not from questions somebody else wrote.",
   "studiesNote": "<b>Pay attention to what gets your attention.</b>",
   "studiesCta": "Go to the studies",
-  "heroFixed": "Good news",
-  "heroPhrases": [
-    "for the waiting.",
-    "for starting over.",
-    "for the long middle.",
-    "for the valley.",
-    "for honest doubt."
+  "heroFixed": "Good news for",
+  "heroRotations": [
+    "the weary.",
+    "the lonely.",
+    "the waiting.",
+    "the valley.",
+    "starting over.",
+    "the doubting.",
+    "the sick."
+  ],
+  "heroRotationsReserve": [
+    "the long middle.",
+    "the quiet years.",
+    "whoever is carrying it.",
+    "honest doubt."
+  ],
+  "heroGospelLine": "Jesus is King.|His freedom, peace and purpose are <em>available now.</em>",
+  "essaysHeader": "The kingdom already started. It has not finished. We are living in the overlap.",
+  "ticker": [
+    "Pay attention to what gets your attention.",
+    "God calls us from where we are, not from where we think we should be.",
+    "Worship and doubt can coexist.",
+    "Faithfulness in the present prepares us for what's next.",
+    "Jesus rescues us from this present age into God's purpose."
+  ],
+  "tickerReserve": [
+    "Holiness involves reorienting our values, not just our behavior.",
+    "Good things become distractions if they overshadow God's bigger purpose.",
+    "Contentment comes from trusting God as our Shepherd, not from striving.",
+    "Green pastures and still waters are not idyllic scenes. They are God's invitation to rest.",
+    "Saying yes to Jesus is where transformation begins.",
+    "Our identity is in Christ, not in our past or present circumstances."
   ]
 }

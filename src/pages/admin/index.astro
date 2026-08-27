@@ -32,18 +32,20 @@ font-size:12.5px; box-shadow:0 -6px 18px rgba(0,0,0,.22);
 #deskbar .msg{font-weight:700; letter-spacing:.02em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 #deskbar .msg small{display:block; font-weight:500; opacity:.7; font-size:11px; letter-spacing:.01em}
 #deskbar .spacer{flex:1}
-#deskbar a{
+#deskbar a, #deskbar button.linkish{
 display:inline-flex; align-items:center; gap:6px; white-space:nowrap;
 text-decoration:none; border-radius:3px; padding:7px 12px;
 font-weight:800; letter-spacing:.06em; text-transform:uppercase; font-size:11px;
+background:none; cursor:pointer;
+font-family:'Archivo',system-ui,sans-serif;
 }
-#deskbar a.ghost{color:#F3F1EA; border:1px solid rgba(243,241,234,.32)}
-#deskbar a.ghost:hover{border-color:#ECC46E; color:#ECC46E}
+#deskbar a.ghost, #deskbar button.linkish{color:#F3F1EA; border:1px solid rgba(243,241,234,.32)}
+#deskbar a.ghost:hover, #deskbar button.linkish:hover{border-color:#ECC46E; color:#ECC46E}
 #deskbar a.go{background:#ECC46E; color:#0E1211}
 #deskbar a.go:hover{background:#fff}
-#deskbar a:focus-visible{outline:2px solid #2B4CF0; outline-offset:2px}
-#deskbar button{background:none; border:0; color:rgba(243,241,234,.55); cursor:pointer; font-size:17px; line-height:1; padding:6px 4px}
-#deskbar button:hover{color:#F3F1EA}
+#deskbar a:focus-visible, #deskbar button:focus-visible{outline:2px solid #2B4CF0; outline-offset:2px}
+#deskbar button.x{background:none; border:0; color:rgba(243,241,234,.55); cursor:pointer; font-size:17px; line-height:1; padding:6px 4px}
+#deskbar button.x:hover{color:#F3F1EA}
 #deskpeek{
 position:fixed; right:12px; bottom:12px; z-index:2147483000;
 background:#0E1211; color:#ECC46E; border:1px solid #ECC46E;
@@ -52,10 +54,35 @@ font-family:'Archivo',system-ui,sans-serif; font-size:11px;
 font-weight:800; letter-spacing:.07em; text-transform:uppercase;
 }
 #deskpeek[hidden]{display:none}
-@media (max-width:720px){
-#deskbar .msg small{display:none}
-#deskbar{gap:8px; padding:0 8px}
+#deskhelp{
+position:fixed; right:12px; bottom:56px; z-index:2147483001;
+width:min(430px, calc(100vw - 24px)); max-height:min(72vh, 620px); overflow:auto;
+background:#0E1211; color:#F3F1EA;
+border:1px solid #ECC46E; border-radius:4px;
+padding:20px 22px 18px;
+font-family:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif;
+font-size:13px; line-height:1.55;
+box-shadow:0 -8px 30px rgba(0,0,0,.35);
 }
+#deskhelp[hidden]{display:none}
+#deskhelp h2{
+margin:0 0 4px; font-size:15px; font-weight:900;
+letter-spacing:.02em; text-transform:uppercase;
+}
+#deskhelp h3{
+margin:18px 0 5px; font-size:11px; font-weight:800; color:#ECC46E;
+letter-spacing:.14em; text-transform:uppercase;
+}
+#deskhelp p{margin:0 0 8px; color:rgba(243,241,234,.88)}
+#deskhelp b{color:#F3F1EA}
+#deskhelp .rooms{margin:0; padding:0; list-style:none}
+#deskhelp .rooms li{
+display:flex; gap:10px; padding:4px 0;
+border-bottom:1px solid rgba(243,241,234,.08);
+}
+#deskhelp .rooms li:last-child{border-bottom:0}
+#deskhelp .rooms .tab{flex:none; width:118px; font-weight:800}
+#deskhelp .rooms .where{color:rgba(243,241,234,.75)}
 </style>
 </head>
 <body>
@@ -71,26 +98,58 @@ Editing your private preview
 <small>Saving here does not put anything on denvillee.com</small>
 </span>
 <span class="spacer"></span>
+<button type="button" class="linkish" id="deskhelpbtn">How this works</button>
 <a class="ghost" href={PREVIEW} target="_blank" rel="noopener">See preview</a>
 <a class="go" href={PUBLISH} target="_blank" rel="noopener">Publish to the site</a>
-<button type="button" id="deskhide" title="Hide this bar" aria-label="Hide this bar">&times;</button>
+<button type="button" class="x" id="deskhide" title="Hide this bar" aria-label="Hide this bar">&times;</button>
 </div>
 <button id="deskpeek" type="button" hidden>Preview &amp; publish</button>
 
-<script is:inline>
-(function () {
-var bar = document.getElementById('deskbar');
-var peek = document.getElementById('deskpeek');
-var KEY = 'dl-deskbar-hidden';
+<section id="deskhelp" hidden aria-label="How this editor works">
+<h2>How this works</h2>
+<p>This editor writes to your private preview. Nothing lands on denvillee.com until you publish.</p>
+
+<h3>The rooms</h3>
+<ul class="rooms">
+<li><span class="tab">Essays</span><span class="where">/essays/ &middot; the newest one leads the home page</span></li>
+<li><span class="tab">For Leaders</span><span class="where">/leaders/</span></li>
+<li><span class="tab">Moments</span><span class="where">/moments/</span></li>
+<li><span class="tab">Bookshelf</span><span class="where">/bookshelf/ and the home page shelf</span></li>
+<li><span class="tab">Watch</span><span class="where">/watch/</span></li>
+<li><span class="tab">Frameworks</span><span class="where">/frameworks/ &middot; linked from the footer</span></li>
+<li><span class="tab">Standing pages</span><span class="where">About and Subscribe</span></li>
+<li><span class="tab">Site copy</span><span class="where">the fixed lines &mdash; hero, ticker, buttons, titles</span></li>
+</ul>
+
+<h3>Adding a piece</h3>
+<p>Open the room, press <b>Create</b>, fill in the title and standfirst, write the body, and <b>Save</b>. A future date in <b>Publish at</b> keeps it hidden until that day.</p>
+
+<h3>Publishing</h3>
+<p><b>Save</b> puts it on your private preview &mdash; check it with <b>See preview</b>. When it looks right, press <b>Publish to the site</b> and confirm on the page that opens. That pushes everything saved so far live.</p>
+
+<h3>Under construction</h3>
+<p>A room that says <b>Under construction</b> on the site fills itself the moment its first piece publishes. There is nothing to switch on.</p>
+
+<h3>Studies</h3>
+<p>The studies on grabyourbibles.com are not edited here. Each study is built into the site as its own walk-through &mdash; send over the next booklet and it gets built the same way.</p>
+</section>
+
+<script>
+const bar = document.getElementById('deskbar');
+const peek = document.getElementById('deskpeek');
+const help = document.getElementById('deskhelp');
+const helpBtn = document.getElementById('deskhelpbtn');
+const KEY = 'dl-deskbar-hidden';
 function set(hidden) {
-bar.hidden = hidden;
-peek.hidden = !hidden;
-try { localStorage.setItem(KEY, hidden ? '1' : '0'); } catch (e) {}
+  bar.hidden = hidden;
+  peek.hidden = !hidden;
+  if (hidden) help.hidden = true;
+  try { localStorage.setItem(KEY, hidden ? '1' : '0'); } catch (e) {}
 }
 try { if (localStorage.getItem(KEY) === '1') set(true); } catch (e) {}
-document.getElementById('deskhide').addEventListener('click', function () { set(true); });
-peek.addEventListener('click', function () { set(false); });
-})();
+document.getElementById('deskhide').addEventListener('click', () => set(true));
+peek.addEventListener('click', () => set(false));
+helpBtn.addEventListener('click', () => { help.hidden = !help.hidden; });
 </script>
 </body>
 </html>
