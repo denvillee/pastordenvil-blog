@@ -123,20 +123,32 @@ export const collections = {
     clip: z.string().optional(),         // id of the companion clip
   }),
 
+  /* WATCH, rebuilt 28 Aug 2026 (packet 1.8, "kept and narrowed").
+     Embeds only, never re-hosted: Denvil's talks live on whichever channel
+     posted them, and this page points at them.
+
+     The previous shape here was a vertical-clip model with posters, durations
+     and a `day` of the week. It went with the publishing cadence that was
+     retired, and none of its fields survive into this one. */
   watch: defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/watch' }),
     schema: z.object({
       title: z.string(),
-      caption: z.string(),
-      week: z.number().optional(),
-      day: z.enum(['monday', 'wednesday', 'friday', 'saturday']).optional(),
-      durationSeconds: z.number(),
-      scripture: z.string().optional(),
-      poster: z.string(),
-      youtube: z.string().default(''),
-      tiktok: z.string().default(''),
-      instagram: z.string().default(''),
-      publishAt: z.coerce.date(),
+      /* Set by hand, always. Deriving it from the video's upload date puts a
+         2019 talk that a church posted in 2023 under the wrong heading, and
+         nobody would notice until Denvil did. */
+      year: z.number().int(),
+      /* The eleven character id, not a URL. Watch pages, share links, embed
+         URLs and shorts URLs all carry it differently, and a stored URL means
+         building the embed by string surgery on somebody else's format. */
+      videoId: z.string(),
+      /* Church, conference or event. */
+      context: z.string().optional(),
+      /* One line: what it is. */
+      note: z.string().optional(),
+      /* Position inside its year, largest first. Untouched, everything in a
+         year sorts by title, which at least is stable. */
+      order: z.number().default(0),
       draft: z.boolean().default(false),
     }),
   }),
