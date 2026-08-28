@@ -1,0 +1,15 @@
+---
+/*
+  The picture at the top of an image-format post, with its caption under it.
+  One fixed layout, not an arrangement the writer has to compose: the freedom
+  the format gives is freedom of kind, not of placement.
+*/
+interface Props { src: string; alt?: string; caption?: string }
+const { src, alt, caption } = Astro.props;
+---
+{src && (
+  <figure class="post-fig">
+    <img src={src} alt={alt ?? ''} loading="lazy" decoding="async" />
+    {caption && <figcaption>{caption}</figcaption>}
+  </figure>
+)}

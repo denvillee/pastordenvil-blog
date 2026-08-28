@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import Article from '../../layouts/Article.astro';
 import { live, readMinutes, weekSiblings, weekIdea } from '../../lib/publish';
 import { getDiagram } from '../../lib/diagrams';
+import PostFigure from '../../components/PostFigure.astro';
 
 export async function getStaticPaths() {
   const entries = await live('leaders');
@@ -16,6 +17,10 @@ const idea = seasonWeek?.idea ?? null;
 const movement = seasonWeek?.movement ?? null;
 const siblings = await weekSiblings(entry.data.week, entry.id);
 const Diagram = getDiagram(entry.data.diagram);
+/* Format decides the layout. Only a full essay claims a reading time; a short
+   note or a picture with one idea under it does not. */
+const fmt = entry.data.format ?? 'note';
+const mins = fmt === 'essay' ? readMinutes(entry.body) : undefined;
 ---
 <Article
   room="leaders"
@@ -27,11 +32,14 @@ const Diagram = getDiagram(entry.data.diagram);
   week={entry.data.week}
   idea={idea}
   movement={movement}
-  readMinutes={readMinutes(entry.body)}
+  readMinutes={mins}
   notes={entry.data.notes}
   ogImage={entry.data.ogImage}
   siblings={siblings}
 >
+  {fmt === 'image' && entry.data.image && (
+    <PostFigure src={entry.data.image} alt={entry.data.imageAlt} caption={entry.data.caption} />
+  )}
   {Diagram && (
     <figure class="fw-fig fw-fig-solo">
       <Diagram />

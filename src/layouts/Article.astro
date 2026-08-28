@@ -12,13 +12,13 @@ interface Props {
   title: string; dek: string;
   publishAt: Date; scripture?: string; series?: string;
   week?: number; idea?: string | null; movement?: string | null;
-  part?: number;
-  readMinutes: number; notes?: string;
+  seriesPlace?: { name: string; order: number; total: number } | null;
+  readMinutes?: number; notes?: string;
   ogImage?: string; siblings?: Sibling[];
 }
 const {
   room, title, dek, publishAt, scripture, series,
-  week, idea, movement, readMinutes, notes, ogImage, siblings = [], part,
+  week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
 } = Astro.props;
 
 const meta = ROOMS[room];
@@ -57,8 +57,13 @@ const passages = await getPassages(scripture);
       <div class="art-meta">
         <span><time datetime={isoDate(publishAt)}>{displayDate(publishAt)}</time></span>
         {scripture && <span>{scripture}</span>}
-        <span>{readMinutes} min read</span>
-        {series && <span>{series}{part ? ` · Part ${part}` : ''}</span>}
+        {readMinutes ? <span>{readMinutes} min read</span> : null}
+        {/* Where this sits in its run, linking back to the list of the whole
+            thing. No previous and next arrows: with most of a series still to
+            come, the list is the more useful way back. */}
+        {seriesPlace
+          ? <span><a class="art-series" href={`/${meta.path}/#ser-h`}>Part {seriesPlace.order} of {seriesPlace.total} &middot; {seriesPlace.name}</a></span>
+          : series && <span>{series}</span>}
       </div>
       {passages.length > 0 && (
         <div class="art-verse" data-verse>

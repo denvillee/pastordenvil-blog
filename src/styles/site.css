@@ -1021,3 +1021,109 @@ a[data-footnote-ref]:hover{text-decoration:underline}
    keep the default ink pill. */
 .feature-body .meta .pill.t-leaders{background:var(--ember); color:#160B04}
 .feature-body .meta .pill.t-moments{background:#1E5C48; color:#fff}
+
+/* ── The current series ─────────────────────────────────────────────────────
+   The run in progress, shown whole. Published parts link; the rest are listed
+   as forthcoming with no date, because a date not yet chosen is a promise not
+   yet made. A reader should be able to see the shape of the thing before
+   reading a word of it. */
+.ser{
+  margin:2.4rem 0 2.6rem; padding:1.5rem 1.6rem 1.6rem;
+  background:var(--surface); border:1px solid var(--line); border-radius:4px;
+}
+.ser-eyebrow{
+  font-family:var(--sans); font-size:.66rem; font-weight:800; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--muted); margin:0 0 .45rem;
+}
+.ser-name{
+  font-family:var(--serif); font-weight:600; letter-spacing:-.01em;
+  font-size:clamp(1.35rem,3vw,1.8rem); line-height:1.15; margin:0; color:var(--fg);
+}
+.ser-dek{font-family:var(--serif); color:var(--muted); margin:.5rem 0 0; max-width:60ch; line-height:1.55}
+.ser-count{
+  font-family:var(--sans); font-size:.68rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); margin:.7rem 0 0;
+}
+.ser-parts{list-style:none; margin:1.1rem 0 0; padding:0; counter-reset:none}
+.ser-part{
+  display:grid; grid-template-columns:1.9rem 1fr auto; align-items:baseline; gap:.2rem .6rem;
+  padding:.5rem 0; border-top:1px solid var(--line);
+}
+.ser-part:first-child{border-top:0}
+.ser-n{
+  font-family:var(--sans); font-size:.72rem; font-weight:800; color:var(--muted);
+  font-variant-numeric:tabular-nums;
+}
+.ser-t{font-family:var(--serif); font-size:1.02rem; line-height:1.4; color:var(--fg)}
+a.ser-t{text-decoration:none; border-bottom:1px solid transparent; transition:border-color .18s}
+a.ser-t:hover{border-bottom-color:var(--cobalt-ink)}
+/* Forthcoming parts read as planned, not as broken links. */
+.ser-part.is-soon .ser-t,.ser-part.is-soon .ser-n{color:var(--muted)}
+.ser-soon{
+  font-family:var(--sans); font-size:.6rem; font-weight:800; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted);
+  border:1px solid var(--line); border-radius:2px; padding:.2rem .45rem; white-space:nowrap;
+}
+@media(max-width:560px){
+  .ser-part{grid-template-columns:1.6rem 1fr; }
+  .ser-soon{grid-column:2; justify-self:start; margin-top:.15rem}
+}
+
+/* The line under an essay title saying where it sits in its run. */
+.art-series{color:inherit; text-decoration:none; border-bottom:1px solid var(--line)}
+.art-series:hover{border-bottom-color:var(--cobalt-ink)}
+
+/* ── By date ────────────────────────────────────────────────────────────────
+   A record, not a reading list, and plainer than the lists above it on
+   purpose: no images, no cards, no surfaces. Title, date, one line. */
+.tl{margin:2.8rem 0 0; padding-top:1.6rem; border-top:1px solid var(--line)}
+.tl-h{
+  font-family:var(--sans); font-size:.72rem; font-weight:800; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); margin:0;
+}
+.tl-sub{font-family:var(--serif); color:var(--muted); font-size:.95rem; margin:.4rem 0 0}
+.tl-group{margin-top:1.5rem}
+.tl-month{
+  font-family:var(--sans); font-size:.66rem; font-weight:800; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--muted); margin:0 0 .5rem;
+  padding-bottom:.35rem; border-bottom:1px solid var(--line);
+}
+.tl-list{list-style:none; margin:0; padding:0}
+.tl-item{
+  display:grid; grid-template-columns:8.5rem 1fr; gap:.15rem 1rem;
+  padding:.6rem 0; align-items:baseline;
+}
+.tl-date{
+  font-family:var(--sans); font-size:.7rem; font-weight:700; letter-spacing:.04em;
+  color:var(--muted); font-variant-numeric:tabular-nums;
+}
+.tl-title{
+  font-family:var(--serif); font-size:1.02rem; line-height:1.35; color:var(--fg);
+  text-decoration:none; border-bottom:1px solid transparent; transition:border-color .18s;
+  justify-self:start;
+}
+.tl-title:hover{border-bottom-color:var(--cobalt-ink)}
+.tl-dek{
+  grid-column:2; font-family:var(--serif); font-size:.93rem; line-height:1.45;
+  color:var(--muted); max-width:64ch;
+}
+@media(max-width:640px){
+  .tl-item{grid-template-columns:1fr}
+  .tl-dek{grid-column:1}
+}
+
+/* The heading over the standalone list, only shown when a series sits above it
+   and the two need telling apart. */
+.sec-h2{
+  font-family:var(--sans); font-size:.72rem; font-weight:800; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); margin:2.4rem 0 .9rem;
+}
+.sec-more{margin:1.6rem 0 0}
+
+/* A picture with one idea under it: the image format, one fixed layout. */
+.post-fig{margin:0 0 1.8rem}
+.post-fig img{width:100%; height:auto; border-radius:3px; display:block}
+.post-fig figcaption{
+  font-family:var(--serif); font-size:.92rem; line-height:1.5; color:var(--muted);
+  margin-top:.6rem; max-width:60ch;
+}
