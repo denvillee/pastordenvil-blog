@@ -14,12 +14,14 @@ interface Props {
   publishedTime?: string;
   noindex?: boolean;
   progress?: boolean;
+  /* The home page wears the nav as a masthead on the pine hero. */
+  masthead?: boolean;
 }
 const {
   title, description,
   ogImage = '/assets/img/og-default.jpg',
   ogType = 'website',
-  publishedTime, noindex = false, progress = false,
+  publishedTime, noindex = false, progress = false, masthead = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -70,7 +72,7 @@ const comingSoon =
 
   <slot name="head" />
 </head>
-<body>
+<body class:list={[masthead && "has-masthead"]}>
   <a class="skip-link" href="#main">Skip to content</a>
   <div class="grain" aria-hidden="true"></div>
 
@@ -86,7 +88,7 @@ const comingSoon =
   ) : (
     <Fragment>
       {progress && <div class="progress" id="progress" aria-hidden="true"></div>}
-      <Nav />
+      <Nav masthead={masthead} />
       <main id="main">
         <slot />
       </main>
@@ -135,7 +137,19 @@ const comingSoon =
     (function () {
       var nav = document.querySelector('.nav');
       if (!nav) return;
-      if (document.querySelector('.hero')) nav.classList.add('over-hero');
+      /* Over a hero the bar starts opaque so light nav text never lands on bone.
+         The masthead is the exception: the hero's pine runs up behind it, so it
+         needs no field of its own, and it publishes its measured height for the
+         hero to pad by. */
+      const mast = nav.classList.contains('nav-mast');
+      if (document.querySelector('.hero') && !mast) nav.classList.add('over-hero');
+      if (mast) {
+        const setH = () => document.documentElement.style.setProperty(
+          '--mast-h', nav.getBoundingClientRect().height + 'px');
+        setH();
+        if (window.ResizeObserver) new ResizeObserver(setH).observe(nav);
+        else window.addEventListener('resize', setH);
+      }
       var tick = function () {
         nav.classList.toggle('is-stuck', window.scrollY > 24);
       };
