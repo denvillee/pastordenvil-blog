@@ -3,10 +3,11 @@ import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
 import LandingCopy from '../../components/LandingCopy.astro';
 import Timeline from '../../components/Timeline.astro';
-import { live, readMinutes, displayDate, isoDate } from '../../lib/publish';
+import { live, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 const entries = await live('leaders');
+const series = await currentSeries('leaders');
 const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
 /* The same by-date view the Essays page uses. It stays off until the section
    has enough in it to have a shape worth showing: with three posts a timeline
@@ -42,11 +43,14 @@ const subtitle = labels.leadersSubtitle;
         </div>
       </section>
     ))}
-    {timelineItems.length >= 6 && (
+    {/* Same rule as /essays/: no series, no by-date block. Six standalone
+        pieces with no series would still produce two identical lists
+        (round 8, R8-4, superseding the earlier count threshold). */}
+    {series && series.parts.length > 1 && (
       <Timeline items={timelineItems} heading={labels.timelineHeading} />
     )}
 
-    {entries.length === 0 && <p class="art-dek">{labels.leadersEmpty}</p>}
+    {entries.length === 0 && labels.leadersEmpty && <p class="empty-note">{labels.leadersEmpty}</p>}
   </section>
   <Signup />
 </Base>
