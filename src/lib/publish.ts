@@ -13,8 +13,35 @@ export function isLive(data: { draft?: boolean; publishAt: Date }) {
   return data.publishAt.getTime() <= Date.now();
 }
 
-/** Every published entry in a room, newest first. */
+/** Every published entry in a room, newest first.
+ *
+ *  Section intros are excluded here rather than at each call site. They are
+ *  signposts, not news, and they carry a real publish date because inventing an
+ *  early one would surface a lie anywhere the flag did not reach. That date
+ *  makes them the newest thing in the room on the day they ship, so anything
+ *  reading this list by recency would lead with the introduction: the home
+ *  page's Latest slot, the archive, the by-date view, RSS. Filtering here means
+ *  a view added later is right without anyone remembering the rule. Ask for the
+ *  intro explicitly with introPost(). */
 export async function live(key: CollectionKey) {
+  const all = await getCollection(key as any);
+  return all
+    .filter((e: any) => isLive(e.data) && !e.data.pageIntro)
+    .sort((a: any, b: any) => b.data.publishAt.getTime() - a.data.publishAt.getTime());
+}
+
+/** A room's introduction post, if it has one. Pinned to the top of its list. */
+export async function introPost(key: CollectionKey) {
+  const all = await getCollection(key as any);
+  return all.find((e: any) => e.data.pageIntro && isLive(e.data));
+}
+
+/** Every published entry including the section intro, newest first.
+ *
+ *  This is what route generation wants. The intro is a real post at a real URL,
+ *  linkable and shareable, so it needs a page built even though it never
+ *  appears in a feed. Using live() in getStaticPaths gives it a 404. */
+export async function allLive(key: CollectionKey) {
   const all = await getCollection(key as any);
   return all
     .filter((e: any) => isLive(e.data))
