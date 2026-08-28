@@ -3,7 +3,7 @@
   Layer 3 of the Bookshelf: every book, forever. Grouped by month, newest
   first, compact rows. This page only grows; nothing is ever removed.
 */
-import Base from '../../layouts/Base.astro';
+import Shell from '../../layouts/Shell.astro';
 import Signup from '../../components/Signup.astro';
 import { live } from '../../lib/publish';
 import { monthLabel } from '../../lib/shelf';
@@ -14,10 +14,10 @@ const books = entries.map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }
 const months = [...new Set(books.map((b: any) => b.shelfMonth).filter(Boolean))].sort().reverse() as string[];
 const firstYear = months.length ? months[months.length - 1].slice(0, 4) : '';
 ---
-<Base title={`Every Book · ${site.name}`} description="Every book on the shelf, grouped by month.">
+<Shell title={`Every Book · ${site.name}`} description="Every book on the shelf, grouped by month.">
   <section class="band shell">
     <div class="sec-head">
-      <h1>Every Book</h1>
+      <h1 class="page-h is-display">Every Book<span class="dot">.</span></h1>
       <span class="label">{books.length} {books.length === 1 ? 'book' : 'books'}{firstYear ? ` since ${firstYear}` : ''}</span>
     </div>
     {months.map((m) => (
@@ -39,5 +39,5 @@ const firstYear = months.length ? months[months.length - 1].slice(0, 4) : '';
       </section>
     ))}
   </section>
-  <Signup />
-</Base>
+  <Signup tone="card" />
+</Shell>
