@@ -3,11 +3,13 @@
   The home page, round 9.
 
   Order and grounds: hero on pine, Latest on paper, the three rooms as colour
-  blocks, the shelf on paper, Studies on pine, Everything on paper, Subscribe on
-  brass. Every block opens with an eyebrow and a hairline, which is what keeps
-  one section from running into the next.
+  blocks, the shelf on paper, Studies on pine, Subscribe on brass. Every block
+  opens with an eyebrow and a hairline, which is what keeps one section from
+  running into the next.
 
-  A visitor should meet a piece once, properly. Everything else is a door.
+  A visitor should meet a piece once, properly. Everything else is a door, and
+  the doors are not repeated: the archive is in the footer on every page, so it
+  does not also need a button of its own a scroll above it.
 */
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
@@ -15,10 +17,9 @@ import LatestBlock from '../components/LatestBlock.astro';
 import Streams from '../components/Streams.astro';
 import StudiesCard from '../components/StudiesCard.astro';
 import NowReading from '../components/NowReading.astro';
-import EverythingPill from '../components/EverythingPill.astro';
 import Signup from '../components/Signup.astro';
 import DesignNotes from '../components/DesignNotes.astro';
-import { live, latest, readMinutes, openingParagraph, displayDate, ROOMS } from '../lib/publish';
+import { live, latest, readMinutes, openingParagraph, displayDate } from '../lib/publish';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
@@ -48,10 +49,6 @@ const shelf = books
   .sort((a: any, b: any) => a.data.order - b.data.order)
   .map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }));
 
-/* The count on the Everything door comes from the archive itself. */
-const totalPieces = (await Promise.all(
-  (Object.keys(ROOMS) as (keyof typeof ROOMS)[]).map((k) => live(k))
-)).reduce((n, list) => n + list.length, 0);
 ---
 <Base
   title={`${site.name} · ${site.tagline}`}
@@ -78,8 +75,6 @@ const totalPieces = (await Promise.all(
   <NowReading book={nowBook} shelf={shelf} />
 
   <StudiesCard />
-
-  <EverythingPill total={totalPieces} label={labels.archiveLink} />
 
   <Signup />
   {labels.showDesignNotes && <DesignNotes />}
