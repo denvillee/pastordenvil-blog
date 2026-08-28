@@ -76,6 +76,49 @@ export async function latest(): Promise<LatestItem | undefined> {
   return (pinned.length ? pinned : all).sort(byDate)[0];
 }
 
+/* The running series for a section, with each part marked live or forthcoming.
+
+   Parts come from the series entry rather than from counting posts, so the
+   shape of the whole run shows before the later parts exist as files. A part
+   is live when a published piece in that section carries the series name and
+   that seriesOrder. */
+export async function currentSeries(room: RoomKey) {
+  const all = await getCollection('series' as any);
+  const def = all.find((s: any) => s.data.current && s.data.room === room);
+  if (!def) return null;
+  const posts = await live(room);
+  const byOrder = new Map<number, any>();
+  for (const p of posts) {
+    if (p.data.series === def.data.name && typeof p.data.seriesOrder === 'number') {
+      byOrder.set(p.data.seriesOrder, p);
+    }
+  }
+  const parts = [...def.data.parts]
+    .sort((a: any, b: any) => a.order - b.order)
+    .map((part: any) => {
+      const post = byOrder.get(part.order);
+      return {
+        order: part.order,
+        /* The published piece's own title wins: it is the one a reader will
+           actually see, and it may have been sharpened since the run was
+           planned. */
+        title: post?.data.title ?? part.title,
+        href: post ? `/${ROOMS[room].path}/${post.id}/` : undefined,
+        live: !!post,
+      };
+    });
+  return { name: def.data.name, dek: def.data.dek, parts, total: parts.length };
+}
+
+/** Where a single piece sits in its series, for the line under its title. */
+export async function seriesPlace(room: RoomKey, seriesName?: string, order?: number) {
+  if (!seriesName || typeof order !== 'number') return null;
+  const all = await getCollection('series' as any);
+  const def = all.find((s: any) => s.data.name === seriesName && s.data.room === room);
+  if (!def || !def.data.parts.length) return null;
+  return { name: def.data.name, order, total: def.data.parts.length };
+}
+
 /** The other pieces published in the same week, for the "rest of this week" block. */
 export async function weekSiblings(week: number | undefined, selfId: string) {
   if (!week) return [];
