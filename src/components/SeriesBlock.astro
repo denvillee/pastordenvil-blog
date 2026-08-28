@@ -1,0 +1,34 @@
+---
+/*
+  THE CURRENT SERIES. Its name, its one line, and its parts in order.
+
+  Parts that are published link; the rest are listed as forthcoming with no
+  date, because a date that has not been chosen is a promise that has not been
+  made. A reader arriving on the section should be able to see the shape of the
+  whole run without reading a word of it.
+
+  The run comes from the series entry, not from counting the posts, so the
+  parts still to be written can be shown before the files exist.
+*/
+interface Part { order: number; title: string; href?: string; live: boolean }
+interface Props { name: string; dek: string; parts: Part[] }
+const { name, dek, parts } = Astro.props;
+const liveCount = parts.filter((p) => p.live).length;
+---
+<section class="ser" aria-labelledby="ser-h">
+  <p class="ser-eyebrow">The series</p>
+  <h2 class="ser-name" id="ser-h">{name}</h2>
+  <p class="ser-dek">{dek}</p>
+  <p class="ser-count">{liveCount} of {parts.length} published</p>
+  <ol class="ser-parts">
+    {parts.map((p) => (
+      <li class:list={['ser-part', !p.live && 'is-soon']}>
+        <span class="ser-n">{p.order}</span>
+        {p.live && p.href
+          ? <a class="ser-t" href={p.href}>{p.title}</a>
+          : <span class="ser-t">{p.title}</span>}
+        {!p.live && <span class="ser-soon">Forthcoming</span>}
+      </li>
+    ))}
+  </ol>
+</section>

@@ -1,0 +1,49 @@
+---
+/*
+  BY DATE. A record of what a section has published, grouped by month with the
+  oldest at the bottom, so the page ends where the writing started.
+
+  Deliberately plainer than the lists above it. Title, date, one line, no
+  images, no cards. It answers a different question from a reading list: not
+  "what should I read" but "what is here, and when did it happen". Shared, so
+  Moments and For Leaders get the same view once they have the volume for it.
+*/
+import { displayDate, isoDate } from '../lib/publish';
+
+interface Item { href: string; title: string; dek: string; publishAt: Date }
+interface Props { items: Item[]; heading?: string; sub?: string }
+const { items, heading = 'By date', sub } = Astro.props;
+
+/* Newest month first, and inside a month newest first, so the whole list reads
+   top to bottom as most recent to oldest. */
+const MONTH = new Intl.DateTimeFormat('en-US', {
+  month: 'long', year: 'numeric', timeZone: 'America/New_York',
+});
+const groups: { key: string; label: string; items: Item[] }[] = [];
+for (const it of [...items].sort((a, b) => b.publishAt.getTime() - a.publishAt.getTime())) {
+  const label = MONTH.format(it.publishAt);
+  const last = groups[groups.length - 1];
+  if (last && last.label === label) last.items.push(it);
+  else groups.push({ key: label, label, items: [it] });
+}
+---
+{items.length > 0 && (
+  <section class="tl" aria-labelledby="tl-h">
+    <h2 class="tl-h" id="tl-h">{heading}</h2>
+    {sub && <p class="tl-sub">{sub}</p>}
+    {groups.map((g) => (
+      <div class="tl-group">
+        <h3 class="tl-month">{g.label}</h3>
+        <ul class="tl-list">
+          {g.items.map((it) => (
+            <li class="tl-item">
+              <time class="tl-date" datetime={isoDate(it.publishAt)}>{displayDate(it.publishAt)}</time>
+              <a class="tl-title" href={it.href}>{it.title}</a>
+              <span class="tl-dek">{it.dek}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+)}
