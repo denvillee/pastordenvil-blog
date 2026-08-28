@@ -65,9 +65,15 @@ const dek = labels.essaysDek;
       </section>
     )}
 
-    {entries.length === 0 && <p class="art-dek">{labels.essaysEmpty}</p>}
+    {entries.length === 0 && labels.essaysEmpty && <p class="empty-note">{labels.essaysEmpty}</p>}
 
-    <Timeline items={items} heading={labels.timelineHeading} sub={labels.essaysTimelineSub} />
+    {/* By date renders only when a series is running. A series is the only
+        thing that makes the list above non-chronological, and therefore the
+        only thing that makes a chronological record say anything different.
+        With no series the two lists are identical (round 8, R8-4). */}
+    {series && series.parts.length > 1 && (
+      <Timeline items={items} heading={labels.timelineHeading} sub={labels.essaysTimelineSub} />
+    )}
 
     {entries.length > 0 && (
       <p class="sec-more"><a class="readlink" href="/archive/">{labels.archiveLink} <span>&rarr;</span></a></p>
