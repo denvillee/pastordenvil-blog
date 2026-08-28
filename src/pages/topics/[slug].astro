@@ -1,0 +1,47 @@
+---
+/*
+  A topic is a view over tags that pieces already carry, not a second taxonomy
+  kept in parallel. getStaticPaths builds a page only for topics that have at
+  least one published piece, so there is no route into an empty room.
+*/
+import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import EssayCard from '../../components/EssayCard.astro';
+import { live, ROOMS, type RoomKey } from '../../lib/publish';
+import data from '../../data/topics.json';
+import site from '../../data/site.json';
+
+export async function getStaticPaths() {
+  const { live, ROOMS } = await import('../../lib/publish');
+  const topics = (await import('../../data/topics.json')).default.topics;
+  const rooms: RoomKey[] = ['essays', 'leaders', 'moments'];
+  const all: any[] = [];
+  for (const r of rooms) for (const e of await live(r)) all.push({ e, room: r });
+
+  return topics
+    .map((t) => ({
+      t,
+      items: all.filter(({ e }) => (e.data.tags ?? []).some((g: string) => t.tags.some((x: string) => x.toLowerCase() === g.toLowerCase()))),
+    }))
+    .filter((x) => x.items.length > 0)
+    .map((x) => ({ params: { slug: x.t.slug }, props: { topic: x.t, items: x.items } }));
+}
+
+const { topic, items } = Astro.props;
+---
+<Shell title={`${topic.label} · ${site.name}`} description={topic.dek}>
+  <section class="band shell">
+    <h1 class="page-h is-display">{topic.label}<span class="dot">.</span></h1>
+    <p class="page-dek">{topic.dek}</p>
+    <div class="sec-head arch-sub">
+      <h2 class="sec-h">Everything tagged {topic.label}</h2>
+      <span class="count">{items.length} {items.length === 1 ? 'piece' : 'pieces'}</span>
+    </div>
+    <div class="ecards">
+      {items.map(({ e, room }: any) => (
+        <EssayCard href={`/${ROOMS[room].path}/${e.id}/`} entry={e} room={ROOMS[room].label} />
+      ))}
+    </div>
+    <p class="mt"><a class="go" href="/essays/">All essays <span class="arw" aria-hidden="true">&rarr;</span></a></p>
+  </section>
+</Shell>
