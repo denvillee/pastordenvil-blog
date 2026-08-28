@@ -1,0 +1,106 @@
+/*
+  DESIGN TOKENS  ·  redesign/playful-editorial
+
+  Everything visual resolves through this file. No page and no component
+  hardcodes a colour, a radius or a step of the type scale, so the whole site
+  can be retuned from one place.
+
+  Two rules the palette depends on:
+
+  - Warm cream is the ground, not white. Pure white next to these colours goes
+    cold and clinical, which is the opposite of the brief.
+  - Roughly 70 percent of any screen stays neutral. Colour arrives in blocks,
+    strokes, tape, discs, chips and buttons. Playful does not mean full.
+*/
+
+:root {
+  /* ── ground and ink ─────────────────────────────────────────────────── */
+  --cream:#F7F3EA;          /* the page */
+  --card:#EFEAE1;           /* muted card and sunken panels */
+  --white:#FFFFFF;
+  --ink:#111111;            /* primary text */
+  --dark:#151515;           /* dark feature panels */
+
+  /* ── the four ─────────────────────────────────────────────────────────
+     Face values. Anything that has to carry small text uses the -ink pair
+     below, which is the same hue walked down until it clears WCAG AA on
+     cream. Never set small type in a face value. */
+  --blue:#2457D6;
+  --yellow:#F2B526;
+  --coral:#ED6553;
+  --green:#A9C68E;
+
+  /* The reading pairs. Every figure is measured, not estimated: the first is
+     against cream, the second against --card, which is the darker of the two
+     grounds and so the one that actually decides. */
+  --blue-ink:#2450C4;       /* 6.28 / 5.80 */
+  --coral-ink:#B33A29;      /* 5.34 / 4.93 */
+  --green-ink:#4A6B33;      /* 5.51 / 5.09 */
+  --yellow-ink:#7A5B08;     /* 5.70 / 5.27  — text only, never a fill */
+
+  /* Filled surfaces. Yellow and green are bright enough to take ink on top.
+     Coral is the awkward one: white on the face value is 3.19, which carries a
+     large handwritten disc but fails any small label, so anything with a real
+     label on it uses --coral-fill and the face value stays decorative. */
+  --coral-fill:#BE3A26;     /* white on this is 5.49 */
+  /* The full stop that ends a display heading is punctuation, not decoration,
+     so it has to be legible. The face coral measures 2.88 on cream, just under
+     the 3:1 a heading needs; this clears it at 3.56 and still reads coral. */
+  --coral-dot:#E04E3A;
+  --on-blue:#FFFFFF;        /* 6.16 on --blue */
+  --on-yellow:#241A00;      /* 9.33 on --yellow */
+  --on-coral:#FFFFFF;       /* 5.49 on --coral-fill, 3.19 on --coral */
+  --on-green:#12210A;       /* 8.94 on --green */
+  --on-dark:#F7F3EA;        /* 16.49 on --dark */
+
+  /* ── text roles ───────────────────────────────────────────────────── */
+  --fg:var(--ink);
+  --muted:#5C5852;          /* 6.38 / 5.90 */
+  --faint:#6E695F;          /* 4.93 / 4.55 — clears AA on both grounds */
+  --rule:#DED7CA;
+  --rule-strong:#C8BFAE;
+
+  /* ── type ─────────────────────────────────────────────────────────────
+     One sans does display and body. Archivo is variable on weight and width,
+     which is what lets the headings get big and confident without a second
+     family. Caveat is the annotation voice and nothing else. */
+  --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --hand:"Caveat", "Bradley Hand", cursive;
+
+  --step--1:clamp(.78rem, .76rem + .1vw, .84rem);
+  --step-0:clamp(1rem, .97rem + .16vw, 1.08rem);
+  --step-1:clamp(1.15rem, 1.09rem + .3vw, 1.35rem);
+  --step-2:clamp(1.4rem, 1.28rem + .6vw, 1.8rem);
+  --step-3:clamp(1.75rem, 1.5rem + 1.2vw, 2.6rem);
+  --step-4:clamp(2.2rem, 1.7rem + 2.4vw, 3.8rem);
+  --step-5:clamp(2.8rem, 1.8rem + 4.6vw, 6rem);
+
+  --measure:66ch;           /* 55 to 70 characters, per the brief */
+
+  /* ── space and shape ──────────────────────────────────────────────── */
+  --pad:clamp(1.1rem, 4vw, 3rem);
+  --maxw:1200px;
+  --gap:clamp(1rem, 2.4vw, 2rem);
+  --band:clamp(3rem, 7vw, 6rem);
+
+  /* Containers are softly rounded, never pill-round, except buttons. */
+  --r-sm:6px;
+  --r:14px;
+  --r-lg:22px;
+  --r-pill:999px;
+
+  --shadow:0 1px 2px rgba(17,17,17,.04), 0 8px 24px rgba(17,17,17,.06);
+  --shadow-lift:0 2px 4px rgba(17,17,17,.05), 0 14px 34px rgba(17,17,17,.10);
+
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --fast:.18s;
+  --slow:.45s;
+}
+
+/*
+  The redesign is a light, warm system by definition: cream paper with ink on
+  it. A dark inversion of a page built on paper texture and hand-drawn marker
+  is a different design, not a variant of this one, so the site declares light
+  and stays there rather than shipping a half-considered dark mode.
+*/
+:root { color-scheme: light; }
