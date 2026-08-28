@@ -79,5 +79,9 @@
   "studiesSubtitle": "Guided ways into Scripture designed to help you make your own observations, ask better questions, and participate in the process of transformation.",
   "latestReadEssay": "Read the essay",
   "latestReadMoment": "Read this",
-  "latestReadLeaders": "Read the lesson"
+  "latestReadLeaders": "Read the lesson",
+  "essaysStandaloneHeading": "On its own",
+  "timelineHeading": "By date",
+  "essaysTimelineSub": "Everything here, most recent first.",
+  "archiveLink": "Everything"
 }
