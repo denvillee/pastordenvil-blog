@@ -47,6 +47,11 @@ export const collections = {
   leaders: room('leaders'),
   moments: room('moments'),
 
+  /* PARKED, 28 Aug 2026. The Frameworks room is retired: no route, no CMS tab,
+     /frameworks/ 301s to /essays/. The collection stays defined so the three
+     existing files remain valid on disk rather than being quietly orphaned.
+     Their substance belongs inside essays now, and the TwoAges drawing already
+     renders there through the `diagram` field. */
   frameworks: room('frameworks', {
     order: z.number(),
     summary: z.string().optional(),
