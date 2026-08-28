@@ -38,6 +38,7 @@ collections:
       - { label: Standfirst, name: dek, widget: text, hint: 'One or two sentences. Shows under the headline, in lists, and in link previews.' }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false, hint: 'Set a future date and it stays hidden until then. The daily build publishes it.' }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false, hint: 'On means it never publishes, whatever the date says.' }
+      - { label: 'This is the section introduction', name: pageIntro, widget: boolean, default: false, required: false, hint: 'Leave this OFF. On means this piece is the "Why this exists" signpost pinned to the top of this tab, and it is then kept out of the home page, Everything, the by-date list and the feed. Only one piece per section should have it, and turning it on for a normal post hides that post from every list on the site.' }
       - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
       - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
       - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
@@ -66,6 +67,7 @@ collections:
       - { label: Standfirst, name: dek, widget: text }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: 'This is the section introduction', name: pageIntro, widget: boolean, default: false, required: false, hint: 'Leave this OFF. On means this piece is the "Why this exists" signpost pinned to the top of this tab, and it is then kept out of the home page, Everything, the by-date list and the feed. Only one piece per section should have it, and turning it on for a normal post hides that post from every list on the site.' }
       - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
       - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
       - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
@@ -96,6 +98,7 @@ collections:
       - { label: Standfirst, name: dek, widget: text }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: 'This is the section introduction', name: pageIntro, widget: boolean, default: false, required: false, hint: 'Leave this OFF. On means this piece is the "Why this exists" signpost pinned to the top of this tab, and it is then kept out of the home page, Everything, the by-date list and the feed. Only one piece per section should have it, and turning it on for a normal post hides that post from every list on the site.' }
       - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
       - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
       - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
@@ -202,7 +205,7 @@ collections:
   # ------------------------------------------------------- section landing copy
   - name: landing
     label: Section landing copy
-    description: 'The "Why this exists" copy on Essays, Moments, For Leaders and Bookshelf. The opening paragraph always shows on the page; everything in the body opens behind the control, so a reader coming back for what is new steps over it. One of these already exists for each section: edit them, do not add new ones.'
+    description: 'The "Why this exists" copy on Bookshelf. The opening paragraph always shows; the rest opens behind the control. Essays, Moments and For Leaders no longer use this: their introduction is a real post called "Why this exists", pinned to the top of their own tab, so edit it there.'
     label_singular: Landing page
     folder: /src/content/landing
     create: false
@@ -210,7 +213,7 @@ collections:
     format: frontmatter
     identifier_field: title
     fields:
-      - { label: Section, name: room, widget: string, hint: 'Which section this belongs to: essays, moments, leaders or bookshelf. Do not change this; the page finds its copy by this word.' }
+      - { label: Section, name: room, widget: string, hint: 'Which section this belongs to. Do not change this; the page finds its copy by this word.' }
       - { label: Title, name: title, widget: string, hint: 'For your own reference in this list. It is not printed on the page.' }
       - { label: Opening paragraph, name: lead, widget: text, hint: 'The one paragraph that always shows, before the reader opens the rest.' }
       - { label: The rest, name: body, widget: markdown, hint: 'Opens behind "Why this exists". Put **two asterisks** around the one line you want set apart, and start a line with > to indent it as a quotation.' }
@@ -236,7 +239,6 @@ collections:
           - { label: Feature sticker — a couple of weeks on, name: featureLabelRecent, widget: string, hint: 'Replaces it automatically once that essay is 8 to 21 days old, so the page never claims "this week" about older writing.' }
           - { label: Feature sticker — older, name: featureLabelOlder, widget: string, hint: 'Used once the newest essay is over three weeks old. Nothing looks stale or wrong during a quiet stretch.' }
           - { label: Essay cadence, name: essayCadence, widget: string }
-          - { label: 'Essays page — the overlap line', name: essaysHeader, widget: text, hint: 'The line that heads the writing on the Essays page, under the landing copy. It frames the whole body of essays, which is what it was written for.' }
           - { label: Leaders cadence, name: leadersCadence, widget: string }
           - { label: Moments cadence, name: momentsCadence, widget: string }
           - { label: Reading shelf note, name: readingTie, widget: text, hint: 'Shows under the shelf in both places it appears: the home page band and the Reading page.' }
@@ -280,7 +282,6 @@ collections:
           # ----------------------------------------------------- home page bands
           - { label: 'Home — tag on the essay card', name: homeStreamEssayTag, widget: string, hint: 'The small tag on the first of the three cards in the “Three things every week” band.' }
           - { label: 'Latest block — link', name: latestMore, widget: string, hint: 'The link at the foot of the Latest block on the home page.' }
-          - { label: 'Hero sticker — fallback', name: studySticker, widget: string, hint: 'The sticker on the hero when nothing has been published in the last fortnight. It must stay true: the study really is seven sessions.' }
           - { label: 'Shelf — eyebrow', name: shelfEyebrow, widget: string, hint: 'The small label above the bookshelf block on the home page.' }
           - { label: 'Shelf — heading', name: shelfHeading, widget: string, hint: 'The heading over the bookshelf block on the home page.' }
           - { label: 'Shelf — second row label', name: shelfAlso, widget: string, hint: 'The label over the three smaller books.' }
