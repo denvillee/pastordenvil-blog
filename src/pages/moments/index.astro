@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
+import LandingCopy from '../../components/LandingCopy.astro';
 import { live, readMinutes, displayDate, isoDate } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
@@ -17,6 +18,7 @@ const subtitle = labels.momentsSubtitle;
       <h1>{title}</h1>
     </div>
     <p class="sec-sub">{subtitle}</p>
+    <LandingCopy room="moments" />
     {byYear.map((group) => (
       <section class="arc-year">
         {years.length > 1 && <h2 class="arc-year-h">{group.year}<span>{group.items.length}</span></h2>}
