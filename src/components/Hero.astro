@@ -8,6 +8,11 @@
   because good news is what gospel means, and a page that announces it and then
   explains it is arguing with itself.
 
+  The corner sticker is cut too (addendum 3). With the header reduced to two
+  lines of type on a quiet ground it had nothing to sit against, and it was the
+  last thing on the page still speaking a badge language. What it announced is
+  said in words by the Latest eyebrow a few hundred pixels below.
+
   The rotator now cycles the whole second line, "For the weary." rather than
   "the weary.", so each phrase is a complete thought under GOOD NEWS.
 
@@ -17,15 +22,11 @@
 */
 import home from '../data/home.json';
 
-interface Props { sticker?: string }
-const { sticker } = Astro.props;
-
 const rotations: string[] = home.heroRotations;
 const srAll = rotations.map((r) => r.replace(/\.$/, '')).join(', ') + '.';
 ---
 <header class="hero" id="top">
   <div class="hero-field" aria-hidden="true"></div>
-  {sticker && <span class="hero-sticker">{sticker}</span>}
   <div class="hero-in">
     <h1 class="gn">
       <span class="gn-fixed">{home.heroFixed}</span>

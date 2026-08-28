@@ -1,0 +1,24 @@
+---
+/*
+  The pinned introduction row at the top of a section list.
+
+  It is the same row as every other item so the list stays one thing, and it
+  differs only where it has to: a sunken ground, START HERE where the date
+  goes, and an italic title. That is enough for a returning reader to see at a
+  glance that this is not the new thing and skip it, and for a first-time
+  reader to meet it before anything else.
+
+  It deliberately does not announce itself twice. An earlier version of this
+  had a "Why this exists" link under the subtitle as well as the post at the
+  foot of the list, which is the same destination twice on one screen.
+*/
+import { readMinutes } from '../lib/publish';
+
+interface Props { href: string; title: string; dek: string; body: string; label: string }
+const { href, title, dek, body, label } = Astro.props;
+---
+<a class="list-item is-intro" href={href}>
+  <span class="date"><span class="intro-flag">{label}</span></span>
+  <span class="t"><em>{title}</em><span class="d">{dek}</span></span>
+  <span class="r">{readMinutes(body)} min</span>
+</a>
