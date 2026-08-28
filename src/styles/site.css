@@ -926,3 +926,65 @@ a[data-footnote-ref]:hover{text-decoration:underline}
   font-family:var(--serif); font-size:clamp(1rem,2vw,1.12rem); line-height:1.55;
   color:var(--muted); max-width:60ch; margin:-.6rem 0 1.6rem;
 }
+
+/* ── Section landing copy ───────────────────────────────────────────────────
+   Sits under .sec-sub, above the post list. The lead paragraph always shows;
+   the rest opens behind "Why this exists". Native <details>, no script, which
+   the CSP requires anyway.
+
+   The control is a real summary element: it keeps its own keyboard focus and
+   its own announced state, so nothing here reimplements a button. The default
+   triangle marker is removed on purpose and replaced with a drawn one that
+   turns, because the stock marker sits on the text baseline and pulls the
+   label off the left margin the rest of the page is aligned to. */
+.landing{margin:0 0 2.2rem; max-width:66ch}
+.landing-lead{
+  font-family:var(--serif); font-size:1.02rem; line-height:1.7;
+  color:var(--fg); margin:0;
+}
+.landing-more{margin-top:.55rem}
+.landing-toggle{
+  display:inline-flex; align-items:center; gap:.5rem;
+  font-family:var(--sans,inherit); font-size:.74rem; font-weight:600;
+  letter-spacing:.09em; text-transform:uppercase; color:var(--muted);
+  cursor:pointer; padding:.35rem 0; list-style:none;
+  transition:color .2s ease;
+}
+.landing-toggle::-webkit-details-marker{display:none}
+.landing-toggle::marker{content:""}
+.landing-toggle::before{
+  content:""; width:0; height:0; flex:none;
+  border-left:5px solid currentColor;
+  border-top:4px solid transparent; border-bottom:4px solid transparent;
+  transform-origin:25% 50%; transition:transform .22s ease;
+}
+.landing-more[open] > .landing-toggle::before{transform:rotate(90deg)}
+.landing-toggle:hover{color:var(--fg)}
+.landing-toggle:focus-visible{outline:2px solid var(--brass); outline-offset:3px; border-radius:2px}
+
+.landing-rest{
+  border-left:2px solid var(--line); padding-left:1.15rem;
+  margin:.5rem 0 0;
+}
+.landing-rest > p{
+  font-family:var(--serif); font-size:1rem; line-height:1.72;
+  color:var(--muted); margin:0 0 1.05rem;
+}
+.landing-rest > p:last-child{margin-bottom:0}
+/* The one emphasis in each landing page: Denvil's line, standing on its own. */
+.landing-rest > p > strong:only-child{
+  display:block; font-weight:600; font-size:1.06rem; line-height:1.55;
+  color:var(--fg); margin:.2rem 0;
+}
+/* The Essays prayer. Indented, upright, never italic. */
+.landing-rest blockquote{
+  margin:0 0 1.05rem; padding:0 0 0 1.05rem;
+  border-left:2px solid var(--brass);
+}
+.landing-rest blockquote p{
+  font-family:var(--serif); font-style:normal; font-size:1rem; line-height:1.7;
+  color:var(--fg); margin:0;
+}
+@media (prefers-reduced-motion:reduce){
+  .landing-toggle,.landing-toggle::before{transition:none}
+}

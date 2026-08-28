@@ -8,6 +8,7 @@
 import Base from '../layouts/Base.astro';
 import Signup from '../components/Signup.astro';
 import home from '../data/home.json';
+import labels from '../data/labels.json';
 import site from '../data/site.json';
 
 const STUDY_SITE = 'https://grabyourbibles.com';
@@ -21,6 +22,7 @@ const STUDY_SITE = 'https://grabyourbibles.com';
       <h1>Studies</h1>
       <span class="label">grabyourbibles.com</span>
     </div>
+    <p class="sec-sub">{labels.studiesSubtitle}</p>
 
     <p class="art-dek" style="margin-bottom:1.4rem">
       The studies live on their own site, because they are a different kind of thing than
@@ -38,7 +40,7 @@ const STUDY_SITE = 'https://grabyourbibles.com';
         <span class="st-kicker">Now open &middot; The Book of Ruth</span>
         <h3 class="st-title">God&rsquo;s Presence in Every Season</h3>
         <p class="st-dek">
-          Seven sessions in the book of Ruth. God never speaks out loud in Ruth &mdash; and He
+          Seven sessions in the book of Ruth. God never speaks out loud in Ruth, and He
           never stops working. Learn to be rooted deeply enough to see it.
         </p>
         <p class="st-meta">7 sessions &middot; on your own or with a group</p>

@@ -7,6 +7,7 @@
 */
 import Base from '../layouts/Base.astro';
 import Signup from '../components/Signup.astro';
+import LandingCopy from '../components/LandingCopy.astro';
 import { live } from '../lib/publish';
 import { monthLabel, latestMonth } from '../lib/shelf';
 import site from '../data/site.json';
@@ -40,6 +41,7 @@ const pct = progressPct(now?.progress);
       <span class="label">{monthLabel(month)}</span>
     </div>
     <p class="sec-sub">{labels.readingSubtitle}</p>
+    <LandingCopy room="bookshelf" />
 
     {now && (
       <div class="now-read" style="margin-bottom:2rem">

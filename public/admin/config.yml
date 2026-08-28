@@ -161,6 +161,22 @@ collections:
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
       - { label: Body, name: body, widget: markdown }
 
+  # ------------------------------------------------------- section landing copy
+  - name: landing
+    label: Section landing copy
+    description: 'The "Why this exists" copy on Essays, Moments, For Leaders and Bookshelf. The opening paragraph always shows on the page; everything in the body opens behind the control, so a reader coming back for what is new steps over it. One of these already exists for each section: edit them, do not add new ones.'
+    label_singular: Landing page
+    folder: /src/content/landing
+    create: false
+    extension: md
+    format: frontmatter
+    identifier_field: title
+    fields:
+      - { label: Section, name: room, widget: string, hint: 'Which section this belongs to: essays, moments, leaders or bookshelf. Do not change this; the page finds its copy by this word.' }
+      - { label: Title, name: title, widget: string, hint: 'For your own reference in this list. It is not printed on the page.' }
+      - { label: Opening paragraph, name: lead, widget: text, hint: 'The one paragraph that always shows, before the reader opens the rest.' }
+      - { label: The rest, name: body, widget: markdown, hint: 'Opens behind "Why this exists". Put **two asterisks** around the one line you want set apart, and start a line with > to indent it as a quotation.' }
+
   # ------------------------------------------------------------------ site copy
   - name: settings
     label: Site copy
@@ -174,7 +190,6 @@ collections:
           - { label: 'Hero, rotating phrases', name: heroRotations, widget: list, hint: 'These cycle in order. Keep them short and end each with a full stop. Five to seven works best.' }
           - { label: 'Hero, phrases on the bench', name: heroRotationsReserve, widget: list, hint: 'Not shown. Swap one up into the list above when you want a change.' }
           - { label: 'Hero, the line underneath', name: heroGospelLine, widget: text, hint: 'Use a vertical bar to break the line. Wrap a phrase in <em> to make it gold.' }
-          - { label: 'Essays section header', name: essaysHeader, widget: text, hint: 'Shows above the featured essay on the home page and at the top of the Essays page.' }
           - { label: Primary button label, name: heroPrimaryLabel, widget: string }
           - { label: Primary button link, name: heroPrimaryHref, widget: string }
           - { label: Secondary button label, name: heroSecondaryLabel, widget: string }
@@ -217,6 +232,7 @@ collections:
           - { label: 'Footer — Moments link', name: footMoments, widget: string, hint: 'The Moments link in the footer.' }
           - { label: 'Footer — Watch link', name: footWatch, widget: string, hint: 'The Watch link in the footer.' }
           - { label: 'Footer — Reading link', name: footReading, widget: string, hint: 'The Reading link in the footer.' }
+          - { label: 'Footer link — Studies', name: footStudies, widget: string }
           - { label: 'Footer — Archive link', name: footArchive, widget: string, hint: 'The Archive link in the footer.' }
           - { label: 'Footer — second column heading', name: footElsewhereHeading, widget: string, hint: 'The heading above the About / Speaking / Subscribe column.' }
           - { label: 'Footer — About link', name: footAbout, widget: string, hint: 'The About link in the footer.' }
@@ -241,23 +257,29 @@ collections:
 
           # -------------------------------------------------- reading shelf band
           - { label: 'Reading shelf — heading', name: readingHeading, widget: string, hint: 'Used in two places: the shelf band on the home page and the Reading page.' }
+          - { label: 'Bookshelf page — standfirst', name: readingDek, widget: text, hint: 'Used in Google results and link previews for the Bookshelf page.' }
+          - { label: 'Bookshelf page — subtitle', name: readingSubtitle, widget: text, hint: 'The one line under the heading on the Bookshelf page. The longer piece about why the room exists is under Section landing copy.' }
+          - { label: 'Studies page — subtitle', name: studiesSubtitle, widget: text, hint: 'The one line under the heading on the Studies page. The longer piece about why the studies exist lives on grabyourbibles.com.' }
           - { label: 'Reading shelf — small line', name: readingLabel, widget: string, hint: 'The small line beside that heading, in both places.' }
           - { label: 'Reading shelf — “now reading” label', name: readingNowLabel, widget: string, hint: 'The little label above the book you are currently reading.' }
           - { label: 'Reading shelf — empty message', name: readingEmpty, widget: text, hint: 'Only shows if there are no books on the shelf at all.' }
 
           # ------------------------------------------------------- Essays page
           - { label: 'Essays page — heading', name: essaysHeading, widget: string, hint: 'The big heading on the Essays page. Also used in the browser tab title.' }
-          - { label: 'Essays page — standfirst', name: essaysDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
+          - { label: 'Essays page — subtitle', name: essaysSubtitle, widget: text, hint: 'The one line under the heading on the Essays page. The longer piece about why the room exists is under Section landing copy.' }
+          - { label: 'Essays page — standfirst', name: essaysDek, widget: text, hint: 'The short line on the home page card. Also used in Google results and link previews.' }
           - { label: 'Essays page — empty message', name: essaysEmpty, widget: text, hint: 'Shows on the Essays page while nothing is published there yet.' }
 
           # ----------------------------------------------- Leaders Corner page
           - { label: 'Leaders Corner page — heading', name: leadersHeading, widget: string, hint: 'The big heading on the Leaders Corner page. Also used in the browser tab title.' }
-          - { label: 'Leaders Corner page — standfirst', name: leadersDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
+          - { label: 'Leaders Corner page — subtitle', name: leadersSubtitle, widget: text, hint: 'The one line under the heading on the For Leaders page. The longer piece about why the room exists is under Section landing copy.' }
+          - { label: 'Leaders Corner page — standfirst', name: leadersDek, widget: text, hint: 'The short line on the home page card. Also used in Google results and link previews.' }
           - { label: 'Leaders Corner page — empty message', name: leadersEmpty, widget: text, hint: 'Shows on the Leaders Corner page while nothing is published there yet.' }
 
           # ------------------------------------------------------ Moments page
           - { label: 'Moments page — heading', name: momentsHeading, widget: string, hint: 'The big heading on the Moments page. Also used in the browser tab title.' }
-          - { label: 'Moments page — standfirst', name: momentsDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
+          - { label: 'Moments page — subtitle', name: momentsSubtitle, widget: text, hint: 'The one line under the heading on the Moments page. The longer piece about why the room exists is under Section landing copy.' }
+          - { label: 'Moments page — standfirst', name: momentsDek, widget: text, hint: 'The short line on the home page card. Also used in Google results and link previews.' }
           - { label: 'Moments page — empty message', name: momentsEmpty, widget: text, hint: 'Shows on the Moments page while nothing is published there yet.' }
 
 
