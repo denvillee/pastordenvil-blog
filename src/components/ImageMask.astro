@@ -1,0 +1,15 @@
+---
+/*
+  The irregular photo mask.
+
+  The references never show a plain rectangle: every photograph has a softly
+  torn or organic edge. Done with border-radius on four uneven corners rather
+  than an SVG clip-path, because a clip-path kills the drop shadow and this
+  needs to sit on a coloured ground and still read as an object.
+
+  `slot` takes the picture so a caller can supply <picture> with WebP sources.
+*/
+interface Props { shape?: 'organic' | 'torn' | 'soft'; class?: string }
+const { shape = 'organic', class: cls = '' } = Astro.props;
+---
+<div class:list={['imask', `imask-${shape}`, cls]}><slot /></div>

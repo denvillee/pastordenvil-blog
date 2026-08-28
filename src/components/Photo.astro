@@ -1,0 +1,23 @@
+---
+/*
+  A real photograph, WebP first with a JPEG fallback.
+
+  Alt text is required rather than optional. A photograph of a person carrying
+  the warmth of a page is not decoration, and "image" is not a description.
+*/
+interface Props {
+  name: string;            /* file stem under /assets/img, without extension */
+  alt: string;
+  width: number; height: number;
+  sizes?: string;
+  eager?: boolean;
+  class?: string;
+}
+const { name, alt, width, height, sizes, eager = false, class: cls = '' } = Astro.props;
+---
+<picture class:list={[cls]}>
+  <source srcset={`/assets/img/${name}.webp`} type="image/webp" />
+  <img src={`/assets/img/${name}.jpg`} alt={alt} width={width} height={height}
+       sizes={sizes} loading={eager ? 'eager' : 'lazy'}
+       fetchpriority={eager ? 'high' : undefined} decoding="async" />
+</picture>

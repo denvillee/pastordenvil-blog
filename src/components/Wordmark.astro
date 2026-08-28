@@ -1,0 +1,15 @@
+---
+/*
+  denvil.lee
+
+  The name is the brand: no monogram, no crest, no symbol. The period between
+  the two halves is the one piece of identity, and it is a real full stop
+  styled blue rather than a bullet character or a decorative span, so it is
+  still a full stop to a screen reader and still copies as one.
+*/
+interface Props { as?: 'a' | 'span'; href?: string; class?: string }
+const { as = 'a', href = '/', class: cls = '' } = Astro.props;
+const Tag = as;
+---
+<Tag class:list={['wm', cls]} href={as === 'a' ? href : undefined}
+     aria-label={as === 'a' ? 'Denvil Lee, home' : undefined}>denvil<span class="wm-dot">.</span>lee</Tag>
