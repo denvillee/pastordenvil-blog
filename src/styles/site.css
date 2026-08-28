@@ -918,3 +918,11 @@ a[data-footnote-ref]:hover{text-decoration:underline}
    cards name themselves. A hairline does the separating the words were doing,
    and it sits on the same line the section heads used. */
 .band-rule{border:0; height:1px; background:var(--line); margin:0 0 1.8rem}
+
+/* The one line under a section heading. Always visible, and set below the
+   overlap line on /essays/ so the two do not compete: this says what the
+   section is, that says what the writing is about. */
+.sec-sub{
+  font-family:var(--serif); font-size:clamp(1rem,2vw,1.12rem); line-height:1.55;
+  color:var(--muted); max-width:60ch; margin:-.6rem 0 1.6rem;
+}
