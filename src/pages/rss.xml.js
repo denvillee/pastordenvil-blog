@@ -4,7 +4,7 @@ import { ROOMS } from '../lib/publish';
 import site from '../data/site.json';
 
 export async function GET(context) {
-  const rooms = ['essays', 'leaders', 'moments', 'frameworks'];
+  const rooms = ['essays', 'leaders', 'moments'];
   const items = [];
   for (const room of rooms) {
     for (const e of await live(room)) {

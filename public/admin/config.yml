@@ -146,44 +146,6 @@ collections:
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
 
-  - name: frameworks
-    label: Frameworks
-    description: 'Drawn systems. Publishes at /frameworks/, linked from the footer. The page says Under construction until the first one goes live.'
-    label_singular: Framework
-    folder: /src/content/frameworks
-    create: true
-    slug: '{{title}}'
-    extension: md
-    format: frontmatter
-    preview_path: frameworks/{{slug}}/
-    fields:
-      - { label: Title, name: title, widget: string, hint: 'The web address is built from this. Two pieces in the same room with the exact same title would collide, so give each one its own title.' }
-      - { label: Standfirst, name: dek, widget: text }
-      - { label: One line summary, name: summary, widget: string, required: false, hint: 'Shows in the numbered list on the home page.' }
-      - { label: Order, name: order, widget: number, value_type: int, default: 1 }
-      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
-      - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
-      - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
-      - { label: Scripture, name: scripture, widget: string, required: false }
-      - label: Diagram
-        name: diagram
-        widget: select
-        required: false
-        options: ['TwoAges']
-        hint: 'Diagrams are hand built components. Ask the design side to add a new one before selecting it here.'
-      - label: One page guide (PDF)
-        name: guide
-        widget: file
-        required: false
-        # Guides are not images. Keep them out of the image uploads folder so the paths
-        # written into the file match /assets/guides/, which is where the site looks.
-        media_folder: /public/assets/guides
-        public_folder: /assets/guides
-      - { label: Tags, name: tags, widget: list, required: false, default: [] }
-      - { label: Social image, name: ogImage, widget: image, required: false }
-      - { label: Where this comes from, name: notes, widget: text, required: false, hint: 'Frameworks lean on other people’s work. Credit them here, every time.' }
-      - { label: Body, name: body, widget: markdown }
-
   - name: pages
     label: Standing pages
     description: 'The About page and the Subscribe page.'
@@ -225,9 +187,6 @@ collections:
           - { label: Moments cadence, name: momentsCadence, widget: string }
           - { label: 'Watch note — under the home page clip rail', name: watchNote, widget: text, hint: 'The paragraph under the three clips on the home page. The Watch page has its own note, below.' }
           - { label: 'Watch note — bottom of the Watch page', name: watchPageNote, widget: text, hint: 'The paragraph at the bottom of the Watch page. This is the rights and hosting note, not the home page one.' }
-          - { label: Framework caption, name: frameworksCaption, widget: text }
-          - { label: Framework intro, name: frameworksLead, widget: text }
-          - { label: 'Framework “parked” note', name: frameworksParked, widget: text }
           - { label: Reading shelf note, name: readingTie, widget: text, hint: 'Shows under the shelf in both places it appears: the home page band and the Reading page.' }
           - { label: Card kit note, name: kitNote, widget: text, hint: 'The card studio at /kit/. Off the home page now; the page still exists.' }
           # ------------------------------------------------- studies handoff card
@@ -256,7 +215,6 @@ collections:
           - { label: 'Footer — Essays link', name: footEssays, widget: string, hint: 'The Essays link in the footer.' }
           - { label: 'Footer — Leaders Corner link', name: footLeaders, widget: string, hint: 'The Leaders Corner link in the footer.' }
           - { label: 'Footer — Moments link', name: footMoments, widget: string, hint: 'The Moments link in the footer.' }
-          - { label: 'Footer — Frameworks link', name: footFrameworks, widget: string, hint: 'The Frameworks link in the footer.' }
           - { label: 'Footer — Watch link', name: footWatch, widget: string, hint: 'The Watch link in the footer.' }
           - { label: 'Footer — Reading link', name: footReading, widget: string, hint: 'The Reading link in the footer.' }
           - { label: 'Footer — Archive link', name: footArchive, widget: string, hint: 'The Archive link in the footer.' }
@@ -275,11 +233,8 @@ collections:
           - { label: 'Room tag — the essay room', name: roomEssayTag, widget: string, hint: 'The small tag on top of every piece in this room, and on the Archive page. Renaming it here renames it in both places at once.' }
           - { label: 'Room tag — Leaders Corner', name: roomLeadersTag, widget: string, hint: 'The same tag, for the Leaders Corner room.' }
           - { label: 'Room tag — Moments', name: roomMomentsTag, widget: string, hint: 'The same tag, for the Moments room.' }
-          - { label: 'Room tag — Frameworks', name: roomFrameworkTag, widget: string, hint: 'The same tag, for the Frameworks room.' }
           - { label: 'Home — Watch heading', name: homeWatchHeading, widget: string, hint: 'The heading above the video clips on the home page.' }
           - { label: 'Home — Watch small line', name: homeWatchLabel, widget: string, hint: 'The small line beside that heading. Type &middot; for the dot between phrases.' }
-          - { label: 'Home — Frameworks heading', name: homeFrameworksHeading, widget: string, hint: 'The heading above the diagram band on the home page.' }
-          - { label: 'Home — Frameworks small line', name: homeFrameworksLabel, widget: string, hint: 'The small line beside that heading. Type &middot; for the dot between phrases.' }
           - { label: 'Home — card kit heading', name: homeKitHeading, widget: string, hint: 'The heading above the six shareable card templates.' }
           - { label: 'Home — card kit small line', name: homeKitLabel, widget: string, hint: 'The small line beside that heading. Type &middot; for the dot between phrases.' }
           - { label: 'Home — card studio link', name: homeKitLink, widget: string, hint: 'The link at the end of the card kit note. Type &rarr; for the arrow.' }
@@ -305,10 +260,6 @@ collections:
           - { label: 'Moments page — standfirst', name: momentsDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
           - { label: 'Moments page — empty message', name: momentsEmpty, widget: text, hint: 'Shows on the Moments page while nothing is published there yet.' }
 
-          # --------------------------------------------------- Frameworks page
-          - { label: 'Frameworks page — heading', name: frameworksHeading, widget: string, hint: 'The big heading on the Frameworks page. Also used in the browser tab title.' }
-          - { label: 'Frameworks page — standfirst', name: frameworksDek, widget: text, hint: 'The paragraph under that heading. Also used in Google results and link previews.' }
-          - { label: 'Frameworks page — empty message', name: frameworksEmpty, widget: text, hint: 'Shows on the Frameworks page while nothing is published there yet.' }
 
           # -------------------------------------------------------- Watch page
           - { label: 'Watch page — heading', name: watchHeading, widget: string, hint: 'The big heading on the Watch page. Also used in the browser tab title.' }
@@ -334,7 +285,6 @@ collections:
 
           # ------------------------------------------- “why it is built this way”
           - { label: 'Show the “Why it is built this way” band', name: showDesignNotes, widget: boolean, default: true, hint: 'Off hides the whole “Why it is built this way” band from the bottom of the home page. It is written about the site rather than for the reader, so turn it off once the site speaks for itself.' }
-          - { label: 'Show the frameworks band on the home page', name: showFrameworksBand, widget: boolean, default: true, hint: 'Turns the diagram band on the home page on or off. The frameworks pages themselves stay live and linked from the footer either way.' }
           - { label: 'Design notes — heading', name: designNotesHeading, widget: string, hint: 'The heading of that band.' }
           - { label: 'Design notes — small line', name: designNotesLabel, widget: string, hint: 'The small line beside that heading.' }
           - { label: 'Design notes — note 1 heading', name: designNote1Heading, widget: string, hint: 'First of the four notes. <b>bold</b> is allowed.' }

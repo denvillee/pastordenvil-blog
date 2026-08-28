@@ -17,6 +17,21 @@
 # address all say the same word. Anything already shared at the old path still lands.
 # /start-here/ shipped briefly on 26 Aug and was retired the same day — the
 # seven-move app-style journey belongs to the study site, not here.
+# Frameworks was retired on 28 Aug. The drawings did not go with it: every essay,
+# leaders piece and moment can name a diagram and render it inline, which is where
+# they always read better than in a room of their own.
+[[redirects]]
+  from = "/frameworks"
+  to = "/essays/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/frameworks/*"
+  to = "/essays/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/start-here/*"
   to = "/studies/"

@@ -40,7 +40,6 @@ export const ROOMS = {
   essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '' },
   leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders' },
   moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments' },
-  frameworks: { label: labels.roomFrameworkTag, path: 'frameworks', cls: 't-framework' },
 } as const;
 export type RoomKey = keyof typeof ROOMS;
 
