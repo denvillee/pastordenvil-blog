@@ -1,6 +1,6 @@
 ---
 import { getEntry, render } from 'astro:content';
-import Base from '../layouts/Base.astro';
+import Shell from '../layouts/Shell.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 const entry = await getEntry('pages', 'speaking');
@@ -9,16 +9,25 @@ const { Content } = await render(entry!);
    Submissions land in Netlify and forward to hello@denvillee.com
    (Cloudflare Email Routing, hosting runbook §5). */
 ---
-<Base title={`${entry!.data.title} · ${site.name}`} description={entry!.data.dek}>
+<Shell current="speaking" title={`${entry!.data.title} · ${site.name}`} description={entry!.data.dek}>
   <section class="band shell">
-    <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label">{labels.speakingLabel}</span></div>
+    <div class="sec-head">
+      <h1 class="page-h is-display">Speaking + Coaching<span class="dot">.</span></h1>
+      <span class="count">{labels.speakingLabel}</span>
+    </div>
     <div class="speak">
       <div class="speak-copy prose">
         <Content />
       </div>
       <form class="speak-form" name="speaking" method="POST" data-netlify="true" netlify-honeypot="company" action="/speaking/thanks/">
         <input type="hidden" name="form-name" value="speaking" />
-        <p class="hp"><label>Leave this empty <input name="company" /></label></p>
+        {/* Netlify's honeypot. It was a labelled field reading "Leave this
+            empty", hidden only by moving it off-screen, so a screen reader
+            announced it as a real question and a keyboard user could tab into
+            it. Taken out of the accessibility tree and the tab order instead;
+            Netlify still checks the same field name. */}
+        <input type="text" name="company" tabindex="-1" autocomplete="off"
+               aria-hidden="true" class="hp" />
         <label>Your name<input type="text" name="name" required autocomplete="name" /></label>
         <label>Email<input type="email" name="email" required autocomplete="email" /></label>
         <label>Church or organization<input type="text" name="organization" /></label>
@@ -37,4 +46,4 @@ const { Content } = await render(entry!);
       </form>
     </div>
   </section>
-</Base>
+</Shell>

@@ -1,118 +1,67 @@
 ---
+/*
+  Watch. Embeds only, never re-hosted, newest year first.
+
+  The reference shows category filters. There is no category in the data and
+  inventing one would be a taxonomy the content cannot support, so the page
+  groups by the one real axis it has, which is the year the talk was given.
+*/
 import { getCollection } from 'astro:content';
-import Base from '../layouts/Base.astro';
+import Shell from '../layouts/Shell.astro';
+import Mark from '../components/marks/Mark.astro';
+import Photo from '../components/Photo.astro';
+import ImageMask from '../components/ImageMask.astro';
+import ColorDisc from '../components/marks/ColorDisc.astro';
+import VideoCard from '../components/VideoCard.astro';
 import Signup from '../components/Signup.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
-/*
-  WATCH. Embeds only, grouped by year, newest year first.
-
-  Two things here are load bearing and easy to undo by accident:
-
-  - Nothing loads a player. Each entry renders a poster and swaps in the
-    iframe on click. Fifteen YouTube players on one page is several megabytes
-    of somebody else's JavaScript before a reader has asked for any of it, and
-    on a phone the page stops responding while they all boot.
-  - Every entry carries a plain link to the video as well as the embed. A
-    church can delete its own upload at any time, and when that happens this
-    page should degrade to a line of text with a link, not to a grey box.
-*/
 const all = await getCollection('watch');
-const talks = all.filter((t: any) => !t.data.draft);
+const talks = all.filter((t: any) => !t.data.draft)
+  .sort((a: any, b: any) => b.data.year - a.data.year
+    || b.data.order - a.data.order
+    || a.data.title.localeCompare(b.data.title));
 
-/* Newest year first; inside a year, `order` descending, then title. */
-const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b - a);
-const byYear = years.map((y) => ({
-  year: y,
-  items: talks
-    .filter((t: any) => t.data.year === y)
-    .sort((a: any, b: any) =>
-      b.data.order - a.data.order || a.data.title.localeCompare(b.data.title)),
-}));
-
-/* hqdefault always exists. maxresdefault is missing on anything filmed below
-   720p, which is most of an older church's archive, and a missing poster is a
-   broken image rather than a smaller one. The 4:3 letterboxing that hqdefault
-   carries is cropped off by object-fit. */
-const poster = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
+const [featured, ...rest] = talks;
+const years = [...new Set(rest.map((t: any) => t.data.year))].sort((a, b) => b - a);
 ---
-<Base title={`${labels.watchHeading} · ${site.name}`} description={labels.watchDek}>
-  <section class="band watch">
-    <div class="shell">
-      <div class="sec-head">
-        <h1>{labels.watchHeading}</h1>
-        {talks.length > 0 && (
-          <span class="label">{talks.length} {talks.length === 1 ? 'talk' : 'talks'}</span>
-        )}
+<Shell title={`${labels.watchHeading} · ${site.name}`} description={labels.watchDek} current="watch">
+  <div class="arch">
+    <Mark kind="brush" color="yellow" class="arch-brush" />
+
+    <section class="shell watch-hero">
+      <div>
+        <h1 class="page-h is-display">{labels.watchHeading}<span class="dot">.</span>
+          <Mark kind="underline" color="blue" class="page-uline" draw={true} />
+        </h1>
+        <p class="page-dek">
+          Teachings and conversations on&#32;<span class="u">theology<Mark kind="underline" color="yellow" /></span>,&#32;<span class="u">leadership<Mark kind="underline" color="green" /></span>, and&#32;<span class="u">ordinary life<Mark kind="underline" color="coral" /></span>.
+        </p>
+        {talks.length === 0 && <p class="empty-note">{labels.watchEmpty}</p>}
       </div>
+      {featured
+        ? <div class="watch-feat"><VideoCard entry={featured} featured={true} /></div>
+        : <div class="watch-feat">
+            <ImageMask shape="torn">
+              <Photo name="dl-watch" width={1400} height={933}
+                     sizes="(max-width: 900px) 92vw, 52vw"
+                     alt="Denvil Lee teaching, arms open, a slide behind him." />
+            </ImageMask>
+            <ColorDisc lines={["theology","leadership","life"]} class="watch-disc" />
+          </div>}
+    </section>
 
-      {talks.length === 0
-        ? <p class="watch-note">{labels.watchEmpty}</p>
-        : <p class="watch-line">{labels.watchLine}</p>}
+    {years.map((y) => (
+      <section class="shell watch-year">
+        <div class="sec-head"><h2 class="sec-h">{y}</h2></div>
+        <div class="vcards">
+          {rest.filter((t: any) => t.data.year === y).map((t: any) => <VideoCard entry={t} />)}
+        </div>
+      </section>
+    ))}
 
-      {byYear.map((group) => (
-        <section class="wyear">
-          <h2 class="wyear-h">{group.year}</h2>
-          <ul class="wlist">
-            {group.items.map((t: any) => (
-              <li class="wtalk">
-                <div class="wframe" data-video={t.data.videoId} data-title={t.data.title}>
-                  <button type="button" class="wplay" aria-label={`Play: ${t.data.title}`}>
-                    <img
-                      src={poster(t.data.videoId)}
-                      alt=""
-                      width="480" height="360"
-                      loading="lazy" decoding="async" referrerpolicy="no-referrer"
-                    />
-                    <span class="wveil"></span>
-                    <span class="wtri" aria-hidden="true">&#9654;</span>
-                  </button>
-                </div>
-                <div class="wmeta">
-                  <h3 class="wtitle">{t.data.title}</h3>
-                  {(t.data.context || t.data.note) && (
-                    <p class="wsub">
-                      {t.data.context}
-                      {t.data.context && t.data.note ? ' · ' : ''}
-                      {t.data.note}
-                    </p>
-                  )}
-                  <a class="wgo" href={watchUrl(t.data.videoId)} rel="noopener nofollow" target="_blank">
-                    Watch on YouTube <span aria-hidden="true">&#8599;</span>
-                  </a>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
-
-      {talks.length > 0 && <p class="watch-note" set:html={labels.watchRights}></p>}
-    </div>
-  </section>
-  <Signup />
-</Base>
-
-<script>
-  /* Click to load. The iframe is built here and only here, so a reader who
-     never clicks never talks to Google at all. */
-  document.querySelectorAll('.wframe').forEach(function (frame) {
-    var btn = frame.querySelector('.wplay');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var id = frame.getAttribute('data-video');
-      var title = frame.getAttribute('data-title') || 'Video';
-      var f = document.createElement('iframe');
-      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
-      f.title = title;
-      f.loading = 'lazy';
-      f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-      f.setAttribute('allowfullscreen', '');
-      f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-      frame.replaceChildren(f);
-      frame.classList.add('is-live');
-    });
-  });
-</script>
+    {talks.length > 0 && <p class="shell watch-note">{labels.watchRights}</p>}
+  </div>
+  <Signup tone="yellow" note="Good news for ordinary people." />
+</Shell>

@@ -1,16 +1,91 @@
 ---
 import { getEntry, render } from 'astro:content';
-import Base from '../layouts/Base.astro';
+import Shell from '../layouts/Shell.astro';
+import Mark from '../components/marks/Mark.astro';
+import ColorDisc from '../components/marks/ColorDisc.astro';
+import StickyNote from '../components/marks/StickyNote.astro';
+import ImageMask from '../components/ImageMask.astro';
+import Photo from '../components/Photo.astro';
+import CategoryIcon from '../components/CategoryIcon.astro';
+import CopyGap from '../components/CopyGap.astro';
 import Signup from '../components/Signup.astro';
+import { latest, ROOMS } from '../lib/publish';
 import site from '../data/site.json';
-import labels from '../data/labels.json';
+
 const entry = await getEntry('pages', 'about');
-const { Content } = await render(entry!);
+const feature = await latest();
+const featureHref = feature ? `/${ROOMS[feature.room].path}/${feature.id}/` : '/essays/';
+
+/* Denvil's own line, already on the page, kept word for word. */
+const conviction = 'Everything here works out one conviction: the kingdom already arrived and has not finished arriving, and almost every real question sits in that overlap.';
+
+const areas = [
+  { kind: 'leaders', href: '/essays/',    t: 'Faith & Theology', d: 'Scripture and the good news of the kingdom.' },
+  { kind: 'moments', href: '/moments/',   t: 'Everyday Faith',   d: 'Work, family, rest, and everything in between.' },
+  { kind: 'studies', href: '/leaders/',   t: 'Leadership',       d: 'Leading with humility and kingdom perspective.' },
+  { kind: 'reading', href: '/bookshelf/', t: 'What I\'m reading', d: 'The books shaping how I think and lead.' },
+] as const;
 ---
-<Base title={`${entry!.data.title} · ${site.name}`} description={entry!.data.dek}>
-  <section class="band shell">
-    <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label">{labels.aboutLabel}</span></div>
-    <div class="prose"><Content /></div>
-  </section>
-  <Signup />
-</Base>
+<Shell title={`About · ${site.name}`} description={entry!.data.dek} current="about">
+  <div class="arch">
+    <Mark kind="brush" color="coral" class="arch-brush" />
+
+    <section class="shell abt-hero">
+      <div>
+        <h1 class="page-h is-display">About<span class="dot">.</span>
+          <Mark kind="underline" color="blue" class="page-uline" draw={true} />
+        </h1>
+        <p class="abt-hi"><span class="u">Hey, I'm Denvil.<Mark kind="underline" color="yellow" /></span></p>
+        <CopyGap what="Two or three sentences introducing yourself: follower of Jesus, husband, dad, pastor, and what you care about."
+                 length="About 40 to 60 words." />
+        <p class="hero-acts">
+          <a class="btn btn-blue" href={featureHref}>Read my latest essay <span class="arw" aria-hidden="true">&rarr;</span></a>
+        </p>
+      </div>
+      <div class="abt-art">
+        <ImageMask shape="torn">
+          <Photo name="dl-about" width={900} height={1125}
+                 sizes="(max-width: 900px) 92vw, 40vw"
+                 alt="Denvil Lee on stage with a colleague, both smiling." />
+        </ImageMask>
+        <ColorDisc lines={["theology","leadership","life"]} class="abt-disc" />
+      </div>
+    </section>
+
+    <section class="shell abt-why">
+      <div class="abt-why-copy">
+        <h2 class="sec-h"><span class="u">Why this site exists<Mark kind="underline" color="yellow" /></span></h2>
+        <p>{conviction}</p>
+      </div>
+      <StickyNote tone="paper" tilt={1.4} tape={false} class="abt-quote">
+        <p>The kingdom of God isn't just future. It's here, and it's changing everything.</p>
+      </StickyNote>
+    </section>
+
+    <section class="band shell">
+      <div class="sec-head">
+        <h2 class="sec-h"><span class="u">What we explore here<Mark kind="underline" color="green" /></span></h2>
+      </div>
+      <div class="shortcuts abt-areas">
+        {areas.map((a) => (
+          <a class="short" href={a.href}>
+            <CategoryIcon kind={a.kind} />
+            <h3>{a.t}</h3>
+            <p>{a.d}</p>
+            <span class="arw" aria-hidden="true">&rarr;</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="shell">
+      <div class="panel panel-light abt-sign">
+        <Mark kind="zigzag" color="yellow" class="panel-zig panel-zig-r" />
+        <h2 class="panel-h"><span class="u">Kingdom theology. Ordinary life.<Mark kind="underline" color="blue" /></span></h2>
+        <p class="panel-dek">That's the heartbeat of everything I write. Thanks for being here.</p>
+        <p class="abt-name">Denvil</p>
+      </div>
+    </section>
+  </div>
+  <Signup tone="dark" />
+</Shell>

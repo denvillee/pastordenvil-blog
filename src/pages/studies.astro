@@ -1,57 +1,84 @@
 ---
 /*
-  The handoff page. One card, one offer: what Grab Your Bibles is, the study
-  that is open, one button across. The observe instructions live on the study
-  site's How page — never here. This page NEVER lists sessions and NEVER
-  republishes study content; canonical stays on grabyourbibles.com.
+  The handoff page. The studies live on grabyourbibles.com because they are a
+  different kind of thing than an essay, and canonical stays there: this page
+  never lists sessions and never republishes study content.
+
+  The reference shows four more studies as "Coming soon". They are not here,
+  because naming a study is announcing it, and the names in the mockup were
+  the designer's placeholders rather than Denvil's plans.
 */
-import Base from '../layouts/Base.astro';
+import Shell from '../layouts/Shell.astro';
+import Mark from '../components/marks/Mark.astro';
+import StickyNote from '../components/marks/StickyNote.astro';
+import ImageMask from '../components/ImageMask.astro';
+import Placeholder from '../components/Placeholder.astro';
 import Signup from '../components/Signup.astro';
 import home from '../data/home.json';
 import labels from '../data/labels.json';
 import site from '../data/site.json';
 
-const STUDY_SITE = 'https://grabyourbibles.com';
+const STUDY = 'https://grabyourbibles.com/study/in-every-season/';
+
+const steps = [
+  { n: 1, tone: 'blue',   t: 'Choose a study',     d: 'Pick a study that fits your season.' },
+  { n: 2, tone: 'yellow', t: 'Set your rhythm',    d: 'Work through it at your own pace, on your own or with a group.' },
+  { n: 3, tone: 'coral',  t: 'Go deeper together', d: 'Use the prompts, reflections and Scripture to grow in wisdom and love.' },
+  { n: 4, tone: 'green',  t: 'Live it out',        d: 'Take what you learn into your everyday life and leadership.' },
+];
 ---
-<Base
-  title={`Studies · ${site.name}`}
-  description="Guided Bible studies you can walk through on your own or with a group."
->
-  <section class="band shell">
-    <div class="sec-head">
-      <h1>Studies</h1>
-      <span class="label">grabyourbibles.com</span>
-    </div>
-    <p class="sec-sub">{labels.studiesSubtitle}</p>
-
-    <p class="art-dek" style="margin-bottom:1.4rem">
-      The studies live on their own site, because they are a different kind of thing than
-      an essay. An essay is me working an idea out in writing. A study is you with your
-      Bible open, marking the text yourself, on your own or with a room full of people.
-    </p>
-
-    <div class="studies-card reveal">
-      <div class="studies-body">
-        <h2>{home.studiesHeading}</h2>
-        <p class="dek" set:html={home.studiesDek}></p>
-
-        <hr class="studies-rule" />
-
-        <span class="st-kicker">Now open &middot; The Book of Ruth</span>
-        <h3 class="st-title">God&rsquo;s Presence in Every Season</h3>
-        <p class="st-dek">
-          Seven sessions in the book of Ruth. God never speaks out loud in Ruth, and He
-          never stops working. Learn to be rooted deeply enough to see it.
-        </p>
-        <p class="st-meta">7 sessions &middot; on your own or with a group</p>
-        <a class="btn btn-primary" href={STUDY_SITE} target="_blank" rel="noopener">
-          {home.studiesCta} <span aria-hidden="true">&nearr;</span>
-        </a>
+<Shell title={`Studies · ${site.name}`}
+       description="Guided Bible studies you can walk through on your own or with a group."
+       current="studies">
+  <div class="arch">
+    <section class="shell std-hero">
+      <div>
+        <h1 class="page-h is-display"><span class="u">Studies<Mark kind="underline" color="blue" draw={true} /></span></h1>
+        <p class="page-dek">Resources for going deeper, individually or&#32;<span class="u">in community<Mark kind="underline" color="green" /></span>.</p>
+        <p class="std-sub">{labels.studiesSubtitle}</p>
       </div>
-      <div class="studies-aside" aria-hidden="true">
-        <span class="studies-mark">Grab<br />Your<br />Bibles</span>
+      <div class="std-art">
+        <ImageMask shape="torn">
+          <Placeholder label="A Bible open on a table with a notebook and coffee" ratio="4 / 3" />
+        </ImageMask>
+        <StickyNote tone="paper" tilt={2.2} tape={false} class="std-note">
+          Let's grow in wisdom, together.
+        </StickyNote>
       </div>
-    </div>
-  </section>
-  <Signup />
-</Base>
+    </section>
+
+    <section class="shell">
+      <div class="panel panel-dark std-feat">
+        <Mark kind="zigzag" color="blue" class="panel-zig" />
+        <div class="std-feat-copy">
+          <p class="std-eyebrow">{home.studiesPill}</p>
+          <h2 class="panel-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
+          <p class="panel-dek">A study through the book of Ruth.</p>
+          <a class="btn btn-light" href={STUDY} rel="noopener">
+            {home.studiesCta} <span class="arw" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+        <div class="std-feat-art">
+          <Placeholder label="Ruth study cover art" ratio="4 / 3" />
+          <span class="chip chip-light std-tag">Ruth</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="band shell">
+      <div class="sec-head">
+        <h2 class="sec-h"><span class="u">How studies work<Mark kind="underline" color="green" /></span></h2>
+      </div>
+      <ol class="steps">
+        {steps.map((s) => (
+          <li class="step">
+            <span class:list={['step-n', `cico-${s.tone}`]} aria-hidden="true">{s.n}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  </div>
+  <Signup tone="card" />
+</Shell>
