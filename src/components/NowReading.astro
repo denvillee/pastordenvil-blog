@@ -1,15 +1,25 @@
 ---
 /*
-  Layer 1 of the Bookshelf: the home page carries exactly one book.
-  One book, one idea, one door. The rest lives at /bookshelf/.
+  THE SHELF. One book at full size, then three beneath it.
+
+  The one-sentence synopsis is the most important element in this section and
+  has been since the first review: the shelf is only interesting if it says why
+  a book is on it. So the synopsis runs on the big book and on all three of the
+  small ones, and nothing here is a bare list of titles.
+
+  Covers are real art at a fixed 2:3 frame with a hard offset shadow, which is
+  what makes them read as physical books rather than as thumbnails. A book with
+  no cover keeps its drawn spine at the same frame, so the row never moves.
 */
+import Eyebrow from './Eyebrow.astro';
 import labels from '../data/labels.json';
+
 interface Book {
   title: string; author: string; year?: number; progress?: string;
   spine: string; note: string; link: string; cover?: string;
 }
-interface Props { book?: Book }
-const { book } = Astro.props;
+interface Props { book?: Book; shelf?: Book[] }
+const { book, shelf = [] } = Astro.props;
 
 function progressPct(s?: string): number | null {
   if (!s) return null;
@@ -20,30 +30,55 @@ function progressPct(s?: string): number | null {
   return null;
 }
 const pct = progressPct(book?.progress);
+const three = shelf.slice(0, 3);
 ---
 {book && (
-  <section class="band shell band-tight" id="reading">
-    <div class="sec-head reveal">
-      <h2>{labels.readingHeading}</h2>
-      <span class="label">{labels.readingLabel}</span>
-    </div>
-    <div class="now-read reveal">
-      {book.cover
-        ? <img class="cover" src={book.cover} alt={`Cover of ${book.title}`} width="96" loading="lazy" decoding="async" />
-        : <span class={`spine sp-${book.spine}`}><span>{book.title}</span></span>}
-      <span class="bk">
-        <span class="ba">{labels.readingNowLabel}</span>
-        <span class="bt">{book.link ? <a href={book.link} rel="noopener">{book.title}</a> : book.title}</span>
-        <span class="ba" style="letter-spacing:.08em">{book.author}{book.year ? ` · ${book.year}` : ''}</span>
-        <span class="bn" set:html={book.note}></span>
+  <section class="band shell shelf" id="reading">
+    <Eyebrow tone="clay" text={labels.shelfEyebrow} />
+    <h2 class="shelf-h">{labels.shelfHeading}</h2>
+
+    <div class="nr">
+      <div class="nr-cover">
+        {book.cover
+          ? <img src={book.cover} alt={`Cover of ${book.title}`} loading="lazy" decoding="async" />
+          : <span class={`spine sp-${book.spine}`}><span>{book.title}</span></span>}
+      </div>
+      <div class="nr-body">
+        <p class="nr-by">{book.author}{book.year ? ` · ${book.year}` : ''}</p>
+        <h3 class="nr-t">{book.link ? <a href={book.link} rel="noopener">{book.title}</a> : book.title}</h3>
+        <p class="nr-note" set:html={book.note}></p>
         {book.progress && (
-          <>
-            {pct !== null && <span class="bar"><i style={`width:${pct.toFixed(1)}%`}></i></span>}
-            <span class="bar-l">{book.progress}</span>
-          </>
+          <p class="nr-prog">
+            {pct !== null && <span class="nr-track"><i style={`width:${pct.toFixed(1)}%`}></i></span>}
+            <span class="nr-plabel">{book.progress}</span>
+          </p>
         )}
-        <a class="readlink" href="/bookshelf/">This month&rsquo;s shelf <span aria-hidden="true">&rarr;</span></a>
-      </span>
+      </div>
     </div>
+
+    {three.length > 0 && (
+      <>
+        <hr class="shelf-rule" />
+        <p class="shelf-also">{labels.shelfAlso}</p>
+        <div class="shelf-3">
+          {three.map((b) => (
+            <a class="sb" href={b.link || '/bookshelf/'} rel={b.link ? 'noopener' : undefined}>
+              <span class="sb-cover">
+                {b.cover
+                  ? <img src={b.cover} alt={`Cover of ${b.title}`} loading="lazy" decoding="async" />
+                  : <span class={`spine sp-${b.spine}`}><span>{b.title}</span></span>}
+              </span>
+              <span class="sb-body">
+                <span class="sb-t">{b.title}</span>
+                <span class="sb-by">{b.author}</span>
+                <span class="sb-note" set:html={b.note}></span>
+              </span>
+            </a>
+          ))}
+        </div>
+      </>
+    )}
+
+    <a class="shelf-more" href="/bookshelf/">{labels.shelfMore} <span aria-hidden="true">&rarr;</span></a>
   </section>
 )}

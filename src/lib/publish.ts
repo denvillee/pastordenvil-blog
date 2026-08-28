@@ -21,6 +21,41 @@ export async function live(key: CollectionKey) {
     .sort((a: any, b: any) => b.data.publishAt.getTime() - a.data.publishAt.getTime());
 }
 
+/* The real opening of a piece, for the Latest block on the home page.
+
+   A title plus a one-line summary asks a reader to decide from a label; the
+   actual first paragraph lets them decide from the writing, and it means no
+   teaser ever has to be written. Skips frontmatter leftovers, headings, images,
+   block quotes and list items to find the first true paragraph, then strips the
+   inline markdown that would otherwise render as literal asterisks. */
+export function openingParagraph(body = '', limit = 460): string {
+  const blocks = body.replace(/\r/g, '').split(/\n\s*\n/);
+  for (const raw of blocks) {
+    const b = raw.trim();
+    if (!b) continue;
+    if (/^(#{1,6}\s|>|!\[|\||-{3,}|\*{3,}|```)/.test(b)) continue;
+    if (/^([-*+]\s|\d+\.\s)/.test(b)) continue;
+    if (/^\[\^[^\]]+\]:/.test(b)) continue;
+    const text = b
+      .replace(/\[\^[^\]]+\]/g, '')
+      .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+      .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+      .replace(/(\*\*|__)(.*?)\1/g, '$2')
+      .replace(/(\*|_)(.*?)\1/g, '$2')
+      .replace(/`([^`]*)`/g, '$1')
+      .replace(/\s+/g, ' ')
+      .trim();
+    if (!text) continue;
+    if (text.length <= limit) return text;
+    /* Cut on a sentence if one lands near the limit, otherwise on a word. */
+    const window = text.slice(0, limit);
+    const stop = Math.max(window.lastIndexOf('. '), window.lastIndexOf('? '), window.lastIndexOf('! '));
+    if (stop > limit * 0.5) return window.slice(0, stop + 1);
+    return window.slice(0, window.lastIndexOf(' ')) + '\u2026';
+  }
+  return '';
+}
+
 export function readMinutes(body = '') {
   const words = body.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 220));

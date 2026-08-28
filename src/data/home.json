@@ -1,8 +1,4 @@
 {
-  "heroPrimaryLabel": "Start reading",
-  "heroPrimaryHref": "/essays/",
-  "heroSecondaryLabel": "Start the study ↗",
-  "heroSecondaryHref": "https://grabyourbibles.com",
   "featureLabel": "Latest",
   "featureLabelRecent": "Latest",
   "featureLabelOlder": "From the archive",
@@ -17,22 +13,21 @@
   "studiesHeading": "Grab your Bibles.",
   "studiesDek": "Guided studies you can walk through on your own or with a group. You read the passage and mark what stands out to you first. The questions come after that, and they build on what you noticed rather than telling you what to look for.",
   "studiesCta": "Start the study",
-  "heroFixed": "Good news for",
+  "heroFixed": "Good news",
   "heroRotations": [
-    "the weary.",
-    "the lonely.",
-    "the waiting.",
-    "the valley.",
-    "starting over.",
-    "the doubting.",
-    "the sick."
+    "For the weary.",
+    "For the lonely.",
+    "For the waiting.",
+    "For the valley.",
+    "For starting over.",
+    "For the doubting.",
+    "For the sick."
   ],
   "heroRotationsReserve": [
-    "the long middle.",
-    "the quiet years.",
-    "whoever is carrying it.",
-    "honest doubt."
+    "For the long middle.",
+    "For the quiet years.",
+    "For whoever is carrying it.",
+    "For honest doubt."
   ],
-  "heroGospelLine": "Jesus is King.|His freedom, peace and purpose are <em>available now.</em>",
   "essaysHeader": "The kingdom already started. It has not finished. We are living in the overlap."
 }

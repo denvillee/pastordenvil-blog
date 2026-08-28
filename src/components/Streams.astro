@@ -1,37 +1,28 @@
 ---
 /*
-  A directory of the three streams, not a feed. With little published, a
-  "latest" feed can only echo the featured essay above it; a directory stays
-  true at any content volume. Empty rooms simply say "Under construction." on
-  arrival, per the standing rule.
+  Three solid blocks, one per stream. They replace the bordered cards, which had
+  become three thin objects adrift between two heavy neighbours once the band's
+  heading came off (round 8, R8-1). Colour carries the weight the label used to.
 
-  There is deliberately no heading over these cards. Each card already names
-  itself and says what it holds, so a label announcing that they are sections
-  told the reader something the cards were already showing. A hairline
-  separates the band from the featured essay instead.
-
-  The class names below are internal and keep the old word; nothing a reader
-  ever sees says "rooms".
+  Each block is a whole-block link. The deks are Denvil's short lines from round
+  7, unchanged; the sizing here is set so none of the three breaks with a single
+  orphan word on the second line (round 8, R8-2).
 */
 import labels from '../data/labels.json';
-/* Three, not four. Bookshelf came out: it is a STATE, one continuing thing
-   with no feed, and its own band sits directly below this row, so it was on
-   the page twice. A stream publishes discrete dated items, competes for the
-   Latest slot and gets a card here; a state gets a band. */
+
 const rooms = [
-  { name: labels.essaysHeading, dek: labels.essaysDek, href: '/essays/' },
-  { name: labels.leadersHeading, dek: labels.leadersDek, href: '/leaders/' },
-  { name: labels.momentsHeading, dek: labels.momentsDek, href: '/moments/' },
+  { name: labels.essaysHeading,  dek: labels.essaysDek,  href: '/essays/',  cls: 'rb-pine' },
+  { name: labels.leadersHeading, dek: labels.leadersDek, href: '/leaders/', cls: 'rb-clay' },
+  { name: labels.momentsHeading, dek: labels.momentsDek, href: '/moments/', cls: 'rb-sage' },
 ];
 ---
-<section class="band shell band-tight" id="streams">
-  <hr class="band-rule" />
-  <div class="rooms-dir">
+<section class="band shell rooms" id="streams">
+  <div class="rb-grid">
     {rooms.map((r) => (
-      <a class="room-link reveal" href={r.href}>
-        <h3 class="rl-name">{r.name}</h3>
-        {r.dek && <span class="rl-dek">{r.dek}</span>}
-        <span class="rl-go" aria-hidden="true">&rarr;</span>
+      <a class:list={['rb', r.cls]} href={r.href}>
+        <span class="rb-name">{r.name}</span>
+        {r.dek && <span class="rb-dek">{r.dek}</span>}
+        <span class="rb-go" aria-hidden="true">Read &rarr;</span>
       </a>
     ))}
   </div>

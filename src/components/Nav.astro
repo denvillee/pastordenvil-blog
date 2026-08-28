@@ -1,5 +1,12 @@
 ---
 import labels from '../data/labels.json';
+/* Round 9 gives the home page a masthead rather than a bar: it sits straight on
+   the pine hero with no background of its own, and Subscribe joins the list
+   instead of being a button. It is the same component and the same links, worn
+   differently, so the two can never drift apart. Every other page keeps the bar
+   until the alignment pass. */
+interface Props { masthead?: boolean }
+const { masthead = false } = Astro.props;
 /* The bar is the home page scroll order, in the same words. Denvil, 26 Aug:
    the name of the section has to match the CMS and the address, and the tabs
    have to run in the same order as the page. Change one, change all three. */
@@ -23,13 +30,15 @@ const standing = [
   { label: labels.navArchive, href: '/archive/' },
 ];
 ---
-<nav class="nav">
+<nav class:list={["nav", masthead && "nav-mast"]}>
   <div class="nav-in">
     <a class="brand" href="/">DENVIL<i>.</i>LEE</a>
     <div class="nav-links">
       {links.map((l) => <a href={l.href}>{l.label}</a>)}
     </div>
-    <a class="nav-cta" href="/subscribe/">{labels.navCta}</a>
+    {masthead
+      ? <a class="nav-sub" href="/subscribe/">{labels.navCta}</a>
+      : <a class="nav-cta" href="/subscribe/">{labels.navCta}</a>}
     <button
       class="nav-burger"
       id="nav-burger"
@@ -45,7 +54,12 @@ const standing = [
     <div class="nav-panel-clip">
       <div class="nav-panel-in">
         {[...links, ...standing].map((l) => <a href={l.href}>{l.label}</a>)}
-        <a class="nav-cta" href="/subscribe/">{labels.navCta}</a>
+        {/* One page, one treatment: where the masthead shows Subscribe as a
+            plain link, the mobile panel does too, rather than the same page
+            offering a brass button at one width and a link at another. */}
+        {masthead
+          ? <a href="/subscribe/">{labels.navCta}</a>
+          : <a class="nav-cta" href="/subscribe/">{labels.navCta}</a>}
       </div>
     </div>
   </div>

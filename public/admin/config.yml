@@ -283,9 +283,12 @@ collections:
 
           # ----------------------------------------------------- home page bands
           - { label: 'Home — tag on the essay card', name: homeStreamEssayTag, widget: string, hint: 'The small tag on the first of the three cards in the “Three things every week” band.' }
-          - { label: 'Latest card link — an essay', name: latestReadEssay, widget: string, hint: 'The link on the Latest card when the newest thing is an essay.' }
-          - { label: 'Latest card link — a moment', name: latestReadMoment, widget: string, hint: 'The link on the Latest card when the newest thing is a Moment.' }
-          - { label: 'Latest card link — a lesson', name: latestReadLeaders, widget: string, hint: 'The link on the Latest card when the newest thing is a For Leaders post.' }
+          - { label: 'Latest block — link', name: latestMore, widget: string, hint: 'The link at the foot of the Latest block on the home page.' }
+          - { label: 'Hero sticker — fallback', name: studySticker, widget: string, hint: 'The sticker on the hero when nothing has been published in the last fortnight. It must stay true: the study really is seven sessions.' }
+          - { label: 'Shelf — eyebrow', name: shelfEyebrow, widget: string, hint: 'The small label above the bookshelf block on the home page.' }
+          - { label: 'Shelf — heading', name: shelfHeading, widget: string, hint: 'The heading over the bookshelf block on the home page.' }
+          - { label: 'Shelf — second row label', name: shelfAlso, widget: string, hint: 'The label over the three smaller books.' }
+          - { label: 'Shelf — link', name: shelfMore, widget: string, hint: 'The link from the home page bookshelf block through to the full shelf.' }
           - { label: 'Home — tag on the Leaders Corner card', name: homeStreamLeadersTag, widget: string, hint: 'The small tag on the second of the three cards.' }
           - { label: 'Home — tag on the Moments card', name: homeStreamMomentsTag, widget: string, hint: 'The small tag on the third of the three cards.' }
           - { label: 'Room tag — the essay room', name: roomEssayTag, widget: string, hint: 'The small tag on top of every piece in this room, and on the Archive page. Renaming it here renames it in both places at once.' }
