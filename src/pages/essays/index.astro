@@ -1,15 +1,15 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
+import LandingCopy from '../../components/LandingCopy.astro';
 import { live, readMinutes, displayDate, isoDate } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
-import home from '../../data/home.json';
 const entries = await live('essays');
 const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
 const byYear = years.map((y) => ({ year: y, items: entries.filter((e: any) => e.data.publishAt.getFullYear() === y) }));
 const title = labels.essaysHeading;
-const dek = home.essaysHeader;
+const dek = labels.essaysDek;
 ---
 <Base title={`${title} · ${site.name}`} description={dek}>
   <section class="band shell">
@@ -17,7 +17,7 @@ const dek = home.essaysHeader;
       <h1>{title}</h1>
     </div>
     <p class="sec-sub">{labels.essaysSubtitle}</p>
-    <p class="ess-head">{dek}</p>
+    <LandingCopy room="essays" />
     {byYear.map((group) => (
       <section class="arc-year">
         {years.length > 1 && <h2 class="arc-year-h">{group.year}<span>{group.items.length}</span></h2>}
