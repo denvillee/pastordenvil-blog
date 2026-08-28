@@ -1,64 +1,55 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import DotGrid from '../../components/marks/DotGrid.astro';
+import StickyNote from '../../components/marks/StickyNote.astro';
+import FeaturedEssay from '../../components/FeaturedEssay.astro';
+import MomentCard from '../../components/MomentCard.astro';
 import Signup from '../../components/Signup.astro';
-import IntroRow from '../../components/IntroRow.astro';
-import Timeline from '../../components/Timeline.astro';
-import { live, introPost, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
+import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
+
 const entries = await live('moments');
 const intro = await introPost('moments');
-const series = await currentSeries('moments');
-const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
-/* The same by-date view the Essays page uses. It stays off until the section
-   has enough in it to have a shape worth showing: with three posts a timeline
-   is just the list again, one size smaller. */
-const timelineItems = entries.map((e: any) => ({
-  href: `/moments/${e.id}/`, title: e.data.title, dek: e.data.dek, publishAt: e.data.publishAt,
-}));
-const byYear = years.map((y) => ({ year: y, items: entries.filter((e: any) => e.data.publishAt.getFullYear() === y) }));
-const title = labels.momentsHeading;
-const dek = labels.momentsDek;
-const subtitle = labels.momentsSubtitle;
+const [featured, ...rest] = entries;
 ---
-<Base title={`${title} · ${site.name}`} description={dek}>
-  <section class="band shell">
-    <div class="sec-head">
-      <h1>{title}</h1>
-    </div>
-    <p class="sec-sub">{subtitle}</p>
-
-    {intro && (
-      <div class="list list-intro">
-        <IntroRow href={`/moments/${intro.id}/`} title={intro.data.title}
-                  dek={intro.data.dek} body={intro.body ?? ''} label={labels.introFlag} />
+<Shell title={`${labels.momentsHeading} · ${site.name}`} description={labels.momentsDek} current="moments">
+  <div class="arch">
+    <section class="shell mom-hero">
+      <div>
+        <h1 class="page-h is-display"><span class="c">{labels.momentsHeading}<Mark kind="circle-loose" color="yellow" draw={true} /></span></h1>
+        <p class="page-dek">{labels.momentsSubtitle}</p>
       </div>
-    )}
+      <div class="mom-quote">
+        <DotGrid cols={6} rows={4} class="mom-dots" />
+        <StickyNote tone="blue" tilt={1.6}>
+          <p>Grace is not the absence of struggle, but the presence of God.</p>
+        </StickyNote>
+      </div>
+    </section>
 
-    {byYear.map((group) => (
-      <section class="arc-year">
-        {years.length > 1 && <h2 class="arc-year-h">{group.year}<span>{group.items.length}</span></h2>}
-        <div class="list">
-          {group.items.map((e: any) => (
-            <a class="list-item" href={`/moments/${e.id}/`}>
-              <span class="date"><time datetime={isoDate(e.data.publishAt)}>{displayDate(e.data.publishAt)}</time></span>
-              <span class="t">{e.data.title}<span class="d">{e.data.dek}</span></span>
-              {/* Only a full essay claims a reading time here, for the same
-                  reason it does on the piece itself. */}
-              {e.data.format === 'essay' && <span class="r">{readMinutes(e.body)} min</span>}
-            </a>
-          ))}
-        </div>
-      </section>
-    ))}
-    {/* Same rule as /essays/: no series, no by-date block. Six standalone
-        pieces with no series would still produce two identical lists
-        (round 8, R8-4, superseding the earlier count threshold). */}
-    {series && series.parts.length > 1 && (
-      <Timeline items={timelineItems} heading={labels.timelineHeading} />
-    )}
+    <section class="shell">
+      {featured
+        ? <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured}
+                         label="Featured moment" room={labels.momentsHeading} tone="coral" />
+        : <p class="empty-note">{labels.momentsEmpty}</p>}
 
-    {entries.length === 0 && labels.momentsEmpty && <p class="empty-note">{labels.momentsEmpty}</p>}
-  </section>
-  <Signup />
-</Base>
+      {rest.length > 0 && (
+        <>
+          <div class="sec-head arch-sub"><h2 class="sec-h">Recent moments</h2></div>
+          <div class="mcards">
+            {rest.map((e: any, i: number) => (
+              <MomentCard href={`/moments/${e.id}/`} entry={e} i={i} />
+            ))}
+          </div>
+        </>
+      )}
+
+      {intro && (
+        <p class="mt"><a class="go" href={`/moments/${intro.id}/`}>{intro.data.title} <span class="arw" aria-hidden="true">&rarr;</span></a></p>
+      )}
+    </section>
+  </div>
+  <Signup tone="card" />
+</Shell>

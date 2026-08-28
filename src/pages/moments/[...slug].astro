@@ -23,6 +23,8 @@ const fmt = entry.data.format ?? 'note';
 const mins = fmt === 'essay' ? readMinutes(entry.body) : undefined;
 ---
 <Article
+  slug={entry.id}
+  titleMark={entry.data.titleMark}
   room="moments"
   title={entry.data.title}
   dek={entry.data.dek}
