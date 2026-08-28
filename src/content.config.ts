@@ -12,6 +12,16 @@ const roomSchema = z.object({
   scripture: z.string().optional(),
   tags: z.array(z.string()).default([]),
   ogImage: z.string().optional(),
+  /* The Latest slot on the home page. Pinning holds a piece there regardless of
+     date, because Moments and For Leaders are short and frequent while essays
+     are long and rare: on pure recency a week of quick posts buries a new essay
+     the day after it goes up. Newest pinned item wins if more than one is set. */
+  pinned: z.boolean().default(false),
+  /* Optional, and optional on purpose. A piece with no image runs text-only at
+     the same width rather than reaching for a stock picture; one generic image
+     repeated across every post is a placeholder wearing a photograph. */
+  image: z.string().optional(),
+  imageAlt: z.string().optional(),
   /* Attribution block. Rendered as "Where this comes from" under the article.
      Required in practice for frameworks: see claude/theological-spine.md. */
   notes: z.string().optional(),
