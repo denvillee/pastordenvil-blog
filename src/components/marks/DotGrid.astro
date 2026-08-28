@@ -1,0 +1,8 @@
+---
+/* A small field of dots, for open space. Pure CSS: a radial-gradient tile is a
+   fraction of the weight of 30 SVG circles and scales without a viewBox. */
+interface Props { cols?: number; rows?: number; class?: string }
+const { cols = 7, rows = 5, class: cls = '' } = Astro.props;
+---
+<span class:list={['dotgrid', cls]} aria-hidden="true"
+      style={`--cols:${cols};--rows:${rows}`}></span>

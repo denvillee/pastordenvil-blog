@@ -1,0 +1,7 @@
+---
+/* A strip of tape over an edge. Slightly translucent so whatever is beneath
+   shows through, which is what stops it reading as a plain rectangle. */
+interface Props { color?: 'blue' | 'coral' | 'yellow' | 'neutral'; class?: string }
+const { color = 'blue', class: cls = '' } = Astro.props;
+---
+<span class:list={['tape', `tape-${color}`, cls]} aria-hidden="true"></span>

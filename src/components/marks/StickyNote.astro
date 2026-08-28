@@ -1,0 +1,17 @@
+---
+/*
+  A note card, rotated a degree or two. The rotation is what sells it, but it
+  has to come off on small screens or the corners collide with body copy.
+*/
+interface Props {
+  tape?: boolean;
+  tone?: 'paper' | 'blue' | 'yellow' | 'green' | 'coral';
+  tilt?: number;
+  class?: string;
+}
+const { tape = true, tone = 'paper', tilt = -1.4, class: cls = '' } = Astro.props;
+---
+<div class:list={['note', `note-${tone}`, cls]} style={`--tilt:${tilt}deg`}>
+  {tape && <span class="note-tape" aria-hidden="true"></span>}
+  <div class="note-in"><slot /></div>
+</div>
