@@ -38,8 +38,22 @@ const pages = defineCollection({
   }),
 });
 
+/* The section landing copy: Denvil's own words about why each room exists.
+   `lead` is the paragraph that stays visible; the body is what opens behind
+   the disclosure. Split in two on purpose, so a regular coming back for what
+   is new steps over 300 words instead of scrolling past them. */
+const landing = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/landing' }),
+  schema: z.object({
+    room: z.string(),
+    title: z.string(),
+    lead: z.string(),
+  }),
+});
+
 export const collections = {
   pages,
+  landing,
   /* Essays can arrive as a set — a named series in parts (the anthropology set
      runs 10-12). `series` names the set, `part` numbers the essay inside it.
      A standalone essay leaves both blank and sits outside any set. */
