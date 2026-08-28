@@ -1,64 +1,89 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import ColorDisc from '../../components/marks/ColorDisc.astro';
+import StickyNote from '../../components/marks/StickyNote.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Photo from '../../components/Photo.astro';
+import ImageMask from '../../components/ImageMask.astro';
+import FeaturedEssay from '../../components/FeaturedEssay.astro';
+import EssayCard from '../../components/EssayCard.astro';
+import TopicList from '../../components/TopicList.astro';
 import Signup from '../../components/Signup.astro';
-import IntroRow from '../../components/IntroRow.astro';
-import Timeline from '../../components/Timeline.astro';
-import { live, introPost, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
+import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
+
 const entries = await live('leaders');
 const intro = await introPost('leaders');
-const series = await currentSeries('leaders');
-const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
-/* The same by-date view the Essays page uses. It stays off until the section
-   has enough in it to have a shape worth showing: with three posts a timeline
-   is just the list again, one size smaller. */
-const timelineItems = entries.map((e: any) => ({
-  href: `/leaders/${e.id}/`, title: e.data.title, dek: e.data.dek, publishAt: e.data.publishAt,
-}));
-const byYear = years.map((y) => ({ year: y, items: entries.filter((e: any) => e.data.publishAt.getFullYear() === y) }));
-const title = labels.leadersHeading;
-const dek = labels.leadersDek;
-const subtitle = labels.leadersSubtitle;
+const [featured, ...rest] = entries;
 ---
-<Base title={`${title} · ${site.name}`} description={dek}>
-  <section class="band shell">
-    <div class="sec-head">
-      <h1>{title}</h1>
-    </div>
-    <p class="sec-sub">{subtitle}</p>
+<Shell title={`${labels.leadersHeading} · ${site.name}`} description={labels.leadersDek} current="leaders">
+  <div class="arch">
+    <Mark kind="brush" color="coral" class="arch-brush" />
 
-    {intro && (
-      <div class="list list-intro">
-        <IntroRow href={`/leaders/${intro.id}/`} title={intro.data.title}
-                  dek={intro.data.dek} body={intro.body ?? ''} label={labels.introFlag} />
-      </div>
-    )}
-
-    {byYear.map((group) => (
-      <section class="arc-year">
-        {years.length > 1 && <h2 class="arc-year-h">{group.year}<span>{group.items.length}</span></h2>}
-        <div class="list">
-          {group.items.map((e: any) => (
-            <a class="list-item" href={`/leaders/${e.id}/`}>
-              <span class="date"><time datetime={isoDate(e.data.publishAt)}>{displayDate(e.data.publishAt)}</time></span>
-              <span class="t">{e.data.title}<span class="d">{e.data.dek}</span></span>
-              {/* Only a full essay claims a reading time here, for the same
-                  reason it does on the piece itself. */}
-              {e.data.format === 'essay' && <span class="r">{readMinutes(e.body)} min</span>}
+    <section class="shell lead-hero">
+      <div>
+        <h1 class="page-h is-display"><span class="u">{labels.leadersHeading}<Mark kind="underline" color="yellow" draw={true} /></span></h1>
+        <p class="page-dek">
+          Reflections for leading with&#32;<span class="u">wisdom<Mark kind="underline" color="blue" /></span>,&#32;<span class="u">humility<Mark kind="underline" color="green" /></span>, and&#32;<span class="u">courage<Mark kind="underline" color="coral" /></span>.
+        </p>
+        <p class="lead-sub">{labels.leadersSubtitle}</p>
+        {featured && (
+          <p class="hero-acts">
+            <a class="btn btn-blue" href={`/leaders/${featured.id}/`}>
+              Read the latest essay <span class="arw" aria-hidden="true">&rarr;</span>
             </a>
-          ))}
-        </div>
-      </section>
-    ))}
-    {/* Same rule as /essays/: no series, no by-date block. Six standalone
-        pieces with no series would still produce two identical lists
-        (round 8, R8-4, superseding the earlier count threshold). */}
-    {series && series.parts.length > 1 && (
-      <Timeline items={timelineItems} heading={labels.timelineHeading} />
-    )}
+          </p>
+        )}
+      </div>
+      <div class="lead-art">
+        <ImageMask shape="torn">
+          <Photo name="dl-leaders" width={1200} height={900}
+                 sizes="(max-width: 900px) 92vw, 46vw"
+                 alt="Denvil Lee teaching on stage, gesturing as he speaks." />
+        </ImageMask>
+        <ColorDisc lines={["Lead well.","Love deep.","Finish strong."]} color="blue" rule={false} class="lead-disc" />
+      </div>
+    </section>
 
-    {entries.length === 0 && labels.leadersEmpty && <p class="empty-note">{labels.leadersEmpty}</p>}
-  </section>
-  <Signup />
-</Base>
+    <div class="shell arch-deck">
+      <div class="arch-main">
+        {featured
+          ? <FeaturedEssay href={`/leaders/${featured.id}/`} entry={featured}
+                           label="Featured essay" room={labels.leadersHeading} tone="blue" />
+          : <p class="empty-note">{labels.leadersEmpty}</p>}
+
+        {rest.length > 0 && (
+          <>
+            <div class="sec-head arch-sub">
+              <h2 class="sec-h">Short reflections for real leadership</h2>
+              <span class="count">{entries.length}</span>
+            </div>
+            <div class="ecards">
+              {rest.map((e: any) => (
+                <EssayCard href={`/leaders/${e.id}/`} entry={e} room={labels.leadersHeading} tone="blue" />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      <aside class="arch-side" aria-label="More on this site">
+        <TopicList rooms={['leaders']} />
+        <StickyNote tone="blue" tilt={-1.6} tape={false} class="side-note">
+          Leadership isn't about having all the answers. It's about keeping your
+          eyes on Jesus and serving the people in front of you.
+        </StickyNote>
+        {intro && (
+          <section class="side-card">
+            <h2 class="side-h">New here?</h2>
+            <p>Start with the piece about why this section exists.</p>
+            <a class="go" href={`/leaders/${intro.id}/`}>{intro.data.title} <span class="arw" aria-hidden="true">&rarr;</span></a>
+          </section>
+        )}
+      </aside>
+    </div>
+  </div>
+  <Signup tone="dark" />
+</Shell>
