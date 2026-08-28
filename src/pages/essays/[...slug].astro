@@ -19,6 +19,8 @@ const Diagram = getDiagram(entry.data.diagram);
 const place = await seriesPlace('essays', entry.data.series, entry.data.seriesOrder);
 ---
 <Article
+  slug={entry.id}
+  titleMark={entry.data.titleMark}
   room="essays"
   title={entry.data.title}
   dek={entry.data.dek}

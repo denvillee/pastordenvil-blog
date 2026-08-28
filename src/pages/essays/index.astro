@@ -1,88 +1,102 @@
 ---
 /*
-  /essays/ reads top to bottom as: what this is, then the run in progress, then
-  the pieces that stand alone, then the record of everything.
+  Template A, the archive. Essays is the fullest version of it; For Leaders and
+  Moments use the same structure with their own personality.
 
-  The two lists draw on the same essays on purpose and answer different
-  questions. "On its own" is a reading list, ordered by what someone arriving
-  should read. "By date" is a record, ordered by when it happened, and is
-  deliberately plainer than the lists above it.
+  Two controls from the reference are deliberately absent until the archive has
+  the volume to justify them: a sort dropdown and a "load more" button. With
+  three published pieces both would be controls that do nothing, and a control
+  that does nothing is worse than no control.
 */
-import Base from '../../layouts/Base.astro';
-import Signup from '../../components/Signup.astro';
-import IntroRow from '../../components/IntroRow.astro';
+import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import DotGrid from '../../components/marks/DotGrid.astro';
+import StickyNote from '../../components/marks/StickyNote.astro';
+import FeaturedEssay from '../../components/FeaturedEssay.astro';
+import EssayCard from '../../components/EssayCard.astro';
+import TopicList from '../../components/TopicList.astro';
 import SeriesBlock from '../../components/SeriesBlock.astro';
-import Timeline from '../../components/Timeline.astro';
-import { live, introPost, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
+import { live, introPost, currentSeries } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
-import home from '../../data/home.json';
 
 const entries = await live('essays');
 const intro = await introPost('essays');
 const series = await currentSeries('essays');
 
-/* An essay stands alone when it is not part of the running series. */
-const inSeries = new Set(
-  series ? entries.filter((e: any) => e.data.series === series.name).map((e: any) => e.id) : []
-);
-const standalone = entries.filter((e: any) => !inSeries.has(e.id));
-
-const items = entries.map((e: any) => ({
-  href: `/essays/${e.id}/`, title: e.data.title, dek: e.data.dek, publishAt: e.data.publishAt,
-}));
-
-const title = labels.essaysHeading;
-const dek = labels.essaysDek;
+const [featured, ...rest] = entries;
 ---
-<Base title={`${title} · ${site.name}`} description={dek}>
-  <section class="band shell">
-    <div class="sec-head">
-      <h1>{title}</h1>
-    </div>
-    <p class="sec-sub">{labels.essaysSubtitle}</p>
+<Shell title={`${labels.essaysHeading} · ${site.name}`} description={labels.essaysDek} current="essays">
+  <div class="arch">
+    <Mark kind="brush" color="coral" class="arch-brush" />
 
-    {/* First thing after the heading and the one sentence, whether or not a
-        series is running and whether or not anything else is published yet. */}
-    {intro && (
-      <div class="list list-intro">
-        <IntroRow href={`/essays/${intro.id}/`} title={intro.data.title}
-                  dek={intro.data.dek} body={intro.body ?? ''} label={labels.introFlag} />
+    <section class="shell arch-head">
+      <div>
+        <h1 class="page-h is-display">{labels.essaysHeading}<span class="dot">.</span>
+          <Mark kind="underline" color="blue" class="page-uline" draw={true} />
+        </h1>
+        <p class="page-dek">
+          Thoughtful reflections on <span class="u">theology<Mark kind="underline" color="yellow" /></span>,&#32;<span class="u">leadership<Mark kind="underline" color="green" /></span>, and&#32;<span class="u">ordinary life<Mark kind="underline" color="coral" /></span>.
+        </p>
       </div>
-    )}
+      <DotGrid cols={7} rows={4} class="arch-dots" />
+    </section>
 
-    {series && series.parts.length > 1 && (
-      <SeriesBlock name={series.name} dek={series.dek} parts={series.parts} />
-    )}
+    <div class="shell arch-deck">
+      <div class="arch-main">
+        {featured && (
+          <FeaturedEssay href={`/essays/${featured.id}/`} entry={featured}
+                         room={labels.essaysHeading} />
+        )}
 
-    {standalone.length > 0 && (
-      <section class="ess-alone" aria-labelledby="alone-h">
-        {series && series.parts.length > 1 && <h2 class="sec-h2" id="alone-h">{labels.essaysStandaloneHeading}</h2>}
-        <div class="list">
-          {standalone.map((e: any) => (
-            <a class="list-item" href={`/essays/${e.id}/`}>
-              <span class="date"><time datetime={isoDate(e.data.publishAt)}>{displayDate(e.data.publishAt)}</time></span>
-              <span class="t">{e.data.title}<span class="d">{e.data.dek}</span></span>
-              <span class="r">{readMinutes(e.body)} min</span>
-            </a>
-          ))}
-        </div>
-      </section>
-    )}
+        {series && series.parts.length > 1 && (
+          <SeriesBlock name={series.name} dek={series.dek} parts={series.parts} />
+        )}
 
-    {entries.length === 0 && labels.essaysEmpty && <p class="empty-note">{labels.essaysEmpty}</p>}
+        {rest.length > 0 && (
+          <>
+            <div class="sec-head arch-sub">
+              <h2 class="sec-h">All essays</h2>
+              <span class="count">{entries.length} {entries.length === 1 ? 'essay' : 'essays'}</span>
+            </div>
+            <div class="ecards">
+              {rest.map((e: any) => (
+                <EssayCard href={`/essays/${e.id}/`} entry={e} room={labels.essaysHeading} />
+              ))}
+            </div>
+          </>
+        )}
 
-    {/* By date renders only when a series is running. A series is the only
-        thing that makes the list above non-chronological, and therefore the
-        only thing that makes a chronological record say anything different.
-        With no series the two lists are identical (round 8, R8-4). */}
-    {series && series.parts.length > 1 && (
-      <Timeline items={items} heading={labels.timelineHeading} sub={labels.essaysTimelineSub} />
-    )}
+        {entries.length === 0 && <p class="empty-note">{labels.essaysEmpty}</p>}
+      </div>
 
-    {entries.length > 0 && (
-      <p class="sec-more"><a class="readlink" href="/archive/">{labels.archiveLink} <span>&rarr;</span></a></p>
-    )}
-  </section>
-  <Signup />
-</Base>
+      <aside class="arch-side" aria-label="More on this site">
+        <TopicList rooms={['essays']} />
+
+        <StickyNote tone="green" tilt={-1.6} tape={false} class="side-note">
+          Applied theology for ordinary life, from the tension of the kingdom
+          already here and still coming.
+        </StickyNote>
+
+        {intro && (
+          <section class="side-card side-blue">
+            <h2 class="side-h">New here?</h2>
+            <p>Start with the piece about why this exists and what you'll find.</p>
+            <a class="go" href={`/essays/${intro.id}/`}>{intro.data.title} <span class="arw" aria-hidden="true">&rarr;</span></a>
+          </section>
+        )}
+      </aside>
+    </div>
+
+    <section class="shell">
+      <div class="panel panel-dark panel-wide">
+        <Mark kind="zigzag" color="blue" class="panel-zig" />
+        <h2 class="panel-h"><span class="u">Grab your Bibles.<Mark kind="underline" color="blue" /></span></h2>
+        <p class="panel-dek">A study through the book of Ruth.</p>
+        <a class="btn btn-light" href="https://grabyourbibles.com/study/in-every-season/" rel="noopener">
+          Start the study <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    </section>
+  </div>
+</Shell>
