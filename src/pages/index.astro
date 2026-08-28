@@ -32,16 +32,6 @@ const featureMinutes = feature && feature.body.trim().split(/\s+/).filter(Boolea
   ? readMinutes(feature.body)
   : undefined;
 
-/* One sticker per page, and its words have to be true of the build today. A
-   piece published in the last fortnight earns "New ...", and when nothing is
-   that fresh the study is still seven sessions, so the fallback is true too. */
-const DAY = 86_400_000;
-const freshDays = feature ? (Date.now() - feature.data.publishAt.getTime()) / DAY : Infinity;
-const NEW_LABEL: Record<string, string> = {
-  essays: 'New essay', moments: 'New moment', leaders: 'New lesson',
-};
-const sticker = freshDays <= 14 ? NEW_LABEL[feature!.room] : labels.studySticker;
-
 const now = books.find((b: any) => b.data.shelfStatus === 'now');
 const nowBook = now ? { ...now.data, note: now.body?.trim() || '' } : undefined;
 const shelf = books
@@ -55,7 +45,7 @@ const shelf = books
   description={site.metaDescription}
   masthead={true}
 >
-  <Hero sticker={sticker} />
+  <Hero />
 
   {feature && (
     <LatestBlock
