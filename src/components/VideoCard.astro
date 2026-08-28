@@ -1,0 +1,57 @@
+---
+/*
+  Click to load. The poster is a still; the player is only built when somebody
+  asks for it, so a page of talks does not open fifteen third-party players
+  before a reader has chosen one. Until then the page contacts nobody.
+*/
+interface Props { entry: any; featured?: boolean }
+const { entry, featured = false } = Astro.props;
+/* The featured talk is the first thing under the page's h1, so it takes h2 and
+   the rest of the grid sits at h3 under their year headings. */
+const Tag = featured ? 'h2' : 'h3';
+const d = entry.data;
+
+const embed = d.provider === 'vimeo'
+  ? `https://player.vimeo.com/video/${d.videoId}?autoplay=1&title=0&byline=0&portrait=0`
+  : `https://www.youtube-nocookie.com/embed/${d.videoId}?autoplay=1&rel=0`;
+const watch = d.provider === 'vimeo'
+  ? `https://vimeo.com/${d.videoId}`
+  : `https://www.youtube.com/watch?v=${d.videoId}`;
+/* A self-hosted stem, or a derived YouTube thumbnail for a YouTube entry. */
+const localPoster = d.poster as string | undefined;
+const remotePoster = !localPoster && d.provider === 'youtube'
+  ? `https://i.ytimg.com/vi/${d.videoId}/hqdefault.jpg` : undefined;
+
+const mmss = (s?: number) => s
+  ? `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` : undefined;
+const len = mmss(d.durationSeconds);
+---
+<article class:list={['vcard', featured && 'vcard-feat']}>
+  <div class="vframe" data-embed={embed} data-title={d.title}>
+    <button type="button" class="vplay" aria-label={`Play: ${d.title}`}>
+      {localPoster ? (
+        <picture>
+          <source srcset={`/assets/img/${localPoster}.webp`} type="image/webp" />
+          <img src={`/assets/img/${localPoster}.jpg`} alt="" width="1280" height="720"
+               loading={featured ? 'eager' : 'lazy'} decoding="async" />
+        </picture>
+      ) : remotePoster ? (
+        <img src={remotePoster} alt="" width="640" height="360"
+             loading={featured ? 'eager' : 'lazy'} decoding="async" referrerpolicy="no-referrer" />
+      ) : <span class="vposter-none" aria-hidden="true"></span>}
+      <span class="vveil" aria-hidden="true"></span>
+      <span class="vtri" aria-hidden="true">&#9654;</span>
+      {len && <span class="vlen">{len}</span>}
+    </button>
+  </div>
+  <div class="vmeta">
+    {d.note && <p class="veyebrow">{d.note}</p>}
+    <Tag class="vtitle">{d.title}</Tag>
+    <p class="vsub">
+      {d.context}{d.context && ' · '}{d.year}
+    </p>
+    <a class="go" href={watch} rel="noopener nofollow" target="_blank">
+      Watch on {d.provider === 'vimeo' ? 'Vimeo' : 'YouTube'} <span aria-hidden="true">&#8599;</span>
+    </a>
+  </div>
+</article>

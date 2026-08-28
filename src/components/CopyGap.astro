@@ -1,0 +1,16 @@
+---
+/*
+  A marked gap where Denvil's own words belong.
+
+  Deliberately loud. Copy I invent in his voice is the one thing that must never
+  reach the site by accident, and a tasteful grey box is exactly how it would.
+  This says what is missing and roughly how long it should be.
+*/
+interface Props { what: string; length?: string }
+const { what, length } = Astro.props;
+---
+<div class="gap" role="note">
+  <p class="gap-k">Denvil's words go here</p>
+  <p class="gap-w">{what}</p>
+  {length && <p class="gap-l">{length}</p>}
+</div>
