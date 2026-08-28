@@ -41,8 +41,8 @@ collections:
       - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
       - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
       - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
-      - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
-      - { label: Part in the set, name: part, widget: number, value_type: int, required: false, hint: 'When an essay belongs to a set, its number in the set — 1, 2, 3. Leave blank for a standalone essay. The set itself is named in Series.' }
+      - { label: Series, name: series, widget: string, required: false, hint: 'The name of the run this belongs to, spelled exactly as it is on the Series entry. Leave blank for a piece that stands on its own.' }
+      - { label: Part number, name: seriesOrder, widget: number, value_type: int, required: false, hint: 'Which part of that run this is. It has to match the part number on the Series entry for the two to line up.' }
       - { label: Scripture, name: scripture, widget: string, required: false, hint: 'Free text, e.g. Acts 2:17; Mark 1:15' }
       - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
       - { label: Diagram caption, name: diagramCaption, widget: string, required: false, hint: 'One line under the drawing. Only used when a diagram is chosen.' }
@@ -69,7 +69,10 @@ collections:
       - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
       - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
       - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
-      - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
+      - { label: Series, name: series, widget: string, required: false, hint: 'The name of the run this belongs to, spelled exactly as it is on the Series entry. Leave blank for a piece that stands on its own.' }
+      - { label: Part number, name: seriesOrder, widget: number, value_type: int, required: false, hint: 'Which part of that run this is. It has to match the part number on the Series entry for the two to line up.' }
+      - { label: Kind of post, name: format, widget: select, default: note, options: [{ label: 'A short note', value: note }, { label: 'A picture with a caption', value: image }, { label: 'A full essay', value: essay }], hint: 'Chooses the layout. Only a full essay shows a reading time; a note or a picture does not claim one.' }
+      - { label: Caption, name: caption, widget: string, required: false, hint: 'The line under the picture. Used by the picture format.' }
       - { label: Scripture, name: scripture, widget: string, required: false }
       - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
       - { label: Diagram caption, name: diagramCaption, widget: string, required: false, hint: 'One line under the drawing. Only used when a diagram is chosen.' }
@@ -96,7 +99,10 @@ collections:
       - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
       - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
       - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
-      - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
+      - { label: Series, name: series, widget: string, required: false, hint: 'The name of the run this belongs to, spelled exactly as it is on the Series entry. Leave blank for a piece that stands on its own.' }
+      - { label: Part number, name: seriesOrder, widget: number, value_type: int, required: false, hint: 'Which part of that run this is. It has to match the part number on the Series entry for the two to line up.' }
+      - { label: Kind of post, name: format, widget: select, default: note, options: [{ label: 'A short note', value: note }, { label: 'A picture with a caption', value: image }, { label: 'A full essay', value: essay }], hint: 'Chooses the layout. Only a full essay shows a reading time; a note or a picture does not claim one.' }
+      - { label: Caption, name: caption, widget: string, required: false, hint: 'The line under the picture. Used by the picture format.' }
       - { label: Scripture, name: scripture, widget: string, required: false }
       - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
       - { label: Diagram caption, name: diagramCaption, widget: string, required: false, hint: 'One line under the drawing. Only used when a diagram is chosen.' }
@@ -170,6 +176,31 @@ collections:
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
       - { label: Body, name: body, widget: markdown }
 
+  # --------------------------------------------------------------------- series
+  - name: series
+    label: Series
+    description: 'A named run of pieces. List every part here, including the ones not written yet: the section page shows the whole shape, with the published parts linked and the rest marked forthcoming. A part goes live when a piece carries this exact series name and that part number.'
+    label_singular: Series
+    folder: /src/content/series
+    create: true
+    extension: md
+    format: frontmatter
+    identifier_field: name
+    fields:
+      - { label: Name, name: name, widget: string, hint: 'What the run is called. Pieces join it by carrying this exact name in their Series field.' }
+      - { label: One line, name: dek, widget: text, hint: 'A single line saying what the run is about. Shown under the name.' }
+      - { label: Section, name: room, widget: select, default: essays, options: [essays, moments, leaders], hint: 'Which section this run belongs to.' }
+      - { label: Running now, name: current, widget: boolean, default: false, hint: 'Show this run at the top of its section page. One at a time per section.' }
+      - label: The parts
+        name: parts
+        widget: list
+        summary: '{{fields.order}}. {{fields.title}}'
+        hint: 'Every part in order, including the ones still to be written. A part with no published piece shows as forthcoming, with no date.'
+        fields:
+          - { label: Part number, name: order, widget: number, value_type: int }
+          - { label: Working title, name: title, widget: string, hint: 'Used until the piece is published, after which the published title is shown instead.' }
+      - { label: Body, name: body, widget: hidden, default: '' }
+
   # ------------------------------------------------------- section landing copy
   - name: landing
     label: Section landing copy
@@ -207,6 +238,7 @@ collections:
           - { label: Feature sticker — a couple of weeks on, name: featureLabelRecent, widget: string, hint: 'Replaces it automatically once that essay is 8 to 21 days old, so the page never claims "this week" about older writing.' }
           - { label: Feature sticker — older, name: featureLabelOlder, widget: string, hint: 'Used once the newest essay is over three weeks old. Nothing looks stale or wrong during a quiet stretch.' }
           - { label: Essay cadence, name: essayCadence, widget: string }
+          - { label: 'Essays page — the overlap line', name: essaysHeader, widget: text, hint: 'The line that heads the writing on the Essays page, under the landing copy. It frames the whole body of essays, which is what it was written for.' }
           - { label: Leaders cadence, name: leadersCadence, widget: string }
           - { label: Moments cadence, name: momentsCadence, widget: string }
           - { label: 'Watch note — under the home page clip rail', name: watchNote, widget: text, hint: 'The paragraph under the three clips on the home page. The Watch page has its own note, below.' }
@@ -277,6 +309,10 @@ collections:
           # ------------------------------------------------------- Essays page
           - { label: 'Essays page — heading', name: essaysHeading, widget: string, hint: 'The big heading on the Essays page. Also used in the browser tab title.' }
           - { label: 'Essays page — subtitle', name: essaysSubtitle, widget: text, hint: 'The one line under the heading on the Essays page. The longer piece about why the room exists is under Section landing copy.' }
+          - { label: 'Essays page — standalone heading', name: essaysStandaloneHeading, widget: string, hint: 'The heading over the essays that are not part of a run. Only shown when a series is running above it.' }
+          - { label: 'By date — heading', name: timelineHeading, widget: string, hint: 'The heading over the plain by-date list at the foot of a section page.' }
+          - { label: 'By date — line under it', name: essaysTimelineSub, widget: text, hint: 'One line under that heading on the Essays page.' }
+          - { label: 'Link to Everything', name: archiveLink, widget: string, hint: 'The link at the foot of the Essays page pointing at the full archive.' }
           - { label: 'Essays page — standfirst', name: essaysDek, widget: text, hint: 'The short line on the home page card. Also used in Google results and link previews.' }
           - { label: 'Essays page — empty message', name: essaysEmpty, widget: text, hint: 'Shows on the Essays page while nothing is published there yet.' }
 
