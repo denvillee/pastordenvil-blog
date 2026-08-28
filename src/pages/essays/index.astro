@@ -1,13 +1,36 @@
 ---
+/*
+  /essays/ reads top to bottom as: what this is, then the run in progress, then
+  the pieces that stand alone, then the record of everything.
+
+  The two lists draw on the same essays on purpose and answer different
+  questions. "On its own" is a reading list, ordered by what someone arriving
+  should read. "By date" is a record, ordered by when it happened, and is
+  deliberately plainer than the lists above it.
+*/
 import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
 import LandingCopy from '../../components/LandingCopy.astro';
-import { live, readMinutes, displayDate, isoDate } from '../../lib/publish';
+import SeriesBlock from '../../components/SeriesBlock.astro';
+import Timeline from '../../components/Timeline.astro';
+import { live, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
+import home from '../../data/home.json';
+
 const entries = await live('essays');
-const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
-const byYear = years.map((y) => ({ year: y, items: entries.filter((e: any) => e.data.publishAt.getFullYear() === y) }));
+const series = await currentSeries('essays');
+
+/* An essay stands alone when it is not part of the running series. */
+const inSeries = new Set(
+  series ? entries.filter((e: any) => e.data.series === series.name).map((e: any) => e.id) : []
+);
+const standalone = entries.filter((e: any) => !inSeries.has(e.id));
+
+const items = entries.map((e: any) => ({
+  href: `/essays/${e.id}/`, title: e.data.title, dek: e.data.dek, publishAt: e.data.publishAt,
+}));
+
 const title = labels.essaysHeading;
 const dek = labels.essaysDek;
 ---
@@ -18,11 +41,20 @@ const dek = labels.essaysDek;
     </div>
     <p class="sec-sub">{labels.essaysSubtitle}</p>
     <LandingCopy room="essays" />
-    {byYear.map((group) => (
-      <section class="arc-year">
-        {years.length > 1 && <h2 class="arc-year-h">{group.year}<span>{group.items.length}</span></h2>}
+
+    {/* The overlap line heads the writing itself. It was written to frame a body
+        of essays, and this is the body of essays. */}
+    <p class="ess-head">{home.essaysHeader}</p>
+
+    {series && series.parts.length > 1 && (
+      <SeriesBlock name={series.name} dek={series.dek} parts={series.parts} />
+    )}
+
+    {standalone.length > 0 && (
+      <section class="ess-alone" aria-labelledby="alone-h">
+        {series && series.parts.length > 1 && <h2 class="sec-h2" id="alone-h">{labels.essaysStandaloneHeading}</h2>}
         <div class="list">
-          {group.items.map((e: any) => (
+          {standalone.map((e: any) => (
             <a class="list-item" href={`/essays/${e.id}/`}>
               <span class="date"><time datetime={isoDate(e.data.publishAt)}>{displayDate(e.data.publishAt)}</time></span>
               <span class="t">{e.data.title}<span class="d">{e.data.dek}</span></span>
@@ -31,8 +63,15 @@ const dek = labels.essaysDek;
           ))}
         </div>
       </section>
-    ))}
+    )}
+
     {entries.length === 0 && <p class="art-dek">{labels.essaysEmpty}</p>}
+
+    <Timeline items={items} heading={labels.timelineHeading} sub={labels.essaysTimelineSub} />
+
+    {entries.length > 0 && (
+      <p class="sec-more"><a class="readlink" href="/archive/">{labels.archiveLink} <span>&rarr;</span></a></p>
+    )}
   </section>
   <Signup />
 </Base>
