@@ -9,6 +9,9 @@ const roomSchema = z.object({
   draft: z.boolean().default(false),
   week: z.number().optional(),
   series: z.string().optional(),
+  /* Position inside that series. Built into the shared shape rather than onto
+     essays alone, so a run of Moments or For Leaders posts needs no new field. */
+  seriesOrder: z.number().optional(),
   scripture: z.string().optional(),
   tags: z.array(z.string()).default([]),
   ogImage: z.string().optional(),
@@ -61,15 +64,51 @@ const landing = defineCollection({
   }),
 });
 
+/* A named run of pieces. The series exists as its own thing rather than being
+   inferred from the posts, because it needs a name and a line of its own, and
+   because a reader should see the shape of the whole run on arrival: the parts
+   still to come are listed here before they exist as files.
+
+   A part is live when a piece in the matching stream carries this series name
+   and that seriesOrder. Everything else in `parts` shows as forthcoming, with
+   no date attached, because a date not yet chosen is a promise not yet made. */
+const series = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/series' }),
+  schema: z.object({
+    name: z.string(),
+    dek: z.string(),
+    room: z.enum(['essays', 'moments', 'leaders']).default('essays'),
+    current: z.boolean().default(false),
+    parts: z.array(z.object({ order: z.number(), title: z.string() })).default([]),
+  }),
+});
+
 export const collections = {
   pages,
   landing,
+  series,
   /* Essays can arrive as a set — a named series in parts (the anthropology set
      runs 10-12). `series` names the set, `part` numbers the essay inside it.
      A standalone essay leaves both blank and sits outside any set. */
-  essays: room('essays', { part: z.number().optional() }),
-  leaders: room('leaders'),
-  moments: room('moments'),
+  essays: room('essays'),
+  leaders: room('leaders', {
+    /* Three kinds of post, each a fixed layout, chosen from a dropdown: a short
+       written note, a picture with a caption, or a full essay. The freedom
+       being asked for here is freedom of kind, not freedom of arrangement, so
+       there is no rich editor and no per-post layout control. */
+    format: z.enum(['note', 'image', 'essay']).default('note'),
+    /* The line under the picture, for format: image. */
+    caption: z.string().optional(),
+  }),
+  moments: room('moments', {
+    /* Three kinds of post, each a fixed layout, chosen from a dropdown: a short
+       written note, a picture with a caption, or a full essay. The freedom
+       being asked for here is freedom of kind, not freedom of arrangement, so
+       there is no rich editor and no per-post layout control. */
+    format: z.enum(['note', 'image', 'essay']).default('note'),
+    /* The line under the picture, for format: image. */
+    caption: z.string().optional(),
+  }),
 
   /* PARKED, 28 Aug 2026. The Frameworks room is retired: no route, no CMS tab,
      /frameworks/ 301s to /essays/. The collection stays defined so the three
