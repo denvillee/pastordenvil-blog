@@ -1,11 +1,14 @@
 ---
-room: "essays"
-title: "Essays"
-lead: >-
-  A seminary professor once told me, "Your thoughts are nuanced." I nodded like I understood
-  exactly what he meant, then looked up the word later because I could not tell whether I had
-  been complimented or corrected. I am still not entirely sure.
+title: "Why this exists"
+dek: "A sermon eventually has to end, but my curiosity usually does not."
+pageIntro: true
+publishAt: 2026-08-28T09:00:00-04:00
+draft: false
 ---
+
+The kingdom already started. It has not finished. We are living in the overlap.
+
+A seminary professor once told me, "Your thoughts are nuanced." I nodded like I understood exactly what he meant, then looked up the word later because I could not tell whether I had been complimented or corrected. I am still not entirely sure.
 
 What I do know is that I have always had a hard time leaving an idea alone. Over more than a decade of preaching, teaching, pastoring, and leading, I have learned that Scripture rarely opens neatly. One passage leads to another, questions create better questions, and sometimes the thing that feels simple at first becomes richer the longer you stay with it. A mentor used to tell me that I sometimes answered questions in sermons that the room was not asking yet. He was probably right.
 

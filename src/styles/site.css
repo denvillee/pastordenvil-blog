@@ -38,6 +38,10 @@
      same hue and saturation ten points darker, which clears 4.5:1 for both and
      still reads as the clay in the set. The brand token is untouched. */
   --clay-block:#95523A;
+  /* Clay set as TEXT on the sunken well. --clay-ink is tuned against the page
+     and measures 4.24:1 on --well, which is a hair under AA, so the pinned
+     introduction row needs its own value rather than borrowing one. */
+  --clay-well:#95523A;
 
   --sans:"Archivo",system-ui,-apple-system,sans-serif;
   --serif:"Spectral",Georgia,serif;
@@ -48,14 +52,14 @@
   :root:not([data-theme="light"]){
     --bg:#0A0D0C; --fg:#EDEAE1; --muted:#95A29A; --line:#232B27; --surface:#111614; --well:#161D1A;
     --shadow:0 2px 4px rgba(0,0,0,.5),0 20px 50px rgba(0,0,0,.55);
-    --cobalt-ink:#5975FF; --ember-ink:#F0764A; --clay-ink:#D9917A;
+    --cobalt-ink:#5975FF; --ember-ink:#F0764A; --clay-ink:#D9917A; --clay-well:#D9917A;
     color-scheme:dark;
   }
 }
 :root[data-theme="dark"]{
   --bg:#0A0D0C; --fg:#EDEAE1; --muted:#95A29A; --line:#232B27; --surface:#111614; --well:#161D1A;
   --shadow:0 2px 4px rgba(0,0,0,.5),0 20px 50px rgba(0,0,0,.55);
-  --cobalt-ink:#5975FF; --ember-ink:#F0764A; --clay-ink:#D9917A;
+  --cobalt-ink:#5975FF; --ember-ink:#F0764A; --clay-ink:#D9917A; --clay-well:#D9917A;
   color-scheme:dark;
 }
 
@@ -828,11 +832,9 @@ a[data-footnote-ref]:hover{text-decoration:underline}
 .gospel-l{display:block}
 .gospel em{font-style:normal; color:var(--brass)}
 
-/* Essays band header — the overlap line, moved out of the hero. */
-.ess-head{
-  font-family:var(--serif); font-weight:600; font-size:clamp(1.05rem,2.2vw,1.4rem);
-  line-height:1.4; color:var(--muted); max-width:56ch; margin-bottom:1.4rem;
-}
+/* The .ess-head rule that lived here is gone with the element. The overlap line
+   is inside the Essays introduction post now, where it frames the writing from
+   within rather than sitting above it. */
 
 /* ── Bookshelf covers ───────────────────────────────────────────────────────
    A real cover replaces the drawn spine when one exists; the colour spine is
@@ -1178,7 +1180,6 @@ a.ser-t:hover{border-bottom-color:var(--cobalt-ink)}
 .nav.nav-mast:not(.is-stuck){background:transparent; border-bottom-color:transparent; backdrop-filter:none}
 .has-masthead .hero{margin-top:calc(-1 * var(--mast-h, 4.4rem))}
 .has-masthead .hero-in{padding-top:calc(var(--mast-h, 4.4rem) + clamp(2.6rem,7vw,5.4rem))}
-.has-masthead .hero-sticker{top:calc(var(--mast-h, 4.4rem) + clamp(.9rem,2vw,1.6rem))}
 .nav.nav-mast.is-stuck{background:color-mix(in srgb, var(--pine) 96%, transparent); border-bottom-color:transparent}
 .nav-mast .nav-in{padding-block:clamp(1rem,2.2vw,1.5rem)}
 .nav-mast .brand{
@@ -1211,16 +1212,10 @@ a.ser-t:hover{border-bottom-color:var(--cobalt-ink)}
 .nav-mast .nav-sub:hover::after{width:100%}
 @media(max-width:860px){ .nav-mast .nav-sub{display:none} }
 
-/* ── The sticker ────────────────────────────────────────────────────────────
-   One per page, never two, and its text has to be true of the build today. */
-.hero-sticker{
-  position:absolute; z-index:2; top:clamp(4.2rem,9vw,6.4rem); right:var(--pad);
-  background:var(--ember); color:#2A0A00;
-  font-family:var(--sans); font-size:.66rem; font-weight:800; letter-spacing:.09em;
-  text-transform:uppercase; padding:.5rem .9rem; border-radius:999px;
-  transform:rotate(-7deg); box-shadow:0 6px 18px rgba(14,18,17,.28);
-}
-@media(max-width:640px){ .hero-sticker{top:auto; bottom:1rem; right:1rem; transform:rotate(-5deg)} }
+/* The hero sticker is cut (addendum 3). It was the last badge on a page that
+   had stopped using badges, and on a hero of two lines it had nothing to sit
+   against. The card sticker styles used by the shareables studio are a
+   different thing and are printed into exported images, not onto the site. */
 
 /* ── Section eyebrows ───────────────────────────────────────────────────────
    A short label and a hairline running out to the edge. These are the page's
@@ -1473,3 +1468,30 @@ a.ser-t:hover{border-bottom-color:var(--cobalt-ink)}
   text-transform:uppercase;color:var(--clay-ink);width:fit-content;
   border-bottom:1px solid transparent;padding-bottom:.14rem;margin-top:.2rem}
 .wgo:hover{border-bottom-color:currentColor}
+
+/* ── The pinned section introduction ────────────────────────────────────────
+   A signpost, not news. It is the same row as everything else in the list and
+   differs only where it has to: a sunken ground so it separates from the feed,
+   START HERE where the date goes, and an italic title. That is enough for a
+   returning reader to see at a glance that this is not the new thing, and for
+   a first-time reader to meet it before anything else. */
+.list-intro{margin-bottom:0}
+.list-item.is-intro{
+  background:var(--well);
+  /* The ground bleeds outward while the text stays on the list's own columns.
+     Padding alone would push START HERE and the title right, so the pinned row
+     would sit a few pixels off every row beneath it. */
+  margin-inline:-1.1rem;
+  padding-inline:1.1rem;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+}
+/* The hover nudge would slide the row out of its own ground. */
+.list-item.is-intro:hover{padding-left:1.1rem}
+.list-intro + .list .list-item:first-child,
+.list-intro + * .list .list-item:first-child{border-top:0}
+.intro-flag{
+  font-family:var(--sans); font-weight:800; font-size:.66rem; letter-spacing:.11em;
+  text-transform:uppercase; color:var(--clay-well); white-space:nowrap;
+}
+.list-item.is-intro .t em{font-style:italic}

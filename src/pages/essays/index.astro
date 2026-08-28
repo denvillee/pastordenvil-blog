@@ -10,15 +10,16 @@
 */
 import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
-import LandingCopy from '../../components/LandingCopy.astro';
+import IntroRow from '../../components/IntroRow.astro';
 import SeriesBlock from '../../components/SeriesBlock.astro';
 import Timeline from '../../components/Timeline.astro';
-import { live, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
+import { live, introPost, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 import home from '../../data/home.json';
 
 const entries = await live('essays');
+const intro = await introPost('essays');
 const series = await currentSeries('essays');
 
 /* An essay stands alone when it is not part of the running series. */
@@ -40,11 +41,15 @@ const dek = labels.essaysDek;
       <h1>{title}</h1>
     </div>
     <p class="sec-sub">{labels.essaysSubtitle}</p>
-    <LandingCopy room="essays" />
 
-    {/* The overlap line heads the writing itself. It was written to frame a body
-        of essays, and this is the body of essays. */}
-    <p class="ess-head">{home.essaysHeader}</p>
+    {/* First thing after the heading and the one sentence, whether or not a
+        series is running and whether or not anything else is published yet. */}
+    {intro && (
+      <div class="list list-intro">
+        <IntroRow href={`/essays/${intro.id}/`} title={intro.data.title}
+                  dek={intro.data.dek} body={intro.body ?? ''} label={labels.introFlag} />
+      </div>
+    )}
 
     {series && series.parts.length > 1 && (
       <SeriesBlock name={series.name} dek={series.dek} parts={series.parts} />

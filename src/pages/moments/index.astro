@@ -1,12 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Signup from '../../components/Signup.astro';
-import LandingCopy from '../../components/LandingCopy.astro';
+import IntroRow from '../../components/IntroRow.astro';
 import Timeline from '../../components/Timeline.astro';
-import { live, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
+import { live, introPost, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 const entries = await live('moments');
+const intro = await introPost('moments');
 const series = await currentSeries('moments');
 const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
 /* The same by-date view the Essays page uses. It stays off until the section
@@ -26,7 +27,14 @@ const subtitle = labels.momentsSubtitle;
       <h1>{title}</h1>
     </div>
     <p class="sec-sub">{subtitle}</p>
-    <LandingCopy room="moments" />
+
+    {intro && (
+      <div class="list list-intro">
+        <IntroRow href={`/moments/${intro.id}/`} title={intro.data.title}
+                  dek={intro.data.dek} body={intro.body ?? ''} label={labels.introFlag} />
+      </div>
+    )}
+
     {byYear.map((group) => (
       <section class="arc-year">
         {years.length > 1 && <h2 class="arc-year-h">{group.year}<span>{group.items.length}</span></h2>}

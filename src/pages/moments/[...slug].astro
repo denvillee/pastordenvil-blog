@@ -1,12 +1,12 @@
 ---
 import { render } from 'astro:content';
 import Article from '../../layouts/Article.astro';
-import { live, readMinutes, weekSiblings, weekIdea } from '../../lib/publish';
+import { live, allLive, readMinutes, weekSiblings, weekIdea } from '../../lib/publish';
 import { getDiagram } from '../../lib/diagrams';
 import PostFigure from '../../components/PostFigure.astro';
 
 export async function getStaticPaths() {
-  const entries = await live('moments');
+  const entries = await allLive('moments');
   return entries.map((entry: any) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 

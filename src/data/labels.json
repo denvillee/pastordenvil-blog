@@ -83,10 +83,10 @@
   "timelineHeading": "By date",
   "essaysTimelineSub": "Everything here, most recent first.",
   "archiveLink": "Everything",
+  "introFlag": "Start here",
   "shelfEyebrow": "The shelf",
   "shelfHeading": "What I am reading",
   "shelfAlso": "Also on the shelf",
   "shelfMore": "Full library",
-  "latestMore": "Keep reading",
-  "studySticker": "7-part study"
+  "latestMore": "Keep reading"
 }

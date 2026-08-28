@@ -15,6 +15,14 @@ const roomSchema = z.object({
   scripture: z.string().optional(),
   tags: z.array(z.string()).default([]),
   ogImage: z.string().optional(),
+  /* The section page's own introduction, as a real post rather than a panel:
+     linkable, shareable, and editable in the same place as everything else.
+     It pins to the top of its section's list and is excluded from the Latest
+     slot, the archive, the by-date view and RSS, because it is a signpost
+     rather than news. Without this flag the front page announces it as a new
+     essay the day it ships. `live()` drops it by default for exactly that
+     reason: a future consumer that forgets to filter gets it right anyway. */
+  pageIntro: z.boolean().default(false),
   /* The Latest slot on the home page. Pinning holds a piece there regardless of
      date, because Moments and For Leaders are short and frequent while essays
      are long and rare: on pure recency a week of quick posts buries a new essay
