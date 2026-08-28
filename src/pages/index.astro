@@ -1,71 +1,85 @@
 ---
+/*
+  The home page, round 9.
+
+  Order and grounds: hero on pine, Latest on paper, the three rooms as colour
+  blocks, the shelf on paper, Studies on pine, Everything on paper, Subscribe on
+  brass. Every block opens with an eyebrow and a hairline, which is what keeps
+  one section from running into the next.
+
+  A visitor should meet a piece once, properly. Everything else is a door.
+*/
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
-import LatestCard from '../components/LatestCard.astro';
+import LatestBlock from '../components/LatestBlock.astro';
 import Streams from '../components/Streams.astro';
 import StudiesCard from '../components/StudiesCard.astro';
 import NowReading from '../components/NowReading.astro';
+import EverythingPill from '../components/EverythingPill.astro';
 import Signup from '../components/Signup.astro';
 import DesignNotes from '../components/DesignNotes.astro';
-import { live, latest, readMinutes } from '../lib/publish';
-import home from '../data/home.json';
+import { live, latest, readMinutes, openingParagraph, displayDate, ROOMS } from '../lib/publish';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
 const books = await live('reading');
-
-/* The newest thing across the three streams, whatever kind it is. Bookshelf and
-   Studies are states, not streams, and sit in their own bands below. */
 const feature = await latest();
 
-/* The sticker used to be the fixed string "This week", bolted to the newest
-   essay no matter how old it was: miss a week and the home page confidently
-   labelled three-week-old writing as this week's. It now tells the truth, and
-   steps down gracefully instead of lying. Every string stays editable. */
-const DAY = 86_400_000;
-const featureAgeDays = feature
-  ? Math.floor((Date.now() - feature.data.publishAt.getTime()) / DAY)
-  : 0;
-const featureLabel =
-  featureAgeDays <= 7  ? home.featureLabel :
-  featureAgeDays <= 21 ? home.featureLabelRecent :
-                         home.featureLabelOlder;
-
-/* A reading time is only meaningful for something long enough to have one. A
-   ninety-word note with a photograph should not claim "1 min". */
+/* Reading time is only meaningful for something long enough to have one; a
+   short note with a picture should not claim "1 min". */
 const featureMinutes = feature && feature.body.trim().split(/\s+/).filter(Boolean).length >= 150
   ? readMinutes(feature.body)
   : undefined;
 
-const now = books.find((b: any) => b.data.shelfStatus === 'now')?.data;
+/* One sticker per page, and its words have to be true of the build today. A
+   piece published in the last fortnight earns "New ...", and when nothing is
+   that fresh the study is still seven sessions, so the fallback is true too. */
+const DAY = 86_400_000;
+const freshDays = feature ? (Date.now() - feature.data.publishAt.getTime()) / DAY : Infinity;
+const NEW_LABEL: Record<string, string> = {
+  essays: 'New essay', moments: 'New moment', leaders: 'New lesson',
+};
+const sticker = freshDays <= 14 ? NEW_LABEL[feature!.room] : labels.studySticker;
 
+const now = books.find((b: any) => b.data.shelfStatus === 'now');
+const nowBook = now ? { ...now.data, note: now.body?.trim() || '' } : undefined;
+const shelf = books
+  .filter((b: any) => b !== now && b.data.shelfStatus !== 'next')
+  .sort((a: any, b: any) => a.data.order - b.data.order)
+  .map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }));
 
+/* The count on the Everything door comes from the archive itself. */
+const totalPieces = (await Promise.all(
+  (Object.keys(ROOMS) as (keyof typeof ROOMS)[]).map((k) => live(k))
+)).reduce((n, list) => n + list.length, 0);
 ---
 <Base
   title={`${site.name} · ${site.tagline}`}
   description={site.metaDescription}
+  masthead={true}
 >
-  <Hero />
+  <Hero sticker={sticker} />
 
   {feature && (
-    <LatestCard
+    <LatestBlock
       room={feature.room}
       href={feature.href}
       title={feature.data.title}
-      dek={feature.data.dek}
+      opening={openingParagraph(feature.body)}
+      dateLabel={displayDate(feature.data.publishAt)}
       scripture={feature.data.scripture}
       readMinutes={featureMinutes}
-      image={feature.data.image}
-      imageAlt={feature.data.imageAlt}
-      label={featureLabel}
+      linkLabel={labels.latestMore}
     />
   )}
 
   <Streams />
 
+  <NowReading book={nowBook} shelf={shelf} />
+
   <StudiesCard />
 
-  <NowReading book={now ? { ...now, note: books.find((b: any) => b.data.shelfStatus === 'now')?.body?.trim() ?? '' } : undefined} />
+  <EverythingPill total={totalPieces} label={labels.archiveLink} />
 
   <Signup />
   {labels.showDesignNotes && <DesignNotes />}
