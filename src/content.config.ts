@@ -23,6 +23,10 @@ const roomSchema = z.object({
      essay the day it ships. `live()` drops it by default for exactly that
      reason: a future consumer that forgets to filter gets it right anyway. */
   pageIntro: z.boolean().default(false),
+  /* One word of the title, circled by hand the way the references mark a
+     heading. Optional: which word carries the idea is an editorial call, and a
+     template guessing it would circle the wrong word most of the time. */
+  titleMark: z.string().optional(),
   /* The Latest slot on the home page. Pinning holds a piece there regardless of
      date, because Moments and For Leaders are short and frequent while essays
      are long and rare: on pure recency a week of quick posts buries a new essay
@@ -138,24 +142,35 @@ export const collections = {
      The previous shape here was a vertical-clip model with posters, durations
      and a `day` of the week. It went with the publishing cadence that was
      retired, and none of its fields survive into this one. */
+  /* WATCH. Embeds only, never re-hosted, grouped by year.
+
+     Two providers, because Denvil's talks live where the church that recorded
+     them put them: YouTube for some, Vimeo for the sermons The Chapel hosts.
+     The provider decides the embed origin and the poster, and nothing else
+     about the entry changes. */
   watch: defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/watch' }),
     schema: z.object({
       title: z.string(),
-      /* Set by hand, always. Deriving it from the video's upload date puts a
-         2019 talk that a church posted in 2023 under the wrong heading, and
-         nobody would notice until Denvil did. */
+      /* Set by hand, always. Deriving it from the upload date puts a talk
+         given in December and posted in January under the wrong year. */
       year: z.number().int(),
-      /* The eleven character id, not a URL. Watch pages, share links, embed
-         URLs and shorts URLs all carry it differently, and a stored URL means
-         building the embed by string surgery on somebody else's format. */
+      provider: z.enum(['youtube', 'vimeo']).default('youtube'),
+      /* The id only, not a URL. */
       videoId: z.string(),
+      /* The poster, self-hosted, as a file stem under /assets/img with no
+         extension: the component serves .webp with a .jpg fallback. Vimeo has
+         no predictable thumbnail address the way YouTube does, and pointing at
+         their CDN means a broken still the day they change a URL, so the image
+         is pulled down once and served from here. Leave blank on a YouTube
+         entry and its thumbnail is derived from the id. */
+      poster: z.string().optional(),
       /* Church, conference or event. */
       context: z.string().optional(),
-      /* One line: what it is. */
+      /* The series it belongs to, or one line about what it is. */
       note: z.string().optional(),
-      /* Position inside its year, largest first. Untouched, everything in a
-         year sorts by title, which at least is stable. */
+      /* Runtime in seconds, straight from the provider. Shown as m:ss. */
+      durationSeconds: z.number().int().optional(),
       order: z.number().default(0),
       draft: z.boolean().default(false),
     }),
