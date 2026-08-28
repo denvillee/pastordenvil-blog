@@ -20,8 +20,6 @@
   "footSpeaking": "Speaking and coaching",
   "footSubscribe": "Subscribe",
   "footRss": "RSS",
-  "homeFeaturePill": "Essay",
-  "homeFeatureReadLink": "Read the essay",
   "homeStreamEssayTag": "The Essay",
   "homeStreamLeadersTag": "For Leaders",
   "homeStreamMomentsTag": "Moments",
@@ -78,5 +76,8 @@
   "leadersSubtitle": "Lessons I am learning about following Jesus while leading people, teams, ministries, and organizations entrusted to our care.",
   "navStudies": "Studies",
   "footStudies": "Studies",
-  "studiesSubtitle": "Guided ways into Scripture designed to help you make your own observations, ask better questions, and participate in the process of transformation."
+  "studiesSubtitle": "Guided ways into Scripture designed to help you make your own observations, ask better questions, and participate in the process of transformation.",
+  "latestReadEssay": "Read the essay",
+  "latestReadMoment": "Read this",
+  "latestReadLeaders": "Read the lesson"
 }
