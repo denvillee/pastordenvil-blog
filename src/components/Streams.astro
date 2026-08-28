@@ -1,6 +1,6 @@
 ---
 /*
-  A directory of the four writing rooms, not a feed. With little published, a
+  A directory of the three streams, not a feed. With little published, a
   "latest" feed can only echo the featured essay above it; a directory stays
   true at any content volume. Empty rooms simply say "Under construction." on
   arrival, per the standing rule.
@@ -14,11 +14,14 @@
   ever sees says "rooms".
 */
 import labels from '../data/labels.json';
+/* Three, not four. Bookshelf came out: it is a STATE, one continuing thing
+   with no feed, and its own band sits directly below this row, so it was on
+   the page twice. A stream publishes discrete dated items, competes for the
+   Latest slot and gets a card here; a state gets a band. */
 const rooms = [
   { name: labels.essaysHeading, dek: labels.essaysDek, href: '/essays/' },
   { name: labels.leadersHeading, dek: labels.leadersDek, href: '/leaders/' },
   { name: labels.momentsHeading, dek: labels.momentsDek, href: '/moments/' },
-  { name: labels.readingHeading, dek: labels.readingDek, href: '/bookshelf/' },
 ];
 ---
 <section class="band shell band-tight" id="streams">
