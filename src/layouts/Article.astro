@@ -1,6 +1,9 @@
 ---
-import Base from './Base.astro';
+import Shell from './Shell.astro';
 import Signup from '../components/Signup.astro';
+import Mark from '../components/marks/Mark.astro';
+import StickyNote from '../components/marks/StickyNote.astro';
+import RelatedContent from '../components/RelatedContent.astro';
 import { displayDate, isoDate, ROOMS, type RoomKey } from '../lib/publish';
 import { getPassages } from '../lib/bible';
 import site from '../data/site.json';
@@ -15,11 +18,23 @@ interface Props {
   seriesPlace?: { name: string; order: number; total: number } | null;
   readMinutes?: number; notes?: string;
   ogImage?: string; siblings?: Sibling[];
+  /* One word in the title may be circled by hand, the way the references mark
+     a heading. Optional and per piece, because which word carries the idea is
+     an editorial judgement and not something a template can guess. */
+  titleMark?: string;
+  slug?: string;
 }
 const {
   room, title, dek, publishAt, scripture, series,
   week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
+  titleMark, slug,
 } = Astro.props;
+
+/* Split the title around the marked word so the circle wraps just that word. */
+const markIdx = titleMark ? title.toLowerCase().indexOf(titleMark.toLowerCase()) : -1;
+const titleParts = markIdx >= 0
+  ? [title.slice(0, markIdx), title.slice(markIdx, markIdx + titleMark!.length), title.slice(markIdx + titleMark!.length)]
+  : null;
 
 const meta = ROOMS[room];
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -36,23 +51,25 @@ const jsonLd = {
 };
 const passages = await getPassages(scripture);
 ---
-<Base
+<Shell
   title={`${title} · ${site.name}`}
   description={dek}
   ogType="article"
   ogImage={ogImage}
   publishedTime={isoDate(publishAt)}
-  progress={true}
+  current={room}
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)}></script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)}></script>
 
   <article>
-    <header class="shell art-head">
+    <header class="read art-head">
       <div class="art-kicker">
         <span class={`type ${meta.cls}`}>{meta.label}</span>
         {week && <span class="wk">Season one &middot; week {week}{movement ? ` · ${movement}` : ''}</span>}
       </div>
-      <h1 class="art-title">{title}</h1>
+      <h1 class="art-title is-display">{titleParts
+        ? <>{titleParts[0]}<span class="c">{titleParts[1]}<Mark kind="circle" color="yellow" draw={true} /></span>{titleParts[2]}</>
+        : title}<span class="dot">.</span></h1>
       <p class="art-dek">{dek}</p>
       <div class="art-meta">
         <span><time datetime={isoDate(publishAt)}>{displayDate(publishAt)}</time></span>
@@ -88,7 +105,7 @@ const passages = await getPassages(scripture);
       )}
     </header>
 
-    <div class="shell">
+    <div class="read">
       {idea && (
         <div class="idea-rail">
           <span class="k" set:html={labels.articleIdeaLabel}></span>
@@ -107,12 +124,18 @@ const passages = await getPassages(scripture);
         </div>
       )}
 
-      <div class="share">
+      <div class="art-end">
+        <div class="share">
         <span class="lbl">{labels.articleShareLabel}</span>
         <a href={`https://www.facebook.com/sharer/sharer.php?u=${enc(canonical)}`} rel="noopener nofollow">Facebook</a>
         <a href={`https://x.com/intent/tweet?url=${enc(canonical)}&text=${enc(title)}`} rel="noopener nofollow">X</a>
         <a href={`mailto:?subject=${enc(title)}&body=${enc(canonical)}`}>Email</a>
         <a href={canonical} data-copy-link>Copy link</a>
+        </div>
+        <StickyNote tone="paper" tilt={-1.6} tape={false} class="art-thanks">
+          <p>Thanks for reading.</p>
+          <p>If this helped, share it with a friend.</p>
+        </StickyNote>
       </div>
 
       {siblings.length > 0 && (
@@ -129,8 +152,9 @@ const passages = await getPassages(scripture);
     </div>
   </article>
 
-  <Signup />
-</Base>
+  <RelatedContent room={room} slug={slug} />
+  <Signup tone="dark" />
+</Shell>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-verse]').forEach((wrap) => {
