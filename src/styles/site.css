@@ -828,8 +828,11 @@ a[data-footnote-ref]:hover{text-decoration:underline}
 
 /* The Rooms directory */
 .band-tight{padding-block:clamp(2.4rem,5.5vw,4.8rem)}
-.rooms-dir{display:grid; grid-template-columns:repeat(2,1fr); gap:1rem}
-@media(max-width:680px){.rooms-dir{grid-template-columns:1fr}}
+/* Three across, not a 2x2. Bookshelf left this row: it is a state with its own
+   band directly below, so it was on the page twice. Three equal columns on a
+   desk, one under the other on a phone. */
+.rooms-dir{display:grid; grid-template-columns:repeat(3,1fr); gap:1rem}
+@media(max-width:900px){.rooms-dir{grid-template-columns:1fr}}
 .room-link{
   position:relative; display:flex; flex-direction:column; gap:.35rem;
   background:var(--surface); border:1px solid var(--line); border-radius:4px;
@@ -988,3 +991,33 @@ a[data-footnote-ref]:hover{text-decoration:underline}
 @media (prefers-reduced-motion:reduce){
   .landing-toggle,.landing-toggle::before{transition:none}
 }
+
+
+/* ── The Latest card, text-only ─────────────────────────────────────────────
+   A piece with no picture is not a broken card: it is a card whose whole width
+   belongs to the words. One column, a wider measure, and the sticker moves
+   inline because there is no image left to sit on.
+
+   Everything else holds: the same seam overlap, the same surface, the same
+   flat sticker. Only the geometry inside changes. */
+.feature-card.is-textonly .feature{grid-template-columns:1fr}
+.feature-card.is-textonly .feature-body{gap:.9rem}
+.feature-card.is-textonly .feature-body .dek{max-width:64ch}
+.feature-card.is-textonly .feature-body h2{max-width:22ch}
+.feature-card.is-textonly .feature-body .readlink{margin-top:.4rem; padding-top:0}
+/* Set as text, not a filled chip. The freshness note and the type pill sit
+   next to each other here, and two filled blocks of the same ember read as one
+   badge duplicated rather than as two different facts. */
+.sticker-inline{
+  position:static; background:none; padding:0; border-radius:0;
+  color:var(--ember-ink); font-family:var(--sans); font-size:.62rem;
+  font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+}
+
+/* The pill names the stream the piece came from, in that stream's colour, so
+   the card says what kind of thing it is before the title does. These are the
+   same two colours the article kicker already uses for the same two streams
+   (.art-kicker .type), on purpose: one stream, one colour, everywhere. Essays
+   keep the default ink pill. */
+.feature-body .meta .pill.t-leaders{background:var(--ember); color:#160B04}
+.feature-body .meta .pill.t-moments{background:#1E5C48; color:#fff}
