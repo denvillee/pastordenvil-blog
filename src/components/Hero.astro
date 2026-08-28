@@ -1,28 +1,31 @@
 ---
 /*
-  Hero, per the 26 Aug CHANGE SPEC (supersedes build packet 6.1/6.2).
-  Three elements only: rotating line, gospel line, lead paragraph. Buttons.
+  Round 9 hero. Two lines of type on a ruled pine field, and nothing else.
 
-  Accessibility, per the spec: the h1 contains stable text — the fixed words
-  plus the full phrase set in a visually hidden span. The animated rotator is
-  decoration (aria-hidden, no aria-live). Reduced motion shows phrase one,
-  static, with no interval running.
+  The buttons and the claim line are both gone. The buttons pointed at things
+  now visible on the same scroll, so they were a second route to content the
+  page already shows; Subscribe moved into the masthead. The claim line went
+  because good news is what gospel means, and a page that announces it and then
+  explains it is arguing with itself.
 
-  Everything editable lives in src/data/home.json; nothing is hard-coded here.
+  The rotator now cycles the whole second line, "For the weary." rather than
+  "the weary.", so each phrase is a complete thought under GOOD NEWS.
+
+  Accessibility is unchanged in shape: the h1 holds stable text plus the full
+  phrase set in a visually hidden span, the animated rotator is decoration, and
+  reduced motion shows phrase one with no interval running.
 */
 import home from '../data/home.json';
 
+interface Props { sticker?: string }
+const { sticker } = Astro.props;
+
 const rotations: string[] = home.heroRotations;
 const srAll = rotations.map((r) => r.replace(/\.$/, '')).join(', ') + '.';
-const gospelParts = home.heroGospelLine.split('|');
 ---
 <header class="hero" id="top">
-  <div class="hero-img">
-    <picture>
-      <source srcset="/assets/img/hero.webp" type="image/webp" />
-      <img src="/assets/img/hero.jpg" alt="" width="1600" height="1000" fetchpriority="high" />
-    </picture>
-  </div>
+  <div class="hero-field" aria-hidden="true"></div>
+  {sticker && <span class="hero-sticker">{sticker}</span>}
   <div class="hero-in">
     <h1 class="gn">
       <span class="gn-fixed">{home.heroFixed}</span>
@@ -33,28 +36,20 @@ const gospelParts = home.heroGospelLine.split('|');
         ))}
       </span>
     </h1>
-    <p class="gospel">
-      {gospelParts.map((part) => <span class="gospel-l" set:html={part}></span>)}
-    </p>
-    <div class="hero-copy">
-      <div class="hero-actions">
-        <a class="btn btn-primary" href={home.heroPrimaryHref}>{home.heroPrimaryLabel}</a>
-        <a class="btn btn-ghost" href={home.heroSecondaryHref}>{home.heroSecondaryLabel}</a>
-      </div>
-    </div>
+    <hr class="gn-rule" />
   </div>
 </header>
 
 <script>
-  /* Rotator, per spec: 2600ms interval, array order, looping. Pause on hover
-     AND focus. prefers-reduced-motion: show item one, no interval at all. */
+  /* 2.4s per phrase, array order, looping. Pause on hover and focus.
+     prefers-reduced-motion: show item one and never start the interval. */
   (function () {
     const box = document.getElementById('gn-rotator');
     if (!box) return;
     const items = Array.from(box.querySelectorAll('.gn-item')) as HTMLElement[];
     if (items.length < 2) return;
 
-    /* No layout shift, ever: min-width comes from the widest phrase. */
+    /* No layout shift, ever: the line is as wide as its widest phrase. */
     const probe = document.createElement('span');
     probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap';
     box.appendChild(probe);
@@ -74,13 +69,9 @@ const gospelParts = home.heroGospelLine.split('|');
       const next = items[i];
       prev.classList.remove('is-on'); prev.classList.add('is-out');
       next.classList.add('is-on');
-      /* the rule under the blank pulses as the new word lands */
-      box.classList.remove('is-pulse');
-      void box.offsetWidth;
-      box.classList.add('is-pulse');
       window.setTimeout(() => prev.classList.remove('is-out'), 520);
     };
-    const timer = window.setInterval(step, 2600);
+    const timer = window.setInterval(step, 2400);
     const pause = () => { paused = true; };
     const resume = () => { paused = false; };
     box.addEventListener('mouseenter', pause);

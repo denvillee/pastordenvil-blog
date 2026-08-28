@@ -1,0 +1,23 @@
+---
+/*
+  One door to the archive, in place of an index list.
+
+  The list came off because the same essay was rendering three times on one
+  page: in Latest, in the quote band, and in the index. A visitor should meet a
+  piece once, properly, and everything else on the page should be a door.
+
+  The count is suppressed entirely below five, because a page whose job is to
+  show a body of work should not advertise how little of it there is
+  (round 8, R8-5).
+*/
+interface Props { total: number; label?: string }
+const { total, label = 'Everything' } = Astro.props;
+const showCount = total >= 5;
+---
+<section class="band shell every">
+  <hr class="every-rule" />
+  <a class="every-pill" href="/archive/">
+    <span>{label}</span>
+    {showCount && <em>{total} {total === 1 ? 'piece' : 'pieces'}</em>}
+  </a>
+</section>

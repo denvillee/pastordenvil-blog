@@ -1,0 +1,11 @@
+---
+/*
+  Every section on the home page opens with one of these: a short label and a
+  hairline that runs out to the edge. It is what gives the page its joints.
+  Without them each section runs straight into the next and the whole page reads
+  as one undifferentiated scroll.
+*/
+interface Props { text: string; tone?: 'ember' | 'clay' | 'brass' | 'dim' }
+const { text, tone = 'dim' } = Astro.props;
+---
+<p class:list={['eyebrow', `eb-${tone}`]}>{text}</p>

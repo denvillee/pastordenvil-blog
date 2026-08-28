@@ -7,15 +7,18 @@
   search and both lose.
 */
 import home from '../data/home.json';
+import Eyebrow from './Eyebrow.astro';
+import labels from '../data/labels.json';
 const { href = 'https://grabyourbibles.com', target = '_blank' } = Astro.props;
 ---
-<section class="band shell" id="studies">
+<section class="band shell studies" id="studies">
   <div class="studies-card reveal">
+    <div class="studies-field" aria-hidden="true"></div>
     <div class="studies-body">
-      <span class="pill">{home.studiesPill}</span>
+      <Eyebrow tone="brass" text={labels.navStudies} />
       <h2>{home.studiesHeading}</h2>
       <p class="dek" set:html={home.studiesDek}></p>
-      <a class="btn btn-primary" href={href} target={target} rel="noopener">
+      <a class="btn btn-study" href={href} target={target} rel="noopener">
         {home.studiesCta} <span aria-hidden="true">&nearr;</span>
       </a>
     </div>

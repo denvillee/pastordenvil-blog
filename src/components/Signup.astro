@@ -1,5 +1,6 @@
 ---
 import site from '../data/site.json';
+import Eyebrow from './Eyebrow.astro';
 
 // Kit, per the hosting runbook. A real form post, not Kit's embed script:
 // the embed pulls its own CSS and rewrites the markup, which breaks this band.
@@ -15,8 +16,14 @@ const { source = Astro.url.pathname } = Astro.props;
 <section class="band signup" id="signup">
   <div class="shell signup-in">
     <div>
-      <h2>{site.signupHeading}</h2>
-      <p>{site.signupCopy}</p>
+      {/* The words here are Denvil's own choice and are held. Round 9 §3.6
+          proposed a new heading and body; it breaks no standing rule, but this
+          is the one block whose copy he wrote himself after killing the Monday
+          idea, so it is his to change and not mine. The design around it is
+          built to the packet. */}
+      <Eyebrow tone="dim" text={site.signupHeading} />
+      <h2>{site.signupCopy}</h2>
+      <p>{site.signupSmallPrint}</p>
     </div>
     <div>
       <form class="form" method="post" action={action}>
@@ -28,7 +35,6 @@ const { source = Astro.url.pathname } = Astro.props;
                style="position:absolute;left:-9999px" />
         <button class="btn btn-dark" type="submit">{site.signupButton}</button>
       </form>
-      <small>{site.signupSmallPrint}</small>
     </div>
   </div>
 </section>

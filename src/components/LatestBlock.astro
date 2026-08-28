@@ -1,0 +1,31 @@
+---
+/*
+  LATEST. The newest thing across the three streams, opened rather than
+  advertised.
+
+  The paragraph under the title is the piece's actual first paragraph, not its
+  dek. A title plus a one-line summary asks a reader to decide from a label;
+  three sentences of the real thing lets them decide from the writing, and it
+  means no teaser ever has to be written for anything.
+*/
+import Eyebrow from './Eyebrow.astro';
+import { ROOMS, type RoomKey } from '../lib/publish';
+
+interface Props {
+  room: RoomKey; href: string; title: string; opening: string;
+  dateLabel: string; scripture?: string; readMinutes?: number; linkLabel: string;
+}
+const { room, href, title, opening, dateLabel, scripture, readMinutes, linkLabel } = Astro.props;
+
+/* Only what the piece actually has, and no empty separators between them. */
+const tail = [scripture, readMinutes ? `${readMinutes} min` : null].filter(Boolean) as string[];
+---
+<section class="band shell lat" id="latest">
+  <Eyebrow tone="ember" text={`Latest · ${ROOMS[room].label} · ${dateLabel}`} />
+  <h2 class="lat-title"><a href={href}>{title}</a></h2>
+  {opening && <p class="lat-open">{opening}</p>}
+  <p class="lat-tail">
+    {tail.map((t) => <span>{t}</span>)}
+    <a class="lat-more" href={href}>{linkLabel}</a>
+  </p>
+</section>
