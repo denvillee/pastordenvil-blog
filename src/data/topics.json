@@ -1,0 +1,13 @@
+{
+  "note": "The four topic areas from the redesign. Tag matching is case-insensitive, because tags are typed by hand and the content already mixes 'Kingdom' with 'kingdom'. Each maps to the tags a piece can carry. A topic only appears on a section page once at least one published piece actually carries one of its tags, so the sidebar never promises a reader a room with nothing in it. Add the tag to a post in the editor and the topic turns itself on.",
+  "topics": [
+    { "slug": "kingdom", "label": "Kingdom", "dek": "Living as citizens of God's kingdom.",
+      "tone": "coral", "icon": "crown", "tags": ["kingdom", "eschatology", "konig", "Genesis"] },
+    { "slug": "formation", "label": "Formation", "dek": "Becoming more like Jesus every day.",
+      "tone": "green", "icon": "plant", "tags": ["anthropology", "image of God", "vocation", "devotional"] },
+    { "slug": "leadership", "label": "Leadership", "dek": "Leading with wisdom, humility, and courage.",
+      "tone": "blue", "icon": "people", "tags": ["leadership"] },
+    { "slug": "everyday-faith", "label": "Everyday Faith", "dek": "Faith for the ordinary moments.",
+      "tone": "yellow", "icon": "sun", "tags": ["mark", "everyday"] }
+  ]
+}
