@@ -43,6 +43,39 @@ export const ROOMS = {
 } as const;
 export type RoomKey = keyof typeof ROOMS;
 
+/* The Latest slot. It holds the newest thing across the three STREAMS, whatever
+   kind of thing that is, rather than the newest essay.
+
+   A stream publishes discrete dated items and competes for this slot: essays,
+   moments, leaders. Bookshelf and Studies are STATES, one continuing thing with
+   no feed and so no "latest post"; they get a band further down the page and
+   are deliberately not eligible here.
+
+   `pinned` overrides the date. Without it a run of short posts would bury a new
+   essay a day after it went up, since the short forms are frequent and the long
+   ones are rare. Newest pinned item wins when several are set. */
+export type LatestItem = {
+  room: RoomKey;
+  id: string;
+  href: string;
+  data: any;
+  body: string;
+};
+
+export async function latest(): Promise<LatestItem | undefined> {
+  const all: LatestItem[] = [];
+  for (const room of Object.keys(ROOMS) as RoomKey[]) {
+    for (const e of await live(room)) {
+      all.push({ room, id: e.id, href: `/${ROOMS[room].path}/${e.id}/`, data: e.data, body: e.body ?? '' });
+    }
+  }
+  if (!all.length) return undefined;
+  const byDate = (a: LatestItem, b: LatestItem) =>
+    b.data.publishAt.getTime() - a.data.publishAt.getTime();
+  const pinned = all.filter((e) => e.data.pinned);
+  return (pinned.length ? pinned : all).sort(byDate)[0];
+}
+
 /** The other pieces published in the same week, for the "rest of this week" block. */
 export async function weekSiblings(week: number | undefined, selfId: string) {
   if (!week) return [];

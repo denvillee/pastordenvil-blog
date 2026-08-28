@@ -38,6 +38,9 @@ collections:
       - { label: Standfirst, name: dek, widget: text, hint: 'One or two sentences. Shows under the headline, in lists, and in link previews.' }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false, hint: 'Set a future date and it stays hidden until then. The daily build publishes it.' }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false, hint: 'On means it never publishes, whatever the date says.' }
+      - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
+      - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
+      - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
       - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
       - { label: Part in the set, name: part, widget: number, value_type: int, required: false, hint: 'When an essay belongs to a set, its number in the set — 1, 2, 3. Leave blank for a standalone essay. The set itself is named in Series.' }
       - { label: Scripture, name: scripture, widget: string, required: false, hint: 'Free text, e.g. Acts 2:17; Mark 1:15' }
@@ -63,6 +66,9 @@ collections:
       - { label: Standfirst, name: dek, widget: text }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
+      - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
+      - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
       - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
       - { label: Scripture, name: scripture, widget: string, required: false }
       - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
@@ -87,6 +93,9 @@ collections:
       - { label: Standfirst, name: dek, widget: text }
       - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
+      - { label: Keep in the Latest slot, name: pinned, widget: boolean, default: false, required: false, hint: 'Keep this in the Latest slot until I turn it off. Without it the Latest card simply shows whatever went up most recently, and a run of short posts can bury a new essay the day after it lands.' }
+      - { label: Picture, name: image, widget: image, required: false, hint: 'Optional. Shown on the Latest card when this is the newest thing. With no picture the card runs text only at the same width, which is better than a stock image standing in.' }
+      - { label: Picture description, name: imageAlt, widget: string, required: false, hint: 'What the picture shows, for someone who cannot see it. Leave blank only if the picture is purely decorative.' }
       - { label: Series, name: series, widget: string, required: false, default: 'Now and Not Yet' }
       - { label: Scripture, name: scripture, widget: string, required: false }
       - { label: Diagram, name: diagram, widget: select, required: false, options: ['TwoAges'], hint: 'Drops a drawing into this piece, after the heading and before your text. Leave blank for no drawing.' }
@@ -241,9 +250,10 @@ collections:
           - { label: 'Footer — RSS link', name: footRss, widget: string, hint: 'The RSS link in the footer.' }
 
           # ----------------------------------------------------- home page bands
-          - { label: 'Home — feature sticker on the essay', name: homeFeaturePill, widget: string, hint: 'The small tag on the big feature essay near the top of the home page.' }
-          - { label: 'Home — feature essay link', name: homeFeatureReadLink, widget: string, hint: 'The link under the feature essay. The arrow after it is added automatically.' }
           - { label: 'Home — tag on the essay card', name: homeStreamEssayTag, widget: string, hint: 'The small tag on the first of the three cards in the “Three things every week” band.' }
+          - { label: 'Latest card link — an essay', name: latestReadEssay, widget: string, hint: 'The link on the Latest card when the newest thing is an essay.' }
+          - { label: 'Latest card link — a moment', name: latestReadMoment, widget: string, hint: 'The link on the Latest card when the newest thing is a Moment.' }
+          - { label: 'Latest card link — a lesson', name: latestReadLeaders, widget: string, hint: 'The link on the Latest card when the newest thing is a For Leaders post.' }
           - { label: 'Home — tag on the Leaders Corner card', name: homeStreamLeadersTag, widget: string, hint: 'The small tag on the second of the three cards.' }
           - { label: 'Home — tag on the Moments card', name: homeStreamMomentsTag, widget: string, hint: 'The small tag on the third of the three cards.' }
           - { label: 'Room tag — the essay room', name: roomEssayTag, widget: string, hint: 'The small tag on top of every piece in this room, and on the Archive page. Renaming it here renames it in both places at once.' }

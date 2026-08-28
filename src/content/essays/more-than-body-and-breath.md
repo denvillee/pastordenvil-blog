@@ -3,6 +3,8 @@ title: "More Than Body and Breath"
 dek: "Genesis 1 and the goal of being human. First in a series."
 publishAt: 2026-08-26T06:00:00-04:00
 draft: false
+image: "/assets/img/feature.jpg"
+imageAlt: "Abstract arcs in cobalt and ember over bone"
 series: "Biblical anthropology"
 scripture: "Genesis 1:26-27"
 tags: ["anthropology", "image of God", "Genesis", "vocation"]
