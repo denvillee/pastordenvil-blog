@@ -142,23 +142,21 @@ collections:
 
   - name: watch
     label: Watch
-    description: 'Clips. Publishes at /watch/. The page says Under construction until the first clip goes live.'
-    label_singular: Clip
+    description: 'Talks and sermons embedded from YouTube. Publishes at /watch/, grouped by year. Nothing is re-hosted here, so a video that the church takes down disappears from the page.'
+    label_singular: Talk
     folder: /src/content/watch
     create: true
-    slug: '{{title}}'
+    slug: '{{year}}-{{title}}'
     extension: md
     format: frontmatter
+    sortable_fields: ['year', 'title']
     fields:
-      - { label: Clip title, name: title, widget: string, hint: 'The big line on the clip tile, on the home page rail and the Watch page.' }
-      - { label: Burned in caption, name: caption, widget: string, hint: 'The smaller line under the title on the tile. Keep it short.' }
-      - { label: Length in seconds, name: durationSeconds, widget: number, value_type: int, default: 45 }
-      - { label: Scripture, name: scripture, widget: string, required: false }
-      - { label: Cover image, name: poster, widget: image, default: '/assets/img/clip1.jpg' }
-      - { label: YouTube URL, name: youtube, widget: string, required: false, default: '' }
-      - { label: TikTok URL, name: tiktok, widget: string, required: false, default: '' }
-      - { label: Instagram URL, name: instagram, widget: string, required: false, default: '' }
-      - { label: Publish at, name: publishAt, widget: datetime, picker_utc: false }
+      - { label: Title, name: title, widget: string, hint: 'The heading beside the video.' }
+      - { label: Year, name: year, widget: number, value_type: int, min: 1990, max: 2100, hint: 'The year it was PREACHED, not the year it was uploaded. A 2019 talk a church posted in 2023 belongs under 2019. This is the only thing that decides where it appears on the page.' }
+      - { label: YouTube video ID, name: videoId, widget: string, pattern: ['^[A-Za-z0-9_-]{11}$', 'Just the 11 character ID, not the whole address.'], hint: 'The ID only. In https://www.youtube.com/watch?v=<b>dQw4w9WgXcQ</b> it is the part after v=. On a share link it is the last part of the address.' }
+      - { label: Where, name: context, widget: string, required: false, hint: 'The church, conference or event. Optional.' }
+      - { label: One line about it, name: note, widget: string, required: false, hint: 'What it is, in one line. Optional.' }
+      - { label: Order within the year, name: order, widget: number, value_type: int, default: 0, required: false, hint: 'Higher numbers come first inside the same year. Leave at 0 and the year sorts by title.' }
       - { label: Hold as draft, name: draft, widget: boolean, default: false, required: false }
 
   - name: pages
@@ -241,8 +239,6 @@ collections:
           - { label: 'Essays page — the overlap line', name: essaysHeader, widget: text, hint: 'The line that heads the writing on the Essays page, under the landing copy. It frames the whole body of essays, which is what it was written for.' }
           - { label: Leaders cadence, name: leadersCadence, widget: string }
           - { label: Moments cadence, name: momentsCadence, widget: string }
-          - { label: 'Watch note — under the home page clip rail', name: watchNote, widget: text, hint: 'The paragraph under the three clips on the home page. The Watch page has its own note, below.' }
-          - { label: 'Watch note — bottom of the Watch page', name: watchPageNote, widget: text, hint: 'The paragraph at the bottom of the Watch page. This is the rights and hosting note, not the home page one.' }
           - { label: Reading shelf note, name: readingTie, widget: text, hint: 'Shows under the shelf in both places it appears: the home page band and the Reading page.' }
           - { label: Card kit note, name: kitNote, widget: text, hint: 'The card studio at /kit/. Off the home page now; the page still exists.' }
           # ------------------------------------------------- studies handoff card
@@ -334,12 +330,14 @@ collections:
 
           # -------------------------------------------------------- Watch page
           - { label: 'Watch page — heading', name: watchHeading, widget: string, hint: 'The big heading on the Watch page. Also used in the browser tab title.' }
-          - { label: 'Watch page — standfirst', name: watchDek, widget: text, hint: 'Not shown on the page itself. This is the sentence Google and link previews use.' }
-          - { label: 'Watch page — empty message', name: watchEmpty, widget: text, hint: 'Shows on the Watch page while there are no clips yet.' }
+          - { label: 'Watch page — standfirst', name: watchDek, widget: text, hint: 'Not shown on the page itself. This is the sentence Google and link previews use, so it should describe the page even while the page is still empty.' }
+          - { label: 'Watch page — empty message', name: watchEmpty, widget: text, hint: 'Shows on the Watch page while there are no talks on it yet. It replaces the line below, rather than sitting alongside it.' }
+          - { label: 'Watch page — line under the heading', name: watchLine, widget: text, hint: 'One line, under the Watch heading. Only appears once there is at least one talk on the page.' }
+          - { label: 'Watch page — note at the bottom', name: watchRights, widget: text, hint: 'The hosting and rights note at the foot of the Watch page. <b>bold</b> is allowed. Only appears once there is at least one talk.' }
 
           # ------------------------------------------------------ Archive page
           - { label: 'Archive page — heading', name: archiveHeading, widget: string, hint: 'The big heading on the Archive page. Also used in the browser tab title.' }
-          - { label: 'Archive page — standfirst', name: archiveDek, widget: text, hint: 'Not shown on the page itself. This is the sentence Google and link previews use.' }
+          - { label: 'Archive page — standfirst', name: archiveDek, widget: text, hint: 'Not shown on the page itself. This is the sentence Google and link previews use, so it should describe the page even while the page is still empty.' }
           - { label: 'Archive page — empty message', name: archiveEmpty, widget: text, hint: 'Shows on the Archive page while nothing at all is published.' }
 
           # ------------------------------------------------- inside every piece

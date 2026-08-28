@@ -1,0 +1,154 @@
+---
+import Base from '../../layouts/Base.astro';
+import site from '../../data/site.json';
+
+/*
+  The shareables studio. Private, unlinked, noindex, and out of the sitemap.
+  Denvil bookmarks it.
+
+  A workbench, not a designed page. The only thing on it that gets any care is
+  the canvas, and the canvas is drawn in src/scripts/studio.js.
+*/
+const TEMPLATES = [
+  { id: 'thread',   label: 'Thread' },
+  { id: 'quote',    label: 'Quote' },
+  { id: 'twopanel', label: 'Two panel' },
+  { id: 'verse',    label: 'Verse' },
+];
+const SIZES = [
+  { id: 'feed',  label: 'Feed 4:5' },
+  { id: 'story', label: 'Story 9:16' },
+];
+---
+<Base
+  title={`Studio · ${site.name}`}
+  description="Private card workbench."
+  noindex={true}
+>
+  <section class="band shell studio-wrap">
+    <div class="sec-head">
+      <h1>Studio</h1>
+      <span class="label">Private &middot; not linked, not indexed</span>
+    </div>
+
+    <div class="studio-bar">
+      <span class="label">Template</span>
+      <div class="studio-pills">
+        {TEMPLATES.map((t) => (
+          <button type="button" class="pill-btn" data-tpl={t.id} aria-pressed="false">{t.label}</button>
+        ))}
+      </div>
+    </div>
+
+    <div class="studio-bar">
+      <span class="label">Size</span>
+      <div class="studio-pills">
+        {SIZES.map((s) => (
+          <button type="button" class="pill-btn" data-size={s.id} aria-pressed="false">{s.label}</button>
+        ))}
+      </div>
+    </div>
+
+    <div class="studio-deck">
+      <div class="studio-form">
+
+        <div id="f-thread" class="fset" hidden>
+          <div id="thread-rows"></div>
+          <p id="thread-warn" class="fnote" hidden>
+            Four bubbles is the shape. Past six it stops reading as a scene.
+          </p>
+          <button type="button" id="thread-add" class="pill-btn">Add line</button>
+          <label class="fld">
+            <span>Source</span>
+            <input id="thread-source" type="text" value="denvillee.com" />
+          </label>
+        </div>
+
+        <div id="f-quote" class="fset" hidden>
+          <label class="fld">
+            <span>The line</span>
+            <textarea id="q-line" rows="3">You do not become a son by behaving like one. You behave like one because you are one.</textarea>
+          </label>
+          <p class="fnote">Wrap one phrase in *asterisks* to set it in brass.</p>
+          <label class="fld">
+            <span>Section</span>
+            <input id="q-tag" type="text" value="Essay" />
+          </label>
+          <label class="fld">
+            <span>Source</span>
+            <input id="q-source" type="text" value="denvillee.com" />
+          </label>
+        </div>
+
+        <div id="f-twopanel" class="fset" hidden>
+          <label class="fld">
+            <span>Top label</span>
+            <input id="tp-label1" type="text" value="Me" />
+          </label>
+          <label class="fld">
+            <span>Top line</span>
+            <input id="tp-line1" type="text" value="God, send me." />
+          </label>
+          <label class="fld">
+            <span>Bottom label</span>
+            <input id="tp-label2" type="text" value="Also me" />
+          </label>
+          <label class="fld">
+            <span>Bottom line</span>
+            <input id="tp-line2" type="text" value="Not there though." />
+          </label>
+        </div>
+
+        <div id="f-verse" class="fset" hidden>
+          <label class="fld">
+            <span>Reference</span>
+            <input id="v-ref" type="text" value="Luke 12:32" />
+          </label>
+          <label class="fld">
+            <span>Verse</span>
+            <textarea id="v-line" rows="3">Your Father has been pleased to give you the kingdom</textarea>
+          </label>
+          <p class="fnote">Scripture goes in exactly as published. Trim to a phrase if you must, never reword.</p>
+          <label class="fld">
+            <span>Source</span>
+            <input id="v-source" type="text" value="denvillee.com" />
+          </label>
+        </div>
+
+      </div>
+
+      <div class="studio-stage">
+        <canvas id="cv" width="2160" height="2700"></canvas>
+        <div class="studio-out">
+          <button type="button" id="dl" class="btn">Download PNG</button>
+          <span class="label" id="studio-status" aria-live="polite">Loading fonts</span>
+        </div>
+        <p class="fnote">
+          Preview is at half size. The export is full bleed at 2&times;, square cornered:
+          every platform crops its own corners.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <style is:global>
+    /* Archivo pinned to the 86 width instance, for the verse poster only.
+       Canvas cannot set a variation axis, and a percentage font-stretch in its
+       font shorthand invalidates the string outright. Naming the instance as
+       its own family is the only way to hand it to ctx.font. Same woff2 as the
+       body face, so no extra request. */
+    @font-face {
+      font-family: "Archivo Poster";
+      src: url("/fonts/archivo-100_900-latin.woff2") format("woff2-variations"),
+           url("/fonts/archivo-100_900-latin.woff2") format("woff2");
+      font-weight: 100 900;
+      font-stretch: 86%;
+      font-style: normal;
+      font-display: block;
+    }
+  </style>
+
+  <script>
+    import '../../scripts/studio.js';
+  </script>
+</Base>
