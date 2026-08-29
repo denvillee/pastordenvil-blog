@@ -3,6 +3,8 @@ import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
+import ImageMask from '../../components/ImageMask.astro';
+import Photo from '../../components/Photo.astro';
 import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
@@ -29,7 +31,16 @@ const [featured, ...rest] = entries;
       <div class="mom-quote">
         {/* The sticky note read "Grace is not the absence of struggle, but the
             presence of God." It was never supplied, it reads as a generic
-            inspirational line, and it interrupted the opening. */}
+            inspirational line, and it interrupted the opening. A photograph
+            fills the hole it left better than another line of type would: the
+            section is about ordinary weeks, so the picture is an ordinary
+            afternoon rather than a stage. Its green is held well back so it
+            sits under the page rather than competing with it. */}
+        <ImageMask shape="organic">
+          <Photo name="dl-moments" width={1200} height={900}
+                 sizes="(max-width: 900px) 92vw, 40vw"
+                 alt="Denvil Lee outdoors on a neighbourhood street on a bright afternoon." />
+        </ImageMask>
         <DotGrid cols={6} rows={4} class="mom-dots" />
       </div>
     </section>
