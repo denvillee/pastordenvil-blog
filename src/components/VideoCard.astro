@@ -11,9 +11,13 @@ const { entry, featured = false } = Astro.props;
 const Tag = featured ? 'h2' : 'h3';
 const d = entry.data;
 
+/* Vimeo's own embed address, taken from their share panel and their oEmbed
+   response: app_id is the parameter their embed code carries. playsinline
+   keeps a phone from throwing the video into the system fullscreen player the
+   moment it starts, which is what happens without it on iOS. */
 const embed = d.provider === 'vimeo'
-  ? `https://player.vimeo.com/video/${d.videoId}?autoplay=1&title=0&byline=0&portrait=0`
-  : `https://www.youtube-nocookie.com/embed/${d.videoId}?autoplay=1&rel=0`;
+  ? `https://player.vimeo.com/video/${d.videoId}?app_id=122963&autoplay=1&playsinline=1&title=0&byline=0&portrait=0`
+  : `https://www.youtube-nocookie.com/embed/${d.videoId}?autoplay=1&playsinline=1&rel=0`;
 const watch = d.provider === 'vimeo'
   ? `https://vimeo.com/${d.videoId}`
   : `https://www.youtube.com/watch?v=${d.videoId}`;
@@ -21,6 +25,12 @@ const watch = d.provider === 'vimeo'
 const localPoster = d.poster as string | undefined;
 const remotePoster = !localPoster && d.provider === 'youtube'
   ? `https://i.ytimg.com/vi/${d.videoId}/hqdefault.jpg` : undefined;
+
+/* The day it was given, spelled out. Where he was teaching leads the card, so
+   this line only has to date it. */
+const given = d.givenOn
+  ? d.givenOn.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })
+  : undefined;
 
 const mmss = (s?: number) => s
   ? `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}` : undefined;
@@ -45,10 +55,12 @@ const len = mmss(d.durationSeconds);
     </button>
   </div>
   <div class="vmeta">
-    {d.note && <p class="veyebrow">{d.note}</p>}
+    {d.context && <p class="veyebrow">{d.context}</p>}
     <Tag class="vtitle">{d.title}</Tag>
     <p class="vsub">
-      {d.context}{d.context && ' · '}{d.year}
+      {d.givenOn
+        ? <time datetime={d.givenOn.toISOString().slice(0, 10)}>{given}</time>
+        : d.year}
     </p>
     <a class="go" href={watch} rel="noopener nofollow" target="_blank">
       Watch on {d.provider === 'vimeo' ? 'Vimeo' : 'YouTube'} <span aria-hidden="true">&#8599;</span>

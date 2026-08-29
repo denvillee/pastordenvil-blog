@@ -4,12 +4,12 @@
   an icon set: a generic icon library would give four neat pictograms in a
   house style that is not this one, and these want to look sketched.
 */
-interface Props { kind: 'leaders' | 'moments' | 'studies' | 'reading'; }
+interface Props { kind: 'essays' | 'leaders' | 'moments' | 'studies' | 'reading'; }
 const { kind } = Astro.props;
 
 const P: Record<string, { tone: string; d: string[] }> = {
-  /* a pencil */
-  leaders: { tone: 'blue', d: [
+  /* a pencil, for the writing */
+  essays: { tone: 'blue', d: [
     'M14 34 30 18l6 6L20 40l-8 2z', 'M30 18l4-4a3 3 0 0 1 4 0l2 2a3 3 0 0 1 0 4l-4 4',
     'M13 41l3-1',
   ]},
@@ -26,6 +26,13 @@ const P: Record<string, { tone: string; d: string[] }> = {
   /* three spines */
   reading: { tone: 'green', d: [
     'M11 12h6v26h-6z', 'M19 12h6v26h-6z', 'M28 13l6 1-4 25-6-1z',
+  ]},
+  /* two people, one a step ahead and turning back */
+  leaders: { tone: 'coral', d: [
+    'M18 20a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z',
+    'M9 39v-4a9 9 0 0 1 9-9h0a9 9 0 0 1 9 9v4',
+    'M33 18a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2z',
+    'M31 25a7.5 7.5 0 0 1 8 7.4V37',
   ]},
 };
 const p = P[kind];
