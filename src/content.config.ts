@@ -175,6 +175,30 @@ export const collections = {
       note: z.string().optional(),
       /* Runtime in seconds, straight from the provider. Shown as m:ss. */
       durationSeconds: z.number().int().optional(),
+
+      /* ── Fields for the full archive ────────────────────────────────────
+         The library is expected to grow past a hundred messages, and a bulk
+         import should not need a schema change or a component rewrite. Every
+         one of these is optional so the entries already here stay valid, and
+         each is a field the import will actually carry.
+
+         When the archive lands, series and organization become the better
+         grouping than year, which is why they are named rather than folded
+         into the single free-text `context` line the page leads with today. */
+      series: z.string().optional(),
+      organization: z.string().optional(),
+      location: z.string().optional(),
+      scripture: z.string().optional(),
+      description: z.string().optional(),
+      /* A separate audio file, when there is one. This is what a locked-screen
+         phone player needs, and it is deliberately not derived from the video
+         id: the audio may be exported and hosted separately. */
+      audioSrc: z.string().optional(),
+      tags: z.array(z.string()).default([]),
+      /* Overrides the filename-derived id. An import that carries its own
+         permalinks should be able to keep them. */
+      slug: z.string().optional(),
+
       order: z.number().default(0),
       draft: z.boolean().default(false),
     }),
