@@ -678,3 +678,65 @@
   color:var(--on-navy); font-family:var(--sans); font-weight:800;
   font-size:.6rem; letter-spacing:.08em;
 }
+
+/* The "Watch now" action is a button, because it plays the video in place
+   rather than leaving the site. It should still read as the link it replaced. */
+.vgo{
+  background:none; border:0; padding:0; cursor:pointer; font:inherit;
+  color:var(--blue-ink); font-weight:700;
+}
+.vgo .arw{transition:translate var(--fast) var(--ease)}
+.vgo:hover .arw{translate:.22rem 0}
+.vfallback{
+  display:grid; place-items:center; height:100%; margin:0; padding:1.2rem;
+  text-align:center; color:var(--dek-on-dark); background:var(--dark);
+  font-size:.92rem;
+}
+
+/* ── Page personality, 29 Aug ────────────────────────────────────────────────
+   Every landing hero was the same centred two-column split with only the
+   column ratio changed, which is how seven pages end up reading as one
+   template. The shared system stays; the rhythm of each page does not.
+
+   Nothing here is decoration for its own sake. Each rule is doing one job:
+   putting the copy where that page wants to be read, and letting a mark leave
+   the page instead of sitting politely inside it. */
+
+/* Moments is the loosest page on the site. The copy sits high, the picture
+   drops below its own line and tilts a degree and a half, so the two are not
+   on the same rail. This is the one page where the composition should look
+   like it was assembled by hand rather than laid out. */
+.mom-hero{align-items:start}
+.mom-hero > div:first-child{padding-top:clamp(1rem,4vw,3.2rem)}
+.mom-art{transform:rotate(-1.4deg); transform-origin:60% 40%}
+@media (max-width:900px){ .mom-art{transform:none} }
+
+/* Studies is participatory, so the copy starts at the top beside the picture
+   rather than floating in the middle of it. */
+.std-hero{align-items:start}
+.std-hero > div:first-child{padding-top:clamp(.6rem,3vw,2.4rem)}
+
+/* About is the most photographic page. The picture is allowed to be the
+   larger half and to sit slightly low, the way a print laid on a desk does. */
+.abt-hero{grid-template-columns:1fr 1.05fr; align-items:end}
+@media (max-width:900px){ .abt-hero{grid-template-columns:1fr} }
+
+/* Watch is media-forward: the grid leads, so the hero stays compact. */
+.watch-hero{align-items:end; margin-bottom:clamp(1.4rem,3vw,2.4rem)}
+
+/* ── Edge graphics ───────────────────────────────────────────────────────────
+   A recurring signature: a mark that runs off the side of the page rather than
+   stopping at the column. The container already clips, so these cost nothing
+   and never cause a horizontal scrollbar. Hidden from assistive tech and from
+   anyone who has asked for less motion is not relevant here, they do not move. */
+.edge{position:absolute; pointer-events:none; z-index:0; opacity:.9}
+.edge-l{left:0; translate:-38% 0}
+.edge-r{right:0; translate:38% 0}
+@media (max-width:700px){ .edge{display:none} }
+
+/* Each page places its own, at its own height, so the signature repeats
+   without the pages matching. */
+.mom-edge{top:clamp(16rem,34vw,26rem); width:clamp(7rem,13vw,11rem)}
+.std-edge{top:clamp(20rem,38vw,30rem); width:clamp(6rem,11vw,9rem)}
+.lead-edge{top:clamp(24rem,42vw,34rem); width:clamp(6rem,12vw,10rem)}
+.abt-edge{top:clamp(28rem,46vw,38rem); width:clamp(7rem,12vw,10rem)}
