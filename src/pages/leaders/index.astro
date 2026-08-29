@@ -9,8 +9,6 @@ import Photo from '../../components/Photo.astro';
 import ImageMask from '../../components/ImageMask.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import EssayCard from '../../components/EssayCard.astro';
-import TopicList from '../../components/TopicList.astro';
-import Signup from '../../components/Signup.astro';
 import Doorway from '../../components/Doorway.astro';
 import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
@@ -32,7 +30,7 @@ const [featured, ...rest] = entries;
       <div>
         <h1 class="page-h is-display"><span class="u">{labels.leadersHeading}<Mark kind="underline" color="yellow" draw={true} /></span></h1>
         <p class="page-dek">
-          Reflections for leading with&#32;<span class="u">wisdom<Mark kind="underline" color="blue" /></span>,&#32;<span class="u">humility<Mark kind="underline" color="green" /></span>, and&#32;<span class="u">courage<Mark kind="underline" color="coral" /></span>.
+          Lessons from&#32;<span class="u">a few short steps ahead.<Mark kind="underline" color="blue" /></span>
         </p>
         <p class="lead-sub">{labels.leadersSubtitle}</p>
         {featured && (
@@ -56,17 +54,18 @@ const [featured, ...rest] = entries;
     </section>
 
     {IntroBody && (
-      <Doorway tone="blue" href={`/leaders/${intro!.id}/`}>
+      <Doorway tone="blue">
         <IntroBody />
       </Doorway>
     )}
 
     <div class="shell arch-deck">
       <div class="arch-main">
-        {featured
-          ? <FeaturedEssay href={`/leaders/${featured.id}/`} entry={featured}
-                           label="Featured essay" room={labels.leadersHeading} tone="blue" />
-          : <p class="empty-note">{labels.leadersEmpty}</p>}
+        {/* No empty state: the doorway carries the page until there is a piece. */}
+        {featured && (
+          <FeaturedEssay href={`/leaders/${featured.id}/`} entry={featured}
+                         label="Featured essay" room={labels.leadersHeading} tone="blue" />
+        )}
 
         {rest.length > 0 && (
           <>
@@ -84,7 +83,6 @@ const [featured, ...rest] = entries;
       </div>
 
       <aside class="arch-side" aria-label="More on this site">
-        <TopicList rooms={['leaders']} />
         <StickyNote tone="blue" tilt={-1.6} tape={false} class="side-note">
           Leadership isn't about having all the answers. It's about keeping your
           eyes on Jesus and serving the people in front of you.
@@ -92,5 +90,7 @@ const [featured, ...rest] = entries;
       </aside>
     </div>
   </div>
-  <Signup tone="dark" />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>
