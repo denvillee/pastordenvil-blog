@@ -24,13 +24,14 @@ const [featured, ...rest] = entries;
 ---
 <Shell title={`${labels.leadersHeading} · ${site.name}`} description={labels.leadersDek} current="leaders">
   <div class="arch">
+    <Mark kind="star" color="green" class="edge edge-l lead-edge" />
     <Mark kind="brush" color="coral" class="arch-brush" />
 
     <section class="shell lead-hero">
       <div>
         <h1 class="page-h is-display"><span class="u">{labels.leadersHeading}<Mark kind="underline" color="yellow" draw={true} /></span></h1>
         <p class="page-dek">
-          Lessons from&#32;<span class="u">a few short steps ahead.<Mark kind="underline" color="blue" /></span>
+          Following Jesus while&#32;<span class="u">leading people.<Mark kind="underline" color="blue" /></span>
         </p>
         <p class="lead-sub">{labels.leadersSubtitle}</p>
         {featured && (
