@@ -76,7 +76,7 @@
 .tape-blue{background:var(--blue)}
 .tape-coral{background:var(--coral)}
 .tape-yellow{background:var(--yellow)}
-.tape-neutral{background:#D8D0C0}
+.tape-neutral{background:var(--tape)}
 
 /* ── the colour disc ────────────────────────────────────────────────── */
 .disc{
@@ -89,8 +89,11 @@
 /* The disc carries handwriting at around 20px, which is small text: white on
    the face coral is 3.19 and fails. The deeper coral keeps the white script
    the design asks for and measures 5.49. */
-.disc-coral{background:var(--coral-fill); color:#FFF}
-.disc-blue{background:var(--blue); color:#FFF}
+/* Ink on coral, not white. White on the cover's coral measures 2.95 and the
+   disc carries three words. On the cover itself the coral circle holds a
+   cream wheat drawing rather than type, which is why it can be that light. */
+.disc-coral{background:var(--coral); color:var(--on-coral)}
+.disc-blue{background:var(--navy); color:var(--on-navy)}
 .disc-yellow{background:var(--yellow); color:var(--on-yellow)}
 .disc-green{background:var(--green); color:var(--on-green)}
 .disc-in{display:flex; flex-direction:column; align-items:center; gap:.05em; text-align:center}
@@ -110,11 +113,11 @@
   font-family:var(--hand); font-weight:600;
   font-size:clamp(1.1rem,2.2vw,1.5rem); line-height:1.4;
 }
-.note-paper{background:#FBF8F1; color:var(--ink); border:1px solid var(--rule)}
-.note-blue{background:var(--blue); color:#FFF}
+.note-paper{background:var(--paper); color:var(--ink); border:1px solid var(--rule)}
+.note-blue{background:var(--navy); color:var(--on-navy)}
 .note-yellow{background:var(--yellow); color:var(--on-yellow)}
 .note-green{background:var(--green); color:var(--on-green)}
-.note-coral{background:var(--coral); color:#FFF}
+.note-coral{background:var(--coral); color:var(--on-coral)}
 .note-tape{
   position:absolute; top:-.7rem; left:50%; translate:-50% 0;
   width:4.2rem; height:1.4rem; background:var(--blue); opacity:.9;

@@ -14,51 +14,117 @@
 */
 
 :root {
-  /* ── ground and ink ─────────────────────────────────────────────────── */
-  --cream:#F7F3EA;          /* the page */
-  --card:#EFEAE1;           /* muted card and sunken panels */
+  /* ── ground and ink ─────────────────────────────────────────────────
+     Sampled from Denvil's own Ruth cover art, 29 Aug, rather than chosen. The
+     cover is the one piece of finished brand artwork that exists, so the sites
+     take their colour from it instead of the other way round.
+
+     It also answers the puttyputman.com resemblance. The overlap was never the
+     layout: it was that coral was THE accent on both sites, over a warm
+     off-white. On the cover, coral is a small punctuation mark and NAVY does
+     the heavy lifting, over a cream that is warmer than his. Making navy
+     primary and coral occasional is the whole differentiation, and it costs
+     nothing, because it is already how Denvil's own artwork works. */
+  --cream:#FCF4E5;          /* the page, straight off the cover */
+  --card:#F4E9D2;           /* muted card and sunken panels */
   --white:#FFFFFF;
-  --ink:#111111;            /* primary text */
-  --dark:#151515;           /* dark feature panels */
+  --ink:#141210;            /* primary text, 17.10 on cream / 15.51 on card */
+  --dark:#062744;           /* dark feature panels: the cover's navy, deepened */
 
   /* ── the four ─────────────────────────────────────────────────────────
-     Face values. Anything that has to carry small text uses the -ink pair
-     below, which is the same hue walked down until it clears WCAG AA on
-     cream. Never set small type in a face value. */
-  --blue:#2457D6;
-  --yellow:#F2B526;
-  --coral:#ED6553;
-  --green:#A9C68E;
+     Navy, gold, coral and sage. Navy is dark enough to be the link colour,
+     small-text colour and button fill with no second token: 11.19 on cream,
+     white on it 12.23. The other three stay decorative and take the -ink pair
+     below when they have to carry small type. */
+  --navy:#0A3662;           /* 11.19 cream / 10.15 card · white on it 12.23 */
+  --gold:#EDAA26;           /* decorative · ink on it 9.24 */
+  --coral:#F36D4F;          /* decorative · ink on it 6.33 */
+  --sage:#808E69;           /* 3.21 on cream, so it holds as a drawn mark */
 
-  /* The reading pairs. Every figure is measured, not estimated: the first is
-     against cream, the second against --card, which is the darker of the two
-     grounds and so the one that actually decides. */
-  --blue-ink:#2450C4;       /* 6.28 / 5.80 */
-  --coral-ink:#B33A29;      /* 5.34 / 4.93 */
-  --green-ink:#4A6B33;      /* 5.51 / 5.09 */
-  --yellow-ink:#7A5B08;     /* 5.70 / 5.27  — text only, never a fill */
+  /* The reading pairs, for small type on either ground. Navy needs none. */
+  --gold-ink:#9B5800;       /* 5.03 / 4.55  — text only, never a fill */
+  --coral-ink:#BF391B;      /* 5.01 / 4.54 */
+  --sage-ink:#606E49;       /* 5.03 / 4.56 */
 
-  /* Filled surfaces. Yellow and green are bright enough to take ink on top.
-     Coral is the awkward one: white on the face value is 3.19, which carries a
-     large handwritten disc but fails any small label, so anything with a real
-     label on it uses --coral-fill and the face value stays decorative. */
-  --coral-fill:#BE3A26;     /* white on this is 5.49 */
+  /* Filled surfaces. Coral and gold take dark ink on top, exactly as the disc
+     on the cover does; only navy takes white. */
+  --on-navy:#FFFFFF;        /* 12.23 */
+  --on-gold:#141210;        /* 9.24 */
+  --on-coral:#141210;       /* 6.33 */
+  --on-sage:#141210;        /* 5.33 */
+  --on-dark:#FCF4E5;        /* 13.91 on --dark */
+
+  /* The same four lifted for a navy panel, measured against --dark. */
+  --gold-lift:#F0B441;      /* 8.19 */
+  --coral-lift:#F58A6E;     /* 6.33 */
+  --sage-lift:#A7B98C;      /* 7.21 */
+  --dek-on-dark:#C2CFDC;    /* 9.59 */
+
+  /* ── tints and washes ────────────────────────────────────────────────
+     The four at two weaker strengths: --tint-* backs the sketched icon discs
+     and the sidebar, --wash-* backs the pinboard cards. Hand-levelled to the
+     same lightness rather than the same mix percentage, because navy is far
+     darker than the other three and a flat percentage makes it a bruise. */
+  --tint-navy:#DDE4EB;      /* navy on it 9.54 · ink 14.57 */
+  --tint-gold:#F9E6C1;      /* gold-ink on it 4.52 · ink 15.23 */
+  --tint-coral:#FBE5D4;     /* coral-ink on it 4.52 · ink 15.36 */
+  --tint-sage:#E7EBDA;      /* sage-ink on it 4.52 · ink 15.39 */
+
+  --wash-navy:#C3CEDA;      /* ink 11.71 */
+  --wash-gold:#F4CE84;      /* ink 12.47 */
+  --wash-coral:#F9C4B1;     /* ink 12.07 */
+  --wash-sage:#C9D0B4;      /* ink 11.72 */
+
+  --paper:#FEFAF2;          /* lifted card and sticky note · ink 17.86 */
+  --tape:#DBD3C2;
+
+  /* ── legacy slot names ────────────────────────────────────────────────
+     The components and the CMS were written against hue names. They alias
+     rather than being renamed in 33 files, so a palette change stays a
+     one-file change. New work should use the names above. */
+  --blue:var(--navy);
+  --yellow:var(--gold);
+  --green:var(--sage);
+  --blue-ink:var(--navy);
+  --green-ink:var(--sage-ink);
+  --yellow-ink:var(--gold-ink);
+  --coral-fill:var(--coral);
   /* The full stop that ends a display heading is punctuation, not decoration,
-     so it has to be legible. The face coral measures 2.88 on cream, just under
-     the 3:1 a heading needs; this clears it at 3.56 and still reads coral. */
-  --coral-dot:#E04E3A;
-  --on-blue:#FFFFFF;        /* 6.16 on --blue */
-  --on-yellow:#241A00;      /* 9.33 on --yellow */
-  --on-coral:#FFFFFF;       /* 5.49 on --coral-fill, 3.19 on --coral */
-  --on-green:#12210A;       /* 8.94 on --green */
-  --on-dark:#F7F3EA;        /* 16.49 on --dark */
+     so it has to clear 3:1 as a large graphic. The cover's coral measures 2.70
+     on cream, just under; this is the same coral walked down until it clears
+     on both grounds, and it still reads as the cover's colour. */
+  --coral-dot:#E45530;      /* 3.41 cream / 3.09 card */
+  --on-blue:var(--on-navy);
+  --on-yellow:var(--on-gold);
+  --on-green:var(--on-sage);
+  --tint-petrol:var(--tint-navy);
+  --tint-ochre:var(--tint-gold);
+  --tint-terra:var(--tint-coral);
+  --tint-olive:var(--tint-sage);
+  --wash-ochre:var(--wash-gold);
+  --wash-terra:var(--wash-coral);
+  --wash-olive:var(--wash-sage);
+  --terra:var(--coral);
+  --petrol:var(--navy);
+  --ochre:var(--gold);
+  --olive:var(--sage);
+  --terra-ink:var(--coral-ink);
+  --ochre-ink:var(--gold-ink);
+  --olive-ink:var(--sage-ink);
+  --ochre-lift:var(--gold-lift);
+  --terra-lift:var(--coral-lift);
+  --petrol-lift:#8FB4D6;
+  --on-petrol:var(--on-navy);
+  --on-ochre:var(--on-gold);
+  --on-terra:var(--on-coral);
+  --on-olive:var(--on-sage);
 
   /* ── text roles ───────────────────────────────────────────────────── */
   --fg:var(--ink);
-  --muted:#5C5852;          /* 6.38 / 5.90 */
-  --faint:#6E695F;          /* 4.93 / 4.55 — clears AA on both grounds */
-  --rule:#DED7CA;
-  --rule-strong:#C8BFAE;
+  --muted:#645B4E;          /* 6.10 / 5.54 */
+  --faint:#706859;          /* 5.04 / 4.57 — clears AA on both grounds */
+  --rule:#DED7C9;
+  --rule-strong:#C4BEB2;
 
   /* ── type ─────────────────────────────────────────────────────────────
      One sans does display and body. Archivo is variable on weight and width,
@@ -89,8 +155,8 @@
   --r-lg:22px;
   --r-pill:999px;
 
-  --shadow:0 1px 2px rgba(17,17,17,.04), 0 8px 24px rgba(17,17,17,.06);
-  --shadow-lift:0 2px 4px rgba(17,17,17,.05), 0 14px 34px rgba(17,17,17,.10);
+  --shadow:0 1px 2px rgba(20,17,13,.04), 0 8px 24px rgba(20,17,13,.06);
+  --shadow-lift:0 2px 4px rgba(20,17,13,.05), 0 14px 34px rgba(20,17,13,.10);
 
   --ease:cubic-bezier(.2,.7,.2,1);
   --fast:.18s;

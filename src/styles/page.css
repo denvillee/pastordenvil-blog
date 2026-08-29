@@ -51,7 +51,11 @@
   font-variation-settings:"wdth" 94; margin:0 0 1.3rem; max-width:11ch;
 }
 .hero-br{display:block}
-.hero-dek{font-size:var(--step-1); color:var(--fg); max-width:34ch; line-height:1.45; margin-bottom:1.8rem}
+/* The conviction line, under Denvil's introduction. It used to be the hero's
+   only paragraph; it now supports the introduction rather than opening. */
+.hero-sub{color:var(--muted); max-width:44ch; font-size:var(--step-0);
+  line-height:1.55; margin:.9rem 0 1.8rem}
+.hero-dek{font-size:var(--step-1); color:var(--fg); max-width:38ch; line-height:1.45; margin-bottom:0}
 .hero-acts{display:flex; align-items:center; gap:1.4rem; flex-wrap:wrap; margin:0}
 .hero-go{color:var(--ink); border-bottom:2px solid var(--ink); padding-bottom:.12rem}
 .hero-art{position:relative}
@@ -72,7 +76,12 @@
 .feat-open{color:var(--muted); max-width:var(--measure); margin-bottom:.7rem}
 .feat-meta{font-size:.8rem; color:var(--faint); margin-bottom:.7rem}
 
-.shortcuts{display:grid; grid-template-columns:1fr 1fr; gap:clamp(.9rem,2.4vw,1.6rem)}
+/* Five sections now, not four, so the row wraps to a sensible minimum rather
+   than being pinned to a column count. */
+/* Five sections now, not four. auto-fit on a real minimum lets the row settle
+   into 2 or 3 across on its own instead of leaving a widow in a fixed pair. */
+.shortcuts{display:grid; gap:clamp(.9rem,2.4vw,1.6rem);
+  grid-template-columns:repeat(auto-fit, minmax(15rem, 1fr))}
 @media (max-width:520px){ .shortcuts{grid-template-columns:1fr} }
 .short{
   position:relative; display:block; padding:1.3rem 1.3rem 2.6rem;
@@ -88,10 +97,10 @@
 
 .cico{display:grid; place-items:center; width:3.1rem; height:3.1rem; border-radius:50%}
 .cico svg{width:2.05rem; height:2.05rem}
-.cico-blue{background:#C9D6F7; color:var(--blue-ink)}
-.cico-yellow{background:#FBE3A8; color:var(--yellow-ink)}
-.cico-coral{background:#FCE6E2; color:var(--coral-ink)}
-.cico-green{background:#D6E4C6; color:var(--green-ink)}
+.cico-blue{background:var(--tint-navy); color:var(--navy)}
+.cico-yellow{background:var(--tint-gold); color:var(--gold-ink)}
+.cico-coral{background:var(--tint-coral); color:var(--coral-ink)}
+.cico-green{background:var(--tint-sage); color:var(--sage-ink)}
 
 /* ── the two panels ─────────────────────────────────────────────────── */
 .panels{display:grid; grid-template-columns:1fr 1fr; gap:clamp(1rem,2.6vw,1.8rem)}
@@ -102,7 +111,7 @@
 .panel-h{font-size:var(--step-3); font-weight:800; margin-bottom:.7rem}
 .panel-dark .panel-h .mk{color:var(--blue)}
 .panel-dek{max-width:34ch; margin-bottom:1.4rem}
-.panel-dark .panel-dek{color:#CFCAC0}
+.panel-dark .panel-dek{color:var(--dek-on-dark)}
 .panel-zig{left:-.9rem; bottom:1.4rem}
 .panel-zig-r{left:auto; right:-.9rem}
 .panel-note{max-width:22rem; margin:0 0 1.4rem}
@@ -159,7 +168,7 @@
 /* ── the sidebar ────────────────────────────────────────────────────── */
 .arch-side{display:grid; gap:clamp(1rem,2.4vw,1.6rem)}
 .side-card{background:var(--card); border-radius:var(--r); padding:1.4rem}
-.side-blue{background:#DCE4F9}
+.side-blue{background:var(--tint-navy)}
 .side-h{font-size:var(--step-1); font-weight:800; margin-bottom:.9rem;
   position:relative; display:inline-block}
 .side-card p{font-size:.9rem; color:var(--muted)}
@@ -175,10 +184,10 @@
 .topic-txt span{font-size:.78rem; color:var(--muted); line-height:1.35}
 .tico-wrap{display:grid; place-items:center; width:2.6rem; height:2.6rem; border-radius:50%}
 .tico svg{width:1.6rem; height:1.6rem}
-.tico-coral{background:#FCE6E2; color:var(--coral-ink)}
-.tico-green{background:#D6E4C6; color:var(--green-ink)}
-.tico-blue{background:#C9D6F7; color:var(--blue-ink)}
-.tico-yellow{background:#FBE3A8; color:var(--yellow-ink)}
+.tico-coral{background:var(--tint-coral); color:var(--coral-ink)}
+.tico-green{background:var(--tint-sage); color:var(--sage-ink)}
+.tico-blue{background:var(--tint-navy); color:var(--navy)}
+.tico-yellow{background:var(--tint-gold); color:var(--gold-ink)}
 
 .panel-wide{margin-top:clamp(2.4rem,5vw,4rem)}
 
@@ -301,10 +310,8 @@
 .lead-hero{display:grid; grid-template-columns:1.05fr 1fr; gap:clamp(1.6rem,4vw,3.4rem);
   align-items:center; margin-bottom:clamp(2rem,4vw,3.2rem)}
 @media (max-width:900px){ .lead-hero{grid-template-columns:1fr} }
-.lead-sub{color:var(--muted); max-width:44ch; margin-bottom:1.6rem}
+.lead-sub{color:var(--muted); max-width:44ch; margin-bottom:0}
 .lead-art{position:relative}
-.lead-disc{right:-1rem; bottom:-1.4rem}
-.lead-disc .disc-l{font-size:clamp(.85rem,1.5vw,1.1rem)}
 
 /* ── Moments ────────────────────────────────────────────────────────────
    The loosest page on the site. Cards are notes on a board: they vary in
@@ -320,12 +327,12 @@
   display:grid; gap:.5rem; align-content:start; min-height:11rem;
   padding:1.2rem 1.3rem; border-radius:var(--r-sm);
   transform:rotate(var(--tilt,0deg)); box-shadow:var(--shadow);
-  background:#FBF8F1; border:1px solid var(--rule);
+  background:var(--paper); border:1px solid var(--rule);
   transition:transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease);
 }
-.mcard[data-tone="green"]{background:#DCE7CD; border-color:transparent}
-.mcard[data-tone="yellow"]{background:#FBE9BE; border-color:transparent}
-.mcard[data-tone="coral"]{background:#F8D7D0; border-color:transparent}
+.mcard[data-tone="green"]{background:var(--wash-sage); border-color:transparent}
+.mcard[data-tone="yellow"]{background:var(--wash-gold); border-color:transparent}
+.mcard[data-tone="coral"]{background:var(--wash-coral); border-color:transparent}
 .mcard:hover{transform:rotate(0deg) translateY(-3px); box-shadow:var(--shadow-lift)}
 .mcard-date{font-size:.72rem; color:var(--faint); font-weight:600}
 .mcard-t{font-family:var(--hand); font-weight:600; font-size:1.5rem; line-height:1.25}
@@ -378,11 +385,44 @@
 .std-art{position:relative}
 .std-note{position:absolute; right:-1rem; bottom:-1.8rem; max-width:14rem; font-size:1.2rem}
 @media (max-width:640px){ .std-note{position:static; margin-top:1rem; max-width:none} }
+/* ── the section doorway ────────────────────────────────────────────
+   Each section opens with its own introduction in Denvil's voice. Deliberately
+   NOT .prose and deliberately unboxed: the article styles bring a drop cap and
+   an article rhythm, and a panel would make it look like an advertisement for
+   the section. Plain type in the reading measure reads as the person talking.
+   The opening paragraph takes a step up so the eye starts there, and a drawn
+   rule closes the block so the list below reads as a separate thing. */
+.door{padding-top:clamp(.4rem,1.6vw,1.1rem); padding-bottom:clamp(1.4rem,3.4vw,2.4rem)}
+.door-in{max-width:62ch}
+.door-body > p:first-child{font-size:var(--step-1); line-height:1.5; font-weight:500;
+  letter-spacing:-.01em; color:var(--ink); margin:0 0 1.2rem; max-width:40ch}
+.door-body p{margin:0 0 1.05rem; color:var(--muted); line-height:1.68}
+.door-body p:last-child{margin-bottom:0}
+.door-body strong{color:var(--ink); font-weight:700}
+.door-body blockquote{margin:1.5rem 0; padding-left:1.15rem;
+  border-left:3px solid var(--gold); font-family:var(--hand);
+  font-size:1.5rem; line-height:1.3; color:var(--ink); max-width:34ch}
+.door-body blockquote p{color:inherit; margin:0; font-size:inherit; line-height:inherit}
+.door-perma{margin-top:1.4rem}
+/* The closing rule is a drawn mark, which positions itself absolutely inside
+   its wrapper, so the wrapper has to reserve real height or the stroke lands
+   on whatever follows it. */
+.door-rule{display:block; position:relative; width:min(22rem, 60%); height:1.1rem;
+  margin-top:clamp(1.3rem,2.8vw,1.9rem)}
+.door-rule .mk{position:absolute; inset:0; width:100%; height:100%}
+@media (max-width:600px){ .door-body > p:first-child{font-size:var(--step-0)} }
+
+.watch-more{margin-top:clamp(1.6rem,3.5vw,2.6rem)}
 .std-feat{display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(1.4rem,3vw,2.4rem);
   align-items:center}
 @media (max-width:760px){ .std-feat{grid-template-columns:1fr} }
 .std-eyebrow{font-size:.68rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
   color:var(--yellow); margin-bottom:.7rem}
+/* The study's own name, in the annotation face, sitting above the sentence
+   that explains it. The panel heading stays "Grab your Bibles." */
+.std-feat-name{font-family:var(--hand); font-size:1.75rem; line-height:1;
+  color:var(--gold-lift); margin:.15rem 0 .5rem}
+.std-feat-meta{font-size:.82rem; color:var(--dek-on-dark); margin-top:.9rem}
 .std-feat-art{position:relative}
 .std-feat-art .ph{border-radius:var(--r)}
 .chip-light{background:var(--white); color:var(--ink)}
@@ -454,7 +494,7 @@
 
 /* A gap where Denvil's own words go. Loud on purpose. */
 .gap{border:2px dashed var(--coral); border-radius:var(--r); padding:1rem 1.2rem;
-  background:rgba(237,101,83,.06); max-width:42ch; margin:0 0 1.4rem}
+  background:color-mix(in srgb, var(--terra) 5%, transparent); max-width:42ch; margin:0 0 1.4rem}
 .gap-k{font-size:.68rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
   color:var(--coral-ink); margin:0 0 .4rem}
 .gap-w{margin:0; font-size:.94rem; color:var(--fg)}
