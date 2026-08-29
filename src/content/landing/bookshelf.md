@@ -3,7 +3,7 @@ room: "bookshelf"
 title: "Bookshelf"
 ---
 
-Scott Cormode writes in *The Innovative Church*, "Leaders don't have followers, they have people entrusted to their care." I remember reading that line and realizing someone had given language to something I was already trying to understand. It changed the way I thought about leadership, and eventually the way I led.
+Scott Cormode writes in *The Innovative Church*, "Leaders don't have followers, they have people entrusted to their care." I remember reading that line and realizing someone had given language to something I was already trying to understand. It has stayed with me ever since.
 
 Books have done that for me again and again. Some give language to things I have sensed but could not explain, some challenge assumptions I did not know I carried, and others leave me arguing with them long after I have closed the book.
 
