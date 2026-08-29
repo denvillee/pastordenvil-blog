@@ -1,4 +1,5 @@
 ---
+import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
@@ -6,12 +7,17 @@ import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
 import Signup from '../../components/Signup.astro';
+import Doorway from '../../components/Doorway.astro';
 import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
 const entries = await live('moments');
 const intro = await introPost('moments');
+/* The introduction opens the page rather than sitting in a card beside it:
+   Denvil's revision packet asks each section to open with a doorway in his
+   own voice. It is still the same real, linkable, CMS-editable post. */
+const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
 const [featured, ...rest] = entries;
 ---
 <Shell title={`${labels.momentsHeading} · ${site.name}`} description={labels.momentsDek} current="moments">
@@ -28,6 +34,12 @@ const [featured, ...rest] = entries;
         </StickyNote>
       </div>
     </section>
+
+    {IntroBody && (
+      <Doorway tone="coral" href={`/moments/${intro!.id}/`}>
+        <IntroBody />
+      </Doorway>
+    )}
 
     <section class="shell">
       {featured
@@ -46,9 +58,6 @@ const [featured, ...rest] = entries;
         </>
       )}
 
-      {intro && (
-        <p class="mt"><a class="go" href={`/moments/${intro.id}/`}>{intro.data.title} <span class="arw" aria-hidden="true">&rarr;</span></a></p>
-      )}
     </section>
   </div>
   <Signup tone="card" />
