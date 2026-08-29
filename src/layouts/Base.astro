@@ -59,9 +59,7 @@ const comingSoon =
   {publishedTime && <meta property="article:published_time" content={publishedTime} />}
   <meta name="twitter:card" content="summary_large_image" />
 
-  <!-- The .ico is not decoration. Browsers, bookmark bars, link previews and
-       Google's favicon service all request /favicon.ico by convention, and when
-       it is missing they keep serving whatever they cached for the domain. -->
+  {/* /favicon.ico is requested by convention even when the svg exists. */}
   <link rel="icon" href="/favicon.ico" sizes="32x32" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
