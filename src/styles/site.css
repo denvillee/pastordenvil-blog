@@ -44,7 +44,7 @@
   --clay-well:#95523A;
 
   --sans:"Archivo",system-ui,-apple-system,sans-serif;
-  --serif:"Spectral",Georgia,serif;
+  --serif:"Archivo",system-ui,-apple-system,sans-serif;  /* Spectral retired 29 Aug */
   --pad:clamp(1.1rem,4vw,3.25rem);
   --maxw:1240px;
 }

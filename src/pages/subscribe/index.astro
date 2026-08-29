@@ -1,31 +1,37 @@
 ---
-import { getEntry, render } from 'astro:content';
-import Base from '../../layouts/Base.astro';
-const entry = await getEntry('pages', 'subscribe');
-const { Content } = await render(entry!);
+/*
+  Kept deliberately simple. The old page said the same thing about what arrives
+  and how often in three different places; it says it once now, in Denvil's own
+  words, and no cadence is promised anywhere.
+*/
+import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import StickyNote from '../../components/marks/StickyNote.astro';
 import site from '../../data/site.json';
-import labels from '../../data/labels.json';
 
 const formId = import.meta.env.PUBLIC_KIT_FORM_ID;
 const action = formId
   ? 'https://app.kit.com/forms/' + formId + '/subscriptions'
   : '/subscribe/thanks/';
 ---
-<Base title={`${entry!.data.title} · ${site.name}`} description={entry!.data.dek}>
-  <section class="band shell">
-    <div class="sec-head"><h1>{entry!.data.title}</h1><span class="label" set:html={labels.subscribeLabel}></span></div>
-    <div class="prose"><Content /></div>
-    <div class="sub-inline">
-      <form class="form" method="post" action={action}>
+<Shell title={`Subscribe · ${site.name}`}
+       description="New essays, reflections and studies, straight to your inbox.">
+  <section class="band shell sub-page">
+    <div>
+      <h1 class="page-h is-display"><span class="u">Good news in your inbox<span class="dot">.</span><Mark kind="underline" color="blue" draw={true} /></span></h1>
+      <p class="page-dek">{site.signupCopy}</p>
+
+      <form class="form sub-form" method="post" action={action}>
         <label class="sr-only" for="email">Email address</label>
         <input class="fake" id="email" name="email_address" type="email" required
                placeholder="you@example.com" autocomplete="email" />
         <input type="hidden" name="fields[source]" value="/subscribe/" />
-        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true"
-               style="position:absolute;left:-9999px" />
-        <button class="btn btn-primary" type="submit">{site.signupButton}</button>
+        <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp" />
+        <button class="btn btn-blue" type="submit">{site.signupButton}</button>
       </form>
-      <small>{site.signupSmallPrint}</small>
+      <p class="sub-print">{site.signupSmallPrint}</p>
     </div>
+    {/* "Good news for ordinary people." is gone: it competed with the real
+        brand line and was never supplied. */}
   </section>
-</Base>
+</Shell>

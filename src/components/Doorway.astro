@@ -1,0 +1,33 @@
+---
+/*
+  The doorway: a section's own introduction, in Denvil's voice, at the top of
+  its landing page.
+
+  Not an article and not a panel. It is the paragraph a person reads before
+  they decide whether this section is for them, so it gets the reading measure,
+  the lead sentence at display size, and no card, border or box around it. The
+  words come from a real, editable, linkable entry rather than being typed into
+  a template, so changing them is a CMS edit and not a deploy.
+
+  Two sources feed it, because the sections are not all the same shape. Essays,
+  Moments and For Leaders are collections, so their doorway is the pageIntro
+  post that already pins to the top of the list. Bookshelf and Studies are not
+  collections, so theirs is a document in `landing`. Either way this component
+  takes a rendered body and a lead line and lays them out identically.
+*/
+interface Props { tone?: 'blue' | 'yellow' | 'coral' | 'green' }
+const { tone = 'yellow' } = Astro.props;
+import Mark from './marks/Mark.astro';
+---
+<section class="shell door">
+  <div class="door-in">
+    <div class="door-body">
+      <slot />
+    </div>
+    {/* No "read this on its own page" link. The introduction was written to be
+        the front door of the section, not a separate piece of content, and
+        maintaining two copies of the same writing was the mistake. The old
+        /why-this-exists/ routes now redirect back here. */}
+  </div>
+  <span class="door-rule" aria-hidden="true"><Mark kind="underline" color={tone} /></span>
+</section>

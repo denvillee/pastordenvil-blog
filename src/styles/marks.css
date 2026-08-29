@@ -1,0 +1,149 @@
+/* =========================================================================
+   THE HAND-DRAWN MARKS
+
+   These sit behind and around type. Two rules keep them from becoming noise:
+
+   - One to three per viewport, never ten. The references are generous with
+     whitespace and spend their personality carefully.
+   - Anything that could collide with body copy is pulled or hidden below
+     760px rather than allowed to overlap it.
+   ========================================================================= */
+
+.mk{position:absolute; pointer-events:none; line-height:0; z-index:0}
+.mk svg{display:block; width:100%; height:100%; overflow:visible}
+.mk-blue{color:var(--blue)}
+.mk-yellow{color:var(--yellow)}
+.mk-coral{color:var(--coral)}
+.mk-green{color:var(--green)}
+.mk-ink{color:var(--ink)}
+
+/* ── underlines ─────────────────────────────────────────────────────────
+   Sit under a word inside a heading. The parent gets .u to become the
+   positioning context. */
+/* isolate: the mark sits at z-index -1 so it paints behind the letterforms.
+   Without a stacking context of its own that -1 escapes the span and lands
+   behind the section's own background, which makes every underline on a
+   coloured or dark band disappear. */
+.u{position:relative; display:inline-block; isolation:isolate}
+.u > .mk-underline,
+.u > .mk-underline-double{
+  left:-.04em; right:-.06em; width:auto;
+  bottom:-.14em; height:.26em; z-index:-1;
+}
+.u > .mk-underline-double{bottom:-.22em; height:.36em}
+
+/* At display sizes an em is enormous, so a mark inset in ems reaches into the
+   line above or below. Display headings opt into tighter insets. */
+.is-display .u > .mk-underline,
+.is-display .u > .mk-underline-double{bottom:-.02em; height:.17em}
+.is-display .c > .mk-circle,
+.is-display .c > .mk-circle-loose{
+  left:-.16em; right:-.16em; top:-.1em; bottom:-.08em;
+}
+
+/* ── circles ────────────────────────────────────────────────────────────
+   Wrap a word. The circle is wider and taller than the word so it reads as
+   drawn around it rather than as a box. */
+.c{position:relative; display:inline-block; isolation:isolate}
+.c > .mk-circle,
+.c > .mk-circle-loose{
+  left:-.34em; right:-.34em; width:auto;
+  top:-.3em; bottom:-.28em; height:auto; z-index:-1;
+}
+
+/* ── free-standing marks ────────────────────────────────────────────── */
+.mk-brush{width:clamp(2.6rem,6vw,5rem); height:clamp(5rem,13vw,10rem)}
+.mk-zigzag{width:clamp(2.6rem,5vw,4.4rem); height:clamp(3.6rem,7vw,6rem)}
+.mk-arrow,.mk-arrow-curl{width:clamp(3.4rem,7vw,6.5rem); height:clamp(1.8rem,3.6vw,3.2rem)}
+.mk-star,.mk-asterisk{width:clamp(1.2rem,2.4vw,2rem); height:clamp(1.2rem,2.4vw,2rem)}
+
+/* ── the dot grid ───────────────────────────────────────────────────── */
+.dotgrid{
+  position:absolute; pointer-events:none; z-index:0;
+  --d:3px; --gap:15px;
+  width:calc(var(--cols) * var(--gap)); height:calc(var(--rows) * var(--gap));
+  background-image:radial-gradient(var(--ink) var(--d), transparent var(--d));
+  background-size:var(--gap) var(--gap);
+  opacity:.5;
+}
+
+/* ── tape ───────────────────────────────────────────────────────────── */
+.tape{
+  position:absolute; z-index:3; width:clamp(3.4rem,7vw,5.6rem); height:1.55rem;
+  transform:rotate(-1.5deg); opacity:.92;
+  box-shadow:0 1px 2px rgba(17,17,17,.10);
+}
+.tape-blue{background:var(--blue)}
+.tape-coral{background:var(--coral)}
+.tape-yellow{background:var(--yellow)}
+.tape-neutral{background:var(--tape)}
+
+/* ── the colour disc ────────────────────────────────────────────────── */
+.disc{
+  position:absolute; z-index:3; display:grid; place-items:center;
+  width:clamp(6.6rem,13vw,10.5rem); aspect-ratio:1; border-radius:50%;
+  /* Not a perfect circle: the references' discs are drawn, not struck. */
+  border-radius:49% 51% 52% 48% / 51% 48% 52% 49%;
+  transform:rotate(-3deg);
+}
+/* The disc carries handwriting at around 20px, which is small text: white on
+   the face coral is 3.19 and fails. The deeper coral keeps the white script
+   the design asks for and measures 5.49. */
+/* Ink on coral, not white. White on the cover's coral measures 2.95 and the
+   disc carries three words. On the cover itself the coral circle holds a
+   cream wheat drawing rather than type, which is why it can be that light. */
+.disc-coral{background:var(--coral); color:var(--on-coral)}
+.disc-blue{background:var(--navy); color:var(--on-navy)}
+.disc-yellow{background:var(--yellow); color:var(--on-yellow)}
+.disc-green{background:var(--green); color:var(--on-green)}
+.disc-in{display:flex; flex-direction:column; align-items:center; gap:.05em; text-align:center}
+.disc-l{
+  font-family:var(--hand); font-weight:600;
+  font-size:clamp(.95rem,1.7vw,1.3rem); line-height:1.18;
+}
+.disc-rule{display:block; width:2.6rem; height:2px; background:currentColor;
+  opacity:.75; margin-top:.35rem; border-radius:2px}
+
+/* ── the note card ──────────────────────────────────────────────────── */
+.note{
+  position:relative; border-radius:var(--r-sm);
+  padding:clamp(1rem,2.4vw,1.6rem) clamp(1.1rem,2.6vw,1.8rem);
+  transform:rotate(var(--tilt,-1.4deg));
+  box-shadow:var(--shadow);
+  font-family:var(--hand); font-weight:600;
+  font-size:clamp(1.1rem,2.2vw,1.5rem); line-height:1.4;
+}
+.note-paper{background:var(--paper); color:var(--ink); border:1px solid var(--rule)}
+.note-blue{background:var(--navy); color:var(--on-navy)}
+.note-yellow{background:var(--yellow); color:var(--on-yellow)}
+.note-green{background:var(--green); color:var(--on-green)}
+.note-coral{background:var(--coral); color:var(--on-coral)}
+.note-tape{
+  position:absolute; top:-.7rem; left:50%; translate:-50% 0;
+  width:4.2rem; height:1.4rem; background:var(--blue); opacity:.9;
+  transform:rotate(-2deg);
+}
+.note p{margin:0 0 .5em}
+.note p:last-child{margin-bottom:0}
+
+/* ── the draw-on ────────────────────────────────────────────────────────
+   One pass, under 600ms, only when the mark scrolls into view. Everything
+   here is opt-in and none of it runs under reduced motion. */
+@media (prefers-reduced-motion: no-preference){
+  .mk-draw svg path{
+    stroke-dasharray:var(--len,400); stroke-dashoffset:var(--len,400);
+  }
+  .mk-draw.is-in svg path{
+    animation:mk-draw .55s var(--ease) forwards;
+  }
+  .mk-draw.is-in svg path:nth-child(2){animation-delay:.12s}
+  @keyframes mk-draw{to{stroke-dashoffset:0}}
+}
+
+/* ── small screens ──────────────────────────────────────────────────────
+   Decoration gets out of the way rather than sitting on top of the words. */
+@media (max-width:760px){
+  .mk-brush,.mk-zigzag,.mk-arrow,.mk-arrow-curl,.dotgrid{display:none}
+  .disc{width:5.4rem; font-size:.9rem}
+  .note{transform:none}
+}

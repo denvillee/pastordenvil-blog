@@ -1,0 +1,16 @@
+---
+/*
+  A marked stand-in for a photograph that does not exist yet.
+
+  Deliberately obvious. A pretty placeholder gets shipped by accident; one that
+  says what it is waiting for does not. Every one of these is a slot where a
+  real photograph of Denvil goes, at the exact crop and mask the design calls
+  for, so dropping the picture in is a one-line change per slot.
+*/
+interface Props { label: string; ratio?: string; class?: string }
+const { label, ratio = '4 / 3', class: cls = '' } = Astro.props;
+---
+<div class:list={['ph', cls]} style={`aspect-ratio:${ratio}`} role="img" aria-label={`Placeholder: ${label}`}>
+  <span class="ph-mark" aria-hidden="true"></span>
+  <span class="ph-label">{label}</span>
+</div>

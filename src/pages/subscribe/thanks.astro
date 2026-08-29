@@ -1,8 +1,8 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Shell from '../../layouts/Shell.astro';
 import site from '../../data/site.json';
 ---
-<Base title={`You are in · ${site.name}`} description="Confirm your email." noindex={true}>
+<Shell title={`You are in · ${site.name}`} description="Confirm your email." noindex={true}>
   <section class="band shell err">
     <div>
       <h1 style="font-size:clamp(2rem,7vw,4rem)">You are in</h1>
@@ -13,4 +13,4 @@ import site from '../../data/site.json';
       <p><a class="btn btn-primary" href="/">Back home</a></p>
     </div>
   </section>
-</Base>
+</Shell>

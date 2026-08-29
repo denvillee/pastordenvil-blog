@@ -1,13 +1,17 @@
 ---
-import Base from '../layouts/Base.astro';
+import Shell from '../layouts/Shell.astro';
+import Mark from '../components/marks/Mark.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 ---
-<Base title={`Not here · ${site.name}`} description="That page does not exist." noindex={true}>
+<Shell title={`Not here · ${site.name}`} description="That page does not exist." noindex={true}>
   <section class="shell err">
-    <div>
-      <h1>{labels.notFoundHeading}</h1>
-      <p class="art-dek" style="margin-inline:auto" set:html={labels.notFoundBody}></p>
-    </div>
+    <Mark kind="brush" color="yellow" class="arch-brush" />
+    <h1 class="err-h is-display"><span class="c">{labels.notFoundHeading}<Mark kind="circle-loose" color="coral" /></span></h1>
+    <p class="page-dek" set:html={labels.notFoundBody}></p>
+    <p class="err-acts">
+      <a class="btn btn-blue" href="/">Back to the front <span class="arw" aria-hidden="true">&rarr;</span></a>
+      <a class="go" href="/essays/">Read an essay <span class="arw" aria-hidden="true">&rarr;</span></a>
+    </p>
   </section>
-</Base>
+</Shell>

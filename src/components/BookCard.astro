@@ -1,0 +1,49 @@
+---
+/*
+  A book. The cover is a real image and its alt text names the book and the
+  author, because "Image" tells a reader who cannot see it nothing at all.
+  The line underneath is Denvil's own, set in the handwritten face.
+*/
+interface Props { book: any; note?: string }
+const { book, note } = Astro.props;
+const b = book.data ?? book;
+const line = note ?? (book.body?.trim() ?? '');
+const TONE: Record<string, string> = {
+  cobalt: 'blue', ivy: 'green', brass: 'yellow', ember: 'coral', ink: 'blue',
+};
+const rule = TONE[b.spine] ?? 'blue';
+---
+<article class="bcard" id={book.id ? `book-${book.id}` : undefined}>
+  <div class="bcard-top">
+    {b.cover
+      ? <img class="bcover" src={b.cover} alt={`Cover of ${b.title} by ${b.author}.`}
+             width="200" height="300" loading="lazy" decoding="async" />
+      : <span class:list={['bcover', 'bcover-none', `spine-${b.spine}`]}
+               role="img" aria-label={`${b.title} by ${b.author}. No cover image.`}>
+          {/* A book whose jacket we do not have gets the shelf's own card, set
+              in the site's type on the site's colour, rather than an empty
+              block beside twelve real jackets. It is deliberately not a
+              reproduction: inventing a publisher's cover for a real book would
+              put a design in front of readers that the book does not have. */}
+          <span class="bcover-t">{b.title}</span>
+          <span class="bcover-a">{b.author}</span>
+        </span>}
+    <div class="bmeta">
+      <h3 class="btitle">{b.title}</h3>
+      <p class="bauthor">{b.author}{b.year ? ` · ${b.year}` : ''}</p>
+      {b.progress && <p class="bprog">{b.progress}</p>}
+    </div>
+  </div>
+  {b.note && (
+    <p class="bnote">
+      <span class="bnote-k">Why it's here</span>
+      {b.note}
+    </p>
+  )}
+  {line && (
+    <p class="btake">
+      <span class:list={['u', 'btake-u']} set:html={line}></span>
+      <span class:list={['btake-rule', `rule-${rule}`]} aria-hidden="true"></span>
+    </p>
+  )}
+</article>

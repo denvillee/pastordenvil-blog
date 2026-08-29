@@ -21,7 +21,7 @@ export async function GET(context) {
 
   return rss({
     title: site.name,
-    description: site.footerBlurb,
+    description: site.feedDescription,
     site: context.site,
     items,
     customData: '<language>en-us</language>',

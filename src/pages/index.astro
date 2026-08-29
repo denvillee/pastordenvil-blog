@@ -1,71 +1,161 @@
 ---
-/*
-  The home page, round 9.
-
-  Order and grounds: hero on pine, Latest on paper, the three rooms as colour
-  blocks, the shelf on paper, Studies on pine, Subscribe on brass. Every block
-  opens with an eyebrow and a hairline, which is what keeps one section from
-  running into the next.
-
-  A visitor should meet a piece once, properly. Everything else is a door, and
-  the doors are not repeated: the archive is in the footer on every page, so it
-  does not also need a button of its own a scroll above it.
-*/
-import Base from '../layouts/Base.astro';
-import Hero from '../components/Hero.astro';
-import LatestBlock from '../components/LatestBlock.astro';
-import Streams from '../components/Streams.astro';
-import StudiesCard from '../components/StudiesCard.astro';
-import NowReading from '../components/NowReading.astro';
-import Signup from '../components/Signup.astro';
-import DesignNotes from '../components/DesignNotes.astro';
-import { live, latest, readMinutes, openingParagraph, displayDate } from '../lib/publish';
+import Shell from '../layouts/Shell.astro';
+import Mark from '../components/marks/Mark.astro';
+import DotGrid from '../components/marks/DotGrid.astro';
+import ColorDisc from '../components/marks/ColorDisc.astro';
+import StickyNote from '../components/marks/StickyNote.astro';
+import CategoryIcon from '../components/CategoryIcon.astro';
+import ImageMask from '../components/ImageMask.astro';
+import Placeholder from '../components/Placeholder.astro';
+import Photo from '../components/Photo.astro';
+import { latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS } from '../lib/publish';
+import { isStandin } from '../lib/media';
 import site from '../data/site.json';
+import home from '../data/home.json';
 import labels from '../data/labels.json';
 
-const books = await live('reading');
 const feature = await latest();
-
-/* Reading time is only meaningful for something long enough to have one; a
-   short note with a picture should not claim "1 min". */
+const featureRoom = feature ? ROOMS[feature.room] : null;
 const featureMinutes = feature && feature.body.trim().split(/\s+/).filter(Boolean).length >= 150
-  ? readMinutes(feature.body)
-  : undefined;
+  ? readMinutes(feature.body) : undefined;
 
-const now = books.find((b: any) => b.data.shelfStatus === 'now');
-const nowBook = now ? { ...now.data, note: now.body?.trim() || '' } : undefined;
-const shelf = books
-  .filter((b: any) => b !== now && b.data.shelfStatus !== 'next')
-  .sort((a: any, b: any) => a.data.order - b.data.order)
-  .map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }));
-
+/* The five primary content sections, with Denvil's own captions. Each caption
+   is a doorway rather than a description: the words are his, verbatim from the
+   29 Aug revision packet, and they are the same sentences that open each
+   section's own page. */
+const shortcuts = [
+  { kind: 'essays',  href: '/essays/',    label: labels.essaysHeading,
+    dek: 'Longer reflections where I have room to follow ideas from Scripture, theology, ministry, and life beyond what I can say in a sermon.' },
+  { kind: 'moments', href: '/moments/',   label: labels.momentsHeading,
+    dek: 'Shorter reflections on the ordinary places where something suddenly opens up and I find myself noticing God, Scripture, or life differently.' },
+  { kind: 'reading', href: '/bookshelf/', label: labels.readingHeading,
+    dek: 'A look at the books and voices I am reading, wrestling with, and returning to, especially the ones shaping how I think, teach, and lead.' },
+  { kind: 'studies', href: '/studies/',   label: labels.studiesHeading,
+    dek: 'Guided ways into Scripture designed to help you make your own observations, ask better questions, and participate in the process of transformation.' },
+  { kind: 'leaders', href: '/leaders/',   label: labels.leadersHeading,
+    dek: 'Lessons I am learning about following Jesus while leading people, teams, ministries, and organizations entrusted to our care.' },
+] as const;
 ---
-<Base
-  title={`${site.name} · ${site.tagline}`}
-  description={site.metaDescription}
-  masthead={true}
->
-  <Hero />
+{/* Denvil supplied this title exactly, with a pipe. */}
+<Shell title={`${site.name} | ${site.tagline}`} description={site.metaDescription}>
 
-  {feature && (
-    <LatestBlock
-      room={feature.room}
-      href={feature.href}
-      title={feature.data.title}
-      opening={openingParagraph(feature.body)}
-      dateLabel={displayDate(feature.data.publishAt)}
-      scripture={feature.data.scripture}
-      readMinutes={featureMinutes}
-      linkLabel={labels.latestMore}
-    />
-  )}
+  {/* ── hero ─────────────────────────────────────────────────────────── */}
+  <section class="hero">
+    <Mark kind="brush" color="coral" class="hero-brush" />
+    <div class="shell hero-in">
+      <div class="hero-copy">
+        <h1 class="hero-h is-display">
+          <span class="u">Good news<Mark kind="underline" color="blue" draw={true} /></span>
+          <span class="hero-br">for&#32;<span class="c">ordinary<Mark kind="circle" color="yellow" draw={true} /></span></span>
+          <span class="hero-br">life<span class="dot">.</span></span>
+        </h1>
+        {/* Denvil's own introduction, 29 Aug. It comes before the conviction
+            line on purpose: the site should read as a person inviting you to
+            think with him, not as a ministry brand announcing itself. */}
+        <p class="hero-dek">
+          I'm Denvil, a&#32;<span class="u">pastor and teacher<Mark kind="underline" color="yellow" /></span> trying to help
+          people see what the good news of God's kingdom means for real life.
+        </p>
+        <p class="hero-sub">
+          Most of what I write lives in that tension, the kingdom&#32;<span class="u">already here,<Mark kind="underline" color="green" /></span>
+          and&#32;<span class="u">still coming.<Mark kind="underline" color="green" /></span>
+        </p>
+        <p class="hero-acts">
+          {feature && (
+            <a class="btn btn-blue" href={`/${featureRoom!.path}/${feature.id}/`}>
+              Read the latest essay <span class="arw" aria-hidden="true">&rarr;</span>
+            </a>
+          )}
+          <a class="go hero-go" href="/studies/">Start a study <span class="arw" aria-hidden="true">&rarr;</span></a>
+        </p>
+      </div>
 
-  <Streams />
+      <div class="hero-art">
+        <DotGrid cols={7} rows={5} class="hero-dots" />
+        <ImageMask shape="organic">
+          {/* Used at native size. The source is a selfie, so his face is about
+              530px across in a 1122px file, roughly double the lectern frames,
+              and it holds without any upscale, sharpening or clarity. The slot
+              is capped at 520x390 CSS in page.css so it is never asked to. */}
+          <Photo name="dl-hero" width={1122} height={842} eager={true}
+                 sizes="(max-width: 900px) 92vw, 46vw"
+                 alt="Denvil Lee outdoors on a neighbourhood street in the afternoon, looking straight at the camera." />
+        </ImageMask>
+        <ColorDisc lines={["theology","leadership","life"]} class="hero-disc" />
+      </div>
+    </div>
+  </section>
 
-  <NowReading book={nowBook} shelf={shelf} />
+  {/* ── latest ───────────────────────────────────────────────────────── */}
+  <section class="band shell sec-latest">
+    <div class="sec-head">
+      <h2 class="sec-h"><span class="u">Latest essay<Mark kind="underline" color="yellow" draw={true} /></span></h2>
+      <a class="go" href="/essays/">See all essays <span class="arw" aria-hidden="true">&rarr;</span></a>
+    </div>
 
-  <StudiesCard />
+    <div class="latest-deck">
+      {feature ? (
+        <article class="feat">
+          <a class="feat-art" href={`/${featureRoom!.path}/${feature.id}/`} tabindex="-1" aria-hidden="true">
+            <ImageMask shape="soft">
+              {feature.data.image && !isStandin(feature.data.image)
+                ? <img src={feature.data.image} alt="" width="960" height="640" loading="lazy" decoding="async" />
+                : <Placeholder label={`Image for ${feature.data.title}`} ratio="3 / 2" />}
+            </ImageMask>
+            <span class="chip chip-yellow">{featureRoom!.label}</span>
+          </a>
+          <div class="feat-body">
+            <h3 class="feat-h"><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h3>
+            <p class="feat-dek">{feature.data.dek}</p>
+            <p class="feat-open">{openingParagraph(feature.body, 190)}</p>
+            <p class="feat-meta">
+              <time datetime={isoDate(feature.data.publishAt)}>{displayDate(feature.data.publishAt)}</time>
+              {featureMinutes && <> &middot; {featureMinutes} min read</>}
+            </p>
+            <a class="go" href={`/${featureRoom!.path}/${feature.id}/`}>Read now <span class="arw" aria-hidden="true">&rarr;</span></a>
+          </div>
+        </article>
+      ) : (
+        <span />
+      )}
 
-  <Signup />
-  {labels.showDesignNotes && <DesignNotes />}
-</Base>
+      <div class="shortcuts">
+        {shortcuts.map((s) => (
+          <a class="short" href={s.href}>
+            <CategoryIcon kind={s.kind} />
+            <h3>{s.label}</h3>
+            <p>{s.dek}</p>
+            <span class="arw" aria-hidden="true">&rarr;</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  {/* ── the two panels ───────────────────────────────────────────────── */}
+  <section class="band shell panels">
+    <div class="panel panel-dark">
+      <Mark kind="zigzag" color="blue" class="panel-zig" />
+      <h2 class="panel-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
+      <p class="std-feat-name">Quietly at Work</p>
+      <p class="panel-dek">
+        God never speaks out loud in Ruth, and he never stops working. Seven sessions
+        learning to recognize God's presence in loss, provision, waiting, ordinary
+        faithfulness, and the parts of the story we cannot yet see.
+      </p>
+      <a class="btn btn-light" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">
+        {home.studiesCta} <span class="arw" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+
+    <div class="panel panel-light">
+      <Mark kind="zigzag" color="yellow" class="panel-zig panel-zig-r" />
+      <h2 class="panel-h"><span class="u">New here?<Mark kind="underline" color="green" /></span></h2>
+      <p class="panel-dek">A little about me, why this site exists, and where to start.</p>
+      {/* The sticky note repeated the hero's own sentence back at the reader.
+          The hero has already established it. */}
+      <a class="go" href="/about/">Start here <span class="arw" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </section>
+
+</Shell>

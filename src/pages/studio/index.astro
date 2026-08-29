@@ -1,5 +1,5 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Shell from '../../layouts/Shell.astro';
 import site from '../../data/site.json';
 
 /*
@@ -20,7 +20,7 @@ const SIZES = [
   { id: 'story', label: 'Story 9:16' },
 ];
 ---
-<Base
+<Shell
   title={`Studio · ${site.name}`}
   description="Private card workbench."
   noindex={true}
@@ -151,4 +151,4 @@ const SIZES = [
   <script>
     import '../../scripts/studio.js';
   </script>
-</Base>
+</Shell>

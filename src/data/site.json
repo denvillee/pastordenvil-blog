@@ -1,12 +1,13 @@
 {
   "name": "Denvil Lee",
-  "tagline": "Good news for the weary",
-  "metaDescription": "Writing on the kingdom of God and ordinary life, from pastor and teacher Denvil Lee.",
-  "footerBlurb": "Applied theology for ordinary life, from a kingdom framework.",
-  "footerLine": "Built on a kingdom that already arrived and has not finished arriving.",
-  "signupHeading": "Subscribe",
-  "signupCopy": "Sign up to know when new content drops.",
-  "signupButton": "Send it",
-  "signupSmallPrint": "I send a note when new content drops. Unsubscribe any time.",
+  "tagline": "Good news for ordinary life",
+  "metaDescription": "Writing, studies, leadership reflections, books, and teaching shaped by Scripture and the already-and-not-yet kingdom of God.",
+  "footerBlurb": "Kingdom theology for ordinary life.",
+  "feedDescription": "Essays, studies, leadership reflections, and books shaped by Scripture and the kingdom of God already here and still coming.",
+  "footerLine": "",
+  "signupHeading": "Good news in your inbox.",
+  "signupCopy": "If you want to know when there is something new here, leave your email. I'll send a note when there is something worth sharing.",
+  "signupButton": "Keep me posted",
+  "signupSmallPrint": "Unsubscribe any time.",
   "contactEmail": "hello@denvillee.com"
 }

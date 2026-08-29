@@ -1,0 +1,28 @@
+---
+import ImageMask from './ImageMask.astro';
+import Placeholder from './Placeholder.astro';
+import { readMinutes, displayDate, isoDate } from '../lib/publish';
+import { isStandin } from '../lib/media';
+
+interface Props { href: string; entry: any; room: string; tone?: string }
+const { href, entry, room, tone = 'yellow' } = Astro.props;
+const d = entry.data;
+const words = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
+const mins = words >= 150 ? readMinutes(entry.body) : undefined;
+---
+<article class="ecard">
+  <a class="ecard-art" href={href} tabindex="-1" aria-hidden="true">
+    <ImageMask shape="soft">
+      {d.image && !isStandin(d.image)
+        ? <img src={d.image} alt="" width="720" height="480" loading="lazy" decoding="async" />
+        : <Placeholder label={`Image for ${d.title}`} ratio="3 / 2" />}
+    </ImageMask>
+  </a>
+  <h3 class="ecard-h"><a href={href}>{d.title}</a></h3>
+  <p class="ecard-dek">{d.dek}</p>
+  <p class="ecard-meta">
+    <time datetime={isoDate(d.publishAt)}>{displayDate(d.publishAt)}</time>
+    {mins && <> &middot; {mins} min read</>}
+    <span class:list={['chip', `chip-${tone}`]}>{room}</span>
+  </p>
+</article>

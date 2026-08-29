@@ -1,43 +1,41 @@
 ---
 /*
-  Layer 3 of the Bookshelf: every book, forever. Grouped by month, newest
-  first, compact rows. This page only grows; nothing is ever removed.
+  Layer 3 of the Bookshelf: every book, forever. One list, compact rows.
+  No month headings: the shelf month is the month the entry was added to the
+  repo, which is not the month Denvil read the book, and printing it as a
+  heading turns a filing detail into a claim about his year.
 */
-import Base from '../../layouts/Base.astro';
-import Signup from '../../components/Signup.astro';
+import Shell from '../../layouts/Shell.astro';
 import { live } from '../../lib/publish';
-import { monthLabel } from '../../lib/shelf';
 import site from '../../data/site.json';
 
 const entries = await live('reading');
 const books = entries.map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }));
-const months = [...new Set(books.map((b: any) => b.shelfMonth).filter(Boolean))].sort().reverse() as string[];
-const firstYear = months.length ? months[months.length - 1].slice(0, 4) : '';
+books.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
 ---
-<Base title={`Every Book · ${site.name}`} description="Every book on the shelf, grouped by month.">
+<Shell title={`Every Book · ${site.name}`} description="Every book on the shelf.">
   <section class="band shell">
     <div class="sec-head">
-      <h1>Every Book</h1>
-      <span class="label">{books.length} {books.length === 1 ? 'book' : 'books'}{firstYear ? ` since ${firstYear}` : ''}</span>
+      <h1 class="page-h is-display">Every Book<span class="dot">.</span></h1>
+      {/* "since 2026" implied a reading date nobody supplied. The year in the
+          data is the book's publication year, not when Denvil read it. */}
+      <span class="label">{books.length} {books.length === 1 ? 'book' : 'books'}</span>
     </div>
-    {months.map((m) => (
-      <section class="shelf-month">
-        <h2 class="shelf-month-h">{monthLabel(m)}</h2>
-        <div class="shelf">
-          {books.filter((b: any) => b.shelfMonth === m).sort((a: any, b: any) => a.order - b.order).map((b: any) => (
-            <div class="shelf-row">
-              {b.cover
-                ? <img class="mini-cover" src={b.cover} alt="" width="38" loading="lazy" decoding="async" />
-                : <span class="mini plate" aria-hidden="true">{b.title.split(/\s+/).filter((w: string) => /^[A-Za-z]/.test(w)).slice(0, 3).map((w: string) => w[0].toUpperCase()).join('')}</span>}
-              <span>
-                <span class="st">{b.title}<span class="sa">{b.author}</span></span>
-                <span class="sv" set:html={b.note}></span>
-              </span>
-            </div>
-          ))}
+    <div class="shelf">
+      {books.map((b: any) => (
+        <div class="shelf-row">
+          {b.cover
+            ? <img class="mini-cover" src={b.cover} alt="" width="38" loading="lazy" decoding="async" />
+            : <span class="mini plate" aria-hidden="true">{b.title.split(/\s+/).filter((w: string) => /^[A-Za-z]/.test(w)).slice(0, 3).map((w: string) => w[0].toUpperCase()).join('')}</span>}
+          <span>
+            <span class="st">{b.title}<span class="sa">{b.author}</span></span>
+            <span class="sv" set:html={b.note}></span>
+          </span>
         </div>
-      </section>
-    ))}
+      ))}
+    </div>
   </section>
-  <Signup />
-</Base>
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
+</Shell>

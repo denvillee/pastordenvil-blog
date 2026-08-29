@@ -1,64 +1,97 @@
 ---
-import Base from '../../layouts/Base.astro';
-import Signup from '../../components/Signup.astro';
-import IntroRow from '../../components/IntroRow.astro';
-import Timeline from '../../components/Timeline.astro';
-import { live, introPost, readMinutes, displayDate, isoDate, currentSeries } from '../../lib/publish';
+import { render } from 'astro:content';
+import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import ColorDisc from '../../components/marks/ColorDisc.astro';
+import StickyNote from '../../components/marks/StickyNote.astro';
+import Placeholder from '../../components/Placeholder.astro';
+import Photo from '../../components/Photo.astro';
+import ImageMask from '../../components/ImageMask.astro';
+import FeaturedEssay from '../../components/FeaturedEssay.astro';
+import EssayCard from '../../components/EssayCard.astro';
+import Doorway from '../../components/Doorway.astro';
+import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
+
 const entries = await live('leaders');
 const intro = await introPost('leaders');
-const series = await currentSeries('leaders');
-const years = [...new Set(entries.map((e: any) => e.data.publishAt.getFullYear()))];
-/* The same by-date view the Essays page uses. It stays off until the section
-   has enough in it to have a shape worth showing: with three posts a timeline
-   is just the list again, one size smaller. */
-const timelineItems = entries.map((e: any) => ({
-  href: `/leaders/${e.id}/`, title: e.data.title, dek: e.data.dek, publishAt: e.data.publishAt,
-}));
-const byYear = years.map((y) => ({ year: y, items: entries.filter((e: any) => e.data.publishAt.getFullYear() === y) }));
-const title = labels.leadersHeading;
-const dek = labels.leadersDek;
-const subtitle = labels.leadersSubtitle;
+/* The introduction opens the page rather than sitting in a card beside it:
+   Denvil's revision packet asks each section to open with a doorway in his
+   own voice. It is still the same real, linkable, CMS-editable post. */
+const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
+const [featured, ...rest] = entries;
 ---
-<Base title={`${title} · ${site.name}`} description={dek}>
-  <section class="band shell">
-    <div class="sec-head">
-      <h1>{title}</h1>
-    </div>
-    <p class="sec-sub">{subtitle}</p>
+<Shell title={`${labels.leadersHeading} · ${site.name}`} description={labels.leadersDek} current="leaders">
+  <div class="arch">
+    <Mark kind="star" color="green" class="edge edge-l lead-edge" />
+    <Mark kind="brush" color="coral" class="arch-brush" />
 
-    {intro && (
-      <div class="list list-intro">
-        <IntroRow href={`/leaders/${intro.id}/`} title={intro.data.title}
-                  dek={intro.data.dek} body={intro.body ?? ''} label={labels.introFlag} />
-      </div>
-    )}
-
-    {byYear.map((group) => (
-      <section class="arc-year">
-        {years.length > 1 && <h2 class="arc-year-h">{group.year}<span>{group.items.length}</span></h2>}
-        <div class="list">
-          {group.items.map((e: any) => (
-            <a class="list-item" href={`/leaders/${e.id}/`}>
-              <span class="date"><time datetime={isoDate(e.data.publishAt)}>{displayDate(e.data.publishAt)}</time></span>
-              <span class="t">{e.data.title}<span class="d">{e.data.dek}</span></span>
-              {/* Only a full essay claims a reading time here, for the same
-                  reason it does on the piece itself. */}
-              {e.data.format === 'essay' && <span class="r">{readMinutes(e.body)} min</span>}
+    <section class="shell lead-hero">
+      <div>
+        <h1 class="page-h is-display"><span class="u">{labels.leadersHeading}<Mark kind="underline" color="yellow" draw={true} /></span></h1>
+        <p class="page-dek">
+          Following Jesus while&#32;<span class="u">leading people.<Mark kind="underline" color="blue" /></span>
+        </p>
+        <p class="lead-sub">{labels.leadersSubtitle}</p>
+        {featured && (
+          <p class="hero-acts">
+            <a class="btn btn-blue" href={`/leaders/${featured.id}/`}>
+              Read the latest essay <span class="arw" aria-hidden="true">&rarr;</span>
             </a>
-          ))}
-        </div>
-      </section>
-    ))}
-    {/* Same rule as /essays/: no series, no by-date block. Six standalone
-        pieces with no series would still produce two identical lists
-        (round 8, R8-4, superseding the earlier count threshold). */}
-    {series && series.parts.length > 1 && (
-      <Timeline items={timelineItems} heading={labels.timelineHeading} />
+          </p>
+        )}
+      </div>
+      <div class="lead-art">
+        <ImageMask shape="torn">
+          <Photo name="dl-leaders" width={900} height={1125}
+                 sizes="(max-width: 900px) 92vw, 46vw"
+                 alt="Denvil Lee teaching on stage in a coral polo, both hands reaching out as he makes a point." />
+        </ImageMask>
+        {/* The "Lead well. Love deep. Finish strong." disc came out 29 Aug at
+            Denvil's instruction: it read as a slogan rather than as him. The
+            McDonald's story in the doorway below establishes the page instead. */}
+      </div>
+    </section>
+
+    {IntroBody && (
+      <Doorway tone="blue">
+        <IntroBody />
+      </Doorway>
     )}
 
-    {entries.length === 0 && labels.leadersEmpty && <p class="empty-note">{labels.leadersEmpty}</p>}
-  </section>
-  <Signup />
-</Base>
+    <div class="shell arch-deck">
+      <div class="arch-main">
+        {/* No empty state: the doorway carries the page until there is a piece. */}
+        {featured && (
+          <FeaturedEssay href={`/leaders/${featured.id}/`} entry={featured}
+                         label="Featured essay" room={labels.leadersHeading} tone="blue" />
+        )}
+
+        {rest.length > 0 && (
+          <>
+            <div class="sec-head arch-sub">
+              <h2 class="sec-h">Short reflections for real leadership</h2>
+              <span class="count">{entries.length}</span>
+            </div>
+            <div class="ecards">
+              {rest.map((e: any) => (
+                <EssayCard href={`/leaders/${e.id}/`} entry={e} room={labels.leadersHeading} tone="blue" />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      <aside class="arch-side" aria-label="More on this site">
+        <StickyNote tone="blue" tilt={-1.6} tape={false} class="side-note">
+          Leadership isn't about having all the answers. It's about keeping your
+          eyes on Jesus and serving the people in front of you.
+        </StickyNote>
+      </aside>
+    </div>
+  </div>
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
+</Shell>

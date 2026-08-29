@@ -1,0 +1,19 @@
+---
+/*
+  A Moment as a note card. The tone and tilt vary by position so a run of them
+  reads as a pinboard rather than a table, but the variation is deterministic:
+  the same post gets the same card on every build, which keeps diffs quiet.
+*/
+import { displayDate, isoDate } from '../lib/publish';
+interface Props { href: string; entry: any; i?: number }
+const { href, entry, i = 0 } = Astro.props;
+const TONES = ['paper', 'green', 'paper', 'yellow', 'paper', 'coral'] as const;
+const TILTS = [-1.4, 1.1, -0.7, 1.6, -1.8, 0.9];
+const tone = TONES[i % TONES.length];
+const tilt = TILTS[i % TILTS.length];
+---
+<a class="mcard" href={href} style={`--tilt:${tilt}deg`} data-tone={tone}>
+  <time class="mcard-date" datetime={isoDate(entry.data.publishAt)}>{displayDate(entry.data.publishAt)}</time>
+  <span class="mcard-t">{entry.data.title}</span>
+  <span class="mcard-d">{entry.data.dek}</span>
+</a>

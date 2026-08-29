@@ -1,118 +1,74 @@
 ---
+/*
+  Watch. Denvil's teaching library, newest year first.
+
+  Everything plays here. The host is kept in the data for attribution and
+  maintenance, and it stays out of the interface: no outbound buttons, no
+  platform names in the copy, and a site-native line if a player ever fails.
+
+  Grouping is by year because that is the one real axis the content has. When
+  the full archive lands, series and organization are already in the schema and
+  become the better grouping.
+*/
 import { getCollection } from 'astro:content';
-import Base from '../layouts/Base.astro';
-import Signup from '../components/Signup.astro';
+import Shell from '../layouts/Shell.astro';
+import Mark from '../components/marks/Mark.astro';
+import ColorDisc from '../components/marks/ColorDisc.astro';
+import VideoCard from '../components/VideoCard.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
-/*
-  WATCH. Embeds only, grouped by year, newest year first.
-
-  Two things here are load bearing and easy to undo by accident:
-
-  - Nothing loads a player. Each entry renders a poster and swaps in the
-    iframe on click. Fifteen YouTube players on one page is several megabytes
-    of somebody else's JavaScript before a reader has asked for any of it, and
-    on a phone the page stops responding while they all boot.
-  - Every entry carries a plain link to the video as well as the embed. A
-    church can delete its own upload at any time, and when that happens this
-    page should degrade to a line of text with a link, not to a grey box.
-*/
 const all = await getCollection('watch');
-const talks = all.filter((t: any) => !t.data.draft);
-
-/* Newest year first; inside a year, `order` descending, then title. */
-const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b - a);
-const byYear = years.map((y) => ({
-  year: y,
-  items: talks
-    .filter((t: any) => t.data.year === y)
-    .sort((a: any, b: any) =>
-      b.data.order - a.data.order || a.data.title.localeCompare(b.data.title)),
-}));
-
-/* hqdefault always exists. maxresdefault is missing on anything filmed below
-   720p, which is most of an older church's archive, and a missing poster is a
-   broken image rather than a smaller one. The 4:3 letterboxing that hqdefault
-   carries is cropped off by object-fit. */
-const poster = (id: string) => `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
-const watchUrl = (id: string) => `https://www.youtube.com/watch?v=${id}`;
----
-<Base title={`${labels.watchHeading} · ${site.name}`} description={labels.watchDek}>
-  <section class="band watch">
-    <div class="shell">
-      <div class="sec-head">
-        <h1>{labels.watchHeading}</h1>
-        {talks.length > 0 && (
-          <span class="label">{talks.length} {talks.length === 1 ? 'talk' : 'talks'}</span>
-        )}
-      </div>
-
-      {talks.length === 0
-        ? <p class="watch-note">{labels.watchEmpty}</p>
-        : <p class="watch-line">{labels.watchLine}</p>}
-
-      {byYear.map((group) => (
-        <section class="wyear">
-          <h2 class="wyear-h">{group.year}</h2>
-          <ul class="wlist">
-            {group.items.map((t: any) => (
-              <li class="wtalk">
-                <div class="wframe" data-video={t.data.videoId} data-title={t.data.title}>
-                  <button type="button" class="wplay" aria-label={`Play: ${t.data.title}`}>
-                    <img
-                      src={poster(t.data.videoId)}
-                      alt=""
-                      width="480" height="360"
-                      loading="lazy" decoding="async" referrerpolicy="no-referrer"
-                    />
-                    <span class="wveil"></span>
-                    <span class="wtri" aria-hidden="true">&#9654;</span>
-                  </button>
-                </div>
-                <div class="wmeta">
-                  <h3 class="wtitle">{t.data.title}</h3>
-                  {(t.data.context || t.data.note) && (
-                    <p class="wsub">
-                      {t.data.context}
-                      {t.data.context && t.data.note ? ' · ' : ''}
-                      {t.data.note}
-                    </p>
-                  )}
-                  <a class="wgo" href={watchUrl(t.data.videoId)} rel="noopener nofollow" target="_blank">
-                    Watch on YouTube <span aria-hidden="true">&#8599;</span>
-                  </a>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
-
-      {talks.length > 0 && <p class="watch-note" set:html={labels.watchRights}></p>}
-    </div>
-  </section>
-  <Signup />
-</Base>
-
-<script>
-  /* Click to load. The iframe is built here and only here, so a reader who
-     never clicks never talks to Google at all. */
-  document.querySelectorAll('.wframe').forEach(function (frame) {
-    var btn = frame.querySelector('.wplay');
-    if (!btn) return;
-    btn.addEventListener('click', function () {
-      var id = frame.getAttribute('data-video');
-      var title = frame.getAttribute('data-title') || 'Video';
-      var f = document.createElement('iframe');
-      f.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
-      f.title = title;
-      f.loading = 'lazy';
-      f.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
-      f.setAttribute('allowfullscreen', '');
-      f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-      frame.replaceChildren(f);
-      frame.classList.add('is-live');
-    });
+/* Grouped by year, newest year first, newest talk first inside each year.
+   Nothing is pulled out as a featured item: Denvil has not asked for one, and
+   lifting the first talk above its own year broke the ordering the spec
+   asks for. Sort on the day it was given where we have it, and fall back to
+   the year plus the manual order where we do not. */
+const talks = all
+  .filter((t: any) => !t.data.draft)
+  .sort((a: any, b: any) => {
+    if (a.data.year !== b.data.year) return b.data.year - a.data.year;
+    const ad = a.data.givenOn ? a.data.givenOn.getTime() : 0;
+    const bd = b.data.givenOn ? b.data.givenOn.getTime() : 0;
+    if (ad !== bd) return bd - ad;
+    return b.data.order - a.data.order || a.data.title.localeCompare(b.data.title);
   });
-</script>
+
+const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b - a);
+---
+<Shell title={`${labels.watchHeading} · ${site.name}`} description={labels.watchDek} current="watch">
+  <div class="arch">
+    <Mark kind="brush" color="yellow" class="arch-brush" />
+
+    <section class="shell watch-hero">
+      <div>
+        <h1 class="page-h is-display">{labels.watchHeading}<span class="dot">.</span>
+          <Mark kind="underline" color="blue" class="page-uline" draw={true} />
+        </h1>
+        <p class="page-dek">
+          Sermons, teachings, and conversations&#32;<span class="u">gathered in one place.<Mark kind="underline" color="yellow" /></span>
+        </p>
+        {/* No empty state. */}
+      </div>
+      <div class="watch-feat">
+        <ColorDisc lines={["theology","leadership","life"]} class="watch-disc" />
+      </div>
+    </section>
+
+    {years.map((y) => (
+      <section class="shell watch-year">
+        <div class="sec-head"><h2 class="sec-h">{y}</h2></div>
+        <div class="vcards">
+          {talks.filter((t: any) => t.data.year === y).map((t: any) => <VideoCard entry={t} />)}
+        </div>
+      </section>
+    ))}
+
+    {/* No way out to a third party. This is Denvil's teaching library, and
+        where the file happens to live is a maintenance detail rather than
+        something to send a reader away over. */}
+  </div>
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
+</Shell>

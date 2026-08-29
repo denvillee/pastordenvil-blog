@@ -1,0 +1,185 @@
+---
+/*
+  The layout for the redesign. Deliberately separate from the old Base while
+  the conversion runs page by page, so the site keeps building at every step
+  rather than going dark until the last page lands.
+*/
+import '../styles/fonts.css';
+import '../styles/tokens.css';
+import '../styles/marks.css';
+import '../styles/app.css';
+import '../styles/page.css';
+import '../styles/cards.css';
+import '../styles/motion.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import site from '../data/site.json';
+
+interface Props {
+  title: string;
+  description: string;
+  current?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  publishedTime?: string;
+  noindex?: boolean;
+}
+const {
+  title, description, current,
+  ogImage = '/assets/img/og-default.jpg', ogType = 'website',
+  publishedTime, noindex = false,
+} = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogAbs = new URL(ogImage, Astro.site).href;
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="theme-color" content="#FCF4E5" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  {noindex && <meta name="robots" content="noindex" />}
+
+  <meta property="og:type" content={ogType} />
+  <meta property="og:site_name" content={site.name} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:image" content={ogAbs} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
+
+  <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-100_900-latin.woff2" crossorigin />
+</head>
+<body>
+  <Nav current={current} />
+  <main id="main"><slot /></main>
+  <Footer />
+
+  <script>
+    /* Click to load a video. The iframe is built here and only here, so a
+       reader who never clicks never contacts the host at all. Everything plays
+       in place: the poster and the "Watch now" action both open the player on
+       this page, and neither is a link off the site.
+
+       If a player never arrives, the card says so in the site's own words
+       rather than naming the service or explaining what went wrong there. */
+    function playFrame(frame) {
+      if (!frame || frame.dataset.played) return;
+      frame.dataset.played = '1';
+      var f = document.createElement('iframe');
+      f.src = frame.getAttribute('data-embed');
+      f.title = frame.getAttribute('data-title') || 'Video';
+      f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+      f.setAttribute('allowfullscreen', '');
+      f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      var failed = setTimeout(function () {
+        if (frame.querySelector('iframe')) return;
+        var p = document.createElement('p');
+        p.className = 'vfallback';
+        p.textContent = frame.getAttribute('data-fallback') || 'This message is temporarily unavailable.';
+        frame.replaceChildren(p);
+      }, 8000);
+      f.addEventListener('load', function () { clearTimeout(failed); });
+      f.addEventListener('error', function () {
+        clearTimeout(failed);
+        var p = document.createElement('p');
+        p.className = 'vfallback';
+        p.textContent = frame.getAttribute('data-fallback') || 'This message is temporarily unavailable.';
+        frame.replaceChildren(p);
+      });
+      frame.replaceChildren(f);
+    }
+    document.querySelectorAll('.vframe .vplay').forEach(function (btn) {
+      btn.addEventListener('click', function () { playFrame(btn.closest('.vframe')); });
+    });
+    document.querySelectorAll('[data-play]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var card = btn.closest('.vcard');
+        var frame = card && card.querySelector('.vframe');
+        playFrame(frame);
+        if (frame) frame.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      });
+    });
+
+    /* Reveal on scroll. The class is added by script rather than sitting in
+       the markup, so a reader with JavaScript off never meets a block that was
+       hidden waiting for an observer that will not run. */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        && 'IntersectionObserver' in window) {
+      var targets = document.querySelectorAll(
+        '.feat, .short, .panel, .fcard, .ecard, .mcard, .bcard, .vcard, .step, .side-card, .note'
+      );
+      targets.forEach(function (t) { t.classList.add('rv'); });
+      var pending = Array.prototype.slice.call(targets);
+      function reveal(el) {
+        el.classList.add('is-in');
+        var i = pending.indexOf(el);
+        if (i > -1) pending.splice(i, 1);
+        rio.unobserve(el);
+      }
+      var rio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          /* Reveal on intersection, and also for anything already above the
+             fold: a jump to an anchor or to the end of the page moves elements
+             from below the viewport to above it between two frames, and the
+             observer never samples them as intersecting. Without this they
+             stay at opacity 0 for good. */
+          if (e.isIntersecting || e.boundingClientRect.top < 0) reveal(e.target);
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
+      targets.forEach(function (t) { rio.observe(t); });
+
+      /* A cheap safety net for the same reason, in case the observer misses a
+         jump entirely. It runs at most once a frame and detaches itself as
+         soon as everything has been revealed. */
+      var ticking = false;
+      function sweep() {
+        ticking = false;
+        for (var i = pending.length - 1; i >= 0; i--) {
+          if (pending[i].getBoundingClientRect().top < window.innerHeight) reveal(pending[i]);
+        }
+        if (!pending.length) window.removeEventListener('scroll', onScroll);
+      }
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(sweep);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    /* The one-time draw-on for hand-drawn marks. Each path is measured so the
+       dash length matches its real length, otherwise a long underline and a
+       short one draw at visibly different speeds. Nothing runs if the reader
+       asked for reduced motion. */
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const marks = document.querySelectorAll('.mk-draw');
+      if (marks.length && 'IntersectionObserver' in window) {
+        marks.forEach(function (m) {
+          m.querySelectorAll('path').forEach(function (p) {
+            try { p.style.setProperty('--len', String(Math.ceil(p.getTotalLength()))); } catch (e) {}
+          });
+        });
+        const io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); }
+          });
+        }, { rootMargin: '0px 0px -12% 0px' });
+        marks.forEach(function (m) { io.observe(m); });
+      }
+    }
+  </script>
+</body>
+</html>

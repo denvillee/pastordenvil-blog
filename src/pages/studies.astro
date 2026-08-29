@@ -1,57 +1,101 @@
 ---
 /*
-  The handoff page. One card, one offer: what Grab Your Bibles is, the study
-  that is open, one button across. The observe instructions live on the study
-  site's How page — never here. This page NEVER lists sessions and NEVER
-  republishes study content; canonical stays on grabyourbibles.com.
+  The handoff page. The studies live on grabyourbibles.com because they are a
+  different kind of thing than an essay, and canonical stays there: this page
+  never lists sessions and never republishes study content.
+
+  The reference shows four more studies as "Coming soon". They are not here,
+  because naming a study is announcing it, and the names in the mockup were
+  the designer's placeholders rather than Denvil's plans.
 */
-import Base from '../layouts/Base.astro';
-import Signup from '../components/Signup.astro';
+import { getEntry, render } from 'astro:content';
+import Shell from '../layouts/Shell.astro';
+import Doorway from '../components/Doorway.astro';
+import Mark from '../components/marks/Mark.astro';
+import StickyNote from '../components/marks/StickyNote.astro';
+import ImageMask from '../components/ImageMask.astro';
+import Photo from '../components/Photo.astro';
 import home from '../data/home.json';
 import labels from '../data/labels.json';
 import site from '../data/site.json';
 
-const STUDY_SITE = 'https://grabyourbibles.com';
+/* The study lives at the root of grabyourbibles.com, not under /study/. The
+   old address 404s; this one is the real route. */
+const STUDY = 'https://grabyourbibles.com/quietly-at-work/';
+
+/* The section's own introduction, in Denvil's voice, opening the page. */
+const landingDoc = await getEntry('landing', 'studies');
+const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Content: null };
+
 ---
-<Base
-  title={`Studies · ${site.name}`}
-  description="Guided Bible studies you can walk through on your own or with a group."
->
-  <section class="band shell">
-    <div class="sec-head">
-      <h1>Studies</h1>
-      <span class="label">grabyourbibles.com</span>
-    </div>
-    <p class="sec-sub">{labels.studiesSubtitle}</p>
-
-    <p class="art-dek" style="margin-bottom:1.4rem">
-      The studies live on their own site, because they are a different kind of thing than
-      an essay. An essay is me working an idea out in writing. A study is you with your
-      Bible open, marking the text yourself, on your own or with a room full of people.
-    </p>
-
-    <div class="studies-card reveal">
-      <div class="studies-body">
-        <h2>{home.studiesHeading}</h2>
-        <p class="dek" set:html={home.studiesDek}></p>
-
-        <hr class="studies-rule" />
-
-        <span class="st-kicker">Now open &middot; The Book of Ruth</span>
-        <h3 class="st-title">God&rsquo;s Presence in Every Season</h3>
-        <p class="st-dek">
-          Seven sessions in the book of Ruth. God never speaks out loud in Ruth, and He
-          never stops working. Learn to be rooted deeply enough to see it.
-        </p>
-        <p class="st-meta">7 sessions &middot; on your own or with a group</p>
-        <a class="btn btn-primary" href={STUDY_SITE} target="_blank" rel="noopener">
-          {home.studiesCta} <span aria-hidden="true">&nearr;</span>
-        </a>
+<Shell title={`Studies · ${site.name}`}
+       description="Guided Bible studies you can walk through on your own or with a group."
+       current="studies">
+  <div class="arch">
+    <Mark kind="zigzag" color="yellow" class="edge edge-r std-edge" />
+    <section class="shell std-hero">
+      <div>
+        <h1 class="page-h is-display"><span class="u">Studies<Mark kind="underline" color="blue" draw={true} /></span></h1>
+        <p class="page-dek">Guided ways into Scripture, for yourself or&#32;<span class="u">with others.<Mark kind="underline" color="green" /></span></p>
       </div>
-      <div class="studies-aside" aria-hidden="true">
-        <span class="studies-mark">Grab<br />Your<br />Bibles</span>
+      <div class="std-art">
+        {/* Denvil's own stack, on his own table. A placeholder for the
+            Bible-and-coffee frame he is going to shoot, but a real photograph
+            of a real shelf rather than stock, and never descriptive text
+            standing in for a picture. */}
+        <ImageMask shape="torn">
+          <Photo name="dl-studies" width={1400} height={1050}
+                 sizes="(max-width: 900px) 92vw, 46vw"
+                 alt="A stack of Denvil's books on a table, spines out." />
+        </ImageMask>
+
       </div>
-    </div>
-  </section>
-  <Signup />
-</Base>
+    </section>
+
+    {LandingBody && (
+      <Doorway tone="coral">
+        <LandingBody />
+      </Doorway>
+    )}
+
+    <section class="shell">
+      <div class="panel panel-dark std-feat">
+        <Mark kind="zigzag" color="blue" class="panel-zig" />
+        <div class="std-feat-copy">
+          <p class="std-eyebrow">{home.studiesPill}</p>
+          <h2 class="panel-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
+          <p class="std-feat-name">Quietly at Work</p>
+          <p class="std-feat-sub">Finding God's Presence in the Book of Ruth</p>
+          <p class="panel-dek">
+            God never speaks out loud in Ruth, and he never stops working. Seven sessions
+            learning to recognize God's presence in loss, provision, waiting, ordinary
+            faithfulness, and the parts of the story we cannot yet see.
+          </p>
+          {/* No duration until the seven real per-session times are supplied.
+              They are not all the same length and the site should not say
+              they are. */}
+          <p class="std-feat-meta">7 sessions &middot; on your own or with a group</p>
+          <a class="btn btn-light" href={STUDY} rel="noopener">
+            {home.studiesCta} <span class="arw" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+        <div class="std-feat-art">
+          {/* Denvil's own cover art, sent 29 Aug. It carries the published title,
+              so the study's title, subtitle and cover all agree while the
+              retitle he proposed is on hold. */}
+          <Photo name="ruth-cover" width={1600} height={845}
+                 sizes="(max-width: 760px) 92vw, 44vw"
+                 alt="Cover art for the Ruth study: the word Ruth in deep navy over a barley field, with Grab Your Bibles circled above it." />
+          <span class="chip chip-light std-tag">Ruth</span>
+        </div>
+      </div>
+    </section>
+
+    {/* The four-step "How studies work" block came out on 29 Aug. Grab Your
+        Bibles has its own methodology page that does the job properly, and
+        duplicating it here made denvillee.com compete with the study site. */}
+  </div>
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
+</Shell>

@@ -135,6 +135,7 @@ collections:
       - { label: Shelf status, name: shelfStatus, widget: select, options: ['now', 'shelf', 'next', 'finished'], default: 'shelf', hint: 'Only one book should be “now”.' }
       - { label: 'Shelf month', name: shelfMonth, widget: string, required: false, hint: 'Which month this book sits on, as YYYY-MM (for example 2026-09). The Bookshelf page shows the newest month; Every Book groups by it.' }
       - { label: Progress, name: progress, widget: string, required: false, hint: 'e.g. Chapter 6 of 12' }
+      - { label: "Why it's here", name: note, widget: text, required: false, hint: 'Your own line about the book: why it is on the shelf, or what you are taking from it. Leave it blank and the card just shows what the book argues. Nothing here is ever written for you.' }
       - { label: Spine colour, name: spine, widget: select, options: ['cobalt', 'ivy', 'brass', 'ember', 'ink'], default: 'ivy', hint: 'Only shows if there is no cover image.' }
       - { label: Cover image, name: cover, widget: image, required: false, hint: 'The book cover. If there is one it replaces the coloured spine.' }
       - { label: Order on the shelf, name: order, widget: number, value_type: int, default: 1 }
@@ -145,7 +146,7 @@ collections:
 
   - name: watch
     label: Watch
-    description: 'Talks and sermons embedded from YouTube. Publishes at /watch/, grouped by year. Nothing is re-hosted here, so a video that the church takes down disappears from the page.'
+    description: 'Your teaching library. Publishes at /watch/, grouped by year, and everything plays on your own site. Paste the video id, not the whole address.'
     label_singular: Talk
     folder: /src/content/watch
     create: true
@@ -205,7 +206,7 @@ collections:
   # ------------------------------------------------------- section landing copy
   - name: landing
     label: Section landing copy
-    description: 'The "Why this exists" copy on Bookshelf. The opening paragraph always shows; the rest opens behind the control. Essays, Moments and For Leaders no longer use this: their introduction is a real post called "Why this exists", pinned to the top of their own tab, so edit it there.'
+    description: 'The introduction that opens Bookshelf and Studies. It is the first thing a visitor reads on that page, so write it as an invitation rather than a description. Essays, Moments and For Leaders do not use this: their introduction is a real post called "Why this exists" in their own tab, so edit it there.'
     label_singular: Landing page
     folder: /src/content/landing
     create: false
@@ -215,8 +216,7 @@ collections:
     fields:
       - { label: Section, name: room, widget: string, hint: 'Which section this belongs to. Do not change this; the page finds its copy by this word.' }
       - { label: Title, name: title, widget: string, hint: 'For your own reference in this list. It is not printed on the page.' }
-      - { label: Opening paragraph, name: lead, widget: text, hint: 'The one paragraph that always shows, before the reader opens the rest.' }
-      - { label: The rest, name: body, widget: markdown, hint: 'Opens behind "Why this exists". Put **two asterisks** around the one line you want set apart, and start a line with > to indent it as a quotation.' }
+      - { label: The introduction, name: body, widget: markdown, hint: 'The whole introduction. The first paragraph is set larger automatically, so lead with the sentence you want read first. Put **two asterisks** around a line to set it apart, and start a line with > to pull it out in the handwritten face.' }
 
   # ------------------------------------------------------------------ site copy
   - name: settings

@@ -1,6 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
-import Signup from '../components/Signup.astro';
+import Shell from '../layouts/Shell.astro';
 import { live, displayDate, isoDate, ROOMS, type RoomKey } from '../lib/publish';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
@@ -31,15 +30,15 @@ const counts = (Object.keys(ROOMS) as RoomKey[]).map((k) => ({
   n: rows.filter((r) => r.room === k).length,
 }));
 ---
-<Base title={`${labels.archiveHeading} · ${site.name}`} description={labels.archiveDek}>
-  <section class="band shell">
+<Shell title={`${labels.archiveHeading} · ${site.name}`} description={labels.archiveDek}>
+  <section class="band shell arch-page">
     <div class="sec-head">
-      <h1>{labels.archiveHeading}</h1>
+      <h1 class="page-h is-display">{labels.archiveHeading}<span class="dot">.</span></h1>
       {/* "1 piece · 1 year" is not a statistic worth showing. The whole
           counter stays off until there is a body of work to count
           (round 8, R8-5). */}
       {rows.length >= 5 && (
-        <span class="label"><span class="lib-count">{rows.length}</span> pieces &middot; {years.length} year{years.length === 1 ? '' : 's'}</span>
+        <span class="count"><span class="lib-count">{rows.length}</span> pieces &middot; {years.length} year{years.length === 1 ? '' : 's'}</span>
       )}
     </div>
 
@@ -75,5 +74,7 @@ const counts = (Object.keys(ROOMS) as RoomKey[]).map((k) => ({
       <p class="art-dek">{labels.archiveEmpty}</p>
     )}
   </section>
-  <Signup />
-</Base>
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
+</Shell>

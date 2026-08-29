@@ -1,7 +1,9 @@
 ---
-import Base from './Base.astro';
-import Signup from '../components/Signup.astro';
-import { displayDate, isoDate, ROOMS, type RoomKey } from '../lib/publish';
+import Shell from './Shell.astro';
+import Mark from '../components/marks/Mark.astro';
+import StickyNote from '../components/marks/StickyNote.astro';
+import RelatedContent from '../components/RelatedContent.astro';
+import { displayDate, isoDate, ROOMS, linkCitedBooks, type RoomKey } from '../lib/publish';
 import { getPassages } from '../lib/bible';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
@@ -15,13 +17,29 @@ interface Props {
   seriesPlace?: { name: string; order: number; total: number } | null;
   readMinutes?: number; notes?: string;
   ogImage?: string; siblings?: Sibling[];
+  /* One word in the title may be circled by hand, the way the references mark
+     a heading. Optional and per piece, because which word carries the idea is
+     an editorial judgement and not something a template can guess. */
+  titleMark?: string;
+  slug?: string;
 }
 const {
   room, title, dek, publishAt, scripture, series,
   week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
+  titleMark, slug,
 } = Astro.props;
 
+/* Split the title around the marked word so the circle wraps just that word. */
+const markIdx = titleMark ? title.toLowerCase().indexOf(titleMark.toLowerCase()) : -1;
+const titleParts = markIdx >= 0
+  ? [title.slice(0, markIdx), title.slice(markIdx, markIdx + titleMark!.length), title.slice(markIdx + titleMark!.length)]
+  : null;
+
 const meta = ROOMS[room];
+/* Any book named in "Where this comes from" that is already on the Bookshelf
+   becomes a link to its entry there, which is what makes Essays and Bookshelf
+   feel like one site rather than two lists. */
+const notesLinked = await linkCitedBooks(notes ?? '');
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const enc = encodeURIComponent;
 const jsonLd = {
@@ -36,25 +54,32 @@ const jsonLd = {
 };
 const passages = await getPassages(scripture);
 ---
-<Base
+<Shell
   title={`${title} · ${site.name}`}
   description={dek}
   ogType="article"
   ogImage={ogImage}
   publishedTime={isoDate(publishAt)}
-  progress={true}
+  current={room}
 >
-  <script type="application/ld+json" slot="head" set:html={JSON.stringify(jsonLd)}></script>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)}></script>
 
   <article>
-    <header class="shell art-head">
+    <header class="read art-head">
       <div class="art-kicker">
         <span class={`type ${meta.cls}`}>{meta.label}</span>
         {week && <span class="wk">Season one &middot; week {week}{movement ? ` · ${movement}` : ''}</span>}
       </div>
-      <h1 class="art-title">{title}</h1>
+      <h1 class="art-title is-display">{titleParts
+        ? <>{titleParts[0]}<span class="c">{titleParts[1]}<Mark kind="circle" color="yellow" draw={true} /></span>{titleParts[2]}</>
+        : title}<span class="dot">.</span></h1>
       <p class="art-dek">{dek}</p>
       <div class="art-meta">
+        {/* The same face at small size on every piece, so a reader who has read
+            one recognises the next before reading the name. */}
+        <img class="art-face" src="/assets/img/dl-face.png" alt="Denvil Lee"
+             width="64" height="64" loading="lazy" decoding="async" />
+        <span class="art-by">Denvil Lee</span>
         <span><time datetime={isoDate(publishAt)}>{displayDate(publishAt)}</time></span>
         {scripture && <span>{scripture}</span>}
         {readMinutes ? <span>{readMinutes} min read</span> : null}
@@ -88,7 +113,7 @@ const passages = await getPassages(scripture);
       )}
     </header>
 
-    <div class="shell">
+    <div class="read">
       {idea && (
         <div class="idea-rail">
           <span class="k" set:html={labels.articleIdeaLabel}></span>
@@ -103,17 +128,30 @@ const passages = await getPassages(scripture);
       {notes && (
         <div class="notes-block">
           <h2>{labels.articleNotesHeading}</h2>
-          <div set:html={notes}></div>
+          <div set:html={notesLinked}></div>
         </div>
       )}
 
-      <div class="share">
+      <div class="art-end">
+        <div class="share">
         <span class="lbl">{labels.articleShareLabel}</span>
         <a href={`https://www.facebook.com/sharer/sharer.php?u=${enc(canonical)}`} rel="noopener nofollow">Facebook</a>
         <a href={`https://x.com/intent/tweet?url=${enc(canonical)}&text=${enc(title)}`} rel="noopener nofollow">X</a>
         <a href={`mailto:?subject=${enc(title)}&body=${enc(canonical)}`}>Email</a>
         <a href={canonical} data-copy-link>Copy link</a>
+        </div>
       </div>
+
+      {/* An editorial invitation rather than a generic "thanks for reading".
+          The two links are the ones a reader actually wants at the end of an
+          essay: the books behind it, and the rest of the writing. */}
+      <nav class="art-next" aria-label="Keep exploring">
+        <h2 class="art-next-h">Keep exploring</h2>
+        <ul>
+          <li><a class="go" href="/bookshelf/">See the books behind this essay <span class="arw" aria-hidden="true">&rarr;</span></a></li>
+          <li><a class="go" href={`/${ROOMS[room].path}/`}>Back to {ROOMS[room].label} <span class="arw" aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+      </nav>
 
       {siblings.length > 0 && (
         <div class="week-rest">
@@ -129,8 +167,11 @@ const passages = await getPassages(scripture);
     </div>
   </article>
 
-  <Signup />
-</Base>
+  <RelatedContent room={room} slug={slug} />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
+</Shell>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-verse]').forEach((wrap) => {

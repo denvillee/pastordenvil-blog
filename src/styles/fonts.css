@@ -1,6 +1,7 @@
 /* Self-hosted. No runtime font CDN request — see BACKEND.md §6 / the backend contract.
    Archivo is variable on both wght (100-900) and wdth (62-125); the width axis is
-   what powers the kinetic hero. Spectral carries every paragraph of long-form reading. */
+   what powers the kinetic hero. Spectral was retired on 29 Aug: body copy is Archivo on both sites, so the
+   two read as one voice and eight font files stop being downloaded. */
 
 @font-face {
   font-family: "Archivo";
@@ -43,51 +44,19 @@
   unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* The handwritten accent, for notes and annotations only: never body copy,
+   navigation, headings, buttons or long quotations. Caveat, SIL Open Font
+   License, self-hosted like everything else because the site runs
+   font-src 'self'. Two weights is the whole payload, about 100KB. */
 @font-face {
-  font-family: "Spectral";
-  src: url("/fonts/spectral-300-latin.woff2") format("woff2");
-  font-weight: 300; font-style: normal; font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "Spectral";
-  src: url("/fonts/spectral-300-latinext.woff2") format("woff2");
-  font-weight: 300; font-style: normal; font-display: swap;
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-  font-family: "Spectral";
-  src: url("/fonts/spectral-400-latin.woff2") format("woff2");
+  font-family: "Caveat";
+  src: url("/fonts/caveat-400-latin.woff2") format("woff2");
   font-weight: 400; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "Spectral";
-  src: url("/fonts/spectral-400-latinext.woff2") format("woff2");
-  font-weight: 400; font-style: normal; font-display: swap;
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-  font-family: "Spectral";
-  src: url("/fonts/spectral-600-latin.woff2") format("woff2");
+  font-family: "Caveat";
+  src: url("/fonts/caveat-600-latin.woff2") format("woff2");
   font-weight: 600; font-style: normal; font-display: swap;
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "Spectral";
-  src: url("/fonts/spectral-600-latinext.woff2") format("woff2");
-  font-weight: 600; font-style: normal; font-display: swap;
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
-}
-@font-face {
-  font-family: "Spectral";
-  src: url("/fonts/spectral-i-400-latin.woff2") format("woff2");
-  font-weight: 400; font-style: italic; font-display: swap;
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
-}
-@font-face {
-  font-family: "Spectral";
-  src: url("/fonts/spectral-i-400-latinext.woff2") format("woff2");
-  font-weight: 400; font-style: italic; font-display: swap;
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }

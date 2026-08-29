@@ -1,0 +1,172 @@
+/*
+  DESIGN TOKENS  ·  redesign/playful-editorial
+
+  Everything visual resolves through this file. No page and no component
+  hardcodes a colour, a radius or a step of the type scale, so the whole site
+  can be retuned from one place.
+
+  Two rules the palette depends on:
+
+  - Warm cream is the ground, not white. Pure white next to these colours goes
+    cold and clinical, which is the opposite of the brief.
+  - Roughly 70 percent of any screen stays neutral. Colour arrives in blocks,
+    strokes, tape, discs, chips and buttons. Playful does not mean full.
+*/
+
+:root {
+  /* ── ground and ink ─────────────────────────────────────────────────
+     Sampled from Denvil's own Ruth cover art, 29 Aug, rather than chosen. The
+     cover is the one piece of finished brand artwork that exists, so the sites
+     take their colour from it instead of the other way round.
+
+     It also answers the puttyputman.com resemblance. The overlap was never the
+     layout: it was that coral was THE accent on both sites, over a warm
+     off-white. On the cover, coral is a small punctuation mark and NAVY does
+     the heavy lifting, over a cream that is warmer than his. Making navy
+     primary and coral occasional is the whole differentiation, and it costs
+     nothing, because it is already how Denvil's own artwork works. */
+  --cream:#FCF4E5;          /* the page, straight off the cover */
+  --card:#F4E9D2;           /* muted card and sunken panels */
+  --white:#FFFFFF;
+  --ink:#141210;            /* primary text, 17.10 on cream / 15.51 on card */
+  --dark:#062744;           /* dark feature panels: the cover's navy, deepened */
+
+  /* ── the four ─────────────────────────────────────────────────────────
+     Navy, gold, coral and sage. Navy is dark enough to be the link colour,
+     small-text colour and button fill with no second token: 11.19 on cream,
+     white on it 12.23. The other three stay decorative and take the -ink pair
+     below when they have to carry small type. */
+  --navy:#0A3662;           /* 11.19 cream / 10.15 card · white on it 12.23 */
+  --gold:#EDAA26;           /* decorative · ink on it 9.24 */
+  --coral:#F36D4F;          /* decorative · ink on it 6.33 */
+  --sage:#808E69;           /* 3.21 on cream, so it holds as a drawn mark */
+
+  /* The reading pairs, for small type on either ground. Navy needs none. */
+  --gold-ink:#9B5800;       /* 5.03 / 4.55  — text only, never a fill */
+  --coral-ink:#BF391B;      /* 5.01 / 4.54 */
+  --sage-ink:#606E49;       /* 5.03 / 4.56 */
+
+  /* Filled surfaces. Coral and gold take dark ink on top, exactly as the disc
+     on the cover does; only navy takes white. */
+  --on-navy:#FFFFFF;        /* 12.23 */
+  --on-gold:#141210;        /* 9.24 */
+  --on-coral:#141210;       /* 6.33 */
+  --on-sage:#141210;        /* 5.33 */
+  --on-dark:#FCF4E5;        /* 13.91 on --dark */
+
+  /* The same four lifted for a navy panel, measured against --dark. */
+  --gold-lift:#F0B441;      /* 8.19 */
+  --coral-lift:#F58A6E;     /* 6.33 */
+  --sage-lift:#A7B98C;      /* 7.21 */
+  --dek-on-dark:#C2CFDC;    /* 9.59 */
+
+  /* ── tints and washes ────────────────────────────────────────────────
+     The four at two weaker strengths: --tint-* backs the sketched icon discs
+     and the sidebar, --wash-* backs the pinboard cards. Hand-levelled to the
+     same lightness rather than the same mix percentage, because navy is far
+     darker than the other three and a flat percentage makes it a bruise. */
+  --tint-navy:#DDE4EB;      /* navy on it 9.54 · ink 14.57 */
+  --tint-gold:#F9E6C1;      /* gold-ink on it 4.52 · ink 15.23 */
+  --tint-coral:#FBE5D4;     /* coral-ink on it 4.52 · ink 15.36 */
+  --tint-sage:#E7EBDA;      /* sage-ink on it 4.52 · ink 15.39 */
+
+  --wash-navy:#C3CEDA;      /* ink 11.71 */
+  --wash-gold:#F4CE84;      /* ink 12.47 */
+  --wash-coral:#F9C4B1;     /* ink 12.07 */
+  --wash-sage:#C9D0B4;      /* ink 11.72 */
+
+  --paper:#FEFAF2;          /* lifted card and sticky note · ink 17.86 */
+  --tape:#DBD3C2;
+
+  /* ── legacy slot names ────────────────────────────────────────────────
+     The components and the CMS were written against hue names. They alias
+     rather than being renamed in 33 files, so a palette change stays a
+     one-file change. New work should use the names above. */
+  --blue:var(--navy);
+  --yellow:var(--gold);
+  --green:var(--sage);
+  --blue-ink:var(--navy);
+  --green-ink:var(--sage-ink);
+  --yellow-ink:var(--gold-ink);
+  --coral-fill:var(--coral);
+  /* The full stop that ends a display heading is punctuation, not decoration,
+     so it has to clear 3:1 as a large graphic. The cover's coral measures 2.70
+     on cream, just under; this is the same coral walked down until it clears
+     on both grounds, and it still reads as the cover's colour. */
+  --coral-dot:#E45530;      /* 3.41 cream / 3.09 card */
+  --on-blue:var(--on-navy);
+  --on-yellow:var(--on-gold);
+  --on-green:var(--on-sage);
+  --tint-petrol:var(--tint-navy);
+  --tint-ochre:var(--tint-gold);
+  --tint-terra:var(--tint-coral);
+  --tint-olive:var(--tint-sage);
+  --wash-ochre:var(--wash-gold);
+  --wash-terra:var(--wash-coral);
+  --wash-olive:var(--wash-sage);
+  --terra:var(--coral);
+  --petrol:var(--navy);
+  --ochre:var(--gold);
+  --olive:var(--sage);
+  --terra-ink:var(--coral-ink);
+  --ochre-ink:var(--gold-ink);
+  --olive-ink:var(--sage-ink);
+  --ochre-lift:var(--gold-lift);
+  --terra-lift:var(--coral-lift);
+  --petrol-lift:#8FB4D6;
+  --on-petrol:var(--on-navy);
+  --on-ochre:var(--on-gold);
+  --on-terra:var(--on-coral);
+  --on-olive:var(--on-sage);
+
+  /* ── text roles ───────────────────────────────────────────────────── */
+  --fg:var(--ink);
+  --muted:#645B4E;          /* 6.10 / 5.54 */
+  --faint:#706859;          /* 5.04 / 4.57 — clears AA on both grounds */
+  --rule:#DED7C9;
+  --rule-strong:#C4BEB2;
+
+  /* ── type ─────────────────────────────────────────────────────────────
+     One sans does display and body. Archivo is variable on weight and width,
+     which is what lets the headings get big and confident without a second
+     family. Caveat is the annotation voice and nothing else. */
+  --sans:"Archivo", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --hand:"Caveat", "Bradley Hand", cursive;
+
+  --step--1:clamp(.78rem, .76rem + .1vw, .84rem);
+  --step-0:clamp(1rem, .97rem + .16vw, 1.08rem);
+  --step-1:clamp(1.15rem, 1.09rem + .3vw, 1.35rem);
+  --step-2:clamp(1.4rem, 1.28rem + .6vw, 1.8rem);
+  --step-3:clamp(1.75rem, 1.5rem + 1.2vw, 2.6rem);
+  --step-4:clamp(2.2rem, 1.7rem + 2.4vw, 3.8rem);
+  --step-5:clamp(2.8rem, 1.8rem + 4.6vw, 6rem);
+
+  --measure:66ch;           /* 55 to 70 characters, per the brief */
+
+  /* ── space and shape ──────────────────────────────────────────────── */
+  --pad:clamp(1.1rem, 4vw, 3rem);
+  --maxw:1200px;
+  --gap:clamp(1rem, 2.4vw, 2rem);
+  --band:clamp(3rem, 7vw, 6rem);
+
+  /* Containers are softly rounded, never pill-round, except buttons. */
+  --r-sm:6px;
+  --r:14px;
+  --r-lg:22px;
+  --r-pill:999px;
+
+  --shadow:0 1px 2px rgba(20,17,13,.04), 0 8px 24px rgba(20,17,13,.06);
+  --shadow-lift:0 2px 4px rgba(20,17,13,.05), 0 14px 34px rgba(20,17,13,.10);
+
+  --ease:cubic-bezier(.2,.7,.2,1);
+  --fast:.18s;
+  --slow:.45s;
+}
+
+/*
+  The redesign is a light, warm system by definition: cream paper with ink on
+  it. A dark inversion of a page built on paper texture and hand-drawn marker
+  is a different design, not a variant of this one, so the site declares light
+  and stays there rather than shipping a half-considered dark mode.
+*/
+:root { color-scheme: light; }

@@ -20,6 +20,45 @@
 # Frameworks was retired on 28 Aug. The drawings did not go with it: every essay,
 # leaders piece and moment can name a diagram and render it inline, which is where
 # they always read better than in a room of their own.
+# The three section introductions used to have their own article URLs. They are
+# now rendered in full at the top of their section page, which is the canonical
+# and only copy, so the old addresses point at the section.
+[[redirects]]
+  from = "/essays/why-this-exists"
+  to = "/essays/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/essays/why-this-exists/*"
+  to = "/essays/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/leaders/why-this-exists"
+  to = "/leaders/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/leaders/why-this-exists/*"
+  to = "/leaders/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/moments/why-this-exists"
+  to = "/moments/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/moments/why-this-exists/*"
+  to = "/moments/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/frameworks"
   to = "/essays/"
@@ -63,7 +102,7 @@
     Referrer-Policy = "strict-origin-when-cross-origin"
     Permissions-Policy = "camera=(), microphone=(), geolocation=(), interest-cohort=()"
     Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://i.ytimg.com; script-src 'self'; frame-src https://www.youtube-nocookie.com; form-action 'self' https://app.kit.com; base-uri 'none'; object-src 'none'"
+    Content-Security-Policy = "default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: https://i.ytimg.com; script-src 'self'; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; form-action 'self' https://app.kit.com; base-uri 'none'; object-src 'none'"
 
 [[headers]]
   for = "/_astro/*"

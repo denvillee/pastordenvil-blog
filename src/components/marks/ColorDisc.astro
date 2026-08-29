@@ -1,0 +1,23 @@
+---
+/*
+  The solid disc with a few handwritten words. In the references it holds
+  "theology / leadership / life" and sits over the corner of a photograph.
+
+  The words are real text rather than part of an image, so they scale, they
+  are selectable, and a screen reader can reach them when they say something
+  the page does not otherwise say.
+*/
+interface Props {
+  lines: string[];
+  color?: 'coral' | 'blue' | 'yellow' | 'green';
+  rule?: boolean;
+  class?: string;
+}
+const { lines, color = 'coral', rule = true, class: cls = '' } = Astro.props;
+---
+<span class:list={['disc', `disc-${color}`, cls]}>
+  <span class="disc-in">
+    {lines.map((l) => <span class="disc-l">{l}</span>)}
+    {rule && <span class="disc-rule" aria-hidden="true"></span>}
+  </span>
+</span>

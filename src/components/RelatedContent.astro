@@ -1,0 +1,27 @@
+---
+/*
+  Related pieces from the same room, newest first, excluding the one being
+  read. Three at most, and the whole block disappears rather than showing one
+  lonely card, because "Related essays" over a single item reads as a gap.
+*/
+import EssayCard from './EssayCard.astro';
+import { live, ROOMS, type RoomKey } from '../lib/publish';
+
+interface Props { room: RoomKey; slug?: string }
+const { room, slug } = Astro.props;
+const meta = ROOMS[room];
+const items = (await live(room)).filter((e: any) => e.id !== slug).slice(0, 3);
+---
+{items.length > 1 && (
+  <section class="band shell related">
+    <div class="sec-head">
+      <h2 class="sec-h">More from {meta.label}</h2>
+      <a class="go" href={`/${meta.path}/`}>See all <span class="arw" aria-hidden="true">&rarr;</span></a>
+    </div>
+    <div class="ecards">
+      {items.map((e: any) => (
+        <EssayCard href={`/${meta.path}/${e.id}/`} entry={e} room={meta.label} />
+      ))}
+    </div>
+  </section>
+)}

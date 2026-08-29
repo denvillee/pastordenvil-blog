@@ -1,0 +1,31 @@
+---
+import ImageMask from './ImageMask.astro';
+import Placeholder from './Placeholder.astro';
+import { openingParagraph, readMinutes, displayDate, isoDate } from '../lib/publish';
+import { isStandin } from '../lib/media';
+
+interface Props { href: string; entry: any; label?: string; room: string; tone?: string }
+const { href, entry, label = 'Featured essay', room, tone = 'yellow' } = Astro.props;
+const d = entry.data;
+const words = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
+const mins = words >= 150 ? readMinutes(entry.body) : undefined;
+---
+<article class="fcard">
+  <a class="fcard-art" href={href} tabindex="-1" aria-hidden="true">
+    <span class="chip chip-yellow fcard-chip">{label}</span>
+    {d.image && !isStandin(d.image)
+      ? <img src={d.image} alt="" width="900" height="700" loading="lazy" decoding="async" />
+      : <Placeholder label={`Image for ${d.title}`} ratio="9 / 7" />}
+  </a>
+  <div class="fcard-body">
+    <h2 class="fcard-h"><a href={href}>{d.title}</a></h2>
+    <p class="fcard-dek">{d.dek}</p>
+    <p class="fcard-open">{openingParagraph(entry.body, 150)}</p>
+    <a class="go" href={href}>Read essay <span class="arw" aria-hidden="true">&rarr;</span></a>
+    <p class="fcard-meta">
+      <time datetime={isoDate(d.publishAt)}>{displayDate(d.publishAt)}</time>
+      {mins && <> &middot; {mins} min read</>}
+      <span class:list={['chip', `chip-${tone}`]}>{room}</span>
+    </p>
+  </div>
+</article>
