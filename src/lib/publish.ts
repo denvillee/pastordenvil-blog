@@ -44,7 +44,12 @@ export async function introPost(key: CollectionKey) {
 export async function allLive(key: CollectionKey) {
   const all = await getCollection(key as any);
   return all
-    .filter((e: any) => isLive(e.data))
+    /* The section introduction no longer gets its own article route. It is the
+       front door of the section page, rendered there in full, and building a
+       second URL for the same writing meant maintaining two copies of it.
+       netlify.toml 301s the old /why-this-exists/ addresses back to the
+       section, so nothing that was linked or shared breaks. */
+    .filter((e: any) => isLive(e.data) && !e.data.pageIntro)
     .sort((a: any, b: any) => b.data.publishAt.getTime() - a.data.publishAt.getTime());
 }
 
@@ -203,4 +208,57 @@ export async function weekIdea(week: number | undefined) {
   if (!week) return null;
   const weeks = await getCollection('weeks');
   return weeks.find((w: any) => w.data.number === week)?.data ?? null;
+}
+
+
+/*
+  Link the books an essay cites to their entry on the Bookshelf.
+
+  Matching is on the exact title only. A fuzzy match would eventually point a
+  reader at the wrong book, which is worse than not linking at all, so a title
+  has to appear exactly as the Bookshelf has it before it becomes a link. The
+  match is also skipped inside an existing anchor, so a source that already
+  links somewhere keeps its own destination.
+*/
+export async function linkCitedBooks(html: string) {
+  if (!html) return html;
+  const books = await getCollection('reading' as any);
+  const live = books.filter((b: any) => isLive(b.data));
+  /* Longest title first, so a title that contains a shorter one wins. */
+  const byLength = [...live].sort(
+    (a: any, b: any) => (b as any).data.title.length - (a as any).data.title.length
+  );
+  const used = new Set<string>();
+  /* Split on tags and only ever touch the text between them, so a title can be
+     matched inside <em>...</em> without the markup interfering and without a
+     match ever landing inside an attribute. */
+  const parts = html.split(/(<[^>]+>)/);
+  let insideLink = false;
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i];
+    if (part.startsWith('<')) {
+      if (/^<a\b/i.test(part)) insideLink = true;
+      else if (/^<\/a>/i.test(part)) insideLink = false;
+      continue;
+    }
+    if (insideLink || !part.trim()) continue;
+    for (const b of byLength) {
+      const id = (b as any).id as string;
+      if (used.has(id)) continue;
+      const title = (b as any).data.title as string;
+      if (!title || title.length < 6) continue;
+      const at = parts[i].indexOf(title);
+      if (at === -1) continue;
+      const before = parts[i][at - 1];
+      const after = parts[i][at + title.length];
+      /* A real word boundary in the text itself. */
+      if (before && /[A-Za-z0-9]/.test(before)) continue;
+      if (after && /[A-Za-z0-9]/.test(after)) continue;
+      used.add(id);
+      parts[i] = parts[i].slice(0, at)
+        + `<a class="cite-book" href="/bookshelf/#book-${id}">${title}</a>`
+        + parts[i].slice(at + title.length);
+    }
+  }
+  return parts.join('');
 }
