@@ -18,6 +18,11 @@ const { Content } = await render(entry!);
     </div>
     <div class="speak">
       <div class="speak-copy prose">
+        {/* The one full-length frame on the site, cut out of the lit wall it
+            was shot against so it sits on the page rather than in a room. */}
+        <img class="speak-art" src="/assets/img/dl-speaking.png"
+             width="242" height="760" loading="lazy" decoding="async"
+             alt="Denvil Lee standing, hands in his pockets, looking at the camera." />
         <Content />
       </div>
       <form class="speak-form" name="speaking" method="POST" data-netlify="true" netlify-honeypot="company" action="/speaking/thanks/">

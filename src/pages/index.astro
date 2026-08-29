@@ -73,9 +73,13 @@ const shortcuts = [
       <div class="hero-art">
         <DotGrid cols={7} rows={5} class="hero-dots" />
         <ImageMask shape="organic">
-          <Photo name="dl-hero" width={1400} height={1050} eager={true}
+          {/* Used at native size. The source is a selfie, so his face is about
+              530px across in a 1122px file, roughly double the lectern frames,
+              and it holds without any upscale, sharpening or clarity. The slot
+              is capped at 520x390 CSS in page.css so it is never asked to. */}
+          <Photo name="dl-hero" width={1122} height={842} eager={true}
                  sizes="(max-width: 900px) 92vw, 46vw"
-                 alt="Denvil Lee wearing a gold toy space helmet, holding a travel mug, cut out and taped to the page." />
+                 alt="Denvil Lee outdoors on a neighbourhood street in the afternoon, looking straight at the camera." />
         </ImageMask>
         <ColorDisc lines={["theology","leadership","life"]} class="hero-disc" />
       </div>
@@ -117,8 +121,17 @@ const shortcuts = [
 
       <div class="shortcuts">
         {shortcuts.map((s) => (
-          <a class="short" href={s.href}>
-            <CategoryIcon kind={s.kind} />
+          <a class:list={['short', s.kind === 'moments' && 'short-photo']} href={s.href}>
+            {/* Moments carries the helmet rather than an icon. It is the only
+                humorous picture on the site, and a joke is spent the first time
+                it is seen, so it sits here at teaser scale instead of in the
+                hero where it would be seen on every visit. One coral dot is
+                the whole treatment: the restraint is what makes it funny. */}
+            {s.kind === 'moments'
+              ? <Photo name="dl-helmet" width={760} height={880} class="short-art"
+                       sizes="(max-width: 700px) 92vw, 22vw"
+                       alt="Denvil Lee wearing a gold toy space helmet and holding a travel mug." />
+              : <CategoryIcon kind={s.kind} />}
             <h3>{s.label}</h3>
             <p>{s.dek}</p>
             <span class="arw" aria-hidden="true">&rarr;</span>

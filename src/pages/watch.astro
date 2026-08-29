@@ -9,8 +9,6 @@
 import { getCollection } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
 import Mark from '../components/marks/Mark.astro';
-import Photo from '../components/Photo.astro';
-import ImageMask from '../components/ImageMask.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
 import VideoCard from '../components/VideoCard.astro';
 import site from '../data/site.json';
@@ -49,11 +47,6 @@ const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b 
         {/* No empty state. */}
       </div>
       <div class="watch-feat">
-        <ImageMask shape="torn">
-          <Photo name="dl-watch" width={1400} height={933}
-                 sizes="(max-width: 900px) 92vw, 52vw"
-                 alt="Denvil Lee teaching, arms open, a slide behind him." />
-        </ImageMask>
         <ColorDisc lines={["theology","leadership","life"]} class="watch-disc" />
       </div>
     </section>
