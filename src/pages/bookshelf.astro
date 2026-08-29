@@ -16,7 +16,6 @@ import StickyNote from '../components/marks/StickyNote.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Photo from '../components/Photo.astro';
-import Signup from '../components/Signup.astro';
 import { live } from '../lib/publish';
 import site from '../data/site.json';
 import home from '../data/home.json';
@@ -42,7 +41,7 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
           <Mark kind="underline" color="blue" class="page-uline" draw={true} />
         </h1>
         <p class="page-dek">
-          Books shape the way I&#32;<span class="u">think<Mark kind="underline" color="yellow" /></span>,&#32;<span class="u">lead<Mark kind="underline" color="green" /></span>, and&#32;<span class="u">live<Mark kind="underline" color="coral" /></span>. Here are the ones that have stayed with me.
+          The books and voices shaping how I&#32;<span class="u">think,<Mark kind="underline" color="yellow" /></span>&#32;<span class="u">teach,<Mark kind="underline" color="green" /></span> and&#32;<span class="u">lead.<Mark kind="underline" color="coral" /></span>
         </p>
       </div>
       <ImageMask shape="torn">
@@ -69,7 +68,10 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
       <section class="band shell">
         <div class="sec-head">
           <h2 class="sec-h">On the shelf</h2>
-          <span class="count">{books.length} books</span>
+          {/* The count belongs to THIS section, not to the whole collection.
+              It said 13 while the section listed a subset, because "now" and
+              "next" are pulled out above and below it. */}
+          <span class="count">{shelf.length} {shelf.length === 1 ? 'book' : 'books'}</span>
         </div>
         <div class="bcards">{shelf.map((b: any) => <BookCard book={b} />)}</div>
       </section>
@@ -87,5 +89,7 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
       <p class="mt"><a class="go" href="/bookshelf/all/">Every book <span class="arw" aria-hidden="true">&rarr;</span></a></p>
     </section>
   </div>
-  <Signup tone="dark" />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>

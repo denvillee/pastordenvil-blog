@@ -1,6 +1,5 @@
 ---
 import Shell from '../layouts/Shell.astro';
-import Signup from '../components/Signup.astro';
 import { live, displayDate, isoDate, ROOMS, type RoomKey } from '../lib/publish';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
@@ -75,5 +74,7 @@ const counts = (Object.keys(ROOMS) as RoomKey[]).map((k) => ({
       <p class="art-dek">{labels.archiveEmpty}</p>
     )}
   </section>
-  <Signup tone="card" />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>

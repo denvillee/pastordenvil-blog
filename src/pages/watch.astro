@@ -13,18 +13,26 @@ import Photo from '../components/Photo.astro';
 import ImageMask from '../components/ImageMask.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
 import VideoCard from '../components/VideoCard.astro';
-import Signup from '../components/Signup.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
 const all = await getCollection('watch');
-const talks = all.filter((t: any) => !t.data.draft)
-  .sort((a: any, b: any) => b.data.year - a.data.year
-    || b.data.order - a.data.order
-    || a.data.title.localeCompare(b.data.title));
+/* Grouped by year, newest year first, newest talk first inside each year.
+   Nothing is pulled out as a featured item: Denvil has not asked for one, and
+   lifting the first talk above its own year broke the ordering the spec
+   asks for. Sort on the day it was given where we have it, and fall back to
+   the year plus the manual order where we do not. */
+const talks = all
+  .filter((t: any) => !t.data.draft)
+  .sort((a: any, b: any) => {
+    if (a.data.year !== b.data.year) return b.data.year - a.data.year;
+    const ad = a.data.givenOn ? a.data.givenOn.getTime() : 0;
+    const bd = b.data.givenOn ? b.data.givenOn.getTime() : 0;
+    if (ad !== bd) return bd - ad;
+    return b.data.order - a.data.order || a.data.title.localeCompare(b.data.title);
+  });
 
-const [featured, ...rest] = talks;
-const years = [...new Set(rest.map((t: any) => t.data.year))].sort((a, b) => b - a);
+const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b - a);
 ---
 <Shell title={`${labels.watchHeading} · ${site.name}`} description={labels.watchDek} current="watch">
   <div class="arch">
@@ -36,27 +44,25 @@ const years = [...new Set(rest.map((t: any) => t.data.year))].sort((a, b) => b -
           <Mark kind="underline" color="blue" class="page-uline" draw={true} />
         </h1>
         <p class="page-dek">
-          Teachings and conversations on&#32;<span class="u">theology<Mark kind="underline" color="yellow" /></span>,&#32;<span class="u">leadership<Mark kind="underline" color="green" /></span>, and&#32;<span class="u">ordinary life<Mark kind="underline" color="coral" /></span>.
+          Teachings and conversations,&#32;<span class="u">embedded from where they were first shared.<Mark kind="underline" color="yellow" /></span>
         </p>
-        {talks.length === 0 && <p class="empty-note">{labels.watchEmpty}</p>}
+        {/* No empty state. */}
       </div>
-      {featured
-        ? <div class="watch-feat"><VideoCard entry={featured} featured={true} /></div>
-        : <div class="watch-feat">
-            <ImageMask shape="torn">
-              <Photo name="dl-watch" width={1400} height={933}
-                     sizes="(max-width: 900px) 92vw, 52vw"
-                     alt="Denvil Lee teaching, arms open, a slide behind him." />
-            </ImageMask>
-            <ColorDisc lines={["theology","leadership","life"]} class="watch-disc" />
-          </div>}
+      <div class="watch-feat">
+        <ImageMask shape="torn">
+          <Photo name="dl-watch" width={1400} height={933}
+                 sizes="(max-width: 900px) 92vw, 52vw"
+                 alt="Denvil Lee teaching, arms open, a slide behind him." />
+        </ImageMask>
+        <ColorDisc lines={["theology","leadership","life"]} class="watch-disc" />
+      </div>
     </section>
 
     {years.map((y) => (
       <section class="shell watch-year">
         <div class="sec-head"><h2 class="sec-h">{y}</h2></div>
         <div class="vcards">
-          {rest.filter((t: any) => t.data.year === y).map((t: any) => <VideoCard entry={t} />)}
+          {talks.filter((t: any) => t.data.year === y).map((t: any) => <VideoCard entry={t} />)}
         </div>
       </section>
     ))}
@@ -74,5 +80,7 @@ const years = [...new Set(rest.map((t: any) => t.data.year))].sort((a, b) => b -
 
     {talks.length > 0 && <p class="shell watch-note">{labels.watchRights}</p>}
   </div>
-  <Signup tone="yellow" note="Good news for ordinary people." />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>

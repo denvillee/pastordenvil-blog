@@ -7,8 +7,6 @@ import StickyNote from '../components/marks/StickyNote.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Photo from '../components/Photo.astro';
 import CategoryIcon from '../components/CategoryIcon.astro';
-import CopyGap from '../components/CopyGap.astro';
-import Signup from '../components/Signup.astro';
 import { latest, ROOMS } from '../lib/publish';
 import site from '../data/site.json';
 
@@ -17,13 +15,23 @@ const feature = await latest();
 const featureHref = feature ? `/${ROOMS[feature.room].path}/${feature.id}/` : '/essays/';
 
 /* Denvil's own line, already on the page, kept word for word. */
-const conviction = 'Everything here works out one conviction: the kingdom already arrived and has not finished arriving, and almost every real question sits in that overlap.';
+/* Denvil's own paragraph, 29 Aug. */
+const conviction = "Everything here grows out of one conviction: God's kingdom has already arrived in Jesus, and it has not yet come in fullness. Most of the questions I care about live somewhere in that tension. I want to keep asking what the good news means for Scripture, leadership, work, relationships, formation, and the ordinary life in front of us.";
 
+/* The site's own rooms, in the site's own vocabulary. The page used to list
+   "Faith & Theology", "Everyday Faith" and "Leadership", which are three names
+   the site does not use anywhere else. */
 const areas = [
-  { kind: 'leaders', href: '/essays/',    t: 'Faith & Theology', d: 'Scripture and the good news of the kingdom.' },
-  { kind: 'moments', href: '/moments/',   t: 'Everyday Faith',   d: 'Work, family, rest, and everything in between.' },
-  { kind: 'studies', href: '/leaders/',   t: 'Leadership',       d: 'Leading with humility and kingdom perspective.' },
-  { kind: 'reading', href: '/bookshelf/', t: 'What I\'m reading', d: 'The books shaping how I think and lead.' },
+  { kind: 'essays',  href: '/essays/',    t: 'Essays',
+    d: 'Longer reflections where I have room to follow an idea.' },
+  { kind: 'moments', href: '/moments/',   t: 'Moments',
+    d: 'Things I am trying to notice before I explain them away.' },
+  { kind: 'reading', href: '/bookshelf/', t: 'Bookshelf',
+    d: 'The books and voices shaping how I think.' },
+  { kind: 'studies', href: '/studies/',   t: 'Studies',
+    d: 'Ways to open Scripture and learn to see for yourself.' },
+  { kind: 'leaders', href: '/leaders/',   t: 'For Leaders',
+    d: 'Lessons from a few short steps ahead.' },
 ] as const;
 ---
 <Shell title={`About · ${site.name}`} description={entry!.data.dek} current="about">
@@ -36,8 +44,13 @@ const areas = [
           <Mark kind="underline" color="blue" class="page-uline" draw={true} />
         </h1>
         <p class="abt-hi"><span class="u">Hey, I'm Denvil.<Mark kind="underline" color="yellow" /></span></p>
-        <CopyGap what="Two or three sentences introducing yourself: follower of Jesus, husband, dad, pastor, and what you care about."
-                 length="About 40 to 60 words." />
+        <p class="abt-bio">
+          I'm Denvil, a pastor, teacher, husband, dad, and longtime student of Scripture.
+          Before ministry, I worked in law enforcement, which probably explains some of my
+          instinct to keep asking what is really happening beneath the surface. I care about
+          the kingdom of God and what following Jesus looks like in the ordinary places we
+          actually live.
+        </p>
         <p class="hero-acts">
           <a class="btn btn-blue" href={featureHref}>Read my latest essay <span class="arw" aria-hidden="true">&rarr;</span></a>
         </p>
@@ -59,9 +72,8 @@ const areas = [
         <h2 class="sec-h"><span class="u">Why this site exists<Mark kind="underline" color="yellow" /></span></h2>
         <p>{conviction}</p>
       </div>
-      <StickyNote tone="paper" tilt={1.4} tape={false} class="abt-quote">
-        <p>The kingdom of God isn't just future. It's here, and it's changing everything.</p>
-      </StickyNote>
+      {/* The sticky note restated the paragraph beside it in slogan form and
+          was not supplied. */}
     </section>
 
     <section class="band shell">
@@ -89,5 +101,7 @@ const areas = [
       </div>
     </section>
   </div>
-  <Signup tone="dark" />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>

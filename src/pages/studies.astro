@@ -16,25 +16,18 @@ import StickyNote from '../components/marks/StickyNote.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Photo from '../components/Photo.astro';
-import Signup from '../components/Signup.astro';
 import home from '../data/home.json';
 import labels from '../data/labels.json';
 import site from '../data/site.json';
 
 /* The study lives at the root of grabyourbibles.com, not under /study/. The
    old address 404s; this one is the real route. */
-const STUDY = 'https://grabyourbibles.com/in-every-season/';
+const STUDY = 'https://grabyourbibles.com/quietly-at-work/';
 
 /* The section's own introduction, in Denvil's voice, opening the page. */
 const landingDoc = await getEntry('landing', 'studies');
 const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Content: null };
 
-const steps = [
-  { n: 1, tone: 'blue',   t: 'Choose a study',     d: 'Pick a study that fits your season.' },
-  { n: 2, tone: 'yellow', t: 'Set your rhythm',    d: 'Work through it at your own pace, on your own or with a group.' },
-  { n: 3, tone: 'coral',  t: 'Go deeper together', d: 'Use the prompts, reflections and Scripture to grow in wisdom and love.' },
-  { n: 4, tone: 'green',  t: 'Live it out',        d: 'Take what you learn into your everyday life and leadership.' },
-];
 ---
 <Shell title={`Studies · ${site.name}`}
        description="Guided Bible studies you can walk through on your own or with a group."
@@ -43,16 +36,13 @@ const steps = [
     <section class="shell std-hero">
       <div>
         <h1 class="page-h is-display"><span class="u">Studies<Mark kind="underline" color="blue" draw={true} /></span></h1>
-        <p class="page-dek">Resources for going deeper, individually or&#32;<span class="u">in community<Mark kind="underline" color="green" /></span>.</p>
-        <p class="std-sub">{labels.studiesSubtitle}</p>
+        <p class="page-dek">Guided ways into Scripture, for yourself or&#32;<span class="u">with others.<Mark kind="underline" color="green" /></span></p>
       </div>
       <div class="std-art">
         <ImageMask shape="torn">
           <Placeholder label="A Bible open on a table with a notebook and coffee" ratio="4 / 3" />
         </ImageMask>
-        <StickyNote tone="paper" tilt={2.2} tape={false} class="std-note">
-          Let's grow in wisdom, together.
-        </StickyNote>
+
       </div>
     </section>
 
@@ -68,13 +58,17 @@ const steps = [
         <div class="std-feat-copy">
           <p class="std-eyebrow">{home.studiesPill}</p>
           <h2 class="panel-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
-          <p class="std-feat-name">God's Presence in Every Season</p>
+          <p class="std-feat-name">Quietly at Work</p>
+          <p class="std-feat-sub">Finding God's Presence in the Book of Ruth</p>
           <p class="panel-dek">
             God never speaks out loud in Ruth, and He never stops working. Seven sessions
             learning to recognize God's presence in loss, provision, waiting, ordinary
             faithfulness, and the parts of the story we cannot yet see.
           </p>
-          <p class="std-feat-meta">7 sessions &middot; about 45 minutes each</p>
+          {/* No duration until the seven real per-session times are supplied.
+              They are not all the same length and the site should not say
+              they are. */}
+          <p class="std-feat-meta">7 sessions &middot; on your own or with a group</p>
           <a class="btn btn-light" href={STUDY} rel="noopener">
             {home.studiesCta} <span class="arw" aria-hidden="true">&rarr;</span>
           </a>
@@ -91,20 +85,11 @@ const steps = [
       </div>
     </section>
 
-    <section class="band shell">
-      <div class="sec-head">
-        <h2 class="sec-h"><span class="u">How studies work<Mark kind="underline" color="green" /></span></h2>
-      </div>
-      <ol class="steps">
-        {steps.map((s) => (
-          <li class="step">
-            <span class:list={['step-n', `cico-${s.tone}`]} aria-hidden="true">{s.n}</span>
-            <h3>{s.t}</h3>
-            <p>{s.d}</p>
-          </li>
-        ))}
-      </ol>
-    </section>
+    {/* The four-step "How studies work" block came out on 29 Aug. Grab Your
+        Bibles has its own methodology page that does the job properly, and
+        duplicating it here made denvillee.com compete with the study site. */}
   </div>
-  <Signup tone="card" />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>
