@@ -9,10 +9,6 @@ scripture: "Mark 1:9-13"
 tags: ["mark", "devotional"]
 ---
 
-<!-- Held back 29 Aug at Denvil's instruction: the section stays quiet until he
-     has a real piece for it. draft: true keeps the file, the frontmatter and
-     the shape of the post, and takes it out of every list. Flip it back to
-     false in the editor the moment the body is written. -->
 
 ## The Scripture
 
