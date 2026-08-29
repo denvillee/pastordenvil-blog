@@ -205,7 +205,7 @@ collections:
   # ------------------------------------------------------- section landing copy
   - name: landing
     label: Section landing copy
-    description: 'The "Why this exists" copy on Bookshelf. The opening paragraph always shows; the rest opens behind the control. Essays, Moments and For Leaders no longer use this: their introduction is a real post called "Why this exists", pinned to the top of their own tab, so edit it there.'
+    description: 'The introduction that opens Bookshelf and Studies. It is the first thing a visitor reads on that page, so write it as an invitation rather than a description. Essays, Moments and For Leaders do not use this: their introduction is a real post called "Why this exists" in their own tab, so edit it there.'
     label_singular: Landing page
     folder: /src/content/landing
     create: false
@@ -215,8 +215,7 @@ collections:
     fields:
       - { label: Section, name: room, widget: string, hint: 'Which section this belongs to. Do not change this; the page finds its copy by this word.' }
       - { label: Title, name: title, widget: string, hint: 'For your own reference in this list. It is not printed on the page.' }
-      - { label: Opening paragraph, name: lead, widget: text, hint: 'The one paragraph that always shows, before the reader opens the rest.' }
-      - { label: The rest, name: body, widget: markdown, hint: 'Opens behind "Why this exists". Put **two asterisks** around the one line you want set apart, and start a line with > to indent it as a quotation.' }
+      - { label: The introduction, name: body, widget: markdown, hint: 'The whole introduction. The first paragraph is set larger automatically, so lead with the sentence you want read first. Put **two asterisks** around a line to set it apart, and start a line with > to pull it out in the handwritten face.' }
 
   # ------------------------------------------------------------------ site copy
   - name: settings
