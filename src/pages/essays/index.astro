@@ -15,7 +15,6 @@ import DotGrid from '../../components/marks/DotGrid.astro';
 import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import EssayCard from '../../components/EssayCard.astro';
-import TopicList from '../../components/TopicList.astro';
 import SeriesBlock from '../../components/SeriesBlock.astro';
 import Doorway from '../../components/Doorway.astro';
 import { live, introPost, currentSeries } from '../../lib/publish';
@@ -42,14 +41,14 @@ const [featured, ...rest] = entries;
           <Mark kind="underline" color="blue" class="page-uline" draw={true} />
         </h1>
         <p class="page-dek">
-          Thoughtful reflections on <span class="u">theology<Mark kind="underline" color="yellow" /></span>,&#32;<span class="u">leadership<Mark kind="underline" color="green" /></span>, and&#32;<span class="u">ordinary life<Mark kind="underline" color="coral" /></span>.
+          What there&#32;<span class="u">wasn't time to say<Mark kind="underline" color="yellow" /></span>&#32;on Sunday.
         </p>
       </div>
       <DotGrid cols={7} rows={4} class="arch-dots" />
     </section>
 
     {IntroBody && (
-      <Doorway tone="yellow" href={`/essays/${intro!.id}/`}>
+      <Doorway tone="yellow">
         <IntroBody />
       </Doorway>
     )}
@@ -79,11 +78,15 @@ const [featured, ...rest] = entries;
           </>
         )}
 
-        {entries.length === 0 && <p class="empty-note">{labels.essaysEmpty}</p>}
+        {/* No empty state. If nothing is published the doorway carries the
+            page on its own. */}
       </div>
 
       <aside class="arch-side" aria-label="More on this site">
-        <TopicList rooms={['essays']} />
+        {/* Explore by topic is hidden until a topic has enough pieces to be
+            worth exploring. Two of the four led to a page with one essay on
+            it, which exposes the content system rather than the content. Tags
+            stay in the model and on the article. */}
 
         <StickyNote tone="green" tilt={-1.6} tape={false} class="side-note">
           Applied theology for ordinary life, from the tension of the kingdom
