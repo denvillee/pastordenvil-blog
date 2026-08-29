@@ -702,27 +702,43 @@
    putting the copy where that page wants to be read, and letting a mark leave
    the page instead of sitting politely inside it. */
 
-/* Moments is the loosest page on the site. The copy sits high, the picture
-   drops below its own line and tilts a degree and a half, so the two are not
-   on the same rail. This is the one page where the composition should look
-   like it was assembled by hand rather than laid out. */
-.mom-hero{align-items:start}
-.mom-hero > div:first-child{padding-top:clamp(1rem,4vw,3.2rem)}
+/* ── Hero rhythm ─────────────────────────────────────────────────────────────
+   The earlier version of this block gave each page a different alignment. On
+   paper that was "each page its own rhythm"; on screen it opened holes,
+   because these grids pair a three-line heading against a portrait photograph
+   two or three times its height. Centre alignment put the copy in the middle
+   of that difference and end alignment pushed it to the bottom, so the gap
+   between the masthead and the page's own h1 ran from 48px on Essays to 261px
+   on For Leaders and 369px on About: a 7.7x spread across pages that are
+   supposed to share a system.
+
+   Every hero now starts its copy at the top, which is where a reader looks
+   first, and the difference in column heights falls where it belongs, at the
+   bottom, beside the picture rather than above the words. Personality comes
+   from the column ratio and from what each page puts in the space, not from
+   sliding the text down the page. */
+.hero-in,.mom-hero,.std-hero,.abt-hero,.lead-hero,.watch-hero{align-items:start}
+
+/* Framed photographs are capped so they can never tower over their own copy.
+   object-fit:cover is right for those: they are crops already.
+
+   The About picture is a cut-out, not a crop, so it is excluded. Capping a
+   cut-out with cover slices the top off the subject, which is exactly what it
+   did to his head. It scales by width and keeps its whole self. */
+.mom-art,.std-art img,.lead-art img{max-height:25rem; object-fit:cover; object-position:50% 14%}
+.mom-art img{max-height:25rem; object-fit:cover; object-position:50% 8%}
+.abt-art img{width:100%; height:auto; object-fit:contain; max-height:31rem}
+
+/* Moments stays the loosest page: the picture still tilts. */
 .mom-art{transform:rotate(-1.4deg); transform-origin:60% 40%}
-@media (max-width:900px){ .mom-art{transform:none} }
+@media (max-width:900px){ .mom-art{transform:none; max-height:none} }
 
-/* Studies is participatory, so the copy starts at the top beside the picture
-   rather than floating in the middle of it. */
-.std-hero{align-items:start}
-.std-hero > div:first-child{padding-top:clamp(.6rem,3vw,2.4rem)}
-
-/* About is the most photographic page. The picture is allowed to be the
-   larger half and to sit slightly low, the way a print laid on a desk does. */
-.abt-hero{grid-template-columns:1fr 1.05fr; align-items:end}
+/* About carries a cut-out rather than a framed photograph, so it sits on the
+   page with no mask edge and the column ratio gives it the larger half. */
+.abt-hero{grid-template-columns:1fr 1.02fr}
 @media (max-width:900px){ .abt-hero{grid-template-columns:1fr} }
 
-/* Watch is media-forward: the grid leads, so the hero stays compact. */
-.watch-hero{align-items:end; margin-bottom:clamp(1.4rem,3vw,2.4rem)}
+.watch-hero{margin-bottom:clamp(1.4rem,3vw,2.4rem)}
 
 /* ── Edge graphics ───────────────────────────────────────────────────────────
    A recurring signature: a mark that runs off the side of the page rather than
@@ -730,13 +746,27 @@
    and never cause a horizontal scrollbar. Hidden from assistive tech and from
    anyone who has asked for less motion is not relevant here, they do not move. */
 .edge{position:absolute; pointer-events:none; z-index:0; opacity:.9}
-.edge-l{left:0; translate:-38% 0}
-.edge-r{right:0; translate:38% 0}
+/* Only a sliver leaves the page. At -38% the marks were cut to about 60% of
+   their width and read as rendering faults rather than as drawing. */
+.edge-l{left:0; translate:-14% 0}
+.edge-r{right:0; translate:14% 0}
 @media (max-width:700px){ .edge{display:none} }
 
 /* Each page places its own, at its own height, so the signature repeats
-   without the pages matching. */
-.mom-edge{top:clamp(16rem,34vw,26rem); width:clamp(7rem,13vw,11rem)}
-.std-edge{top:clamp(20rem,38vw,30rem); width:clamp(6rem,11vw,9rem)}
-.lead-edge{top:clamp(24rem,42vw,34rem); width:clamp(6rem,12vw,10rem)}
-.abt-edge{top:clamp(28rem,46vw,38rem); width:clamp(7rem,12vw,10rem)}
+   without the pages matching.
+
+   Width AND height are both given, and both selectors carry two classes. The
+   mark component draws with preserveAspectRatio="none" and marks.css already
+   sets an explicit height per mark kind, so a lone width here left the old
+   height in place and stretched the drawing: the star on For Leaders was
+   rendering as a green dash 112px wide and 32px tall. Each pair below keeps
+   its mark's own proportions. */
+.edge.mom-edge{top:clamp(16rem,34vw,26rem);                    /* brush 120x160 */
+  width:clamp(7rem,13vw,11rem); height:clamp(9.3rem,17.3vw,14.6rem)}
+.edge.std-edge{top:clamp(20rem,38vw,30rem);                    /* zigzag 90x120 */
+  width:clamp(6rem,11vw,9rem);  height:clamp(8rem,14.6vw,12rem)}
+.edge.lead-edge{top:clamp(24rem,42vw,34rem);                   /* star 60x60 */
+  width:clamp(5rem,9vw,7rem);   height:clamp(5rem,9vw,7rem)}
+.edge.abt-edge{top:clamp(28rem,46vw,38rem);                    /* arrow 120x60 */
+  width:clamp(7rem,12vw,10rem); height:clamp(3.5rem,6vw,5rem)}
+.edge svg{width:100%; height:100%; display:block}
