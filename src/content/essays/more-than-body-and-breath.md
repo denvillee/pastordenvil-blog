@@ -4,8 +4,9 @@ titleMark: "Body"
 dek: "Genesis 1 and the goal of being human. First in a series."
 publishAt: 2026-08-26T06:00:00-04:00
 draft: false
-image: "/assets/img/feature.jpg"
-imageAlt: "Abstract arcs in cobalt and ember over bone"
+image: "/assets/img/essay-body-and-breath.jpg"
+imageAlt: "A drawn standing stone crossing a horizon line, dark above it and light below."
+ogImage: "/assets/img/og-body-and-breath.jpg"
 series: "What it means to be human"
 scripture: "Genesis 1:26-27"
 tags: ["anthropology", "image of God", "Genesis", "vocation"]
