@@ -22,6 +22,7 @@ const [featured, ...rest] = entries;
 ---
 <Shell title={`${labels.momentsHeading} · ${site.name}`} description={labels.momentsDek} current="moments">
   <div class="arch">
+    <Mark kind="brush" color="coral" class="edge edge-l mom-edge" />
     <section class="shell mom-hero">
       <div>
         <h1 class="page-h is-display"><span class="c">{labels.momentsHeading}<Mark kind="circle-loose" color="yellow" draw={true} /></span></h1>
@@ -37,9 +38,9 @@ const [featured, ...rest] = entries;
             rather than on the front page, where it would be spent on every
             visit. Cut out on the page ground, one coral dot, and nothing else:
             no tape, no doodles, no arrow. The restraint is the joke. */}
-        <Photo name="dl-helmet" width={1000} height={900} class="mom-art"
+        <Photo name="dl-helmet" width={1000} height={1250} class="mom-art"
                sizes="(max-width: 900px) 80vw, 34vw"
-               alt="Denvil Lee wearing a gold toy space helmet and holding a travel mug." />
+               alt="Denvil Lee wearing a gold toy space helmet, cut out and taped down among drawn marks." />
         <DotGrid cols={6} rows={4} class="mom-dots" />
       </div>
     </section>
