@@ -7,6 +7,6 @@ Some of the first study guides I made were handwritten and stapled together. I m
 
 > I want us to become not consumers of information but participants in transformation.
 
-The studies here are built to help you look, notice, question, wrestle, listen, and respond for yourself, whether you are working alone or with others. Most of that work now lives at Grab Your Bibles, where you can move through a passage one screen at a time and make the study your own.
+Guided studies to help you open Scripture, make your own observations, and respond to what God is saying. These are built for personal use or group conversation, with space to notice, question, wrestle, and follow.
 
 May you find him, fall in love with him, and follow him.
