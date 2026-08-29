@@ -69,18 +69,47 @@ const ogAbs = new URL(ogImage, Astro.site).href;
 
   <script>
     /* Click to load a video. The iframe is built here and only here, so a
-       reader who never clicks never talks to Vimeo or YouTube at all. */
-    document.querySelectorAll('.vframe').forEach(function (frame) {
-      var btn = frame.querySelector('.vplay');
-      if (!btn) return;
+       reader who never clicks never contacts the host at all. Everything plays
+       in place: the poster and the "Watch now" action both open the player on
+       this page, and neither is a link off the site.
+
+       If a player never arrives, the card says so in the site's own words
+       rather than naming the service or explaining what went wrong there. */
+    function playFrame(frame) {
+      if (!frame || frame.dataset.played) return;
+      frame.dataset.played = '1';
+      var f = document.createElement('iframe');
+      f.src = frame.getAttribute('data-embed');
+      f.title = frame.getAttribute('data-title') || 'Video';
+      f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+      f.setAttribute('allowfullscreen', '');
+      f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      var failed = setTimeout(function () {
+        if (frame.querySelector('iframe')) return;
+        var p = document.createElement('p');
+        p.className = 'vfallback';
+        p.textContent = frame.getAttribute('data-fallback') || 'This message is temporarily unavailable.';
+        frame.replaceChildren(p);
+      }, 8000);
+      f.addEventListener('load', function () { clearTimeout(failed); });
+      f.addEventListener('error', function () {
+        clearTimeout(failed);
+        var p = document.createElement('p');
+        p.className = 'vfallback';
+        p.textContent = frame.getAttribute('data-fallback') || 'This message is temporarily unavailable.';
+        frame.replaceChildren(p);
+      });
+      frame.replaceChildren(f);
+    }
+    document.querySelectorAll('.vframe .vplay').forEach(function (btn) {
+      btn.addEventListener('click', function () { playFrame(btn.closest('.vframe')); });
+    });
+    document.querySelectorAll('[data-play]').forEach(function (btn) {
       btn.addEventListener('click', function () {
-        var f = document.createElement('iframe');
-        f.src = frame.getAttribute('data-embed');
-        f.title = frame.getAttribute('data-title') || 'Video';
-        f.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
-        f.setAttribute('allowfullscreen', '');
-        f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
-        frame.replaceChildren(f);
+        var card = btn.closest('.vcard');
+        var frame = card && card.querySelector('.vframe');
+        playFrame(frame);
+        if (frame) frame.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
       });
     });
 
