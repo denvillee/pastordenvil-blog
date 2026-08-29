@@ -595,3 +595,36 @@
 /* The footer's handwritten line is set in Caveat, which has a small x-height:
    at 0.82rem it measured smaller than the body minimum. */
 .foot-line{font-size:1.02rem}
+
+/* ── Photography placements, 29 Aug ─────────────────────────────────────── */
+
+/* The hero photograph is used at native size and must never be asked to
+   upscale. The source crop is 1122x842, the slot is capped at 520x390 CSS,
+   so even at a 2x device pixel ratio it is still downsampling. */
+.hero-art .mask,
+.hero-art picture,
+.hero-art img{max-width:520px}
+.hero-art img{width:100%; height:auto; aspect-ratio:4/3; object-fit:cover}
+@media (max-width:900px){
+  .hero-art .mask,.hero-art picture,.hero-art img{max-width:355px}
+}
+
+/* Moments teaser. The helmet replaces the icon, so it takes the icon's place
+   in the flow and keeps the card's own --card ground: the file is already on
+   that colour, which is what lets it read as a cutout rather than a photo in
+   a box. */
+.short-photo .short-art{display:block; width:100%; max-width:11rem; margin:-.3rem 0 0}
+.short-photo .short-art img{display:block; width:100%; height:auto}
+@media (max-width:700px){ .short-photo .short-art{max-width:9rem} }
+
+/* Speaking. A transparent PNG rather than a photo on a matching ground: a flat
+   cream field survives JPEG compression as a faintly visible rectangle, which
+   is the one thing a cutout must not do. Floated so the copy runs beside it. */
+.speak-art{float:right; display:block; height:auto; width:min(34%,9.5rem);
+  margin:.4rem 0 1rem 1.6rem}
+@media (max-width:560px){ .speak-art{float:none; width:min(50%,8rem); margin:0 0 1.2rem} }
+
+/* The byline face. Small, round, and it sits on the meta row as one more item
+   so it never pushes the date onto its own line. */
+.art-face{width:1.9rem; height:1.9rem; border-radius:50%; display:block}
+.art-by{font-weight:700; color:var(--ink)}
