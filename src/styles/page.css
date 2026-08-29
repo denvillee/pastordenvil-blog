@@ -609,13 +609,13 @@
   .hero-art .mask,.hero-art picture,.hero-art img{max-width:355px}
 }
 
-/* Moments teaser. The helmet replaces the icon, so it takes the icon's place
-   in the flow and keeps the card's own --card ground: the file is already on
-   that colour, which is what lets it read as a cutout rather than a photo in
-   a box. */
-.short-photo .short-art{display:block; width:100%; max-width:11rem; margin:-.3rem 0 0}
-.short-photo .short-art img{display:block; width:100%; height:auto}
-@media (max-width:700px){ .short-photo .short-art{max-width:9rem} }
+/* The Moments landing page. The helmet is built on --cream, the page's own
+   ground, so it reads as a cutout standing on the page rather than a photo in
+   a box. No mask and no radius for the same reason: either one would draw the
+   edge the cutout exists to avoid. */
+.mom-art{display:block; width:100%; max-width:26rem; margin:0 0 0 auto}
+.mom-art img{display:block; width:100%; height:auto}
+@media (max-width:900px){ .mom-art{max-width:20rem; margin-inline:0} }
 
 /* Speaking. A transparent PNG rather than a photo on a matching ground: a flat
    cream field survives JPEG compression as a faintly visible rectangle, which
