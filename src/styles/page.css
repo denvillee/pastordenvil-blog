@@ -456,7 +456,26 @@
 .bcard{background:var(--card); border-radius:var(--r); padding:1.2rem}
 .bcard-top{display:grid; grid-template-columns:4.6rem 1fr; gap:1rem; align-items:start}
 .bcover{width:4.6rem; height:auto; border-radius:3px; box-shadow:var(--shadow)}
-.bcover-none{display:block; width:4.6rem; aspect-ratio:2/3; border-radius:3px; background:var(--rule-strong)}
+/* The shelf's own card for a book with no jacket image. Spine edge on the
+   left so it sits in the same rhythm as the real covers beside it. */
+.bcover-none{
+  display:flex; flex-direction:column; justify-content:space-between;
+  width:4.6rem; aspect-ratio:2/3; border-radius:3px;
+  padding:.42rem .38rem .38rem .5rem; overflow:hidden;
+  box-shadow:var(--shadow); position:relative;
+}
+.bcover-none::before{
+  content:""; position:absolute; inset:0 auto 0 0; width:4px;
+  background:rgba(0,0,0,.22); border-radius:3px 0 0 3px;
+}
+.bcover-t{
+  font-family:var(--sans); font-weight:800; font-size:.5rem; line-height:1.16;
+  letter-spacing:-.01em; color:var(--on-gold); overflow-wrap:anywhere;
+}
+.bcover-a{
+  font-family:var(--sans); font-weight:600; font-size:.4rem; line-height:1.2;
+  letter-spacing:.04em; text-transform:uppercase; color:var(--on-gold); opacity:.8;
+}
 .spine-cobalt{background:var(--blue)} .spine-ivy{background:var(--green)}
 .spine-brass{background:var(--yellow)} .spine-ember{background:var(--coral)}
 .spine-ink{background:var(--dark)}
@@ -628,3 +647,34 @@
    so it never pushes the date onto its own line. */
 .art-face{width:1.9rem; height:1.9rem; border-radius:50%; display:block}
 .art-by{font-weight:700; color:var(--ink)}
+
+/* ── Every Book (/bookshelf/all/) ────────────────────────────────────────────
+   These rules only ever existed in the retired site.css, which this layout
+   does not load, so the page had been rendering with no styling at all:
+   titles and authors ran together on one line and every note flowed inline.
+   Carried across on the current tokens. */
+.shelf{display:grid; gap:0}
+.shelf-row{
+  display:grid; grid-template-columns:auto 1fr; gap:1rem; padding:.95rem 0;
+  border-top:1px solid var(--rule); align-items:center;
+}
+.shelf-row:last-of-type{border-bottom:1px solid var(--rule)}
+.shelf-row .st{font-family:var(--sans); font-weight:700; font-size:1.02rem; line-height:1.2}
+.shelf-row .sa{
+  font-family:var(--sans); font-size:.66rem; font-weight:600; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); display:block; margin-top:.16rem;
+}
+.shelf-row .sv{color:var(--muted); font-size:.92rem; margin-top:.3rem; display:block}
+.mini-cover{
+  width:38px; height:auto; border-radius:2px; flex:none; display:block;
+  box-shadow:0 1px 3px rgba(20,18,16,.25);
+}
+/* The same principle as the full card: a book with no jacket gets the shelf's
+   own mark, never a blank swatch. */
+.shelf-row .mini{width:2.1rem; height:2.9rem; border-radius:1px 3px 3px 1px}
+.mini.plate{
+  display:flex; align-items:center; justify-content:center;
+  background:var(--navy); border-top:3px solid var(--gold);
+  color:var(--on-navy); font-family:var(--sans); font-weight:800;
+  font-size:.6rem; letter-spacing:.08em;
+}
