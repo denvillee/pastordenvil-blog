@@ -146,7 +146,7 @@ collections:
 
   - name: watch
     label: Watch
-    description: 'Talks and sermons embedded from YouTube. Publishes at /watch/, grouped by year. Nothing is re-hosted here, so a video that the church takes down disappears from the page.'
+    description: 'Your teaching library. Publishes at /watch/, grouped by year, and everything plays on your own site. Paste the video id, not the whole address.'
     label_singular: Talk
     folder: /src/content/watch
     create: true
