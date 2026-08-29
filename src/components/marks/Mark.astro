@@ -68,14 +68,7 @@ const M: Record<string, { vb: string; d: string[]; w: number; fill?: boolean }> 
 
 const m = M[kind];
 ---
-<!--
-  The whole mark is emitted on one line on purpose. Astro preserves whitespace
-  inside an element, so a newline between <span> and <svg> becomes a real text
-  node in the mark. It is invisible, because the mark is absolutely positioned
-  and aria-hidden, but it is still IN THE TEXT: textContent came back as
-  "ordinary life    ." and innerText as "ordinary life\n." Anything that reads
-  the text rather than the pixels, a screen reader, reader mode, an RSS or
-  meta-description extractor, a search snippet, a translator, sees a space
-  before every comma and full stop that follows a marked phrase. That is the
-  punctuation defect Denvil kept reporting and that a geometry test cannot see.
---><span class:list={['mk', `mk-${kind}`, `mk-${color}`, draw && 'mk-draw', cls]} aria-hidden="true"><svg viewBox={m.vb} fill="none" preserveAspectRatio="none" focusable="false">{m.d.map((d) => (m.fill ? <path d={d} fill="currentColor" /> : <path d={d} stroke="currentColor" stroke-width={m.w} stroke-linecap="round" stroke-linejoin="round" />))}</svg></span>
+{/* The whole mark is emitted on one line on purpose: a newline between the
+  wrapper and the svg would become a real text node inside the marked phrase,
+  which readers, screen readers and search snippets would see as a space before
+  the punctuation that follows. */}<span class:list={['mk', `mk-${kind}`, `mk-${color}`, draw && 'mk-draw', cls]} aria-hidden="true"><svg viewBox={m.vb} fill="none" preserveAspectRatio="none" focusable="false">{m.d.map((d) => (m.fill ? <path d={d} fill="currentColor" /> : <path d={d} stroke="currentColor" stroke-width={m.w} stroke-linecap="round" stroke-linejoin="round" />))}</svg></span>
