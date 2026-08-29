@@ -19,7 +19,15 @@ const rule = TONE[b.spine] ?? 'blue';
       ? <img class="bcover" src={b.cover} alt={`Cover of ${b.title} by ${b.author}.`}
              width="200" height="300" loading="lazy" decoding="async" />
       : <span class:list={['bcover', 'bcover-none', `spine-${b.spine}`]}
-               role="img" aria-label={`No cover image for ${b.title} by ${b.author}.`}></span>}
+               role="img" aria-label={`${b.title} by ${b.author}. No cover image.`}>
+          {/* A book whose jacket we do not have gets the shelf's own card, set
+              in the site's type on the site's colour, rather than an empty
+              block beside twelve real jackets. It is deliberately not a
+              reproduction: inventing a publisher's cover for a real book would
+              put a design in front of readers that the book does not have. */}
+          <span class="bcover-t">{b.title}</span>
+          <span class="bcover-a">{b.author}</span>
+        </span>}
     <div class="bmeta">
       <h3 class="btitle">{b.title}</h3>
       <p class="bauthor">{b.author}{b.year ? ` · ${b.year}` : ''}</p>
