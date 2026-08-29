@@ -1,4 +1,5 @@
 ---
+import labels from '../data/labels.json';
 /*
   Click to load. The poster is a still; the player is only built when somebody
   asks for it, so a page of talks does not open fifteen third-party players
@@ -18,7 +19,9 @@ const d = entry.data;
 const embed = d.provider === 'vimeo'
   ? `https://player.vimeo.com/video/${d.videoId}?app_id=122963&autoplay=1&playsinline=1&title=0&byline=0&portrait=0`
   : `https://www.youtube-nocookie.com/embed/${d.videoId}?autoplay=1&playsinline=1&rel=0`;
-const watch = d.provider === 'vimeo'
+/* Kept in the data model for attribution and maintenance. Deliberately not
+   rendered as a link: a reader should never be pushed off the site to watch. */
+const sourceUrl = d.provider === 'vimeo'
   ? `https://vimeo.com/${d.videoId}`
   : `https://www.youtube.com/watch?v=${d.videoId}`;
 /* A self-hosted stem, or a derived YouTube thumbnail for a YouTube entry. */
@@ -37,7 +40,7 @@ const mmss = (s?: number) => s
 const len = mmss(d.durationSeconds);
 ---
 <article class:list={['vcard', featured && 'vcard-feat']}>
-  <div class="vframe" data-embed={embed} data-title={d.title}>
+  <div class="vframe" data-embed={embed} data-title={d.title} data-source={sourceUrl} data-fallback={labels.watchFallback}>
     <button type="button" class="vplay" aria-label={`Play: ${d.title}`}>
       {localPoster ? (
         <picture>
@@ -62,8 +65,10 @@ const len = mmss(d.durationSeconds);
         ? <time datetime={d.givenOn.toISOString().slice(0, 10)}>{given}</time>
         : d.year}
     </p>
-    <a class="go" href={watch} rel="noopener nofollow" target="_blank">
-      Watch on {d.provider === 'vimeo' ? 'Vimeo' : 'YouTube'} <span aria-hidden="true">&#8599;</span>
-    </a>
+    {/* The card's action plays the video in place. The source address stays in
+        the data for attribution and maintenance, and out of the interface. */}
+    <button type="button" class="go vgo" data-play aria-label={`Play: ${d.title}`}>
+      Watch now <span class="arw" aria-hidden="true">&rarr;</span>
+    </button>
   </div>
 </article>
