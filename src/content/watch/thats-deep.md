@@ -5,7 +5,7 @@ provider: "vimeo"
 videoId: "905271532"
 poster: "talk-thats-deep"
 context: "The Chapel"
-note: "Come Alive"
+givenOn: 2024-01-21
 durationSeconds: 2565
 order: 30
 ---
