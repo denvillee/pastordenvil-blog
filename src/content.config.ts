@@ -72,7 +72,6 @@ const landing = defineCollection({
   schema: z.object({
     room: z.string(),
     title: z.string(),
-    lead: z.string(),
   }),
 });
 
@@ -165,9 +164,14 @@ export const collections = {
          is pulled down once and served from here. Leave blank on a YouTube
          entry and its thumbnail is derived from the id. */
       poster: z.string().optional(),
-      /* Church, conference or event. */
+      /* Where he was teaching: the church, conference or event. This is the
+         line the page leads with. */
       context: z.string().optional(),
-      /* The series it belongs to, or one line about what it is. */
+      /* The day it was given. Denvil is usually one voice inside a series of
+         other speakers, so the talk stands on its own and the series is not
+         printed: it belongs to the church that ran it, not to him. */
+      givenOn: z.coerce.date().optional(),
+      /* Kept only so existing entries stay valid. Not printed. */
       note: z.string().optional(),
       /* Runtime in seconds, straight from the provider. Shown as m:ss. */
       durationSeconds: z.number().int().optional(),
