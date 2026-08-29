@@ -7,12 +7,15 @@
   support, so the page uses the axis the data actually has: what he is reading
   now, this month's shelf, and what is next.
 */
+import { getEntry, render } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
+import Doorway from '../components/Doorway.astro';
 import Mark from '../components/marks/Mark.astro';
 import BookCard from '../components/BookCard.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Placeholder from '../components/Placeholder.astro';
+import Photo from '../components/Photo.astro';
 import Signup from '../components/Signup.astro';
 import { live } from '../lib/publish';
 import site from '../data/site.json';
@@ -24,6 +27,10 @@ const now = books.find((b: any) => b.data.shelfStatus === 'now');
 const next = books.filter((b: any) => b.data.shelfStatus === 'next');
 const shelf = books.filter((b: any) => b !== now && b.data.shelfStatus !== 'next')
   .sort((a: any, b: any) => a.data.order - b.data.order);
+
+/* The section's own introduction, in Denvil's voice, opening the page. */
+const landingDoc = await getEntry('landing', 'bookshelf');
+const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Content: null };
 ---
 <Shell title={`${labels.readingHeading} · ${site.name}`} description={labels.readingDek} current="reading">
   <div class="arch">
@@ -39,9 +46,17 @@ const shelf = books.filter((b: any) => b !== now && b.data.shelfStatus !== 'next
         </p>
       </div>
       <ImageMask shape="torn">
-        <Placeholder label="A stack of books on a table" ratio="16 / 9" />
+        <Photo name="dl-books" width={1600} height={900}
+               sizes="(max-width: 900px) 92vw, 48vw"
+               alt="A shelf of Denvil's books, spines out: Ladd, McKnight, N. T. Wright, Boesak and a run of titles on the kingdom and Revelation." />
       </ImageMask>
     </section>
+
+    {LandingBody && (
+      <Doorway tone="green">
+        <LandingBody />
+      </Doorway>
+    )}
 
     {now && (
       <section class="shell">

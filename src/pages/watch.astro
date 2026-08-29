@@ -61,6 +61,17 @@ const years = [...new Set(rest.map((t: any) => t.data.year))].sort((a, b) => b -
       </section>
     ))}
 
+    {talks.length > 0 && (
+      <section class="shell watch-more">
+        {/* The Chapel's own 2024 sermon library. Denvil is one voice among the
+            others in it, which is exactly why it belongs here as a way out
+            rather than as more of his cards. */}
+        <a class="go" href="https://vimeo.com/showcase/10899137" rel="noopener nofollow" target="_blank">
+          More from The Chapel's sermon library <span aria-hidden="true">&#8599;</span>
+        </a>
+      </section>
+    )}
+
     {talks.length > 0 && <p class="shell watch-note">{labels.watchRights}</p>}
   </div>
   <Signup tone="yellow" note="Good news for ordinary people." />
