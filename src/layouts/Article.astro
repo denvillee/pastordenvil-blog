@@ -75,6 +75,11 @@ const passages = await getPassages(scripture);
         : title}<span class="dot">.</span></h1>
       <p class="art-dek">{dek}</p>
       <div class="art-meta">
+        {/* The same face at small size on every piece, so a reader who has read
+            one recognises the next before reading the name. */}
+        <img class="art-face" src="/assets/img/dl-face.png" alt="Denvil Lee"
+             width="64" height="64" loading="lazy" decoding="async" />
+        <span class="art-by">Denvil Lee</span>
         <span><time datetime={isoDate(publishAt)}>{displayDate(publishAt)}</time></span>
         {scripture && <span>{scripture}</span>}
         {readMinutes ? <span>{readMinutes} min read</span> : null}
