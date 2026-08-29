@@ -1,5 +1,5 @@
 ---
-import Base from '../../layouts/Base.astro';
+import Shell from '../../layouts/Shell.astro';
 import site from '../../data/site.json';
 import QuoteCard from '../../components/cards/QuoteCard.astro';
 import VerseCard from '../../components/cards/VerseCard.astro';
@@ -9,7 +9,7 @@ import PosterCard from '../../components/cards/PosterCard.astro';
 import StillCard from '../../components/cards/StillCard.astro';
 import { KIT, CARD_SIZES } from '../../lib/kit';
 ---
-<Base title={`Card studio · ${site.name}`} description="The six shareable card templates at export sizes." noindex={true}>
+<Shell title={`Card studio · ${site.name}`} description="The six shareable card templates at export sizes." noindex={true}>
   <section class="band shell">
     <div class="sec-head">
       <h1>Card studio</h1>
@@ -30,7 +30,7 @@ import { KIT, CARD_SIZES } from '../../lib/kit';
       ))}
     </div>
 
-    <div class="studio" id="studio" style="--card-w:1080px;--card-h:1350px">
+    <div class="studio" id="studio" style="--card-w:1080;--card-h:1350">
       <figure class="stage"><div class="stage-card"><QuoteCard {...KIT.quote} /></div><figcaption>Quote card</figcaption></figure>
       <figure class="stage"><div class="stage-card"><VerseCard {...KIT.verse} /></div><figcaption>Scripture card</figcaption></figure>
       <figure class="stage"><div class="stage-card"><MemeCard {...KIT.meme} /></div><figcaption>Two panel relatable</figcaption></figure>
@@ -52,9 +52,9 @@ import { KIT, CARD_SIZES } from '../../lib/kit';
         document.querySelectorAll('.chip-btn').forEach(function (x) { x.classList.remove('on'); });
         b.classList.add('on');
         var s = document.getElementById('studio');
-        s.style.setProperty('--card-w', b.dataset.w + 'px');
-        s.style.setProperty('--card-h', b.dataset.h + 'px');
+        s.style.setProperty('--card-w', b.dataset.w);
+        s.style.setProperty('--card-h', b.dataset.h);
       });
     });
   </script>
-</Base>
+</Shell>
