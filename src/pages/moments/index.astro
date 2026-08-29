@@ -3,6 +3,7 @@ import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
+import Photo from '../../components/Photo.astro';
 import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
@@ -29,7 +30,16 @@ const [featured, ...rest] = entries;
       <div class="mom-quote">
         {/* The sticky note read "Grace is not the absence of struggle, but the
             presence of God." It was never supplied, it reads as a generic
-            inspirational line, and it interrupted the opening. */}
+            inspirational line, and it interrupted the opening.
+
+            The helmet takes that space instead. It is the only humorous picture
+            on the site, so it belongs where someone has already chosen to come
+            rather than on the front page, where it would be spent on every
+            visit. Cut out on the page ground, one coral dot, and nothing else:
+            no tape, no doodles, no arrow. The restraint is the joke. */}
+        <Photo name="dl-helmet" width={1000} height={900} class="mom-art"
+               sizes="(max-width: 900px) 80vw, 34vw"
+               alt="Denvil Lee wearing a gold toy space helmet and holding a travel mug." />
         <DotGrid cols={6} rows={4} class="mom-dots" />
       </div>
     </section>
