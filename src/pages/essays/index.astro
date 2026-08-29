@@ -8,6 +8,7 @@
   three published pieces both would be controls that do nothing, and a control
   that does nothing is worse than no control.
 */
+import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
@@ -16,12 +17,17 @@ import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import EssayCard from '../../components/EssayCard.astro';
 import TopicList from '../../components/TopicList.astro';
 import SeriesBlock from '../../components/SeriesBlock.astro';
+import Doorway from '../../components/Doorway.astro';
 import { live, introPost, currentSeries } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
 const entries = await live('essays');
 const intro = await introPost('essays');
+/* The introduction opens the page rather than sitting in a card beside it:
+   Denvil's revision packet asks each section to open with a doorway in his
+   own voice. It is still the same real, linkable, CMS-editable post. */
+const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
 const series = await currentSeries('essays');
 
 const [featured, ...rest] = entries;
@@ -41,6 +47,12 @@ const [featured, ...rest] = entries;
       </div>
       <DotGrid cols={7} rows={4} class="arch-dots" />
     </section>
+
+    {IntroBody && (
+      <Doorway tone="yellow" href={`/essays/${intro!.id}/`}>
+        <IntroBody />
+      </Doorway>
+    )}
 
     <div class="shell arch-deck">
       <div class="arch-main">
@@ -77,14 +89,6 @@ const [featured, ...rest] = entries;
           Applied theology for ordinary life, from the tension of the kingdom
           already here and still coming.
         </StickyNote>
-
-        {intro && (
-          <section class="side-card side-blue">
-            <h2 class="side-h">New here?</h2>
-            <p>Start with the piece about why this exists and what you'll find.</p>
-            <a class="go" href={`/essays/${intro.id}/`}>{intro.data.title} <span class="arw" aria-hidden="true">&rarr;</span></a>
-          </section>
-        )}
       </aside>
     </div>
 
@@ -93,7 +97,7 @@ const [featured, ...rest] = entries;
         <Mark kind="zigzag" color="blue" class="panel-zig" />
         <h2 class="panel-h"><span class="u">Grab your Bibles.<Mark kind="underline" color="blue" /></span></h2>
         <p class="panel-dek">A study through the book of Ruth.</p>
-        <a class="btn btn-light" href="https://grabyourbibles.com/study/in-every-season/" rel="noopener">
+        <a class="btn btn-light" href="https://grabyourbibles.com/in-every-season/" rel="noopener">
           Start the study <span class="arw" aria-hidden="true">&rarr;</span>
         </a>
       </div>
