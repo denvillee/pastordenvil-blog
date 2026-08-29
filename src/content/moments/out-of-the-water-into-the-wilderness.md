@@ -5,7 +5,7 @@ publishAt: 2026-08-31T06:00:00-04:00
 draft: true
 week: 1
 series: "Now and Not Yet"
-scripture: "Mark 1:9–13"
+scripture: "Mark 1:9-13"
 tags: ["mark", "devotional"]
 ---
 
