@@ -422,6 +422,17 @@
    that explains it. The panel heading stays "Grab your Bibles." */
 .std-feat-name{font-family:var(--hand); font-size:1.75rem; line-height:1;
   color:var(--gold-lift); margin:.15rem 0 .5rem}
+.abt-bio{font-size:var(--step-1); line-height:1.55; max-width:44ch; margin:0 0 1.6rem}
+/* The editorial close of an essay. */
+.cite-book{color:var(--navy); text-decoration:underline; text-underline-offset:2px}
+.art-next{margin-top:clamp(1.8rem,4vw,2.8rem); padding-top:1.4rem; border-top:1px solid var(--rule)}
+.art-next-h{font-size:.68rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--faint); margin:0 0 .8rem}
+.art-next ul{list-style:none; margin:0; padding:0; display:grid; gap:.7rem}
+.bnote{margin-top:.7rem; font-size:.9rem; line-height:1.55; color:var(--ink)}
+.bnote-k{display:block; font-size:.62rem; font-weight:800; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--coral-ink); margin-bottom:.25rem}
+.std-feat-sub{font-size:.92rem; color:var(--dek-on-dark); margin:-.2rem 0 .6rem}
 .std-feat-meta{font-size:.82rem; color:var(--dek-on-dark); margin-top:.9rem}
 .std-feat-art{position:relative}
 .std-feat-art .ph{border-radius:var(--r)}
