@@ -1,4 +1,5 @@
 ---
+import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import ColorDisc from '../../components/marks/ColorDisc.astro';
@@ -10,12 +11,17 @@ import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import EssayCard from '../../components/EssayCard.astro';
 import TopicList from '../../components/TopicList.astro';
 import Signup from '../../components/Signup.astro';
+import Doorway from '../../components/Doorway.astro';
 import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
 const entries = await live('leaders');
 const intro = await introPost('leaders');
+/* The introduction opens the page rather than sitting in a card beside it:
+   Denvil's revision packet asks each section to open with a doorway in his
+   own voice. It is still the same real, linkable, CMS-editable post. */
+const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
 const [featured, ...rest] = entries;
 ---
 <Shell title={`${labels.leadersHeading} · ${site.name}`} description={labels.leadersDek} current="leaders">
@@ -43,9 +49,17 @@ const [featured, ...rest] = entries;
                  sizes="(max-width: 900px) 92vw, 46vw"
                  alt="Denvil Lee teaching on stage, gesturing as he speaks." />
         </ImageMask>
-        <ColorDisc lines={["Lead well.","Love deep.","Finish strong."]} color="blue" rule={false} class="lead-disc" />
+        {/* The "Lead well. Love deep. Finish strong." disc came out 29 Aug at
+            Denvil's instruction: it read as a slogan rather than as him. The
+            McDonald's story in the doorway below establishes the page instead. */}
       </div>
     </section>
+
+    {IntroBody && (
+      <Doorway tone="blue" href={`/leaders/${intro!.id}/`}>
+        <IntroBody />
+      </Doorway>
+    )}
 
     <div class="shell arch-deck">
       <div class="arch-main">
@@ -75,13 +89,6 @@ const [featured, ...rest] = entries;
           Leadership isn't about having all the answers. It's about keeping your
           eyes on Jesus and serving the people in front of you.
         </StickyNote>
-        {intro && (
-          <section class="side-card">
-            <h2 class="side-h">New here?</h2>
-            <p>Start with the piece about why this section exists.</p>
-            <a class="go" href={`/leaders/${intro.id}/`}>{intro.data.title} <span class="arw" aria-hidden="true">&rarr;</span></a>
-          </section>
-        )}
       </aside>
     </div>
   </div>
