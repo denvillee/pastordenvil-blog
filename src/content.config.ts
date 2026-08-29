@@ -188,8 +188,14 @@ export const collections = {
       year: z.number().optional(),
       shelfStatus: z.enum(['now', 'shelf', 'next', 'finished']),
       shelfMonth: z.string().regex(/^\d{4}-\d{2}$/).optional(),  // which month's shelf this book belongs to
-      cover: z.string().optional(),        // /assets/covers/*.jpg — spine colour is the fallback
+      cover: z.string().optional(),        // /assets/covers/*.jpg, spine colour is the fallback
       progress: z.string().optional(),
+      /* Denvil's own line about the book: why it is on the shelf, or what he is
+         taking from it. Optional and never generated. The body of the entry is
+         a neutral description of what the book argues; this is the only place
+         a first-person reaction belongs, and it appears only when he writes
+         one. */
+      note: z.string().optional(),
       spine: z.enum(['cobalt', 'ivy', 'brass', 'ember', 'ink']).default('ivy'),
       link: z.string().default(''),
       order: z.number().default(0),
