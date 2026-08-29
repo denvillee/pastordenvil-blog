@@ -18,7 +18,6 @@ const cols = [
     { href: '/studies/',   label: labels.footStudies },
     { href: '/bookshelf/', label: labels.footReading },
     { href: '/watch/',     label: labels.footWatch },
-    { href: '/archive/',   label: labels.footArchive },
   ]},
   { heading: 'Connect', items: [
     { href: '/about/',     label: labels.footAbout },
@@ -47,7 +46,7 @@ const year = new Date().getFullYear();
 
   <div class="shell foot-base">
     <p>&copy; {year} {site.name}. <a href="/rss.xml">{labels.footRss}</a></p>
-    <p class="foot-line">{site.footerLine}</p>
+    {/* One line in the footer, not two. The blurb above already carries it. */}
   </div>
 
   <div class="shell foot-legal">

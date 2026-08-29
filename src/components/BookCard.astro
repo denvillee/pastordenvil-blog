@@ -13,18 +13,25 @@ const TONE: Record<string, string> = {
 };
 const rule = TONE[b.spine] ?? 'blue';
 ---
-<article class="bcard">
+<article class="bcard" id={book.id ? `book-${book.id}` : undefined}>
   <div class="bcard-top">
     {b.cover
       ? <img class="bcover" src={b.cover} alt={`Cover of ${b.title} by ${b.author}.`}
              width="200" height="300" loading="lazy" decoding="async" />
-      : <span class:list={['bcover', 'bcover-none', `spine-${b.spine}`]} aria-hidden="true"></span>}
+      : <span class:list={['bcover', 'bcover-none', `spine-${b.spine}`]}
+               role="img" aria-label={`No cover image for ${b.title} by ${b.author}.`}></span>}
     <div class="bmeta">
       <h3 class="btitle">{b.title}</h3>
       <p class="bauthor">{b.author}{b.year ? ` · ${b.year}` : ''}</p>
       {b.progress && <p class="bprog">{b.progress}</p>}
     </div>
   </div>
+  {b.note && (
+    <p class="bnote">
+      <span class="bnote-k">Why it's here</span>
+      {b.note}
+    </p>
+  )}
   {line && (
     <p class="btake">
       <span class:list={['u', 'btake-u']} set:html={line}></span>
