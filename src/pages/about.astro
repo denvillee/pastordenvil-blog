@@ -36,6 +36,7 @@ const areas = [
 ---
 <Shell title={`About · ${site.name}`} description={entry!.data.dek} current="about">
   <div class="arch">
+    <Mark kind="arrow" color="coral" class="edge edge-r abt-edge" />
     <Mark kind="brush" color="coral" class="arch-brush" />
 
     <section class="shell abt-hero">
@@ -45,11 +46,10 @@ const areas = [
         </h1>
         <p class="abt-hi"><span class="u">Hey, I'm Denvil.<Mark kind="underline" color="yellow" /></span></p>
         <p class="abt-bio">
-          I'm Denvil, a pastor, teacher, husband, dad, and longtime student of Scripture.
-          Before ministry, I worked in law enforcement, which probably explains some of my
-          instinct to keep asking what is really happening beneath the surface. I care about
-          the kingdom of God and what following Jesus looks like in the ordinary places we
-          actually live.
+          I'm a follower of Jesus, husband to Krista, dad to three incredible kids, and a
+          pastor who cares about what faith looks like in the real world. I'm especially
+          interested in the&#32;<span class="u">kingdom of God,<Mark kind="underline" color="yellow" /></span> forming healthy leaders,
+          and helping people come alive to the reality of God's love in ordinary life.
         </p>
         <p class="hero-acts">
           <a class="btn btn-blue" href={featureHref}>Read my latest essay <span class="arw" aria-hidden="true">&rarr;</span></a>
@@ -63,7 +63,7 @@ const areas = [
               --card, which is why this frame belongs on this palette. */}
           <Photo name="dl-about" width={900} height={1125}
                  sizes="(max-width: 900px) 92vw, 40vw"
-                 alt="Denvil Lee speaking at a lectern, one hand resting on his chest." />
+                 alt="Denvil Lee in a green argyle vest, smiling at someone off camera." />
         </ImageMask>
         <ColorDisc lines={["theology","leadership","life"]} class="abt-disc" />
       </div>

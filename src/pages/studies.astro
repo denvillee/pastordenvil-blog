@@ -14,7 +14,6 @@ import Doorway from '../components/Doorway.astro';
 import Mark from '../components/marks/Mark.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
 import ImageMask from '../components/ImageMask.astro';
-import Placeholder from '../components/Placeholder.astro';
 import Photo from '../components/Photo.astro';
 import home from '../data/home.json';
 import labels from '../data/labels.json';
@@ -33,14 +32,21 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
        description="Guided Bible studies you can walk through on your own or with a group."
        current="studies">
   <div class="arch">
+    <Mark kind="zigzag" color="yellow" class="edge edge-r std-edge" />
     <section class="shell std-hero">
       <div>
         <h1 class="page-h is-display"><span class="u">Studies<Mark kind="underline" color="blue" draw={true} /></span></h1>
         <p class="page-dek">Guided ways into Scripture, for yourself or&#32;<span class="u">with others.<Mark kind="underline" color="green" /></span></p>
       </div>
       <div class="std-art">
+        {/* Denvil's own stack, on his own table. A placeholder for the
+            Bible-and-coffee frame he is going to shoot, but a real photograph
+            of a real shelf rather than stock, and never descriptive text
+            standing in for a picture. */}
         <ImageMask shape="torn">
-          <Placeholder label="A Bible open on a table with a notebook and coffee" ratio="4 / 3" />
+          <Photo name="dl-studies" width={1400} height={1050}
+                 sizes="(max-width: 900px) 92vw, 46vw"
+                 alt="A stack of Denvil's books on a table, spines out." />
         </ImageMask>
 
       </div>

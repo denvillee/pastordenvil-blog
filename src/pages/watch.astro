@@ -1,10 +1,14 @@
 ---
 /*
-  Watch. Embeds only, never re-hosted, newest year first.
+  Watch. Denvil's teaching library, newest year first.
 
-  The reference shows category filters. There is no category in the data and
-  inventing one would be a taxonomy the content cannot support, so the page
-  groups by the one real axis it has, which is the year the talk was given.
+  Everything plays here. The host is kept in the data for attribution and
+  maintenance, and it stays out of the interface: no outbound buttons, no
+  platform names in the copy, and a site-native line if a player ever fails.
+
+  Grouping is by year because that is the one real axis the content has. When
+  the full archive lands, series and organization are already in the schema and
+  become the better grouping.
 */
 import { getCollection } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
@@ -42,7 +46,7 @@ const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b 
           <Mark kind="underline" color="blue" class="page-uline" draw={true} />
         </h1>
         <p class="page-dek">
-          Teachings and conversations,&#32;<span class="u">embedded from where they were first shared.<Mark kind="underline" color="yellow" /></span>
+          Sermons, teachings, and conversations&#32;<span class="u">gathered in one place.<Mark kind="underline" color="yellow" /></span>
         </p>
         {/* No empty state. */}
       </div>
@@ -60,18 +64,9 @@ const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b 
       </section>
     ))}
 
-    {talks.length > 0 && (
-      <section class="shell watch-more">
-        {/* The Chapel's own 2024 sermon library. Denvil is one voice among the
-            others in it, which is exactly why it belongs here as a way out
-            rather than as more of his cards. */}
-        <a class="go" href="https://vimeo.com/showcase/10899137" rel="noopener nofollow" target="_blank">
-          More from The Chapel's sermon library <span aria-hidden="true">&#8599;</span>
-        </a>
-      </section>
-    )}
-
-    {talks.length > 0 && <p class="shell watch-note">{labels.watchRights}</p>}
+    {/* No way out to a third party. This is Denvil's teaching library, and
+        where the file happens to live is a maintenance detail rather than
+        something to send a reader away over. */}
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.
       The site asked for an email too often. Subscribe now lives in one
