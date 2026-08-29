@@ -46,10 +46,10 @@
   "momentsDek": "The ordinary places where something suddenly opens up.",
   "momentsEmpty": "",
   "watchHeading": "Watch",
-  "watchDek": "Talks and teaching from Denvil Lee, embedded from the channels that posted them.",
-  "watchLine": "Talks and teaching, embedded from wherever they were posted. Nothing here is re-hosted.",
+  "watchDek": "Sermons, teachings, and conversations gathered in one place.",
+  "watchLine": "Sermons, teachings, and conversations gathered in one place.",
   "watchEmpty": "",
-  "watchRights": "These are embedded from the channels that posted them. If a player does not appear, the video has most likely been taken down at the source, and the link beside it will say so.",
+  "watchRights": "",
   "archiveHeading": "Everything",
   "archiveDek": "Every piece, newest first.",
   "archiveEmpty": "",
@@ -89,5 +89,6 @@
   "shelfHeading": "What I am reading",
   "shelfAlso": "Also on the shelf",
   "shelfMore": "Full library",
-  "latestMore": "Keep reading"
+  "latestMore": "Keep reading",
+  "watchFallback": "This message is temporarily unavailable."
 }
