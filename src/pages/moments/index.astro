@@ -6,7 +6,6 @@ import DotGrid from '../../components/marks/DotGrid.astro';
 import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
-import Signup from '../../components/Signup.astro';
 import Doorway from '../../components/Doorway.astro';
 import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
@@ -28,24 +27,26 @@ const [featured, ...rest] = entries;
         <p class="page-dek">{labels.momentsSubtitle}</p>
       </div>
       <div class="mom-quote">
+        {/* The sticky note read "Grace is not the absence of struggle, but the
+            presence of God." It was never supplied, it reads as a generic
+            inspirational line, and it interrupted the opening. */}
         <DotGrid cols={6} rows={4} class="mom-dots" />
-        <StickyNote tone="blue" tilt={1.6}>
-          <p>Grace is not the absence of struggle, but the presence of God.</p>
-        </StickyNote>
       </div>
     </section>
 
     {IntroBody && (
-      <Doorway tone="coral" href={`/moments/${intro!.id}/`}>
+      <Doorway tone="coral">
         <IntroBody />
       </Doorway>
     )}
 
     <section class="shell">
-      {featured
-        ? <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured}
-                         label="Featured moment" room={labels.momentsHeading} tone="coral" />
-        : <p class="empty-note">{labels.momentsEmpty}</p>}
+      {/* When nothing is published the listing is simply absent. The site
+          never announces its own emptiness. */}
+      {featured && (
+        <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured}
+                       label="Featured moment" room={labels.momentsHeading} tone="coral" />
+      )}
 
       {rest.length > 0 && (
         <>
@@ -60,5 +61,7 @@ const [featured, ...rest] = entries;
 
     </section>
   </div>
-  <Signup tone="card" />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>
