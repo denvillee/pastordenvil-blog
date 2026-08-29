@@ -1,10 +1,9 @@
 ---
 import Shell from './Shell.astro';
-import Signup from '../components/Signup.astro';
 import Mark from '../components/marks/Mark.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
 import RelatedContent from '../components/RelatedContent.astro';
-import { displayDate, isoDate, ROOMS, type RoomKey } from '../lib/publish';
+import { displayDate, isoDate, ROOMS, linkCitedBooks, type RoomKey } from '../lib/publish';
 import { getPassages } from '../lib/bible';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
@@ -37,6 +36,10 @@ const titleParts = markIdx >= 0
   : null;
 
 const meta = ROOMS[room];
+/* Any book named in "Where this comes from" that is already on the Bookshelf
+   becomes a link to its entry there, which is what makes Essays and Bookshelf
+   feel like one site rather than two lists. */
+const notesLinked = await linkCitedBooks(notes ?? '');
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const enc = encodeURIComponent;
 const jsonLd = {
@@ -120,7 +123,7 @@ const passages = await getPassages(scripture);
       {notes && (
         <div class="notes-block">
           <h2>{labels.articleNotesHeading}</h2>
-          <div set:html={notes}></div>
+          <div set:html={notesLinked}></div>
         </div>
       )}
 
@@ -132,11 +135,18 @@ const passages = await getPassages(scripture);
         <a href={`mailto:?subject=${enc(title)}&body=${enc(canonical)}`}>Email</a>
         <a href={canonical} data-copy-link>Copy link</a>
         </div>
-        <StickyNote tone="paper" tilt={-1.6} tape={false} class="art-thanks">
-          <p>Thanks for reading.</p>
-          <p>If this helped, share it with a friend.</p>
-        </StickyNote>
       </div>
+
+      {/* An editorial invitation rather than a generic "thanks for reading".
+          The two links are the ones a reader actually wants at the end of an
+          essay: the books behind it, and the rest of the writing. */}
+      <nav class="art-next" aria-label="Keep exploring">
+        <h2 class="art-next-h">Keep exploring</h2>
+        <ul>
+          <li><a class="go" href="/bookshelf/">See the books behind this essay <span class="arw" aria-hidden="true">&rarr;</span></a></li>
+          <li><a class="go" href={`/${ROOMS[room].path}/`}>Back to {ROOMS[room].label} <span class="arw" aria-hidden="true">&rarr;</span></a></li>
+        </ul>
+      </nav>
 
       {siblings.length > 0 && (
         <div class="week-rest">
@@ -153,7 +163,9 @@ const passages = await getPassages(scripture);
   </article>
 
   <RelatedContent room={room} slug={slug} />
-  <Signup tone="dark" />
+  {/* The Subscribe block was removed from every content page on 29 Aug.
+      The site asked for an email too often. Subscribe now lives in one
+      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>
 
 <script>
