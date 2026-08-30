@@ -856,3 +856,80 @@
 .imask-tape-tl{top:.9rem; left:-1.9rem; rotate:-34deg}
 .imask-tape-tr{top:.9rem; right:-1.9rem; rotate:34deg}
 @media (max-width:520px){ .imask-tape{display:none} }
+
+/* ── designed art plates ─────────────────────────────────────────────────
+   Denvil, 30 Aug: "All pages don't need photos of me. we'll design photos /
+   stock for what we need." These are that. Inline SVG drawn from the site's
+   own vocabulary and coloured from the tokens, so a plate weighs nothing,
+   scales to any box, and changes colour when the palette does.            */
+/* Named .artp, not .plate: /bookshelf/all/ already ships a .mini.plate for a
+   book with no cover art, and a bare .plate rule would have reached into it. */
+.artp{position:relative; width:100%; display:block}
+.artp svg{display:block; width:100%; height:auto}
+.artp-hero{max-width:26rem; margin-inline:auto}
+.artp-band{max-width:20rem; margin-inline:auto}
+@media (max-width:760px){ .artp-hero,.artp-band{max-width:19rem} }
+
+/* ── art beside a heading ────────────────────────────────────────────────
+   Everything, Every Book, Subscribe and the 404 were a headline and a list in
+   the top left of an otherwise empty screen. Each gets the art on the right of
+   the head row on a wide page and drops it entirely on a phone, where the
+   column is already full and the art would only be more to scroll past.    */
+.lib-art{display:none}
+@media (min-width:1000px){
+  .lib-grid{
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,17rem);
+    column-gap:clamp(2rem,5vw,4rem); align-items:start;
+  }
+  .lib-grid > *{grid-column:1}
+  .lib-grid > .lib-art{
+    display:block; grid-column:2; grid-row:1 / span 3;
+    position:relative; padding-top:.6rem;
+  }
+}
+.lib-dots{left:-2.8rem; bottom:-2.2rem; opacity:.4}
+
+/* Essays: the right of the head row was a field of dots and nothing else.
+   Absolutely positioned on purpose. In flow the plate was taller than two
+   lines of heading and pushed the first essay 77px further down, which is
+   exactly the thing we have spent two passes taking out. */
+.head-art{display:none}
+@media (min-width:1000px){
+  .head-art{
+    display:block; position:absolute; right:0; top:50%; translate:0 -50%;
+    width:min(15rem,34%); pointer-events:none;
+  }
+}
+.head-dots{right:-1rem; top:-1.4rem; opacity:.42}
+
+/* Subscribe: the second column of the grid was empty. */
+.sub-art{position:relative; display:none}
+@media (min-width:760px){ .sub-art{display:block} }
+.sub-dots{left:-1.2rem; top:-1rem; opacity:.42}
+
+/* 404: a headline and two links, centred in 60vh of nothing. */
+.err{grid-template-columns:1fr; min-height:auto; padding-block:clamp(3rem,8vw,6rem)}
+.err-copy{display:grid; gap:1.2rem; justify-items:start; align-content:center}
+.err-art{display:none}
+@media (min-width:860px){
+  .err{grid-template-columns:minmax(0,1fr) minmax(0,22rem);
+       gap:clamp(2rem,6vw,5rem); align-items:center}
+  .err-art{display:block}
+}
+/* The edge marks were bleeding only 14% off the page, which on Moments and
+   Bookshelf put a solid coral block against the first line of the doorway.
+   They are meant to be glimpsed at the trim, not read. */
+.edge-l{translate:-50% 0}
+.edge-r{translate:50% 0}
+
+/* Speaking had no marks at all: no edge, no dots, no tape, nothing. It was
+   the one page carrying a form and a photograph on a completely bare ground. */
+.speak-page{position:relative}
+.speak-page .sec-head{position:relative}
+.spk-dots{right:0; top:-.4rem; opacity:.4}
+@media (max-width:900px){ .spk-dots{display:none} }
+.spk-edge{top:clamp(3rem,8vw,6rem);
+  width:clamp(5rem,8vw,7rem); height:clamp(7rem,12vw,10rem)}
+@media (max-width:1200px){ .spk-edge{display:none} }
+.speak-art{margin:0 0 1.4rem}
+.speak-art img{border-radius:0}
