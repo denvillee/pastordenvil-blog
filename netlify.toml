@@ -23,6 +23,22 @@
 # The three section introductions used to have their own article URLs. They are
 # now rendered in full at the top of their section page, which is the canonical
 # and only copy, so the old addresses point at the section.
+# The opening essay of More Than Body and Breath was published as "More Than
+# Body and Breath" before that became the name of the whole series. Denvil's
+# 30 Aug handoff retitles the piece "Who Do You Think You Are?", so the old
+# address moves rather than breaking.
+[[redirects]]
+  from = "/essays/more-than-body-and-breath"
+  to = "/essays/who-do-you-think-you-are/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/essays/more-than-body-and-breath/*"
+  to = "/essays/who-do-you-think-you-are/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/essays/why-this-exists"
   to = "/essays/"

@@ -1,9 +1,17 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 
-// Phase A runs on pastordenvil.com (hosting runbook §0).
-// Phase B: set SITE_URL=https://denvillee.com in Netlify and redeploy. Nothing else changes.
-const site = process.env.SITE_URL || 'https://pastordenvil.com';
+// denvillee.com is the canonical domain and has been since the cutover.
+// pastordenvil.com stays attached only as a 301 (netlify.toml), so it is the
+// wrong thing for a canonical tag, an OG url or a sitemap entry to name.
+//
+// The default used to be pastordenvil.com, left over from Phase A, with the
+// real domain supplied as SITE_URL in Netlify. That works right up until the
+// environment variable is missing from one build, at which point every
+// canonical, every share link and the whole sitemap quietly point at a domain
+// that redirects away. The default is now the answer and SITE_URL is the
+// override, which is the way round that fails safe.
+const site = process.env.SITE_URL || 'https://denvillee.com';
 
 /* The private pages are noindex and stay out of the sitemap. Match the path
    exactly: a substring test would also swallow a future
