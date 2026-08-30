@@ -129,10 +129,14 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
           {passages.map((p, i) => (
             <blockquote class="vs-pane" data-pane={p.code} hidden={i !== 0}>
               <p>{p.text}</p>
+              {/* Named where it is quoted, the same as every passage in the
+                  body. The NET's licence asks for this. */}
+              {p.link && <p class="vs-src"><a href={p.link} rel="noopener">{p.label}</a></p>}
             </blockquote>
           ))}
           <blockquote class="vs-pane" data-pane="NLT" hidden>
             <p class="vs-wait">Loading the New Living Translation.</p>
+            <p class="vs-src"><a href="https://www.newlivingtranslation.com" rel="noopener">New Living Translation</a></p>
           </blockquote>
           <figcaption class="vs-cite">
             <cite class="vs-ref">{scripture}</cite>
