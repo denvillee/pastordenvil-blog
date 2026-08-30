@@ -46,7 +46,7 @@ const [featured, ...rest] = entries;
     </section>
 
     {IntroBody && (
-      <Doorway tone="coral">
+      <Doorway tone="coral" collapsed={entries.length > 0}>
         <IntroBody />
       </Doorway>
     )}
