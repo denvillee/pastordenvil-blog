@@ -128,7 +128,7 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
         <figure class="vs vs-head" data-vs data-ref={scripture}>
           {passages.map((p, i) => (
             <blockquote class="vs-pane" data-pane={p.code} hidden={i !== 0}>
-              <p>&ldquo;{p.text}&rdquo;</p>
+              <p>{p.text}</p>
             </blockquote>
           ))}
           <blockquote class="vs-pane" data-pane="NLT" hidden>
@@ -262,7 +262,7 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
         }
         pane.textContent = '';
         const p = document.createElement('p');
-        p.textContent = '\u201C' + text + '\u201D';
+        p.textContent = text;
         pane.appendChild(p);
         pane.dataset.loaded = ref;
       } catch {
