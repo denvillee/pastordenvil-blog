@@ -8,7 +8,7 @@ import CategoryIcon from '../components/CategoryIcon.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Photo from '../components/Photo.astro';
-import { latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS } from '../lib/publish';
+import { latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
 import home from '../data/home.json';
@@ -16,6 +16,15 @@ import labels from '../data/labels.json';
 
 const feature = await latest();
 const featureRoom = feature ? ROOMS[feature.room] : null;
+/* The launch module from Denvil's 30 Aug package: the featured essay carries a
+   small series label under it, and once the following essay is live it is
+   surfaced as the next essay rather than the two reading as halves of one
+   chapter. Both lines disappear on their own when the piece is not part of a
+   run, or when nothing follows it yet. */
+const featureSeries = feature?.data.series as string | undefined;
+const featureNext = feature && feature.room === 'essays'
+  ? await nextInSeries('essays', featureSeries, feature.data.seriesOrder)
+  : null;
 const featureMinutes = feature && feature.body.trim().split(/\s+/).filter(Boolean).length >= 150
   ? readMinutes(feature.body) : undefined;
 
@@ -115,6 +124,17 @@ const shortcuts = [
               {featureMinutes && <> &middot; {featureMinutes} min read</>}
             </p>
             <a class="go" href={`/${featureRoom!.path}/${feature.id}/`}>Read now <span class="arw" aria-hidden="true">&rarr;</span></a>
+
+            {featureSeries && (
+              <p class="feat-ser">
+                Part of <a href="/essays/#ser-h">{featureSeries}</a>
+                {featureNext && (
+                  <>
+                    {' '}&middot; Next: <a href={featureNext.href}>{featureNext.title}</a>
+                  </>
+                )}
+              </p>
+            )}
           </div>
         </article>
       ) : (
