@@ -1346,3 +1346,7 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
   flex:1 1 14rem; min-width:0;
 }
 @media (max-width:520px){ .ra-note{flex-basis:100%} }
+/* When the browser refuses to speak, the control says so rather than snapping
+   back to "Listen" as though it had finished. */
+.ra.is-failed .ra-btn{border-color:var(--coral); color:var(--coral-ink); cursor:default}
+.ra.is-failed .ra-ico{display:none}
