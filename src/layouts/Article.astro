@@ -13,6 +13,7 @@ interface Props {
   room: RoomKey;
   title: string; dek: string; metaDescription?: string; feedback?: boolean;
   image?: string; imageAlt?: string;
+  next?: { series: string; title: string; dek: string; href: string } | null;
   publishAt: Date; scripture?: string; series?: string;
   week?: number; idea?: string | null; movement?: string | null;
   seriesPlace?: { name: string; order: number; total: number } | null;
@@ -25,7 +26,7 @@ interface Props {
   slug?: string;
 }
 const {
-  room, title, dek, metaDescription, feedback = false, image, imageAlt, publishAt, scripture, series,
+  room, title, dek, metaDescription, feedback = false, image, imageAlt, next = null, publishAt, scripture, series,
   week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
   titleMark, slug,
 } = Astro.props;
@@ -86,11 +87,13 @@ const passages = await getPassages(scripture);
         <span><time datetime={isoDate(publishAt)}>{displayDate(publishAt)}</time></span>
         {scripture && <span>{scripture}</span>}
         {readMinutes ? <span>{readMinutes} min read</span> : null}
-        {/* Where this sits in its run, linking back to the list of the whole
-            thing. No previous and next arrows: with most of a series still to
-            come, the list is the more useful way back. */}
+        {/* The run's name, linking back to the whole list. It used to read
+            "Part 1 of 2", and Denvil's 30 Aug package rules that out: these go
+            out as standalone essays, with no chapter numbers and no language
+            that makes the site look like a book being serialised. The name is
+            the useful half anyway. */}
         {seriesPlace
-          ? <span><a class="art-series" href={`/${meta.path}/#ser-h`}>Part {seriesPlace.order} of {seriesPlace.total} &middot; {seriesPlace.name}</a></span>
+          ? <span><a class="art-series" href={`/${meta.path}/#ser-h`}>{seriesPlace.name}</a></span>
           : series && <span>{series}</span>}
       </div>
 
@@ -157,6 +160,19 @@ const passages = await getPassages(scripture);
         <a href={canonical} data-copy-link>Copy link</a>
         </div>
       </div>
+
+      {/* The next essay in the run. It renders only when that essay is live,
+          so the last piece published never shows a card pointing at nothing. */}
+      {next && (
+        <aside class="art-onward">
+          <p class="art-onward-k">Next in {next.series}</p>
+          <h2 class="art-onward-t"><a href={next.href}>{next.title}</a></h2>
+          <p class="art-onward-d">{next.dek}</p>
+          <p class="art-onward-a">
+            <a class="btn btn-blue" href={next.href}>Continue the series <span class="arw" aria-hidden="true">&rarr;</span></a>
+          </p>
+        </aside>
+      )}
 
       {/* Denvil's own invitation, on the pieces he is writing in public. It
           is opt-in per piece rather than site-wide: a short Moment does not
