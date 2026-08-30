@@ -636,12 +636,11 @@
 .mom-art img{display:block; width:100%; height:auto}
 @media (max-width:900px){ .mom-art{max-width:20rem; margin-inline:0} }
 
-/* Speaking. A transparent PNG rather than a photo on a matching ground: a flat
-   cream field survives JPEG compression as a faintly visible rectangle, which
-   is the one thing a cutout must not do. Floated so the copy runs beside it. */
-.speak-art{float:right; display:block; height:auto; width:min(34%,9.5rem);
-  margin:.4rem 0 1rem 1.6rem}
-@media (max-width:560px){ .speak-art{float:none; width:min(50%,8rem); margin:0 0 1.2rem} }
+/* Speaking leads with the photograph rather than floating it: the page asks
+   someone to picture him in their room, so the picture goes first. Landscape,
+   so it sits shorter than the copy instead of towering over it. */
+.speak-art{display:block; width:100%; margin:0 0 1.4rem}
+.speak-art img{display:block; width:100%; height:auto; border-radius:var(--r)}
 
 /* The byline face. Small, round, and it sits on the meta row as one more item
    so it never pushes the date onto its own line. */
@@ -770,3 +769,20 @@
 .edge.abt-edge{top:clamp(28rem,46vw,38rem);                    /* arrow 120x60 */
   width:clamp(7rem,12vw,10rem); height:clamp(3.5rem,6vw,5rem)}
 .edge svg{width:100%; height:100%; display:block}
+
+/* Bookshelf was the last hero still centring its copy, which is why it opened
+   114px down while every other page opened at 48. */
+.book-hero{align-items:start}
+
+/* Moments and Studies carry a heading and a two-line dek and nothing else, so
+   they get the smallest pictures on the site: at 25rem the column beside them
+   stood empty for a third of a screen. Placed at the end of the file on
+   purpose, because they have to beat the shared 25rem cap above. */
+.mom-art,.mom-art img{max-height:20rem}
+.std-art img{max-height:20rem}
+
+/* Everything: the filter row. Same chip as the card studio so the site keeps
+   one control vocabulary. */
+.arc-filters{display:flex; gap:.5rem; flex-wrap:wrap; margin:1.2rem 0 1.8rem}
+.arc-item .r{color:var(--muted); font-size:.72rem; font-weight:700;
+  letter-spacing:.12em; text-transform:uppercase; white-space:nowrap}
