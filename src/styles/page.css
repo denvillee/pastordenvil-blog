@@ -794,20 +794,33 @@
    down to roughly 500. No script: it is a details element, so it opens with
    JavaScript off and it is keyboard operable for free.                     */
 .door.is-folded{padding-bottom:clamp(1rem,2.4vw,1.6rem)}
-.door-fold{margin-top:.9rem}
-.door-fold > .door-body{padding-top:1.05rem}
-.door-fold > .door-body > p:first-child{font-size:inherit; font-weight:400; color:var(--muted)}
+/* The toggle runs on from the last sentence. Set as a block it read as a
+   heading for the posts underneath rather than as a link, which is exactly
+   what Denvil circled on 30 Aug. Inline, underlined and in the link colour,
+   there is nothing else it could be. */
+.door-lead > p:last-of-type{display:inline}
+.door-fold{display:inline}
+.door-fold > .door-body{
+  display:block;
+  margin-top:1.05rem;
+  font-size:var(--step-0);
+}
+.door-fold > .door-body > p:first-child{font-size:inherit; font-weight:400; color:var(--muted); max-width:none}
 
 .door-toggle{
-  display:inline-flex; align-items:center; gap:.4rem; cursor:pointer;
-  list-style:none; width:max-content;
-  font-size:.72rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
-  color:var(--navy); padding:.5rem 0; min-height:44px;
+  display:inline; cursor:pointer; list-style:none;
+  font-size:inherit; font-weight:700; letter-spacing:inherit; text-transform:none;
+  color:var(--blue-ink);
+  /* The tap target comes from padding the inline box, so it can still be hit
+     on a phone without shoving the link a line and a half down the page. */
+  padding:.45rem .1rem .45rem .18rem;
 }
 .door-toggle::-webkit-details-marker{display:none}
-.door-toggle:hover .door-toggle-t{text-decoration:underline; text-underline-offset:3px}
-.door-toggle:focus-visible{outline:2px solid var(--navy); outline-offset:3px; border-radius:2px}
-.door-caret{transition:rotate .18s ease; font-size:.8em; line-height:1}
+.door-toggle::marker{content:""}
+.door-toggle-t{text-decoration:underline; text-underline-offset:3px; text-decoration-thickness:2px}
+.door-toggle:hover .door-toggle-t{color:var(--navy); text-decoration-thickness:3px}
+.door-toggle:focus-visible{outline:2px solid var(--navy); outline-offset:2px; border-radius:2px}
+.door-caret{margin-left:.28em; display:inline-block; transition:rotate .18s ease; font-size:.72em; line-height:1}
 .door-fold[open] .door-caret{rotate:180deg}
 @media (prefers-reduced-motion:reduce){ .door-caret{transition:none} }
 
