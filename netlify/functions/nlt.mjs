@@ -41,13 +41,36 @@ function toNltRef(ref) {
   return to ? `${b}.${ch}.${from}-${b}.${ch}.${to}` : `${b}.${ch}.${from}`;
 }
 
+/* Remove every <span class="..."> whose class matches, along with everything
+   it contains, counting nested spans so the right closing tag is found. */
+function dropSpan(html, cls) {
+  const open = new RegExp(`<span[^>]*class="[^"]*\\b${cls}\\b[^"]*"[^>]*>`, 'i');
+  let out = html;
+  for (let guard = 0; guard < 200; guard++) {
+    const m = open.exec(out);
+    if (!m) break;
+    let i = m.index + m[0].length;
+    let depth = 1;
+    const tag = /<\/?span\b[^>]*>/gi;
+    tag.lastIndex = i;
+    let t;
+    while (depth > 0 && (t = tag.exec(out))) {
+      depth += t[0][1] === '/' ? -1 : 1;
+      i = t.index + t[0].length;
+    }
+    if (depth > 0) { i = out.length; }
+    out = out.slice(0, m.index) + out.slice(i);
+  }
+  return out;
+}
+
 function parse(html) {
   /* The API answers with a page, not JSON, and a verse element can carry more
      than the verse: the book-and-chapter header, an editorial subhead, a
      "Book One (Psalms 1-41)" label. Those are Tyndale's apparatus rather than
      the verse, and left in they show up as "Ruth 1 Elimelech Moves His Family
      to Moab In the days when...". Strip the headings first, then the tags. */
-  const clean = (t) => t
+  const clean = (t) => dropSpan(t, 'tn')
     .replace(/<h[1-6][^>]*>[\s\S]*?<\/h[1-6]>/gi, '')     // chapter headers and subheads
     .replace(/<span class="vn">\d+<\/span>/g, '')          // the verse number
     .replace(/<span class="(?:cw|cw_ch|bk_ch_vs_header)"[^>]*>[\s\S]*?<\/span>/gi, '')
@@ -55,10 +78,10 @@ function parse(html) {
        "So God created human beings*1:27 Or the man; Hebrew reads ha-adam. in
        his own image", with the apparatus wedged into the middle of the verse.
        The note belongs to their edition, not to the sentence we are showing,
-       so the marker and the note both come out. */
+       so the marker and the note both come out. The note span nests other
+       spans, so it needs dropSpan below rather than a lazy regex: a lazy
+       match stops at the inner </span> and leaves the note text behind. */
     .replace(/<a[^>]*class="[^"]*a-tn[^"]*"[^>]*>[\s\S]*?<\/a>/gi, '')
-    .replace(/<span class="tn"[^>]*>[\s\S]*?<\/span>/gi, '')
-    .replace(/<span class="tn-ref"[^>]*>[\s\S]*?<\/span>/gi, '')
     .replace(/<[^>]+>/g, '')
     .replace(/&nbsp;/g, ' ')
     .replace(/&#(\d+);/g, (_, d) => String.fromCharCode(+d))
