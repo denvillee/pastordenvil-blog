@@ -8,6 +8,7 @@ import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
 import Doorway from '../../components/Doorway.astro';
+import ArtPlate from '../../components/ArtPlate.astro';
 import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
@@ -40,7 +41,7 @@ const [featured, ...rest] = entries;
             no tape, no doodles, no arrow. The restraint is the joke. */}
         <Photo name="dl-helmet" width={1000} height={1250} class="mom-art"
                sizes="(max-width: 900px) 80vw, 34vw"
-               alt="Denvil Lee wearing a gold toy space helmet, cut out and taped down among drawn marks." />
+               alt="Denvil Lee wearing a gold toy space helmet, cut out among drawn marks." />
         <DotGrid cols={6} rows={4} class="mom-dots" />
       </div>
     </section>
@@ -48,6 +49,10 @@ const [featured, ...rest] = entries;
     {IntroBody && (
       <Doorway tone="coral" collapsed={entries.length > 0}>
         <IntroBody />
+        {/* Moments has no sticky note, because a note needs words and none
+            were written for it. Designed art instead, per Denvil's 30 Aug
+            note that not every page needs a photograph of him. */}
+        <ArtPlate slot="rail" kind="notice" class="artp-band" />
       </Doorway>
     )}
 
