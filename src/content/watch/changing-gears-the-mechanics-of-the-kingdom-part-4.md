@@ -6,7 +6,7 @@ videoId: "761132093"
 poster: "talk-changing-gears-the-mechanics-of-the-kingdom-part-4"
 context: "The Chapel"
 series: "Changing Gears: The Mechanics of the Kingdom"
-givenOn: 2022-10
+givenOn: 2022-10-09
 durationSeconds: 2519
 order: 0
 ---
