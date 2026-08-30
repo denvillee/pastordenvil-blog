@@ -90,6 +90,9 @@ if (wrap && article && supported) {
   let queue = [];
   let index = 0;
   let speaking = false;
+  /* Whether a single word has actually been spoken this run. It is the only
+     way to tell a browser that refused from one that simply finished. */
+  let started = false;
 
   function paint(state) {
     speaking = state === 'playing';
@@ -107,16 +110,46 @@ if (wrap && article && supported) {
     u.rate = 1;
     u.pitch = 1;
     u.lang = document.documentElement.lang || 'en';
+    u.onstart = () => { started = true; };
     u.onend = () => { if (speaking) speakFrom(index + 1); };
-    /* An error mid-queue should not take the whole essay down with it. */
-    u.onerror = () => { if (speaking) speakFrom(index + 1); };
+
+    /* Error handling, learned the hard way on 30 Aug: a browser that lists
+       voices but cannot actually play them fails every utterance instantly.
+       The first version advanced on any error, so all 127 sentences failed in
+       a few milliseconds and the button quietly went back to saying "Listen"
+       as though the reader had simply finished. Silence that looks like
+       success is the worst of the options.
+
+       So: cancel and interrupted are ours, from stop and from pause, and are
+       not failures. A real failure before a single word has been spoken is the
+       browser refusing, and is said out loud rather than swallowed. A real
+       failure once it is running skips that sentence and carries on, which is
+       what an unpronounceable word deserves. */
+    u.onerror = (e) => {
+      const reason = e && e.error;
+      if (reason === 'canceled' || reason === 'interrupted') return;
+      if (!started) { fail(); return; }
+      if (speaking) speakFrom(index + 1);
+    };
     window.speechSynthesis.speak(u);
+  }
+
+  function fail() {
+    window.speechSynthesis.cancel();
+    queue = [];
+    index = 0;
+    started = false;
+    paint('idle');
+    label.textContent = 'Your browser would not start the reader';
+    wrap.classList.add('is-failed');
   }
 
   function reset() {
     window.speechSynthesis.cancel();
     queue = [];
     index = 0;
+    started = false;
+    wrap.classList.remove('is-failed');
     paint('idle');
   }
 
@@ -126,6 +159,8 @@ if (wrap && article && supported) {
       queue = sentences(collect());
       if (!queue.length) return;
       synth.cancel();
+      started = false;
+      wrap.classList.remove('is-failed');
       paint('playing');
       speakFrom(0);
       return;
