@@ -19,7 +19,8 @@ const mins = words >= 150 ? readMinutes(entry.body) : undefined;
   </a>
   <div class="fcard-body">
     <h2 class="fcard-h"><a href={href}>{d.title}</a></h2>
-    <p class="fcard-dek">{d.dek}</p>
+    {/* The teaser when the piece has one, the deck otherwise. */}
+    <p class="fcard-dek">{d.teaser ?? d.dek}</p>
     <p class="fcard-open">{openingParagraph(entry.body, 150)}</p>
     <a class="go" href={href}>Read essay <span class="arw" aria-hidden="true">&rarr;</span></a>
     <p class="fcard-meta">

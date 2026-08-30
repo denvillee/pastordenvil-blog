@@ -19,7 +19,8 @@ const mins = words >= 150 ? readMinutes(entry.body) : undefined;
     </ImageMask>
   </a>
   <h3 class="ecard-h"><a href={href}>{d.title}</a></h3>
-  <p class="ecard-dek">{d.dek}</p>
+  {/* The teaser when the piece has one, the deck otherwise. */}
+    <p class="ecard-dek">{d.teaser ?? d.dek}</p>
   <p class="ecard-meta">
     <time datetime={isoDate(d.publishAt)}>{displayDate(d.publishAt)}</time>
     {mins && <> &middot; {mins} min read</>}
