@@ -933,3 +933,16 @@
 @media (max-width:1200px){ .spk-edge{display:none} }
 .speak-art{margin:0 0 1.4rem}
 .speak-art img{border-radius:0}
+
+/* ── the last of the hero slack ──────────────────────────────────────────
+   30 Aug, third pass. On the section landings the art column is a portrait
+   and the copy is three lines, so the left column runs out with the art still
+   going: 245px of nothing on Moments between the deck and the doorway. The
+   caps come down to 17rem and the space under the hero comes off with them.
+   What is left is the geometry of a two-column hero, and the only way to take
+   it out entirely is to shrink the photographs past the point where they are
+   worth having. */
+.mom-art,.mom-art img,.std-art img,.lead-art img{max-height:17rem}
+.book-hero .imask img{max-height:15rem; object-fit:cover; object-position:50% 40%}
+.mom-hero,.std-hero,.lead-hero,.book-hero{margin-bottom:clamp(.6rem,1.4vw,1rem)}
+.door{padding-top:clamp(.2rem,1vw,.7rem)}
