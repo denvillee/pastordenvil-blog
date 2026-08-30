@@ -43,7 +43,7 @@ const [featured, ...rest] = entries;
         )}
       </div>
       <div class="lead-art">
-        <ImageMask shape="torn">
+        <ImageMask shape="torn" tape="yellow">
           <Photo name="dl-leaders" width={900} height={1125}
                  sizes="(max-width: 900px) 92vw, 46vw"
                  alt="Denvil Lee at a lectern in a cream shirt, one hand resting on his chest." />
@@ -55,8 +55,15 @@ const [featured, ...rest] = entries;
     </section>
 
     {IntroBody && (
-      <Doorway tone="blue">
+      <Doorway tone="blue" collapsed={entries.length > 0}>
         <IntroBody />
+        {/* While the room is empty the note moves up beside the doorway. The
+            aside below it has nothing to sit against yet, and the doorway's
+            own column left the right half of the page blank for 800px. */}
+        <StickyNote slot="rail" tone="blue" tilt={-1.6} tape={false} class="side-note">
+          Leadership isn't about having all the answers. It's about keeping your
+          eyes on Jesus and serving the people in front of you.
+        </StickyNote>
       </Doorway>
     )}
 
@@ -83,12 +90,14 @@ const [featured, ...rest] = entries;
         )}
       </div>
 
-      <aside class="arch-side" aria-label="More on this site">
-        <StickyNote tone="blue" tilt={-1.6} tape={false} class="side-note">
-          Leadership isn't about having all the answers. It's about keeping your
-          eyes on Jesus and serving the people in front of you.
-        </StickyNote>
-      </aside>
+      {entries.length > 0 && (
+        <aside class="arch-side" aria-label="More on this site">
+          <StickyNote tone="blue" tilt={-1.6} tape={false} class="side-note">
+            Leadership isn't about having all the answers. It's about keeping your
+            eyes on Jesus and serving the people in front of you.
+          </StickyNote>
+        </aside>
+      )}
     </div>
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.
