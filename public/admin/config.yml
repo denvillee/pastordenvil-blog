@@ -51,7 +51,7 @@ collections:
       - { label: Social image, name: ogImage, widget: image, required: false, hint: 'Optional. Leave blank to use the site default.' }
       - { label: Where this comes from, name: notes, widget: text, required: false, hint: 'Attribution block under the article. Simple HTML is allowed: <em>, <b>, <a href>.' }
       - { label: 'Invite a private response', name: respond, widget: boolean, default: false, required: false, hint: 'Adds a short form at the end so a reader can write to you about this piece. It goes to you privately and is never shown on the site. Nothing a reader sends is published.' }
-      - { label: Body, name: body, widget: markdown, hint: 'To make a line stand out, put it in a quote block starting with [!BIG] for a big claim, [!CIRCLE] for a short line with a circle drawn round it, or [!QUOTE] for a note card under a strip of tape. A quotation ending with a reference in brackets, like (Genesis 1:27), becomes a passage the reader can change translation on.' }
+      - { label: Body, name: body, widget: markdown, hint: 'To make a line stand out, put it in a quote block starting with [!BIG] for a big claim, [!CIRCLE] for a short line with a circle drawn round it, or [!QUOTE] for a note card under a strip of tape. A quotation ending with a reference in brackets, like (Genesis 1:27), becomes a passage the reader can change translation on. Verses that run on from each other belong in ONE quote block with a range, like (John 13:4-5): two blocks back to back become two separate cards with two separate translation switchers, which breaks one sentence in half.' }
 
   - name: leaders
     label: For Leaders
