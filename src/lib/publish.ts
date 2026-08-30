@@ -243,11 +243,26 @@ export async function linkCitedBooks(html: string) {
   if (!html) return html;
   const books = await getCollection('reading' as any);
   const live = books.filter((b: any) => isLive(b.data));
-  /* Longest title first, so a title that contains a shorter one wins. */
-  const byLength = [...live].sort(
-    (a: any, b: any) => (b as any).data.title.length - (a as any).data.title.length
-  );
   const used = new Set<string>();
+  /* Both the title and the author are worth linking. An essay names Walton or
+     Imes in the prose paragraphs above and only gives the book title down in a
+     footnote, so linking titles alone leaves the name a reader actually reads
+     unlinked. Longest form first so "Carmen Joy Imes" wins over "Imes", and
+     each shelf entry is linked once per page either way. */
+  const needles: Array<{ id: string; kind: 'title' | 'author'; text: string }> = [];
+  for (const b of live) {
+    const d = (b as any).data;
+    const id = (b as any).id as string;
+    if (d.title && d.title.length >= 6) needles.push({ id, kind: 'title', text: d.title });
+    if (d.author && d.author.length >= 6) {
+      needles.push({ id, kind: 'author', text: d.author });
+      /* Surname alone, which is how he refers to them on second mention. */
+      const parts = String(d.author).trim().split(/\s+/);
+      const last = parts[parts.length - 1];
+      if (last && last.length >= 4) needles.push({ id, kind: 'author', text: last });
+    }
+  }
+  needles.sort((a, b) => b.text.length - a.text.length);
   /* Split on tags and only ever touch the text between them, so a title can be
      matched inside <em>...</em> without the markup interfering and without a
      match ever landing inside an attribute. */
@@ -261,11 +276,13 @@ export async function linkCitedBooks(html: string) {
       continue;
     }
     if (insideLink || !part.trim()) continue;
-    for (const b of byLength) {
-      const id = (b as any).id as string;
+    for (const n of needles) {
+      /* One link per book for the name and one for the title, not one per
+         book overall: he introduces a scholar by name in the prose and gives
+         the book only in a footnote, and both are worth a link. */
+      const id = `${n.id}:${n.kind}`;
       if (used.has(id)) continue;
-      const title = (b as any).data.title as string;
-      if (!title || title.length < 6) continue;
+      const title = n.text;
       /* Match on a normalised copy and slice the original. A shelf entry is
          typed with a straight apostrophe and the rendered prose has a curly
          one, so "Being God's Image" never found "Being God\u2019s Image" and
@@ -283,7 +300,7 @@ export async function linkCitedBooks(html: string) {
       if (after && /[A-Za-z0-9]/.test(after)) continue;
       used.add(id);
       parts[i] = parts[i].slice(0, at)
-        + `<a class="cite-book" href="/bookshelf/#book-${id}">${parts[i].slice(at, at + needle.length)}</a>`
+        + `<a class="cite-book" href="/bookshelf/#book-${n.id}">${parts[i].slice(at, at + needle.length)}</a>`
         + parts[i].slice(at + needle.length);
     }
   }

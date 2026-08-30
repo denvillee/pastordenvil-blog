@@ -109,8 +109,14 @@ function passageBlock(ref: string, quotedHtml: string, passages: Passage[]) {
          like: may the Lord be with you!\u201D\u201D\u201D. The card, the rule and the
          reference underneath already say this is a quotation. Denvil's own
          "As quoted" pane keeps whatever marks he typed, because that is his
-         sentence and not ours to tidy. */
-      `<blockquote class="vs-pane" data-pane="${p.code}" hidden><p>${esc(p.text)}</p></blockquote>`
+         sentence and not ours to tidy.
+
+         The source link is not decoration. The NET's licence asks to be named
+         where it is quoted, and every pane that shows somebody else's work
+         should say whose it is and where to read more of it. */
+      `<blockquote class="vs-pane" data-pane="${p.code}" hidden><p>${esc(p.text)}</p>` +
+      (p.link ? `<p class="vs-src"><a href="${esc(p.link)}" rel="noopener">${esc(p.label)}</a></p>` : '') +
+      `</blockquote>`
     );
     tabs.push(
       `<button type="button" class="vs-tab" data-vs-set="${p.code}" aria-pressed="false">${p.label}</button>`
@@ -123,7 +129,10 @@ function passageBlock(ref: string, quotedHtml: string, passages: Passage[]) {
      storing one, and it is the whole reason this pane looks different. */
   const hasNlt = passages.some((p) => p.code === 'NLT');
   if (!hasNlt) {
-    panes.push(`<blockquote class="vs-pane" data-pane="NLT" hidden><p class="vs-wait">Loading the New Living Translation.</p></blockquote>`);
+    panes.push(
+      `<blockquote class="vs-pane" data-pane="NLT" hidden><p class="vs-wait">Loading the New Living Translation.</p>` +
+      `<p class="vs-src"><a href="https://www.newlivingtranslation.com" rel="noopener">New Living Translation</a></p></blockquote>`
+    );
     tabs.push(`<button type="button" class="vs-tab" data-vs-set="NLT" aria-pressed="false">NLT</button>`);
   }
 
@@ -141,10 +150,16 @@ function passageBlock(ref: string, quotedHtml: string, passages: Passage[]) {
 
 /* ── callouts ───────────────────────────────────────────────────────────── */
 
+/* The claim, with the site's own drawn underline beneath it.
+
+   Not a CSS shape: this is the same uneven path Mark.astro draws everywhere
+   else on the site, so a big idea in an essay is marked with the identical
+   stroke as a marked word in a heading. It sits under the block rather than
+   wrapped around the words, because .u stretches to its box and a wrapper
+   round a three-line claim gives you one enormous rule down the side of it. */
 function bigIdea(inner: string) {
-  /* The underline goes under the last few words rather than the whole claim:
-     a rule the full width of a three-line statement reads as a border. */
-  return `<aside class="bigidea"><p class="bigidea-t">${inner}</p></aside>`;
+  return `<aside class="bigidea"><p class="bigidea-t">${inner}</p>` +
+    `<span class="bigidea-u">${mark('underline-double', 'yellow')}</span></aside>`;
 }
 
 function circled(inner: string) {
