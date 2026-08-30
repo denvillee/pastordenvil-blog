@@ -1032,21 +1032,19 @@ hr.mid::before{content:"\00B7 \00A0 \00B7 \00A0 \00B7"; letter-spacing:.35em; fo
 }
 .bigidea-t + .bigidea-t{margin-top:.5em}
 
-/* The rule sits under the claim rather than inside it: a hand-drawn stroke
-   stretched across three lines of display type reads as a border, and the
-   whole point of these marks is that they do not. */
-.bigidea::after{
-  content:"";
+/* The rule sits under the claim rather than inside it: .u stretches a mark to
+   its whole box, and wrapped round a three-line claim that gives you one
+   enormous stroke down the side of it. So the drawn path goes in a block of
+   its own beneath, keeping the real mark and losing the problem. */
+.bigidea-u{
+  position:relative;
   display:block;
-  width:min(11rem,52%);
-  height:.5rem;
-  margin-top:.85rem;
-  background:var(--gold);
-  clip-path:polygon(0 42%,14% 20%,33% 34%,52% 16%,71% 32%,88% 18%,100% 36%,
-                    98% 78%,80% 62%,62% 82%,44% 64%,26% 84%,10% 66%,1% 82%);
-  opacity:.92;
+  width:min(12rem,54%);
+  height:.62rem;
+  margin-top:.9rem;
 }
-.bigidea-c::after{display:none}
+.bigidea-u > .mk{position:absolute; inset:0; width:100%; height:100%}
+.bigidea-c .bigidea-u{display:none}
 
 /* The circled line. .c is the site's own circle wrapper from marks.css, and
    is-display retunes the inset so the loop clears display-size letterforms. */
