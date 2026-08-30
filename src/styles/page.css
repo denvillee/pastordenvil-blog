@@ -978,3 +978,23 @@
 .art-hero{margin:clamp(1.4rem,3.4vw,2.2rem) 0 0; padding:0}
 .art-hero img{display:block; width:100%; height:auto;
   border-radius:var(--r) var(--r-lg) var(--r-sm) var(--r-lg); box-shadow:var(--shadow)}
+
+/* ── the next essay in the run ───────────────────────────────────────────
+   Rendered only when the next piece is actually live, so the most recent
+   essay never shows a card pointing at nothing. */
+.art-onward{margin-top:clamp(2rem,4.5vw,3rem); padding:clamp(1.3rem,3vw,1.9rem) clamp(1.4rem,3.4vw,2.1rem);
+  border-radius:var(--r); background:var(--tint-navy); max-width:62ch}
+.art-onward-k{font-size:.68rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--navy); margin:0 0 .5rem}
+.art-onward-t{font-size:var(--step-2); font-weight:900; letter-spacing:-.03em; margin:0 0 .5rem}
+.art-onward-t a{color:var(--ink)}
+.art-onward-t a:hover{text-decoration:underline; text-underline-offset:3px}
+.art-onward-d{color:var(--muted); line-height:1.6; margin:0}
+.art-onward-a{margin-top:1.1rem !important}
+
+/* His own divider between movements inside a piece. */
+hr.mid{border:0; height:auto; margin:clamp(1.6rem,4vw,2.4rem) auto; width:100%;
+  text-align:center; color:var(--rule-strong)}
+hr.mid::before{content:"\00B7 \00A0 \00B7 \00A0 \00B7"; letter-spacing:.35em; font-size:1.1rem}
+.feat-ser{margin-top:.9rem; font-size:.82rem; color:var(--muted)}
+.feat-ser a{color:var(--navy); font-weight:700; text-decoration:underline; text-underline-offset:2px}
