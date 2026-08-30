@@ -51,6 +51,14 @@ function parse(html) {
     .replace(/<h[1-6][^>]*>[\s\S]*?<\/h[1-6]>/gi, '')     // chapter headers and subheads
     .replace(/<span class="vn">\d+<\/span>/g, '')          // the verse number
     .replace(/<span class="(?:cw|cw_ch|bk_ch_vs_header)"[^>]*>[\s\S]*?<\/span>/gi, '')
+    /* Tyndale's own translation notes. Left in, Genesis 1:27 comes back as
+       "So God created human beings*1:27 Or the man; Hebrew reads ha-adam. in
+       his own image", with the apparatus wedged into the middle of the verse.
+       The note belongs to their edition, not to the sentence we are showing,
+       so the marker and the note both come out. */
+    .replace(/<a[^>]*class="[^"]*a-tn[^"]*"[^>]*>[\s\S]*?<\/a>/gi, '')
+    .replace(/<span class="tn"[^>]*>[\s\S]*?<\/span>/gi, '')
+    .replace(/<span class="tn-ref"[^>]*>[\s\S]*?<\/span>/gi, '')
     .replace(/<[^>]+>/g, '')
     .replace(/&nbsp;/g, ' ')
     .replace(/&#(\d+);/g, (_, d) => String.fromCharCode(+d))
