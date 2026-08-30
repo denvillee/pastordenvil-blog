@@ -4,6 +4,9 @@ import Shell from '../layouts/Shell.astro';
 import site from '../data/site.json';
 import Photo from '../components/Photo.astro';
 import labels from '../data/labels.json';
+import Mark from '../components/marks/Mark.astro';
+import DotGrid from '../components/marks/DotGrid.astro';
+import ImageMask from '../components/ImageMask.astro';
 const entry = await getEntry('pages', 'speaking');
 const { Content } = await render(entry!);
 /* Netlify Forms. data-netlify="true" registers the form at build time.
@@ -11,9 +14,12 @@ const { Content } = await render(entry!);
    (Cloudflare Email Routing, hosting runbook §5). */
 ---
 <Shell current="speaking" title={`${entry!.data.title} · ${site.name}`} description={entry!.data.dek}>
-  <section class="band shell">
+  <div class="arch">
+  <section class="band shell speak-page">
+    <Mark kind="brush" color="green" class="edge edge-l spk-edge" />
     <div class="sec-head">
-      <h1 class="page-h is-display">Speaking + Coaching<span class="dot">.</span></h1>
+      <h1 class="page-h is-display">Speaking + <span class="u">Coaching<span class="dot">.</span><Mark kind="underline" color="yellow" draw={true} /></span></h1>
+      <DotGrid cols={6} rows={4} class="spk-dots" />
       {/* The "availability" chip is gone with the cohort: it implied a
           schedule Denvil never supplied. */}
     </div>
@@ -22,9 +28,11 @@ const { Content } = await render(entry!);
         {/* Him actually teaching in a room, which is what this page is asking
             people to book. Landscape rather than portrait so it sits shorter
             than the copy beside it instead of towering over it. */}
-        <Photo name="dl-speaking" width={1200} height={900} class="speak-art"
-               sizes="(max-width: 860px) 92vw, 42vw"
-               alt="Denvil Lee teaching from a stage, the room and the screens behind him." />
+        <ImageMask shape="torn" tape="coral" class="speak-art">
+          <Photo name="dl-speaking" width={1200} height={900}
+                 sizes="(max-width: 860px) 92vw, 42vw"
+                 alt="Denvil Lee teaching from a stage, the room and the screens behind him." />
+        </ImageMask>
         <Content />
       </div>
       <form class="speak-form" name="speaking" method="POST" data-netlify="true" netlify-honeypot="company" action="/speaking/thanks/">
@@ -54,4 +62,5 @@ const { Content } = await render(entry!);
       </form>
     </div>
   </section>
+  </div>
 </Shell>

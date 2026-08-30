@@ -1,17 +1,24 @@
 ---
 import Shell from '../layouts/Shell.astro';
 import Mark from '../components/marks/Mark.astro';
+import ArtPlate from '../components/ArtPlate.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 ---
 <Shell title={`Not here · ${site.name}`} description="That page does not exist." noindex={true}>
   <section class="shell err">
     <Mark kind="brush" color="yellow" class="arch-brush" />
+    <div class="err-copy">
     <h1 class="err-h is-display"><span class="c">{labels.notFoundHeading}<Mark kind="circle-loose" color="coral" /></span></h1>
     <p class="page-dek" set:html={labels.notFoundBody}></p>
     <p class="err-acts">
       <a class="btn btn-blue" href="/">Back to the front <span class="arw" aria-hidden="true">&rarr;</span></a>
       <a class="go" href="/essays/">Read an essay <span class="arw" aria-hidden="true">&rarr;</span></a>
     </p>
+    </div>
+    {/* The page was a headline and two links in the top left of an otherwise
+        empty screen. Designed art rather than a photograph: this is not a page
+        about Denvil. */}
+    <ArtPlate kind="lost" class="artp-hero err-art" />
   </section>
 </Shell>

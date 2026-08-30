@@ -3,6 +3,8 @@ import { getCollection } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
 import { live, displayDate, isoDate, ROOMS, type RoomKey } from '../lib/publish';
 import site from '../data/site.json';
+import ArtPlate from '../components/ArtPlate.astro';
+import DotGrid from '../components/marks/DotGrid.astro';
 import labels from '../data/labels.json';
 
 /* Everything ever published, newest first, grouped by year.
@@ -57,7 +59,8 @@ const byYear = years.map((y) => ({ year: y, items: rows.filter((r) => r.date.get
 
 ---
 <Shell title={`${labels.archiveHeading} · ${site.name}`} description={labels.archiveDek}>
-  <section class="band shell arch-page">
+  <section class="band shell arch-page lib-grid">
+    <div class="lib-head">
     <div class="sec-head">
       <h1 class="page-h is-display">{labels.archiveHeading}<span class="dot">.</span></h1>
       {/* "1 piece · 1 year" is not a statistic worth showing. The whole
@@ -68,6 +71,12 @@ const byYear = years.map((y) => ({ year: y, items: rows.filter((r) => r.date.get
       )}
     </div>
 
+    </div>
+    {/* Everything was a heading and a list on an otherwise blank page. */}
+    <div class="lib-art">
+      <DotGrid cols={6} rows={4} class="lib-dots" />
+      <ArtPlate kind="timeline" class="artp-band" />
+    </div>
     {kinds.length > 1 && (
       <div class="arc-filters" role="group" aria-label="Filter by kind">
         <button type="button" class="chip-btn on" data-kind="all" aria-pressed="true">All</button>
