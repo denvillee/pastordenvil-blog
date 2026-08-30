@@ -17,7 +17,9 @@ const roomSchema = z.object({
   /* Ask the reader for a response at the end of the piece. Off by default and
      set per piece: a short Moment does not need anybody to review its
      argument, and an invitation on everything stops being an invitation. */
-  feedback: z.boolean().default(false),
+  /* The private response block, opt-in per piece. Named for what it is: the
+     reader is not being asked to review the writing. Moments leave it off. */
+  respond: z.boolean().default(false),
   publishAt: z.coerce.date(),
   draft: z.boolean().default(false),
   week: z.number().optional(),
