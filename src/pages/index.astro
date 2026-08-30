@@ -105,7 +105,10 @@ const shortcuts = [
           </a>
           <div class="feat-body">
             <h3 class="feat-h"><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h3>
-            <p class="feat-dek">{feature.data.dek}</p>
+            {/* The teaser when the piece has one: this card is the first thing a
+                stranger meets, and the deck was written for somebody already
+                on the page. */}
+            <p class="feat-dek">{feature.data.teaser ?? feature.data.dek}</p>
             <p class="feat-open">{openingParagraph(feature.body, 190)}</p>
             <p class="feat-meta">
               <time datetime={isoDate(feature.data.publishAt)}>{displayDate(feature.data.publishAt)}</time>

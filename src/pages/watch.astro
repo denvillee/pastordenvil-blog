@@ -44,7 +44,19 @@ const talks = all
   });
 
 const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b - a);
-const series = [...new Set(talks.map((t: any) => t.data.series).filter(Boolean))].sort();
+/* Only series that actually group something. With 33 talks across 31 series
+   almost every chip filtered to one card, which is a filter that does nothing
+   but take up four rows. A run has to have at least two talks on the site
+   before it earns a chip; everything else is reachable by search. */
+const seriesCount = new Map<string, number>();
+for (const t of talks) {
+  const s = (t as any).data.series;
+  if (s) seriesCount.set(s, (seriesCount.get(s) ?? 0) + 1);
+}
+const series = [...seriesCount.entries()]
+  .filter(([, n]) => n >= 2)
+  .map(([s]) => s)
+  .sort();
 
 /* The thresholds. A control that filters a list you can see all of is noise. */
 const showSearch = talks.length >= 8;
