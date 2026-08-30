@@ -48,8 +48,12 @@ const [featured, ...rest] = entries;
     </section>
 
     {IntroBody && (
-      <Doorway tone="yellow">
+      <Doorway tone="yellow" collapsed={entries.length > 0}>
         <IntroBody />
+        <StickyNote slot="rail" tone="green" tilt={-1.6} tape={false} class="side-note">
+          The kingdom is already here, and still coming. Most of what I write
+          lives somewhere in that tension.
+        </StickyNote>
       </Doorway>
     )}
 
