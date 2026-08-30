@@ -7,7 +7,7 @@ parts:
   - order: 1
     title: "Who Do You Think You Are?"
   - order: 2
-    title: "The World Was Full of Images"
+    title: "A World of Images and Idols"
 ---
 
 More Than Body and Breath is an ongoing essay series exploring biblical anthropology
