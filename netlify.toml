@@ -39,6 +39,23 @@
   status = 301
   force = true
 
+# Essay two was built and previewed as "The World Was Full of Images" before
+# Denvil ruled on 30 Aug that a post's title must match its artwork. The card
+# reads "A World of Images and Idols", so the title moved to meet it and the
+# address moves with the title. Nothing was ever published at the old one, but
+# the preview link was shared, so it points at the real page rather than a 404.
+[[redirects]]
+  from = "/essays/the-world-was-full-of-images"
+  to = "/essays/a-world-of-images-and-idols/"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/essays/the-world-was-full-of-images/*"
+  to = "/essays/a-world-of-images-and-idols/"
+  status = 301
+  force = true
+
 [[redirects]]
   from = "/essays/why-this-exists"
   to = "/essays/"
