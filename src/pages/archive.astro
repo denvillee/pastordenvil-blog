@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
 import { live, displayDate, isoDate, ROOMS, type RoomKey } from '../lib/publish';
 import site from '../data/site.json';
@@ -7,12 +8,17 @@ import labels from '../data/labels.json';
 /* Everything ever published, newest first, grouped by year.
    Nothing is ever removed from here. New pieces are new files; old ones stay
    at their original URLs forever. */
-type Row = { room: RoomKey; title: string; dek: string; href: string; date: Date };
+/* A page called Everything has to mean it. The written rooms were the only
+   thing here, which is how it ended up listing one piece while the site also
+   held three talks and a study. Talks and studies are now in the index too,
+   and every row carries a kind so the list can be filtered. */
+type Row = { kind: string; label: string; title: string; dek: string; href: string; date: Date };
 const rows: Row[] = [];
 for (const key of Object.keys(ROOMS) as RoomKey[]) {
   for (const e of await live(key)) {
     rows.push({
-      room: key,
+      kind: key,
+      label: ROOMS[key].label,
       title: e.data.title,
       dek: e.data.dek,
       href: `/${ROOMS[key].path}/${e.id}/`,
@@ -20,15 +26,35 @@ for (const key of Object.keys(ROOMS) as RoomKey[]) {
     });
   }
 }
+/* Talks. Dated by the day it was given where we have it, and by its year
+   otherwise, so a talk sorts beside the writing rather than above all of it. */
+for (const t of await getCollection('watch')) {
+  if (t.data.draft) continue;
+  rows.push({
+    kind: 'watch',
+    label: labels.navWatch,
+    title: t.data.title,
+    dek: t.data.context ?? '',
+    href: '/watch/',
+    date: t.data.givenOn ?? new Date(t.data.year, 0, 1),
+  });
+}
+/* The study. One entry, because a study is one thing you walk through. */
+rows.push({
+  kind: 'studies',
+  label: labels.studiesHeading,
+  title: 'Quietly at Work',
+  dek: "Finding God's Presence in the Book of Ruth",
+  href: '/studies/',
+  date: new Date(2026, 7, 27),
+});
+
 rows.sort((a, b) => b.date.getTime() - a.date.getTime());
+const kinds = [...new Map(rows.map((r) => [r.kind, r.label])).entries()];
 
 const years = [...new Set(rows.map((r) => r.date.getFullYear()))];
 const byYear = years.map((y) => ({ year: y, items: rows.filter((r) => r.date.getFullYear() === y) }));
-const counts = (Object.keys(ROOMS) as RoomKey[]).map((k) => ({
-  label: ROOMS[k].label,
-  path: ROOMS[k].path,
-  n: rows.filter((r) => r.room === k).length,
-}));
+
 ---
 <Shell title={`${labels.archiveHeading} · ${site.name}`} description={labels.archiveDek}>
   <section class="band shell arch-page">
@@ -42,15 +68,11 @@ const counts = (Object.keys(ROOMS) as RoomKey[]).map((k) => ({
       )}
     </div>
 
-    {rows.length >= 5 && (
-      <div class="arc-counts">
-        {/* A zero is never printed: a page whose job is to show a body of work
-            should not list the sections that have none. */}
-        {counts.filter((c) => c.n > 0).map((c) => (
-          <a class="arc-count" href={`/${c.path}/`}>
-            <span class="n">{c.n}</span>
-            <span class="l">{c.label}</span>
-          </a>
+    {kinds.length > 1 && (
+      <div class="arc-filters" role="group" aria-label="Filter by kind">
+        <button type="button" class="chip-btn on" data-kind="all" aria-pressed="true">All</button>
+        {kinds.map(([k, label]) => (
+          <button type="button" class="chip-btn" data-kind={k} aria-pressed="false">{label}</button>
         ))}
       </div>
     )}
@@ -60,10 +82,10 @@ const counts = (Object.keys(ROOMS) as RoomKey[]).map((k) => ({
         <h2 class="arc-year-h">{group.year}<span>{group.items.length} piece{group.items.length === 1 ? '' : 's'}</span></h2>
         <div class="list">
           {group.items.map((r) => (
-            <a class="list-item arc-item" href={r.href}>
+            <a class="list-item arc-item" href={r.href} data-kind={r.kind}>
               <span class="date"><time datetime={isoDate(r.date)}>{displayDate(r.date)}</time></span>
-              <span class="t">{r.title}<span class="d">{r.dek}</span></span>
-              <span class="r">{ROOMS[r.room].label}</span>
+              <span class="t">{r.title}{r.dek && <span class="d">{r.dek}</span>}</span>
+              <span class="r">{r.label}</span>
             </a>
           ))}
         </div>
@@ -74,7 +96,26 @@ const counts = (Object.keys(ROOMS) as RoomKey[]).map((k) => ({
       <p class="art-dek">{labels.archiveEmpty}</p>
     )}
   </section>
-  {/* The Subscribe block was removed from every content page on 29 Aug.
-      The site asked for an email too often. Subscribe now lives in one
-      place: the masthead action, the footer link, and /subscribe/. */}
+  <script>
+    /* Filtering happens here rather than on the server: every row is already
+       in the page, so this is showing and hiding, not fetching. A year heading
+       hides itself when the filter empties it, so the list never leaves a
+       heading standing over nothing. */
+    document.querySelectorAll('.arc-filters .chip-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var kind = btn.dataset.kind;
+        document.querySelectorAll('.arc-filters .chip-btn').forEach(function (b) {
+          var on = b === btn;
+          b.classList.toggle('on', on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        document.querySelectorAll('.arc-item').forEach(function (row) {
+          row.hidden = !(kind === 'all' || row.dataset.kind === kind);
+        });
+        document.querySelectorAll('.arc-year').forEach(function (y) {
+          y.hidden = !y.querySelector('.arc-item:not([hidden])');
+        });
+      });
+    });
+  </script>
 </Shell>

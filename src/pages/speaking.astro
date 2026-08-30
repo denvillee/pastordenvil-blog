@@ -2,6 +2,7 @@
 import { getEntry, render } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
 import site from '../data/site.json';
+import Photo from '../components/Photo.astro';
 import labels from '../data/labels.json';
 const entry = await getEntry('pages', 'speaking');
 const { Content } = await render(entry!);
@@ -18,6 +19,12 @@ const { Content } = await render(entry!);
     </div>
     <div class="speak">
       <div class="speak-copy prose">
+        {/* Him actually teaching in a room, which is what this page is asking
+            people to book. Landscape rather than portrait so it sits shorter
+            than the copy beside it instead of towering over it. */}
+        <Photo name="dl-speaking" width={1200} height={900} class="speak-art"
+               sizes="(max-width: 860px) 92vw, 42vw"
+               alt="Denvil Lee teaching at a lectern, one hand resting on his chest." />
         <Content />
       </div>
       <form class="speak-form" name="speaking" method="POST" data-netlify="true" netlify-honeypot="company" action="/speaking/thanks/">
