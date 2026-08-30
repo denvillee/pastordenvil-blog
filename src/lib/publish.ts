@@ -266,17 +266,25 @@ export async function linkCitedBooks(html: string) {
       if (used.has(id)) continue;
       const title = (b as any).data.title as string;
       if (!title || title.length < 6) continue;
-      const at = parts[i].indexOf(title);
+      /* Match on a normalised copy and slice the original. A shelf entry is
+         typed with a straight apostrophe and the rendered prose has a curly
+         one, so "Being God's Image" never found "Being God\u2019s Image" and
+         two of the books cited in the essays quietly failed to link. Lengths
+         are identical, so an index into the normalised string is an index
+         into the real one. */
+      const hay = parts[i].replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
+      const needle = title.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
+      const at = hay.indexOf(needle);
       if (at === -1) continue;
-      const before = parts[i][at - 1];
-      const after = parts[i][at + title.length];
+      const before = hay[at - 1];
+      const after = hay[at + needle.length];
       /* A real word boundary in the text itself. */
       if (before && /[A-Za-z0-9]/.test(before)) continue;
       if (after && /[A-Za-z0-9]/.test(after)) continue;
       used.add(id);
       parts[i] = parts[i].slice(0, at)
-        + `<a class="cite-book" href="/bookshelf/#book-${id}">${title}</a>`
-        + parts[i].slice(at + title.length);
+        + `<a class="cite-book" href="/bookshelf/#book-${id}">${parts[i].slice(at, at + needle.length)}</a>`
+        + parts[i].slice(at + needle.length);
     }
   }
   return parts.join('');
