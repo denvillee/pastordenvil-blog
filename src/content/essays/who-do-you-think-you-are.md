@@ -136,9 +136,7 @@ John tells us that “Jesus knew that the Father had put all things under his po
 
 Jesus knew where he had come from, where he was going, and what the Father had entrusted to him. And out of that certainty about who he was, look at what he did:
 
-> “So he got up from the meal, took off his outer clothing, and wrapped a towel around his waist” (John 13:4).
-
-> “After that, he poured water into a basin and began to wash his disciples’ feet, drying them with the towel that was wrapped around him.” (John 13:5).
+> “So he got up from the meal, took off his outer clothing, and wrapped a towel around his waist. After that, he poured water into a basin and began to wash his disciples’ feet, drying them with the towel that was wrapped around him.” (John 13:4-5).
 
 Jesus does not wash their feet in order to become a great leader. He washes their feet knowing that the Father has already placed all things under his authority.
 
