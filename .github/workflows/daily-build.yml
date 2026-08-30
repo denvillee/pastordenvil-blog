@@ -1,0 +1,47 @@
+# Scheduled publishing.
+#
+# The site is static, and an entry only appears once a build runs with its
+# `publishAt` in the past. Without a scheduled build, a post banked for next
+# Tuesday sits in the repo and never appears: the last push is the last build.
+#
+# The README has described this file since the site went up. It was never
+# actually committed, so every banked post on denvillee.com has been waiting on
+# somebody pushing something else. That is what this fixes.
+#
+# Daily rather than weekly. A weekly rebuild means a piece dated Tuesday shows
+# up on Sunday, which makes `publishAt` a suggestion rather than a date. One
+# build a day is a few seconds of Netlify time and keeps the dates honest.
+#
+# ONE THING IS STILL NEEDED, AND IT IS DENVIL'S TO DO, NOT MINE:
+#   1. Netlify → Site configuration → Build & deploy → Build hooks → Add build
+#      hook. Name it "Daily publish", branch main. Copy the URL it gives you.
+#   2. GitHub → this repo → Settings → Secrets and variables → Actions → New
+#      repository secret. Name: NETLIFY_BUILD_HOOK. Value: that URL.
+# Until the secret exists the job runs and stops with a clear message rather
+# than failing silently.
+
+name: Daily build
+
+on:
+  schedule:
+    # 09:00 UTC every day. That is 05:00 Eastern in summer, 04:00 in winter, so
+    # anything dated "today" is live before anybody in the US is reading.
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping the Netlify build hook
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "NETLIFY_BUILD_HOOK is not set."
+            echo "Add it under Settings > Secrets and variables > Actions."
+            echo "Nothing was built. Scheduled posts will not appear until this is set."
+            exit 1
+          fi
+          curl -sS -X POST -d '{}' "$HOOK"
+          echo "Build requested."
