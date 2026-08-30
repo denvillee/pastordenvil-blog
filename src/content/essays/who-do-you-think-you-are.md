@@ -6,7 +6,7 @@ teaser: "Who gets to tell you who you are? This essay begins before Genesis 3 an
 publishAt: 2026-08-26T06:00:00-04:00
 draft: false
 pinned: true
-feedback: true
+respond: true
 image: "/assets/img/essay-who-do-you-think-you-are.jpg"
 imageAlt: "The essay's title card: More Than Body and Breath above the title Who Do You Think You Are?, on cream, with a strip of tape, a blue underline and a gold one, and a torn coral shape in the corner."
 ogImage: "/assets/img/og-who-do-you-think-you-are.jpg"
@@ -27,7 +27,10 @@ Admittedly, I knew that the questions, and the way I asked them, were a little c
 
 Who we think we are, what we actually believe to be true about ourselves, shapes how we behave and how we understand what we’re doing.
 
-To put it another way: **Identity precedes activity.**
+To put it another way:
+
+> [!BIG]
+> Identity precedes activity.
 
 Think about the people of Israel coming out of Egypt. For generations, their lives had been shaped by someone else’s definition of who they were. Pharaoh saw a workforce, the Egyptians saw slaves, and their value was measured in bricks, quotas, production, and what their bodies could produce for someone else’s kingdom.
 
@@ -35,13 +38,17 @@ And yet Israel’s Scriptures tell their story by reaching behind Egypt, behind 
 
 That is a very different origin story.
 
-A people who had been trained for generations to think like slaves came to understand themselves through a story much larger than slavery. Egypt was part of their history, but Egypt did not get to define them. Pharaoh could tell them what bricks to make. He could not tell them who they were.
+A people who had been trained for generations to think like slaves came to understand themselves through a story much larger than slavery. Egypt was part of their history, but Egypt did not get to define them.
+
+> [!QUOTE]
+> Pharaoh could tell them what bricks to make. He could not tell them who they were.
 
 Before they could fully inhabit what God was calling them into, they had to recover an identity that generations of slavery had taught them to forget.
 
 It was true for the *people of God* then, and it is still true for us now:
 
-**Whoever life has convinced you that you are, Genesis is going to tell you that you are more than that.**
+> [!BIG]
+> Whoever life has convinced you that you are, Genesis is going to tell you that you are more than that.
 
 <hr class="mid" />
 
@@ -107,17 +114,19 @@ And then he tells us what he thinks he is doing:
 
 There are the two questions again.
 
-**Q: Who do you think you are?**
-
-A: Someone who belongs to the God who has already been faithful.
-
-**Q: What do you think you’re doing?**
-
-A: Not making a name for yourself. Making his name known.
+> [!QUOTE]
+> **Q: Who do you think you are?**
+>
+> A: Someone who belongs to the God who has already been faithful.
+>
+> **Q: What do you think you’re doing?**
+>
+> A: Not making a name for yourself. Making his name known.
 
 David’s defeat of Goliath certainly becomes part of the road that eventually leads him to the throne. But make no mistake, David does not step onto the field to become somebody. He steps onto the field because he already belongs to Somebody.
 
-Identity precedes activity.
+> [!CIRCLE]
+> Identity precedes activity.
 
 ## **Who do you think you are, Jesus?**
 
@@ -135,7 +144,8 @@ Jesus does not wash their feet in order to become a great leader. He washes thei
 
 That distinction matters because Christ-like humility does not come from uncertainty about significance. Jesus’ humility flows from complete security in who he is. He has nothing to prove, no status to protect, and no identity to earn, so he is free to kneel.
 
-That is Kingdom greatness.
+> [!CIRCLE]
+> That is Kingdom greatness.
 
 So as we see David walking toward a giant and Jesus kneeling to wash dirty feet, the actions could hardly look more different, but the movement underneath them is the same.
 
@@ -147,13 +157,17 @@ For Israel, Genesis reaches behind Pharaoh and slavery and tells them who they w
 
 Genesis 1 tells us what a human being is before Genesis 3 tells us what went wrong with humanity.
 
-Don’t miss the order… **God gave humanity a purpose before there was a problem.**
+Don’t miss the order…
+
+> [!BIG]
+> God gave humanity a purpose before there was a problem.
 
 Before anyone needed to be rescued from sin, human beings had already been named the *image of God.*
 
 That means sin is essential to understanding the human condition, but sin is not the starting point for understanding what a human being is.
 
-We are made in the image of God not in the image of sin.
+> [!BIG]
+> We are made in the image of God not in the image of sin.
 
 So, when Christians say, *“I’m just a sinner saved by grace,”* I understand what we mean, and there is something gloriously true in it. We are sinners, and we are saved only by grace.
 
@@ -233,10 +247,11 @@ But for now, stay with the first question.
 
 **Who do you think you are?**
 
-Genesis says you are God’s image.
+> [!BIG]
+> Genesis says you are God’s image.
 
 [^1]: Joel B. Green, *Body, Soul, and Human Life: The Nature of Humanity in the Bible* (Grand Rapids: Baker Academic, 2008), ch. 2. Green argues that “soul” is not a uniquely human possession in Genesis and suggests Genesis 2:7 can be understood as “the human being became fully alive.”
 
-[^2]: Carmen Joy Imes, *Being God’s Image: Why Creation Still Matters* (Downers Grove, IL: IVP Academic, 2023), 6. Imes argues that speaking of humans as God’s image reinforces the image as essential to human identity rather than a capacity that can be lost. Verify any direct quotation against the print or ebook edition before publishing.
+[^2]: Carmen Joy Imes, *Being God’s Image: Why Creation Still Matters* (Downers Grove, IL: IVP Academic, 2023), 6. Imes argues that speaking of humans as God’s image reinforces the image as essential to human identity rather than a capacity that can be lost.
 
 [^3]: Michael S. Heiser, “Image of God,” in *The Lexham Bible Dictionary*, ed. John D. Barry et al. (Bellingham, WA: Lexham Press, 2016).
