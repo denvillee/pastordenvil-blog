@@ -1051,15 +1051,21 @@ hr.mid::before{content:"\00B7 \00A0 \00B7 \00A0 \00B7"; letter-spacing:.35em; fo
 /* The circled line. .c is the site's own circle wrapper from marks.css, and
    is-display retunes the inset so the loop clears display-size letterforms. */
 .bigidea-c{padding-left:0}
+/* The line is held to about two short lines on purpose. Run it full measure
+   and the loop stretches into a flat oval that reads as a strikethrough
+   straight across the words; kept narrow, the drawing stays a circle and
+   clears the letterforms above and below. */
 .bigidea-c .bigidea-t{
-  font-size:var(--step-4);
-  line-height:1.06;
+  max-width:14ch;
+  margin-inline:auto;
+  font-size:var(--step-3);
+  line-height:1.12;
   text-align:center;
   text-wrap:balance;
 }
-.bigidea-c .c{isolation:isolate}
+.bigidea-c .c{isolation:isolate; display:inline-block}
 .bigidea-c .c > .mk-circle-loose{
-  left:-.28em; right:-.28em; top:-.24em; bottom:-.2em;
+  left:-.5em; right:-.5em; top:-.34em; bottom:-.3em;
   width:auto; height:auto; z-index:-1;
 }
 
