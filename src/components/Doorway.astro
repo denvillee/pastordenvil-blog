@@ -13,21 +13,72 @@
   Moments and For Leaders are collections, so their doorway is the pageIntro
   post that already pins to the top of the list. Bookshelf and Studies are not
   collections, so theirs is a document in `landing`. Either way this component
-  takes a rendered body and a lead line and lays them out identically.
+  takes a rendered body and lays it out identically.
+
+  It adapts to how full the room is, and this is the whole reason it was
+  rewritten. Measured on 30 Aug, the doorway ran 540 to 1005 pixels tall and
+  pushed the first real piece of content to 1320 on Essays and 1353 on
+  Bookshelf: a screen and a half of scrolling before a visitor met a single
+  post. Watch, which has no doorway at all, reached content at 402.
+
+  So: while a room is empty the introduction is the only thing on the page and
+  it is doing real work, so it prints whole. The moment the room has something
+  in it the introduction folds down to its opening paragraph with a disclosure,
+  because a person who came to read the posts should see the posts. Same words,
+  same place, earning its height only when there is nothing else there.
+
+  The fold is a details element and no JavaScript. The lead paragraph is split
+  off the rendered body rather than typed twice, so there is still exactly one
+  copy of the writing and it is still edited in the CMS.
 */
-interface Props { tone?: 'blue' | 'yellow' | 'coral' | 'green' }
-const { tone = 'yellow' } = Astro.props;
+interface Props { tone?: 'blue' | 'yellow' | 'coral' | 'green'; collapsed?: boolean; label?: string }
+const { tone = 'yellow', collapsed = false, label = 'Read the rest' } = Astro.props;
 import Mark from './marks/Mark.astro';
+import Tape from './marks/Tape.astro';
+import DotGrid from './marks/DotGrid.astro';
+
+const raw = (await Astro.slots.render('default')) ?? '';
+const cut = raw.indexOf('</p>');
+const lead = cut === -1 ? raw : raw.slice(0, cut + 4);
+const rest = cut === -1 ? '' : raw.slice(cut + 4);
+const folds = collapsed && rest.trim().length > 0;
+const hasRail = Astro.slots.has('rail');
 ---
-<section class="shell door">
+<section class:list={['shell', 'door', folds && 'is-folded']}>
   <div class="door-in">
-    <div class="door-body">
-      <slot />
-    </div>
+    {folds ? (
+      <>
+        <div class="door-body"><Fragment set:html={lead} /></div>
+        <details class="door-fold">
+          <summary class="door-toggle">
+            <span class="door-toggle-t">{label}</span>
+            <span class="door-caret" aria-hidden="true">&#9662;</span>
+          </summary>
+          <div class="door-body door-rest"><Fragment set:html={rest} /></div>
+        </details>
+      </>
+    ) : (
+      <div class="door-body"><Fragment set:html={raw} /></div>
+    )}
     {/* No "read this on its own page" link. The introduction was written to be
         the front door of the section, not a separate piece of content, and
         maintaining two copies of the same writing was the mistake. The old
         /why-this-exists/ routes now redirect back here. */}
   </div>
+
+  {/* The rail. A doorway printing whole is a 62ch column of text on a 1280px
+      page, which left the right half of For Leaders empty for eight hundred
+      pixels. The note that was sitting unused below an empty list moves up
+      into that space, taped, with a field of dots behind it: three of the
+      design board's own elements, carrying words the room already had. No
+      rail is rendered when a page has nothing real to put there. */}
+  {!folds && hasRail && (
+    <div class="door-rail door-rail-note">
+      <Tape color={tone === 'yellow' ? 'coral' : 'yellow'} class="door-tape" />
+      <DotGrid cols={7} rows={4} class="door-dots" />
+      <slot name="rail" />
+    </div>
+  )}
+
   <span class="door-rule" aria-hidden="true"><Mark kind="underline" color={tone} /></span>
 </section>

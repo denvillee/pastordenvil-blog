@@ -8,8 +8,23 @@
   needs to sit on a coloured ground and still read as an object.
 
   `slot` takes the picture so a caller can supply <picture> with WebP sources.
+
+  `tape` sticks a strip over one corner. The design board tapes its
+  photographs down and the component for it had been built and then used on
+  precisely nothing, so every picture on the site was reading as a placed
+  rectangle rather than as something pinned to the page. One corner only, and
+  never on a card small enough for the strip to cover the subject.
 */
-interface Props { shape?: 'organic' | 'torn' | 'soft'; class?: string }
-const { shape = 'organic', class: cls = '' } = Astro.props;
+import Tape from './marks/Tape.astro';
+interface Props {
+  shape?: 'organic' | 'torn' | 'soft';
+  tape?: 'blue' | 'coral' | 'yellow' | 'neutral';
+  tapeAt?: 'tl' | 'tr';
+  class?: string;
+}
+const { shape = 'organic', tape, tapeAt = 'tl', class: cls = '' } = Astro.props;
 ---
-<div class:list={['imask', `imask-${shape}`, cls]}><slot /></div>
+<div class:list={['imask', `imask-${shape}`, tape && 'imask-taped', cls]}>
+  <slot />
+  {tape && <Tape color={tape} class={`imask-tape imask-tape-${tapeAt}`} />}
+</div>
