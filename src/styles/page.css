@@ -1244,3 +1244,64 @@ hr.mid::before{content:"\00B7 \00A0 \00B7 \00A0 \00B7"; letter-spacing:.35em; fo
 @media (prefers-reduced-motion:reduce){
   .pq-card{transform:none}
 }
+
+/* =========================================================================
+   THE CURRENT SERIES
+
+   Lives here and not in site.css. The old .ser-* block sat in site.css, which
+   only Base.astro imports and no page uses, so the whole thing shipped
+   unstyled: a browser-default <ol> with the part number printed a second time
+   beside each marker. Denvil caught it on his phone, 30 Aug.
+
+   It is a panel rather than a list on purpose. It sits between the featured
+   essay and "All essays", and without a ground of its own it read as a stray
+   heading with some text under it.
+   ========================================================================= */
+
+.ser{
+  margin-top:clamp(2rem,4.5vw,3rem);
+  padding:clamp(1.3rem,3vw,2rem) clamp(1.3rem,3.4vw,2.1rem);
+  background:var(--tint-gold);
+  border-radius:var(--r);
+  max-width:62ch;
+}
+.ser-eyebrow{
+  font-size:.68rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--gold-ink); margin:0 0 .45rem;
+}
+.ser-name{
+  font-size:var(--step-2); font-weight:900; letter-spacing:-.03em;
+  line-height:1.1; color:var(--ink); margin:0;
+}
+.ser-dek{color:var(--muted); line-height:1.6; margin:.5rem 0 0; max-width:52ch}
+.ser-count{
+  font-size:.8rem; font-weight:700; color:var(--faint);
+  margin:.7rem 0 0;
+}
+
+/* The parts. Rows, not bullets and not numbers: these publish as standalone
+   essays and nothing here should read like a book's contents page. */
+.ser-parts{
+  list-style:none; margin:clamp(1.1rem,2.4vw,1.5rem) 0 0; padding:0;
+  border-top:1px solid var(--gold);
+}
+.ser-part{border-bottom:1px solid var(--gold)}
+.ser-t{
+  display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
+  padding:.85rem 0;
+  font-size:var(--step-0); font-weight:700; line-height:1.35;
+  color:var(--ink); text-decoration:none;
+}
+.ser-tt{text-decoration:underline; text-underline-offset:3px;
+  text-decoration-thickness:1px; text-decoration-color:var(--gold-ink)}
+a.ser-t .arw{color:var(--gold-ink); transition:translate var(--fast) var(--ease)}
+a.ser-t:hover .ser-tt{text-decoration-thickness:2px}
+a.ser-t:hover .arw{translate:.22rem 0}
+a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-radius:2px}
+
+/* A part that is not up yet is named and nothing more. No date, no badge and
+   no "forthcoming": a promise that has not been made does not get printed. */
+.ser-part.is-soon .ser-t{color:var(--faint); font-weight:600}
+.ser-part.is-soon .ser-tt{text-decoration:none}
+
+@media (prefers-reduced-motion:reduce){ a.ser-t .arw{transition:none} }
