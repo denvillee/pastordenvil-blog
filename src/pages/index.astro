@@ -73,13 +73,12 @@ const shortcuts = [
       <div class="hero-art">
         <DotGrid cols={7} rows={5} class="hero-dots" />
         <ImageMask shape="organic">
-          {/* Used at native size. The source is a selfie, so his face is about
-              530px across in a 1122px file, roughly double the lectern frames,
-              and it holds without any upscale, sharpening or clarity. The slot
-              is capped at 520x390 CSS in page.css so it is never asked to. */}
-          <Photo name="dl-hero" width={1122} height={842} eager={true}
+          {/* The strongest teaching frame he has sent leads the site. The
+              source is portrait and the slot is 4:3, so the crop closes in on
+              him rather than on an empty stage. */}
+          <Photo name="dl-hero" width={1400} height={1050} eager={true}
                  sizes="(max-width: 900px) 92vw, 46vw"
-                 alt="Denvil Lee outdoors on a neighbourhood street in the afternoon, looking straight at the camera." />
+                 alt="Denvil Lee teaching on stage in a coral polo, both hands reaching out as he makes a point." />
         </ImageMask>
         <ColorDisc lines={["theology","leadership","life"]} class="hero-disc" />
       </div>
