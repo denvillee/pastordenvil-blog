@@ -1330,6 +1330,11 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .ra-btn:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
 .ra-ico{display:inline-flex; width:1.15rem; height:1.15rem; color:var(--navy)}
 .ra-ico svg{width:100%; height:100%; display:block}
+/* The hidden attribute is honoured on an HTML element because the UA
+   stylesheet sets display:none for it. Inside an SVG there is no such rule, so
+   [hidden] on a <path> or a <g> hides nothing and the play triangle and the
+   pause bars drew on top of each other. Stated here explicitly. */
+.ra-ico [hidden]{display:none}
 .ra-stop{
   font-family:var(--sans); font-size:.78rem; font-weight:700;
   color:var(--faint); background:none; border:0; cursor:pointer;
