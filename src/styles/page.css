@@ -1143,6 +1143,13 @@ hr.mid::before{content:"\00B7 \00A0 \00B7 \00A0 \00B7"; letter-spacing:.35em; fo
 .vs-pane p + p{margin-top:.6em}
 .vs-pane strong{font-weight:900}
 .vs-wait{color:var(--faint); font-weight:500; font-style:italic}
+/* Whose translation this is, and where to read more of it. The NET's licence
+   asks to be named wherever it is quoted; this is that, and it doubles as the
+   one link a curious reader actually wants from a passage. */
+.vs-src{margin-top:.7rem !important; font-size:.72rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase}
+.vs-src a{color:var(--faint); text-decoration:underline; text-underline-offset:2px}
+.vs-src a:hover{color:var(--navy)}
 
 .vs-cite{
   display:flex; align-items:center; justify-content:space-between;
