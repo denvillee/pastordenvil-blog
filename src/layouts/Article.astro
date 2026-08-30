@@ -11,7 +11,8 @@ import labels from '../data/labels.json';
 interface Sibling { k: string; t: string; m: string; href: string }
 interface Props {
   room: RoomKey;
-  title: string; dek: string;
+  title: string; dek: string; metaDescription?: string; feedback?: boolean;
+  image?: string; imageAlt?: string;
   publishAt: Date; scripture?: string; series?: string;
   week?: number; idea?: string | null; movement?: string | null;
   seriesPlace?: { name: string; order: number; total: number } | null;
@@ -24,7 +25,7 @@ interface Props {
   slug?: string;
 }
 const {
-  room, title, dek, publishAt, scripture, series,
+  room, title, dek, metaDescription, feedback = false, image, imageAlt, publishAt, scripture, series,
   week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
   titleMark, slug,
 } = Astro.props;
@@ -46,7 +47,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: title,
-  description: dek,
+  description: metaDescription ?? dek,
   datePublished: isoDate(publishAt),
   author: { '@type': 'Person', name: site.name, url: new URL('/', Astro.site).href },
   publisher: { '@type': 'Person', name: site.name },
@@ -56,7 +57,7 @@ const passages = await getPassages(scripture);
 ---
 <Shell
   title={`${title} · ${site.name}`}
-  description={dek}
+  description={metaDescription ?? dek}
   ogType="article"
   ogImage={ogImage}
   publishedTime={isoDate(publishAt)}
@@ -92,6 +93,19 @@ const passages = await getPassages(scripture);
           ? <span><a class="art-series" href={`/${meta.path}/#ser-h`}>Part {seriesPlace.order} of {seriesPlace.total} &middot; {seriesPlace.name}</a></span>
           : series && <span>{series}</span>}
       </div>
+
+      {/* The hero. It sits under the meta row rather than above the headline
+          so that the first thing on the page is still the writing, and it only
+          appears when the piece actually has art: a post with none runs
+          text-only at the same measure rather than reaching for a stock
+          picture. */}
+      {image && (
+        <figure class="art-hero">
+          <img src={image} alt={imageAlt ?? ''} width="1536" height="1024"
+               loading="eager" decoding="async" />
+        </figure>
+      )}
+
       {passages.length > 0 && (
         <div class="art-verse" data-verse>
           {passages.length > 1 && (
@@ -143,6 +157,26 @@ const passages = await getPassages(scripture);
         <a href={canonical} data-copy-link>Copy link</a>
         </div>
       </div>
+
+      {/* Denvil's own invitation, on the pieces he is writing in public. It
+          is opt-in per piece rather than site-wide: a short Moment does not
+          need to ask anybody to review its argument. The address is the one
+          already in the footer, so there is no new inbox to watch. */}
+      {feedback && (
+        <aside class="art-ask">
+          <h2 class="art-ask-h">Tell me where this lands</h2>
+          <p>
+            I&rsquo;m developing these essays in public and would value thoughtful feedback.
+            Where did the argument feel clearest? Where did you find yourself pushing back?
+            What question did this leave you asking?
+          </p>
+          <p class="art-ask-act">
+            <a class="go" href={`mailto:${site.contactEmail}?subject=${encodeURIComponent(title)}`}>
+              Write to me about this piece <span class="arw" aria-hidden="true">&rarr;</span>
+            </a>
+          </p>
+        </aside>
+      )}
 
       {/* An editorial invitation rather than a generic "thanks for reading".
           The two links are the ones a reader actually wants at the end of an
