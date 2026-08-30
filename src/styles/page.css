@@ -965,3 +965,16 @@
 [data-year-block][hidden]{display:none}
 .wempty{color:var(--muted); margin-top:1rem}
 .wempty .go{border:0; background:none; cursor:pointer; font:inherit; padding:0}
+
+/* The reader-feedback invitation. Quiet, and only on pieces that opt in. */
+.art-ask{margin-top:clamp(1.8rem,4vw,2.8rem); padding:clamp(1.1rem,2.6vw,1.6rem) clamp(1.2rem,3vw,1.8rem);
+  background:var(--card); border-radius:var(--r); max-width:62ch}
+.art-ask-h{font-size:1.05rem; font-weight:800; margin:0 0 .5rem}
+.art-ask p{color:var(--muted); line-height:1.65; margin:0}
+.art-ask-act{margin-top:.9rem !important}
+
+/* The essay hero. Denvil's own title card, so it gets the full reading measure
+   and a torn edge rather than a frame. */
+.art-hero{margin:clamp(1.4rem,3.4vw,2.2rem) 0 0; padding:0}
+.art-hero img{display:block; width:100%; height:auto;
+  border-radius:var(--r) var(--r-lg) var(--r-sm) var(--r-lg); box-shadow:var(--shadow)}
