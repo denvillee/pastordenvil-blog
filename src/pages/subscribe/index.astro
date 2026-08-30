@@ -7,6 +7,9 @@
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import StickyNote from '../../components/marks/StickyNote.astro';
+import DotGrid from '../../components/marks/DotGrid.astro';
+import ArtPlate from '../../components/ArtPlate.astro';
+import Tape from '../../components/marks/Tape.astro';
 import site from '../../data/site.json';
 
 const formId = import.meta.env.PUBLIC_KIT_FORM_ID;
@@ -18,7 +21,7 @@ const action = formId
        description="New essays, reflections and studies, straight to your inbox.">
   <section class="band shell sub-page">
     <div>
-      <h1 class="page-h is-display"><span class="u">Good news in your inbox<span class="dot">.</span><Mark kind="underline" color="blue" draw={true} /></span></h1>
+      <h1 class="page-h is-display">Good news in your <span class="u">inbox<span class="dot">.</span><Mark kind="underline" color="blue" draw={true} /></span></h1>
       <p class="page-dek">{site.signupCopy}</p>
 
       <form class="form sub-form" method="post" action={action}>
@@ -33,5 +36,9 @@ const action = formId
     </div>
     {/* "Good news for ordinary people." is gone: it competed with the real
         brand line and was never supplied. */}
+    <div class="sub-art">
+      <DotGrid cols={7} rows={5} class="sub-dots" />
+      <ArtPlate kind="letter" class="artp-hero" />
+    </div>
   </section>
 </Shell>
