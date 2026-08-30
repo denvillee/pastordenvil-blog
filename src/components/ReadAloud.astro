@@ -1,0 +1,47 @@
+---
+/*
+  READ ALOUD. The essay, spoken by the reader's own device.
+
+  Denvil asked on 30 Aug whether the essays could be listened to. This is the
+  version that costs nothing and works today: the browser's own speech
+  synthesis, which every current phone and desktop has built in. No service, no
+  key, no per-essay generation, no audio files to host, and nothing leaves the
+  page. It reads whatever is in the article, so it works on every piece ever
+  published without anybody doing anything to them.
+
+  What it is not is Denvil's voice, and it should not pretend to be. The
+  control says "Listen to this essay" and the small print names the device as
+  the reader, so nobody presses play expecting the preacher and gets a robot.
+  If he ever records these himself, this component is where that audio would
+  go instead, and the button would not have to move.
+
+  Two things it does that a naive implementation gets wrong:
+
+  1. It reads the essay, not the furniture. Pull quotes and big ideas are lifted
+     out of his sentences, so reading the page top to bottom says them twice.
+     Scripture blocks hold four translations at once, of which three are hidden.
+     So the text is gathered from the visible panes and the real paragraphs, in
+     document order, and the duplicated display treatments are skipped.
+
+  2. It breaks the text into sentence-sized utterances. Chrome silently stops
+     after about fifteen seconds of a single long utterance, which on a
+     2,500-word essay means it dies in the first paragraph. Feeding it a queue
+     of sentences also makes pause, resume and stop behave.
+
+  It hides itself when the browser has no speech synthesis at all, rather than
+  offering a button that does nothing.
+*/
+---
+<div class="ra" data-read-aloud hidden>
+  <button type="button" class="ra-btn" data-ra-toggle aria-live="polite">
+    <span class="ra-ico" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" focusable="false">
+        <path class="ra-play" d="M8 5.5v13l11-6.5z" fill="currentColor" />
+        <g class="ra-pause" hidden><rect x="8" y="5.5" width="3.4" height="13" rx="1" fill="currentColor" /><rect x="13.6" y="5.5" width="3.4" height="13" rx="1" fill="currentColor" /></g>
+      </svg>
+    </span>
+    <span class="ra-label" data-ra-label>Listen to this essay</span>
+  </button>
+  <button type="button" class="ra-stop" data-ra-stop hidden>Stop</button>
+  <p class="ra-note">Read aloud by your device, not by Denvil.</p>
+</div>
