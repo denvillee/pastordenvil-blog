@@ -4,6 +4,7 @@ import Mark from '../components/marks/Mark.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
 import RelatedContent from '../components/RelatedContent.astro';
 import Respond from '../components/Respond.astro';
+import ReadAloud from '../components/ReadAloud.astro';
 import { displayDate, isoDate, ROOMS, linkCitedBooks, type RoomKey } from '../lib/publish';
 import { getPassages } from '../lib/bible';
 import { enrich } from '../lib/enrich';
@@ -159,6 +160,11 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
         </div>
       )}
 
+      {/* Above the writing, not floating over it: somebody who wants to
+          listen decides that before they start reading, and somebody who does
+          not should be able to ignore one quiet line. */}
+      <ReadAloud />
+
       <div class="prose" set:html={prose}></div>
 
       {notes && (
@@ -230,6 +236,8 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
 </Shell>
 
 <script>
+  import '../scripts/read-aloud.js';
+
   /* One translation choice for the whole page, remembered between visits.
 
      "As quoted" is the default and is what Denvil actually wrote: the other
