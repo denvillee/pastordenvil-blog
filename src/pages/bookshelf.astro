@@ -44,7 +44,7 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
           The books and voices shaping how I&#32;<span class="u">think,<Mark kind="underline" color="yellow" /></span>&#32;<span class="u">teach,<Mark kind="underline" color="green" /></span> and&#32;<span class="u">lead.<Mark kind="underline" color="coral" /></span>
         </p>
       </div>
-      <ImageMask shape="torn">
+      <ImageMask shape="torn" tape="coral">
         <Photo name="dl-books" width={1600} height={900}
                sizes="(max-width: 900px) 92vw, 48vw"
                alt="A shelf of Denvil's books, spines out: Ladd, McKnight, N. T. Wright, Boesak and a run of titles on the kingdom and Revelation." />
@@ -52,7 +52,7 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
     </section>
 
     {LandingBody && (
-      <Doorway tone="green">
+      <Doorway tone="green" collapsed={books.length > 0}>
         <LandingBody />
       </Doorway>
     )}

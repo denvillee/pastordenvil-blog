@@ -43,7 +43,7 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
             Bible-and-coffee frame he is going to shoot, but a real photograph
             of a real shelf rather than stock, and never descriptive text
             standing in for a picture. */}
-        <ImageMask shape="torn">
+        <ImageMask shape="torn" tape="blue" tapeAt="tr">
           <Photo name="dl-studies" width={1400} height={1050}
                  sizes="(max-width: 900px) 92vw, 46vw"
                  alt="A stack of Denvil's books on a table, spines out." />
@@ -53,7 +53,7 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
     </section>
 
     {LandingBody && (
-      <Doorway tone="coral">
+      <Doorway tone="coral" collapsed={true}>
         <LandingBody />
       </Doorway>
     )}
