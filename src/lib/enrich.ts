@@ -104,7 +104,13 @@ function passageBlock(ref: string, quotedHtml: string, passages: Passage[]) {
 
   for (const p of passages) {
     panes.push(
-      `<blockquote class="vs-pane" data-pane="${p.code}" hidden><p>&ldquo;${esc(p.text)}&rdquo;</p></blockquote>`
+      /* No quotation marks added around a fetched translation. The text
+         often contains speech of its own, and wrapping it produced things
+         like: may the Lord be with you!\u201D\u201D\u201D. The card, the rule and the
+         reference underneath already say this is a quotation. Denvil's own
+         "As quoted" pane keeps whatever marks he typed, because that is his
+         sentence and not ours to tidy. */
+      `<blockquote class="vs-pane" data-pane="${p.code}" hidden><p>${esc(p.text)}</p></blockquote>`
     );
     tabs.push(
       `<button type="button" class="vs-tab" data-vs-set="${p.code}" aria-pressed="false">${p.label}</button>`
