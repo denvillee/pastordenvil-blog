@@ -186,6 +186,25 @@ export async function seriesPlace(room: RoomKey, seriesName?: string, order?: nu
   return { name: def.data.name, order, total: def.data.parts.length };
 }
 
+/** The next published piece in the same run, for the card at the end of a piece.
+    Returns null when the next one has not been written yet, which is the whole
+    point: Denvil's instruction is that the card stays hidden until the essay it
+    points at is actually live, so a reader is never invited to click nothing. */
+export async function nextInSeries(room: RoomKey, seriesName?: string, order?: number) {
+  if (!seriesName || typeof order !== 'number') return null;
+  const posts = await live(room);
+  const next = posts.find(
+    (p: any) => p.data.series === seriesName && p.data.seriesOrder === order + 1,
+  );
+  if (!next) return null;
+  return {
+    series: seriesName,
+    title: next.data.title as string,
+    dek: (next.data.teaser ?? next.data.dek) as string,
+    href: `/${ROOMS[room].path}/${next.id}/`,
+  };
+}
+
 /** The other pieces published in the same week, for the "rest of this week" block. */
 export async function weekSiblings(week: number | undefined, selfId: string) {
   if (!week) return [];
