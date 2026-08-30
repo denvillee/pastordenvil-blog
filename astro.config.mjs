@@ -1,5 +1,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
+import remarkSmartypants from 'remark-smartypants';
 
 // denvillee.com is the canonical domain and has been since the cutover.
 // pastordenvil.com stays attached only as a 301 (netlify.toml), so it is the
@@ -20,6 +21,18 @@ const excluded = new Set(['/kit/', '/studio/']);
 const isExcluded = (page) => excluded.has(new URL(page).pathname);
 
 export default defineConfig({
+  /* Typography, with one deliberate exception.
+     Astro's default smartypants collapses any run of dots into a single
+     ellipsis glyph, which quietly rewrote Denvil's four-dot beat: he types
+     "....and...." and the page was printing "…and…". That beat is his, it
+     appears sixteen times across the first two essays, and a build step should
+     not be editing his punctuation. Quotes and dashes stay smart; ellipses are
+     left exactly as written. */
+  markdown: {
+    smartypants: false,
+    remarkPlugins: [[remarkSmartypants, { ellipses: false }]],
+  },
+
   site,
   integrations: [sitemap({ filter: (page) => !page.includes('/admin') && !isExcluded(page) })],
   build: { format: 'directory' },
