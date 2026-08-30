@@ -5,6 +5,19 @@ import { glob } from 'astro/loaders';
 const roomSchema = z.object({
   title: z.string(),
   dek: z.string(),
+  /* The deck is the line under the headline and it is written to be read, not
+     to be a search result. When a piece carries its own meta description, the
+     document head uses that instead: Denvil's handoffs supply one, and the two
+     jobs want different sentences. */
+  metaDescription: z.string().optional(),
+  /* What a card says about the piece. The deck describes it to somebody
+     already on the page; the teaser has to make a stranger click. Falls back
+     to the deck when it is not set, which is most of the time. */
+  teaser: z.string().optional(),
+  /* Ask the reader for a response at the end of the piece. Off by default and
+     set per piece: a short Moment does not need anybody to review its
+     argument, and an invitation on everything stops being an invitation. */
+  feedback: z.boolean().default(false),
   publishAt: z.coerce.date(),
   draft: z.boolean().default(false),
   week: z.number().optional(),
