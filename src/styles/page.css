@@ -1189,7 +1189,9 @@ hr.mid::before{content:"\00B7 \00A0 \00B7 \00A0 \00B7"; letter-spacing:.35em; fo
 .respond-h{font-size:var(--step-1); font-weight:900; letter-spacing:-.02em; margin:0 0 .5rem}
 .respond-d{color:var(--muted); line-height:1.65; margin:0 0 1.3rem; max-width:52ch}
 .respond-f{display:block}
-.respond-row{display:grid; grid-template-columns:1fr 1fr; gap:.9rem}
+/* Bottom-aligned: the email hint wraps to two lines and the name hint does
+   not, which left the two inputs sitting at different heights. */
+.respond-row{display:grid; grid-template-columns:1fr 1fr; gap:.9rem; align-items:end}
 .respond-field{margin:0 0 .9rem}
 .respond-field label{
   display:block; margin-bottom:.32rem;
