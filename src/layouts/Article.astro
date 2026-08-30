@@ -201,7 +201,7 @@ const passages = await getPassages(scripture);
         <h2 class="art-next-h">Keep exploring</h2>
         <ul>
           <li><a class="go" href="/bookshelf/">See the books behind this essay <span class="arw" aria-hidden="true">&rarr;</span></a></li>
-          <li><a class="go" href={`/${ROOMS[room].path}/`}>Back to {ROOMS[room].label} <span class="arw" aria-hidden="true">&rarr;</span></a></li>
+          <li><a class="go" href={`/${ROOMS[room].path}/`}>Back to {ROOMS[room].plural ?? ROOMS[room].label} <span class="arw" aria-hidden="true">&rarr;</span></a></li>
         </ul>
       </nav>
 
