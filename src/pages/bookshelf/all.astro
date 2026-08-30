@@ -8,18 +8,24 @@
 import Shell from '../../layouts/Shell.astro';
 import { live } from '../../lib/publish';
 import site from '../../data/site.json';
+import ArtPlate from '../../components/ArtPlate.astro';
 
 const entries = await live('reading');
 const books = entries.map((b: any) => ({ ...b.data, note: b.body?.trim() || '' }));
 books.sort((a: any, b: any) => (a.order ?? 0) - (b.order ?? 0));
 ---
 <Shell title={`Every Book · ${site.name}`} description="Every book on the shelf.">
-  <section class="band shell">
+  <section class="band shell lib-grid">
+    <div class="lib-head">
     <div class="sec-head">
       <h1 class="page-h is-display">Every Book<span class="dot">.</span></h1>
       {/* "since 2026" implied a reading date nobody supplied. The year in the
           data is the book's publication year, not when Denvil read it. */}
       <span class="label">{books.length} {books.length === 1 ? 'book' : 'books'}</span>
+    </div>
+    </div>
+    <div class="lib-art">
+      <ArtPlate kind="shelf" class="artp-band" />
     </div>
     <div class="shelf">
       {books.map((b: any) => (
