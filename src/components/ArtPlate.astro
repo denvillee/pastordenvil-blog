@@ -1,0 +1,127 @@
+---
+/*
+  Designed art, drawn in the site's own hand.
+
+  Denvil's instruction on 30 Aug: "All pages don't need photos of me. we'll
+  design photos / stock for what we need." This is the answer to the second
+  half. Rather than buying stock that would look like somebody else's house
+  style, or putting his face on a page that is not about him, each plate is
+  built from the same vocabulary as everything else: the four colours, torn
+  edges, tape, dot fields, hand-drawn marks, the paper ground.
+
+  They are inline SVG, so they weigh nothing, scale to any size without a
+  second asset, and pick up the palette from the tokens rather than baking a
+  hex into an image file. A colour change is still a one-file change.
+
+  Every plate is decorative: aria-hidden, and never carrying meaning that the
+  page does not also say in words.
+*/
+interface Props { kind: 'stack' | 'passage' | 'shelf' | 'letter' | 'timeline' | 'lost' | 'notice'; class?: string }
+const { kind, class: cls = '' } = Astro.props;
+---
+<div class:list={['artp', `artp-${kind}`, cls]} aria-hidden="true">
+  <svg viewBox="0 0 400 300" role="presentation" focusable="false" preserveAspectRatio="xMidYMid meet">
+    {kind === 'stack' && (
+      <>
+        {/* three booklets, torn at the edge, stacked and taped */}
+        <path d="M52 96c40-9 84-11 126-5 30 4 60 3 90-2 8-1 12 4 12 12v150c0 8-5 12-13 13-32 4-63 5-95 2-38-4-76-2-113 5-8 2-14-3-14-11V108c0-7 3-11 7-12z" fill="var(--tint-navy)" />
+        <path d="M66 74c40-9 84-11 126-5 30 4 60 3 90-2 8-1 12 4 12 12v150c0 8-5 12-13 13-32 4-63 5-95 2-38-4-76-2-113 5-8 2-14-3-14-11V86c0-7 3-11 7-12z" fill="var(--coral)" />
+        <path d="M80 52c40-9 84-11 126-5 30 4 60 3 90-2 8-1 12 4 12 12v150c0 8-5 12-13 13-32 4-63 5-95 2-38-4-76-2-113 5-8 2-14-3-14-11V64c0-7 3-11 7-12z" fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="1.5" />
+        <path d="M120 92h150M120 116h132M120 140h150M120 164h96" stroke="var(--rule-strong)" stroke-width="4" stroke-linecap="round" />
+        <path d="M120 116h132" stroke="var(--gold)" stroke-width="13" stroke-linecap="round" opacity=".55" />
+        <rect x="168" y="28" width="82" height="24" rx="1" fill="var(--gold)" opacity=".92" transform="rotate(-3 209 40)" />
+      </>
+    )}
+
+    {kind === 'passage' && (
+      <>
+        {/* a page of text with one line marked and one word circled */}
+        <path d="M64 28c48-6 96-6 144 0 12 1 20 2 32 1 8-1 12 4 12 11v222c0 8-5 12-13 12-52-5-104-5-156 1-9 1-15-3-15-11V40c0-7 2-11 6-12z" fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="1.5" />
+        <path d="M92 74h140M92 102h112M92 130h140M92 158h124M92 186h140M92 214h84" stroke="var(--rule-strong)" stroke-width="5" stroke-linecap="round" />
+        <path d="M92 130h96" stroke="var(--gold)" stroke-width="15" stroke-linecap="round" opacity=".6" />
+        <path d="M186 92c-22-3-44 3-46 11 -2 8 18 14 42 13 20-1 34-6 33-13 -1-6-13-10-29-11z" fill="none" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" />
+        <path d="M92 186h60" stroke="var(--sage)" stroke-width="5" stroke-linecap="round" />
+        <circle cx="294" cy="66" r="7" fill="var(--navy)" />
+        <path d="M282 244c14-10 30-16 48-18" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" fill="none" />
+        <path d="M318 220l14 6-9 12" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      </>
+    )}
+
+    {kind === 'shelf' && (
+      <>
+        {/* spines, leaning, in the four colours */}
+        <rect x="46" y="72" width="42" height="182" rx="4" fill="var(--navy)" />
+        <rect x="96" y="52" width="34" height="202" rx="4" fill="var(--coral)" />
+        <rect x="138" y="86" width="46" height="168" rx="4" fill="var(--gold)" />
+        <rect x="192" y="64" width="30" height="190" rx="4" fill="var(--sage)" />
+        <g transform="rotate(13 262 254)">
+          <rect x="240" y="96" width="44" height="158" rx="4" fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="1.5" />
+          <path d="M252 122h20M252 138h20" stroke="var(--rule-strong)" stroke-width="4" stroke-linecap="round" />
+        </g>
+        <path d="M34 258h330" stroke="var(--ink)" stroke-width="5" stroke-linecap="round" />
+        <path d="M58 104h18M58 122h18" stroke="var(--cream)" stroke-width="4" stroke-linecap="round" opacity=".8" />
+        <path d="M150 118h22M150 136h22" stroke="var(--on-gold)" stroke-width="4" stroke-linecap="round" opacity=".6" />
+      </>
+    )}
+
+    {kind === 'letter' && (
+      <>
+        {/* a note going out, taped shut */}
+        <path d="M74 84c60-8 120-8 180 0 9 1 14 5 14 12v122c0 8-6 12-15 13-58 6-116 6-174 0-9-1-15-5-15-13V96c0-7 4-11 10-12z" fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="1.5" />
+        <path d="M70 96l94 62c8 5 16 5 24 0l94-62" fill="none" stroke="var(--navy)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <rect x="146" y="60" width="70" height="24" rx="1" fill="var(--coral)" opacity=".92" transform="rotate(-4 181 72)" />
+        <circle cx="308" cy="96" r="9" fill="var(--gold)" />
+        <path d="M296 214c14 10 30 15 48 16" stroke="var(--sage)" stroke-width="4" stroke-linecap="round" fill="none" />
+        <path d="M58 216c-12 6-22 14-28 24" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" fill="none" />
+      </>
+    )}
+
+    {kind === 'timeline' && (
+      <>
+        {/* everything, in order */}
+        <path d="M74 46v208" stroke="var(--rule-strong)" stroke-width="4" stroke-linecap="round" />
+        <circle cx="74" cy="70" r="11" fill="var(--navy)" />
+        <circle cx="74" cy="130" r="11" fill="var(--coral)" />
+        <circle cx="74" cy="190" r="11" fill="var(--gold)" />
+        <circle cx="74" cy="242" r="11" fill="var(--sage)" />
+        <rect x="106" y="56" width="204" height="28" rx="6" fill="var(--card)" />
+        <rect x="106" y="116" width="168" height="28" rx="6" fill="var(--card)" />
+        <rect x="106" y="176" width="216" height="28" rx="6" fill="var(--card)" />
+        <rect x="106" y="228" width="146" height="28" rx="6" fill="var(--card)" />
+        <path d="M122 70h108M122 130h84M122 190h120M122 242h64" stroke="var(--rule-strong)" stroke-width="5" stroke-linecap="round" />
+        <rect x="252" y="40" width="66" height="22" rx="1" fill="var(--gold)" opacity=".9" transform="rotate(-3 285 51)" />
+      </>
+    )}
+
+    {kind === 'lost' && (
+      <>
+        {/* a torn corner of the map, and the way back marked on it */}
+        <path d="M78 44c62-8 124-8 186 2 10 2 14 7 13 15l-10 74c-1 9 2 18 8 25 7 8 5 16-6 18-58 10-116 12-174 6-11-1-16-6-15-15l6-52c1-9-2-17-9-24-8-8-6-16 1-17z" fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="1.5" />
+        <path d="M104 116c34-16 66-14 96 6 26 17 52 20 78 8" fill="none" stroke="var(--rule-strong)" stroke-width="4" stroke-linecap="round" stroke-dasharray="3 16" />
+        <path d="M232 62l24 24M256 62l-24 24" stroke="var(--coral)" stroke-width="6" stroke-linecap="round" />
+        <circle cx="112" cy="150" r="9" fill="var(--navy)" />
+        <path d="M112 214v46M92 224l40 22M132 224l-40 22" stroke="var(--sage)" stroke-width="5" stroke-linecap="round" />
+        <path d="M176 250c34 14 72 10 104-12" fill="none" stroke="var(--navy)" stroke-width="5" stroke-linecap="round" />
+        <path d="M264 222l20 16-18 14" fill="none" stroke="var(--navy)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
+        <rect x="152" y="26" width="76" height="22" rx="1" fill="var(--gold)" opacity=".9" transform="rotate(-3 190 37)" />
+        <circle cx="326" cy="176" r="7" fill="var(--gold)" />
+      </>
+    )}
+
+    {kind === 'notice' && (
+      <>
+        {/* an ordinary window, and the light doing something on the floor */}
+        <path d="M120 200l52-160h96l52 160z" fill="var(--gold)" opacity=".22" />
+        <rect x="130" y="34" width="140" height="164" rx="6" fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="4" />
+        <path d="M200 36v160M132 116h136" stroke="var(--rule-strong)" stroke-width="4" stroke-linecap="round" />
+        <path d="M92 218h216" stroke="var(--ink)" stroke-width="5" stroke-linecap="round" />
+        <circle cx="242" cy="76" r="13" fill="var(--coral)" />
+        <path d="M108 244c26 12 56 14 84 6" fill="none" stroke="var(--sage)" stroke-width="4" stroke-linecap="round" />
+        <path d="M262 250c14-10 30-15 48-16" fill="none" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" />
+        <path d="M294 226l16 8-10 12" fill="none" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        <rect x="166" y="18" width="72" height="22" rx="1" fill="var(--coral)" opacity=".9" transform="rotate(-3 202 29)" />
+      </>
+    )}
+
+  </svg>
+</div>
