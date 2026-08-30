@@ -306,3 +306,34 @@ export async function linkCitedBooks(html: string) {
   }
   return parts.join('');
 }
+
+/* A timestamp as a person writes it, in seconds.
+
+   Accepts "42:10", "1:02:30" and a bare "2530". Anything it cannot read comes
+   back undefined rather than zero, so a typo in the CMS leaves the video
+   starting where it always did instead of somewhere arbitrary. */
+export function toSeconds(v?: string | number): number | undefined {
+  if (v === undefined || v === null || v === '') return undefined;
+  if (typeof v === 'number') return Number.isFinite(v) && v >= 0 ? Math.floor(v) : undefined;
+  const raw = String(v).trim();
+  if (/^\d+$/.test(raw)) return Number(raw);
+  const parts = raw.split(':');
+  if (parts.length < 2 || parts.length > 3) return undefined;
+  if (!parts.every((p) => /^\d{1,2}$/.test(p.trim()))) return undefined;
+  const n = parts.map((p) => Number(p.trim()));
+  const secs = n.length === 3 ? n[0] * 3600 + n[1] * 60 + n[2] : n[0] * 60 + n[1];
+  return Number.isFinite(secs) ? secs : undefined;
+}
+
+/* h:mm:ss past the hour, m:ss under it. The old formatter printed a
+   hundred-minute service as "99:51", which reads as ninety-nine seconds shy
+   of a hundred minutes only if you already know what it means. */
+export function clockTime(total?: number): string | undefined {
+  if (!total || total < 0) return undefined;
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = Math.floor(total % 60);
+  return h
+    ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+    : `${m}:${String(s).padStart(2, '0')}`;
+}
