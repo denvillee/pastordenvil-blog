@@ -786,3 +786,73 @@
 .arc-filters{display:flex; gap:.5rem; flex-wrap:wrap; margin:1.2rem 0 1.8rem}
 .arc-item .r{color:var(--muted); font-size:.72rem; font-weight:700;
   letter-spacing:.12em; text-transform:uppercase; white-space:nowrap}
+
+/* ── the doorway, folded ─────────────────────────────────────────────────
+   30 Aug. The introduction stays where it is and stops being a wall. When a
+   room has posts in it the doorway prints its opening paragraph and folds the
+   rest behind a disclosure, which took Essays from 1320px to first content
+   down to roughly 500. No script: it is a details element, so it opens with
+   JavaScript off and it is keyboard operable for free.                     */
+.door.is-folded{padding-bottom:clamp(1rem,2.4vw,1.6rem)}
+.door-fold{margin-top:.9rem}
+.door-fold > .door-body{padding-top:1.05rem}
+.door-fold > .door-body > p:first-child{font-size:inherit; font-weight:400; color:var(--muted)}
+
+.door-toggle{
+  display:inline-flex; align-items:center; gap:.4rem; cursor:pointer;
+  list-style:none; width:max-content;
+  font-size:.72rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--navy); padding:.5rem 0; min-height:44px;
+}
+.door-toggle::-webkit-details-marker{display:none}
+.door-toggle:hover .door-toggle-t{text-decoration:underline; text-underline-offset:3px}
+.door-toggle:focus-visible{outline:2px solid var(--navy); outline-offset:3px; border-radius:2px}
+.door-caret{transition:rotate .18s ease; font-size:.8em; line-height:1}
+.door-fold[open] .door-caret{rotate:180deg}
+@media (prefers-reduced-motion:reduce){ .door-caret{transition:none} }
+
+/* ── the doorway rail ────────────────────────────────────────────────────
+   A doorway printing whole is a 62ch column against a 1280px page, so the
+   right half of Moments and For Leaders sat empty for the doorway's full
+   height. Measured 30 Aug: 800px of nothing on For Leaders. The rail puts the
+   design board's own furniture in that space, decoratively, and collapses to
+   nothing at the width where the text column goes full bleed.               */
+.door{position:relative}
+@media (min-width:900px){
+  .door:not(.is-folded):has(.door-rail){
+    display:grid; grid-template-columns:minmax(0,62ch) minmax(0,1fr);
+    gap:clamp(2rem,5vw,4.5rem); align-items:start;
+  }
+  .door:not(.is-folded):has(.door-rail) .door-in{grid-column:1}
+  .door:not(.is-folded):has(.door-rail) .door-rule{grid-column:1}
+}
+.door-rail{display:none}
+@media (min-width:900px){
+  .door-rail{
+    display:block; grid-column:2; grid-row:1;
+    position:relative; align-self:start;
+    justify-self:center; width:min(19rem,100%);
+    margin-top:.6rem;
+  }
+}
+.door-rail-note{display:block; position:relative; margin-top:clamp(1.4rem,3.4vw,2.2rem)}
+@media (min-width:900px){ .door-rail-note{margin-top:.4rem} }
+.door-rail-note .note{margin:0}
+.door-rail-note .door-tape{top:-.9rem; left:12%; rotate:-7deg; z-index:4}
+.door-rail-note .door-dots{right:8%; top:calc(100% + 1.1rem); opacity:.45; z-index:0}
+
+/* The hero art on For Leaders was 400px against 180px of copy, which is where
+   the 190px hole under the paragraph came from. 20rem matches the cap Moments
+   and Studies already carry. */
+.lead-art img{max-height:20rem}
+
+/* ── tape on a photograph ────────────────────────────────────────────────
+   The mask clips to its torn radius, so the strip is placed inside the frame
+   and runs off both edges of the corner: it reads as tape laid across the
+   picture rather than as a rectangle sitting on it. Hidden under 520px, where
+   the photograph is small enough for the strip to land on a face.          */
+.imask{position:relative}
+.imask-tape{z-index:4; opacity:.94; height:1.35rem; width:clamp(5rem,11vw,8rem)}
+.imask-tape-tl{top:.9rem; left:-1.9rem; rotate:-34deg}
+.imask-tape-tr{top:.9rem; right:-1.9rem; rotate:34deg}
+@media (max-width:520px){ .imask-tape{display:none} }
