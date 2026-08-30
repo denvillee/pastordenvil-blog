@@ -104,9 +104,9 @@ export const isoDate = (d: Date) => d.toISOString();
    `path` is the URL and `cls` is the colour, and both stay in code on purpose —
    changing a path after launch breaks every link anyone has ever shared. */
 export const ROOMS = {
-  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '' },
-  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders' },
-  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments' },
+  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '',          plural: labels.navEssays },
+  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders', plural: labels.navLeaders },
+  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments', plural: labels.navMoments },
 } as const;
 export type RoomKey = keyof typeof ROOMS;
 
