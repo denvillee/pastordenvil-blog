@@ -12,6 +12,7 @@ import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
+import ArtPlate from '../../components/ArtPlate.astro';
 import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import EssayCard from '../../components/EssayCard.astro';
@@ -44,7 +45,11 @@ const [featured, ...rest] = entries;
           What there&#32;<span class="u">wasn't time to say<Mark kind="underline" color="yellow" /></span>&#32;on Sunday.
         </p>
       </div>
-      <DotGrid cols={7} rows={4} class="arch-dots" />
+      {/* The right of this row was a field of dots and nothing else. */}
+      <div class="head-art">
+        <DotGrid cols={7} rows={4} class="head-dots" />
+        <ArtPlate kind="passage" class="artp-band" />
+      </div>
     </section>
 
     {IntroBody && (
