@@ -6,9 +6,18 @@
   maintenance, and it stays out of the interface: no outbound buttons, no
   platform names in the copy, and a site-native line if a player ever fails.
 
-  Grouping is by year because that is the one real axis the content has. When
-  the full archive lands, series and organization are already in the schema and
-  become the better grouping.
+  Built for the size it is about to be. There are three talks on this page
+  today and a database of roughly forty with usable video behind it, out of
+  well over a thousand messages. Three talks need no filters; forty need them
+  badly, and a page that has to be rewritten the week the import lands is a
+  page that will not get rewritten. So the furniture is here now and it hides
+  itself: the search box appears at eight talks, the year row at two years, the
+  series row at two series. Nothing is shown to filter a list you can already
+  see all of.
+
+  All of it is client side over markup that is already complete, so the page
+  works with JavaScript off: every talk is in the HTML, grouped by year, and
+  the controls simply never appear.
 */
 import { getCollection } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
@@ -35,6 +44,19 @@ const talks = all
   });
 
 const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b - a);
+const series = [...new Set(talks.map((t: any) => t.data.series).filter(Boolean))].sort();
+
+/* The thresholds. A control that filters a list you can see all of is noise. */
+const showSearch = talks.length >= 8;
+const showYears = years.length >= 2;
+const showSeries = series.length >= 2;
+const anyControls = showSearch || showYears || showSeries;
+
+/* One searchable string per talk, built here rather than in the browser: the
+   markup carries it, so the script does no work before the reader types. */
+const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
+  t.data.organization, t.data.scripture, t.data.location,
+  ...(t.data.tags ?? [])].filter(Boolean).join(' ').toLowerCase();
 ---
 <Shell title={`${labels.watchHeading} · ${site.name}`} description={labels.watchDek} current="watch">
   <div class="arch">
@@ -55,20 +77,124 @@ const years = [...new Set(talks.map((t: any) => t.data.year))].sort((a, b) => b 
       </div>
     </section>
 
+    {anyControls && (
+      <section class="shell watch-tools" id="watch-tools" hidden>
+        {showSearch && (
+          <div class="wsearch">
+            <label class="sr-only" for="watch-q">Search the talks</label>
+            <input id="watch-q" type="search" class="wsearch-in" autocomplete="off"
+                   placeholder="Search by title, series or passage" />
+          </div>
+        )}
+        {showSeries && (
+          <div class="arc-filters" role="group" aria-label="Filter by series">
+            <button type="button" class="chip-btn on" data-series="all" aria-pressed="true">All series</button>
+            {series.map((s: any) => (
+              <button type="button" class="chip-btn" data-series={s} aria-pressed="false">{s}</button>
+            ))}
+          </div>
+        )}
+        {showYears && (
+          <div class="arc-filters" role="group" aria-label="Filter by year">
+            <button type="button" class="chip-btn on" data-year="all" aria-pressed="true">All years</button>
+            {years.map((y) => (
+              <button type="button" class="chip-btn" data-year={String(y)} aria-pressed="false">{y}</button>
+            ))}
+          </div>
+        )}
+        <p class="wcount" id="watch-count" role="status" aria-live="polite"></p>
+      </section>
+    )}
+
     {years.map((y) => (
-      <section class="shell watch-year">
+      <section class="shell watch-year" data-year-block={String(y)}>
         <div class="sec-head"><h2 class="sec-h">{y}</h2></div>
         <div class="vcards">
-          {talks.filter((t: any) => t.data.year === y).map((t: any) => <VideoCard entry={t} />)}
+          {talks.filter((t: any) => t.data.year === y).map((t: any) => (
+            <div class="vwrap" data-year={String(t.data.year)}
+                 data-series={t.data.series ?? ''} data-hay={hay(t)}>
+              <VideoCard entry={t} />
+            </div>
+          ))}
         </div>
       </section>
     ))}
+
+    {anyControls && (
+      <p class="shell wempty" id="watch-empty" hidden>
+        Nothing matches that. <button type="button" class="go" id="watch-clear">Clear the filters</button>
+      </p>
+    )}
 
     {/* No way out to a third party. This is Denvil's teaching library, and
         where the file happens to live is a maintenance detail rather than
         something to send a reader away over. */}
   </div>
-  {/* The Subscribe block was removed from every content page on 29 Aug.
-      The site asked for an email too often. Subscribe now lives in one
-      place: the masthead action, the footer link, and /subscribe/. */}
+
+  <script>
+    /* The controls are hidden in the markup and revealed here, so a reader
+       with JavaScript off is never shown a search box that does nothing. */
+    const tools = document.getElementById('watch-tools');
+    if (tools) {
+      tools.hidden = false;
+      const q = document.getElementById('watch-q') as HTMLInputElement | null;
+      const wraps = Array.from(document.querySelectorAll<HTMLElement>('.vwrap'));
+      const blocks = Array.from(document.querySelectorAll<HTMLElement>('[data-year-block]'));
+      const countEl = document.getElementById('watch-count');
+      const emptyEl = document.getElementById('watch-empty');
+      const clearBtn = document.getElementById('watch-clear');
+      let year = 'all';
+      let ser = 'all';
+
+      const setPressed = (group: string, val: string) => {
+        document.querySelectorAll<HTMLElement>(`[data-${group}]`).forEach((b) => {
+          if (b.tagName !== 'BUTTON') return;
+          const on = b.dataset[group] === val;
+          b.classList.toggle('on', on);
+          b.setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+      };
+
+      const apply = () => {
+        const term = (q?.value ?? '').trim().toLowerCase();
+        let shown = 0;
+        wraps.forEach((w) => {
+          const ok =
+            (year === 'all' || w.dataset.year === year) &&
+            (ser === 'all' || w.dataset.series === ser) &&
+            (!term || (w.dataset.hay ?? '').includes(term));
+          w.hidden = !ok;
+          if (ok) shown++;
+        });
+        /* A year heading with nothing under it is a heading for an empty
+           room. Hide the whole block instead. */
+        blocks.forEach((b) => {
+          const any = Array.from(b.querySelectorAll<HTMLElement>('.vwrap')).some((w) => !w.hidden);
+          b.hidden = !any;
+        });
+        if (countEl) {
+          countEl.textContent = shown === wraps.length
+            ? `${wraps.length} talk${wraps.length === 1 ? '' : 's'}`
+            : `${shown} of ${wraps.length}`;
+        }
+        if (emptyEl) emptyEl.hidden = shown !== 0;
+      };
+
+      document.querySelectorAll<HTMLElement>('button[data-year]').forEach((b) => {
+        b.addEventListener('click', () => { year = b.dataset.year ?? 'all'; setPressed('year', year); apply(); });
+      });
+      document.querySelectorAll<HTMLElement>('button[data-series]').forEach((b) => {
+        b.addEventListener('click', () => { ser = b.dataset.series ?? 'all'; setPressed('series', ser); apply(); });
+      });
+      q?.addEventListener('input', apply);
+      clearBtn?.addEventListener('click', () => {
+        year = 'all'; ser = 'all';
+        if (q) q.value = '';
+        setPressed('year', 'all'); setPressed('series', 'all');
+        apply();
+        q?.focus();
+      });
+      apply();
+    }
+  </script>
 </Shell>
