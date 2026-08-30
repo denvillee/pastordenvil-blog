@@ -617,9 +617,9 @@
 
 /* ── Photography placements, 29 Aug ─────────────────────────────────────── */
 
-/* The hero photograph is used at native size and must never be asked to
-   upscale. The source crop is 1122x842, the slot is capped at 520x390 CSS,
-   so even at a 2x device pixel ratio it is still downsampling. */
+/* The hero slot is capped at 520x390 CSS. The source is 1400x1050, so even at
+   a 2x device pixel ratio the picture is still being downsampled rather than
+   stretched. */
 .hero-art .mask,
 .hero-art picture,
 .hero-art img{max-width:520px}
