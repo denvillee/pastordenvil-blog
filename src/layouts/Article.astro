@@ -75,9 +75,11 @@ const passages = await getPassages(scripture);
         : title}<span class="dot">.</span></h1>
       <p class="art-dek">{dek}</p>
       <div class="art-meta">
-        {/* The same face at small size on every piece, so a reader who has read
-            one recognises the next before reading the name. */}
-        <img class="art-face" src="/assets/img/dl-face.png" alt="Denvil Lee"
+        {/* The site's own mark rather than a photograph. A face at 30px is a
+            smudge, it dates the moment the photograph does, and the name is
+            already sitting right beside it. Decorative, so the alt is empty
+            and a screen reader reads the name once, not twice. */}
+        <img class="art-face" src="/assets/img/byline-mark.png" alt=""
              width="64" height="64" loading="lazy" decoding="async" />
         <span class="art-by">Denvil Lee</span>
         <span><time datetime={isoDate(publishAt)}>{displayDate(publishAt)}</time></span>
