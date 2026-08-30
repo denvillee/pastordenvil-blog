@@ -811,6 +811,9 @@
   display:inline; cursor:pointer; list-style:none;
   font-size:inherit; font-weight:700; letter-spacing:inherit; text-transform:none;
   color:var(--blue-ink);
+  /* Held on one line: broken over two it reads as two separate words rather
+     than one link, and the caret ends up orphaned under it. */
+  white-space:nowrap;
   /* The tap target comes from padding the inline box, so it can still be hit
      on a phone without shoving the link a line and a half down the page. */
   padding:.45rem .1rem .45rem .18rem;
