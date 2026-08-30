@@ -998,3 +998,220 @@ hr.mid{border:0; height:auto; margin:clamp(1.6rem,4vw,2.4rem) auto; width:100%;
 hr.mid::before{content:"\00B7 \00A0 \00B7 \00A0 \00B7"; letter-spacing:.35em; font-size:1.1rem}
 .feat-ser{margin-top:.9rem; font-size:.82rem; color:var(--muted)}
 .feat-ser a{color:var(--navy); font-weight:700; text-decoration:underline; text-underline-offset:2px}
+
+/* =========================================================================
+   THE ESSAY PAGE: DISPLAY TREATMENTS
+
+   Denvil's 30 Aug brief: big ideas and quotes get their own designs, in the
+   site's own vocabulary, so a long read holds attention on the way down.
+   Three treatments and no more, because a page where everything is elevated
+   has nothing elevated on it:
+
+     .bigidea    a claim, set large, with a hand-drawn rule beneath it
+     .bigidea-c  a short line with a circle drawn around it
+     .pq         a note card under a strip of tape
+
+   Authored as `> [!BIG]`, `> [!CIRCLE]` and `> [!QUOTE]` in plain markdown
+   and recognised in lib/enrich.ts, so the CMS never has to know they exist.
+   ========================================================================= */
+
+.bigidea{
+  max-width:var(--measure);
+  margin:clamp(2rem,5vw,3.2rem) 0;
+  padding-left:clamp(0rem,1.4vw,1rem);
+}
+.bigidea-t{
+  font-family:var(--sans);
+  font-size:var(--step-3);
+  font-weight:900;
+  line-height:1.14;
+  letter-spacing:-.032em;
+  color:var(--ink);
+  margin:0;
+  text-wrap:balance;
+}
+.bigidea-t + .bigidea-t{margin-top:.5em}
+
+/* The rule sits under the claim rather than inside it: a hand-drawn stroke
+   stretched across three lines of display type reads as a border, and the
+   whole point of these marks is that they do not. */
+.bigidea::after{
+  content:"";
+  display:block;
+  width:min(11rem,52%);
+  height:.5rem;
+  margin-top:.85rem;
+  background:var(--gold);
+  clip-path:polygon(0 42%,14% 20%,33% 34%,52% 16%,71% 32%,88% 18%,100% 36%,
+                    98% 78%,80% 62%,62% 82%,44% 64%,26% 84%,10% 66%,1% 82%);
+  opacity:.92;
+}
+.bigidea-c::after{display:none}
+
+/* The circled line. .c is the site's own circle wrapper from marks.css, and
+   is-display retunes the inset so the loop clears display-size letterforms. */
+.bigidea-c{padding-left:0}
+.bigidea-c .bigidea-t{
+  font-size:var(--step-4);
+  line-height:1.06;
+  text-align:center;
+  text-wrap:balance;
+}
+.bigidea-c .c{isolation:isolate}
+.bigidea-c .c > .mk-circle-loose{
+  left:-.28em; right:-.28em; top:-.24em; bottom:-.2em;
+  width:auto; height:auto; z-index:-1;
+}
+
+/* ── the taped card ─────────────────────────────────────────────────────
+   Rotated a degree and a half, which is the whole trick, and straightened
+   below 700px so the corners stop reaching into body copy. */
+.pq{
+  max-width:min(46ch,100%);
+  margin:clamp(2rem,5vw,3rem) auto;
+}
+.pq-card{
+  position:relative;
+  background:var(--paper);
+  border:1px solid var(--rule);
+  border-radius:2px;
+  padding:clamp(1.5rem,3.6vw,2.2rem) clamp(1.3rem,3.2vw,1.9rem) clamp(1.2rem,2.8vw,1.6rem);
+  transform:rotate(-1.4deg);
+  box-shadow:0 1px 0 var(--rule-strong), 0 14px 28px -20px rgba(31,28,22,.5);
+}
+.pq-tape{
+  position:absolute;
+  top:-.72rem; left:50%;
+  width:clamp(4.5rem,26%,7rem); height:1.5rem;
+  transform:translateX(-50%) rotate(-2.4deg);
+  background:var(--tape);
+  opacity:.85;
+  clip-path:polygon(2% 12%,98% 0,100% 88%,0 100%);
+}
+.pq-q{
+  margin:0;
+  padding:0;
+  border:0;
+  font-family:var(--sans);
+  font-size:var(--step-1);
+  font-weight:700;
+  line-height:1.42;
+  letter-spacing:-.012em;
+  color:var(--ink);
+}
+.pq-q p{margin:0}
+.pq-q p + p{margin-top:.7em}
+.pq-q strong{font-weight:900}
+.pq-by{
+  margin:.9rem 0 0;
+  font-family:var(--hand);
+  font-size:1.15rem;
+  line-height:1.25;
+  color:var(--faint);
+}
+/* No dash: Denvil does not use them in copy, and a CSS ::before is copy. */
+.pq-by::before{content:""}
+
+/* ── scripture, with the translation control ────────────────────────────
+   The same gesture as the study app: one choice moves every passage on the
+   page, and "As quoted" is the default because that is the wording Denvil
+   chose. See lib/enrich.ts and the script in layouts/Article.astro. */
+.vs{
+  max-width:var(--measure);
+  margin:clamp(1.8rem,4vw,2.6rem) 0;
+  padding:clamp(1rem,2.4vw,1.4rem) clamp(1.1rem,2.8vw,1.6rem);
+  background:var(--card);
+  border-radius:var(--r);
+  border-left:4px solid var(--gold);
+}
+.vs-head{margin-top:1.8rem}
+.vs-pane{
+  margin:0;
+  padding:0;
+  border:0;
+  font-size:var(--step-1);
+  font-weight:600;
+  line-height:1.55;
+  letter-spacing:-.008em;
+  color:var(--ink);
+}
+.vs-pane p{margin:0}
+.vs-pane p + p{margin-top:.6em}
+.vs-pane strong{font-weight:900}
+.vs-wait{color:var(--faint); font-weight:500; font-style:italic}
+
+.vs-cite{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:.9rem; flex-wrap:wrap;
+  margin-top:.95rem; padding-top:.7rem;
+  border-top:1px solid var(--rule);
+}
+.vs-ref{
+  font-family:var(--sans); font-style:normal;
+  font-size:.72rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
+  color:var(--faint);
+}
+.vs-tabs{display:flex; flex-wrap:wrap; gap:.35rem}
+.vs-tab{
+  font-family:var(--sans); font-size:.68rem; font-weight:700;
+  letter-spacing:.07em;
+  padding:.3rem .6rem;
+  border:1px solid var(--rule-strong); border-radius:999px;
+  background:transparent; color:var(--muted); cursor:pointer;
+  transition:background var(--fast) var(--ease), color var(--fast) var(--ease),
+             border-color var(--fast) var(--ease);
+}
+.vs-tab:hover{border-color:var(--navy); color:var(--navy)}
+.vs-tab[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:var(--cream)}
+.vs-plain .vs-cite{justify-content:flex-start}
+
+/* ── the private response ───────────────────────────────────────────────
+   Understated on purpose. It is an invitation, not another call to action,
+   so it gets a rule and space rather than a coloured panel competing with
+   the essay it follows. */
+.respond{
+  max-width:var(--measure);
+  margin-top:clamp(2.2rem,5vw,3.2rem);
+  padding-top:clamp(1.4rem,3vw,2rem);
+  border-top:1px solid var(--rule);
+}
+.respond-h{font-size:var(--step-1); font-weight:900; letter-spacing:-.02em; margin:0 0 .5rem}
+.respond-d{color:var(--muted); line-height:1.65; margin:0 0 1.3rem; max-width:52ch}
+.respond-f{display:block}
+.respond-row{display:grid; grid-template-columns:1fr 1fr; gap:.9rem}
+.respond-field{margin:0 0 .9rem}
+.respond-field label{
+  display:block; margin-bottom:.32rem;
+  font-family:var(--sans); font-size:.72rem; font-weight:800;
+  letter-spacing:.08em; text-transform:uppercase; color:var(--faint);
+}
+.respond-opt{
+  display:inline; margin-left:.4rem;
+  font-weight:600; letter-spacing:.02em; text-transform:none;
+  color:var(--faint); opacity:.85;
+}
+.respond-field input,
+.respond-field textarea{
+  width:100%; font:inherit; font-size:1rem; color:var(--ink);
+  background:var(--paper);
+  border:1px solid var(--rule-strong); border-radius:var(--r);
+  padding:.62rem .75rem;
+}
+.respond-field textarea{resize:vertical; min-height:7.5rem; line-height:1.55}
+.respond-field input:focus-visible,
+.respond-field textarea:focus-visible{outline:2px solid var(--navy); outline-offset:1px; border-color:var(--navy)}
+.respond-hp{position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden}
+.respond-act{display:flex; align-items:center; gap:1rem; flex-wrap:wrap; margin-top:.4rem}
+.respond-print{font-size:.8rem; color:var(--faint); max-width:34ch; line-height:1.45}
+
+@media (max-width:700px){
+  .pq-card{transform:none}
+  .pq-tape{transform:translateX(-50%) rotate(-1.6deg)}
+  .respond-row{grid-template-columns:1fr; gap:0}
+  .bigidea-c .bigidea-t{font-size:var(--step-3)}
+  .vs-tab{min-height:38px; padding-inline:.85rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .pq-card{transform:none}
+}
