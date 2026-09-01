@@ -1,74 +1,18 @@
 ---
-/*
-  The masthead.
-
-  Seven destinations and one action. The current section is marked with a blue
-  hand-drawn underline, and also with aria-current, because a colour and a
-  squiggle are not information a screen reader can use.
-
-  The mobile panel is a details/summary disclosure: it opens with no
-  JavaScript, which matters on a site that ships script-src 'self' and has no
-  framework runtime.
-*/
 import Wordmark from './Wordmark.astro';
 import Mark from './marks/Mark.astro';
 import labels from '../data/labels.json';
-
 interface Props { current?: string }
-const { current } = Astro.props;
-
-/* One content order, used here and on the home page: Essays, Moments,
-   Bookshelf, Studies, For Leaders, then About and Watch. Speaking and
-   Subscribe stay secondary actions in the panel and the footer. */
-const links = [
-  { key: 'essays',   href: '/essays/',    label: labels.navEssays },
-  { key: 'moments',  href: '/moments/',   label: labels.navMoments },
-  { key: 'reading',  href: '/bookshelf/', label: labels.navReading },
-  { key: 'studies',  href: '/studies/',   label: labels.navStudies },
-  { key: 'leaders',  href: '/leaders/',   label: labels.navLeaders },
-  { key: 'about',    href: '/about/',     label: labels.navAbout },
-  { key: 'watch',    href: '/watch/',     label: labels.navWatch },
+const { current }=Astro.props;
+const links=[
+  {key:'essays',href:'/essays/',label:labels.navEssays},
+  {key:'leaders',href:'/leaders/',label:labels.navLeaders},
+  {key:'moments',href:'/moments/',label:labels.navMoments},
+  {key:'studies',href:'/studies/',label:labels.navStudies},
+  {key:'reading',href:'/bookshelf/',label:labels.navReading},
+  {key:'about',href:'/about/',label:labels.navAbout},
+  {key:'watch',href:'/watch/',label:labels.navWatch},
 ];
 ---
 <a class="skip" href="#main">Skip to content</a>
-
-<header class="mast">
-  <div class="mast-in">
-    <Wordmark />
-
-    <nav class="mast-nav" aria-label="Sections">
-      <ul>
-        {links.map((l) => (
-          <li>
-            <a href={l.href} class:list={['mast-link', current === l.key && 'is-on']}
-               aria-current={current === l.key ? 'page' : undefined}>
-              {l.label}
-              {current === l.key && <Mark kind="underline" color="blue" class="mast-uline" />}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-
-    <a class="btn btn-yellow mast-cta" href="/subscribe/">
-      {labels.navCta} <span class="arw" aria-hidden="true">&rarr;</span>
-    </a>
-
-    <details class="mob">
-      <summary aria-label="Menu"><span class="mob-bars" aria-hidden="true"></span></summary>
-      <div class="mob-panel">
-        <ul>
-          {links.map((l) => (
-            <li><a href={l.href} aria-current={current === l.key ? 'page' : undefined}>{l.label}</a></li>
-          ))}
-          <li><a href="/speaking/">{labels.footSpeaking}</a></li>
-          {/* Everything is out of visible navigation until there is enough to
-              archive. The /archive/ route itself stays built and reachable. */}
-        </ul>
-        <a class="btn btn-yellow" href="/subscribe/">
-          {labels.navCta} <span class="arw" aria-hidden="true">&rarr;</span>
-        </a>
-      </div>
-    </details>
-  </div>
-</header>
+<header class="mast"><div class="mast-in"><Wordmark /><nav class="mast-nav" aria-label="Sections"><ul>{links.map((l)=><li><a href={l.href} class:list={['mast-link',current===l.key&&'is-on']} aria-current={current===l.key?'page':undefined}>{l.label}{current===l.key&&<Mark kind="underline" color="blue" class="mast-uline" />}</a></li>)}</ul></nav><a class="btn btn-yellow mast-cta" href="/subscribe/">{labels.navCta} <span class="arw" aria-hidden="true">&rarr;</span></a><a class="mast-search" href="/archive/" aria-label="Search and browse the site"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="M16 16l4.2 4.2"></path></svg></a><details class="mob"><summary aria-label="Menu"><span class="mob-bars" aria-hidden="true"></span></summary><div class="mob-panel"><ul>{links.map((l)=><li><a href={l.href} aria-current={current===l.key?'page':undefined}>{l.label}</a></li>)}<li><a href="/speaking/">{labels.footSpeaking}</a></li><li><a href="/archive/">Search + browse</a></li></ul><a class="btn btn-yellow" href="/subscribe/">{labels.navCta} <span class="arw" aria-hidden="true">&rarr;</span></a></div></details></div></header>

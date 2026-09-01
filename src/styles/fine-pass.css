@@ -1,0 +1,236 @@
+/* Fine visual pass against the original playful editorial comps. */
+
+:root{
+  --scribble-blue:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 92'%3E%3Cpath d='M8 5L51 16L13 29L54 42L9 54L51 68L14 82' fill='none' stroke='%230A3662' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --scribble-yellow:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 92'%3E%3Cpath d='M8 5L51 16L13 29L54 42L9 54L51 68L14 82' fill='none' stroke='%23EDAA26' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --scribble-green:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 92'%3E%3Cpath d='M8 5L51 16L13 29L54 42L9 54L51 68L14 82' fill='none' stroke='%23808E69' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --arrow-blue:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 92 50'%3E%3Cpath d='M6 24C29 17 53 19 78 28M65 12L80 28L62 38' fill='none' stroke='%230A3662' stroke-width='5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  --asterisk-blue:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 54 54'%3E%3Cpath d='M27 5V49M8 16L46 38M46 16L8 38' fill='none' stroke='%230A3662' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+/* The coral brush is meant to be seen at the trim, not nearly disappear. */
+.arch-brush{
+  left:-1.25rem !important;
+  top:2rem !important;
+  width:clamp(3.5rem,5vw,4.8rem) !important;
+  height:clamp(6rem,9vw,8rem) !important;
+  opacity:.96 !important;
+}
+
+/* Reserve a real gutter for the labeled discs. They may kiss the photograph,
+   but the words never sit on top of a face, book, or video. */
+.abt-art,.watch-feat{
+  position:relative;
+  padding-right:clamp(4.5rem,7vw,6rem);
+}
+.abt-disc,.watch-disc{
+  right:0 !important;
+  bottom:clamp(.65rem,1.8vw,1.25rem) !important;
+  width:clamp(6.2rem,8vw,7.8rem) !important;
+  z-index:6 !important;
+}
+
+/* Hero photographs get the layered, handmade framing from the comps. */
+.abt-art::before,.lead-art::before{
+  content:"";
+  position:absolute;
+  width:8.2rem;
+  height:5.7rem;
+  left:-2.5rem;
+  top:-1.35rem;
+  background-image:radial-gradient(var(--ink) 1.55px,transparent 1.7px);
+  background-size:17px 17px;
+  opacity:.5;
+  z-index:0;
+  pointer-events:none;
+}
+.abt-art>picture,.lead-art>.imask,.book-hero>.imask,.std-art>.imask,.watch-feat>.vcard{
+  position:relative;
+  z-index:1;
+}
+.abt-art>picture{
+  display:block;
+  overflow:hidden;
+  border-radius:18% 4% 15% 5% / 7% 13% 5% 12%;
+  box-shadow:var(--shadow);
+}
+.abt-art>picture img{
+  width:100%;
+  max-height:31rem;
+  object-fit:cover;
+  object-position:50% 18%;
+}
+.lead-art .imask{
+  aspect-ratio:1.6/1;
+}
+.lead-art .imask img{
+  width:100%;
+  height:100%;
+  max-height:none;
+  object-fit:cover;
+  object-position:50% 18%;
+}
+.book-hero{position:relative}
+.book-hero::after{
+  content:"";
+  position:absolute;
+  width:7.6rem;
+  height:4.9rem;
+  right:42%;
+  top:-1rem;
+  background-image:radial-gradient(var(--ink) 1.5px,transparent 1.7px);
+  background-size:17px 17px;
+  opacity:.42;
+  pointer-events:none;
+}
+.watch-feat::before{
+  content:"";
+  position:absolute;
+  width:5.4rem;
+  height:1.35rem;
+  left:54%;
+  top:-.55rem;
+  background:var(--blue);
+  transform:rotate(-2.5deg);
+  opacity:.92;
+  z-index:5;
+  pointer-events:none;
+}
+
+/* The Studies note sits beside the image, not on it. */
+.std-art{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(8rem,10.5rem);
+  gap:1rem;
+  align-items:center;
+}
+.std-side-note{
+  margin:0;
+  align-self:center;
+}
+
+/* Side marks. These are deliberately outside the content columns, like ink
+   caught at the edge of a notebook page. */
+.essay-layout,.lead-reflections,.lead-bottom,.mom-feature-layout,.mom-bottom,
+.std-more,.std-how,.book-bottom,.watch-recent,.related,.abt-explore,.signup-dark{
+  position:relative;
+}
+
+.essay-layout::before,.essay-layout::after,
+.lead-reflections::after,.lead-bottom::before,
+.mom-feature-layout::after,.mom-bottom::after,
+.std-more::before,.std-how::after,
+.book-bottom::before,.book-bottom::after,
+.watch-recent::before,.watch-recent::after,
+.related::before,.related::after,
+.abt-explore::after,.signup-dark::before{
+  content:"";
+  position:absolute;
+  pointer-events:none;
+  z-index:0;
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  opacity:.98;
+}
+
+.essay-layout::before{width:4.8rem;height:7rem;left:-4.5rem;bottom:10rem;background-image:var(--scribble-blue)}
+.essay-layout::after{width:4.8rem;height:7rem;right:-4.5rem;bottom:2rem;background-image:var(--scribble-yellow)}
+
+.lead-reflections::after{width:5rem;height:7.3rem;right:-4.6rem;top:1.5rem;background-image:var(--scribble-blue)}
+.lead-bottom::before{width:4.8rem;height:7rem;left:-4.2rem;bottom:.5rem;background-image:var(--scribble-yellow)}
+
+.mom-feature-layout::after{width:4.8rem;height:7rem;right:-4.4rem;top:1rem;background-image:var(--scribble-yellow)}
+.mom-bottom::after{width:4.8rem;height:7rem;right:-4.4rem;bottom:.4rem;background-image:var(--scribble-yellow)}
+
+.std-more::before{width:5.8rem;height:3.4rem;left:-4.8rem;top:1.8rem;background-image:var(--arrow-blue)}
+.std-how::after{width:4.8rem;height:7rem;right:-4.4rem;top:20%;background-image:var(--scribble-yellow)}
+
+.book-bottom::before{width:4.8rem;height:7rem;left:-4.35rem;top:25%;background-image:var(--scribble-yellow)}
+.book-bottom::after{width:2.7rem;height:2.7rem;right:17%;top:1.4rem;background-image:var(--asterisk-blue)}
+
+.watch-recent::before{width:4.8rem;height:7rem;left:-4.35rem;top:3rem;background-image:var(--scribble-blue)}
+.watch-recent::after{width:4.8rem;height:7rem;right:-4.35rem;top:3rem;background-image:var(--scribble-green)}
+
+.related::before{width:4.8rem;height:7rem;left:-4.35rem;top:4rem;background-image:var(--scribble-blue)}
+.related::after{width:4.8rem;height:7rem;right:-4.35rem;top:4rem;background-image:var(--scribble-yellow)}
+
+.abt-explore::after{width:4.8rem;height:7rem;right:-4.2rem;bottom:-.8rem;background-image:var(--scribble-yellow)}
+.signup-dark::before{width:4.8rem;height:7rem;left:-3.8rem;top:50%;transform:translateY(-50%);background-image:var(--scribble-blue)}
+
+/* Article pages carry the same edge personality as the archives. */
+article{position:relative;overflow:clip}
+article::before{
+  content:"";
+  position:absolute;
+  width:3.8rem;
+  height:7.2rem;
+  left:-1.1rem;
+  top:2rem;
+  background:var(--coral);
+  clip-path:polygon(3% 5%,94% 0,100% 88%,11% 100%,0 66%);
+  opacity:.96;
+  pointer-events:none;
+}
+article::after{
+  content:"";
+  position:absolute;
+  width:8.5rem;
+  height:5.8rem;
+  right:clamp(1rem,5vw,4rem);
+  top:2.4rem;
+  background-image:radial-gradient(var(--ink) 1.5px,transparent 1.7px);
+  background-size:17px 17px;
+  opacity:.45;
+  pointer-events:none;
+}
+.art-head,.read{position:relative;z-index:1}
+.art-title{max-width:12ch}
+.art-hero{position:relative}
+.art-hero::before{
+  content:"";
+  position:absolute;
+  width:5rem;
+  height:1.2rem;
+  right:12%;
+  top:-.45rem;
+  background:var(--blue);
+  transform:rotate(2deg);
+  z-index:2;
+  opacity:.9;
+}
+
+/* Small refinements that make the page feel drawn rather than templated. */
+.essay-study,.lead-cta,.watch-cta,.std-feat{
+  box-shadow:0 1px 0 rgba(20,18,16,.08),0 18px 42px rgba(20,18,16,.06);
+}
+.moment-ghost:nth-child(4n+1),.mcard:nth-child(4n+1){transform:rotate(-1deg)}
+.moment-ghost:nth-child(4n+2),.mcard:nth-child(4n+2){transform:rotate(.7deg)}
+.moment-ghost:nth-child(4n+3),.mcard:nth-child(4n+3){transform:rotate(-.45deg)}
+.moment-ghost:nth-child(4n),.mcard:nth-child(4n){transform:rotate(.9deg)}
+
+@media(max-width:900px){
+  .abt-art,.watch-feat{padding-right:0}
+  .abt-disc,.watch-disc{
+    position:relative !important;
+    right:auto !important;
+    bottom:auto !important;
+    margin:1rem 0 0 auto;
+    width:6.3rem !important;
+  }
+  .std-art{grid-template-columns:1fr}
+  .std-side-note{max-width:17rem;margin:.4rem 0 0 auto}
+  .book-hero::after,.abt-art::before,.lead-art::before{display:none}
+}
+
+@media(max-width:860px){
+  .essay-layout::before,.essay-layout::after,
+  .lead-reflections::after,.lead-bottom::before,
+  .mom-feature-layout::after,.mom-bottom::after,
+  .std-more::before,.std-how::after,
+  .book-bottom::before,.book-bottom::after,
+  .watch-recent::before,.watch-recent::after,
+  .related::before,.related::after,
+  .abt-explore::after,.signup-dark::before,
+  article::before,article::after{display:none}
+}

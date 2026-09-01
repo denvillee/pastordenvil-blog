@@ -1,83 +1,45 @@
 ---
-import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
-import Photo from '../../components/Photo.astro';
 import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
-import Doorway from '../../components/Doorway.astro';
-import ArtPlate from '../../components/ArtPlate.astro';
-import { live, introPost } from '../../lib/publish';
+import Photo from '../../components/Photo.astro';
+import ColorDisc from '../../components/marks/ColorDisc.astro';
+import { live } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
 const entries = await live('moments');
-const intro = await introPost('moments');
-/* The introduction opens the page rather than sitting in a card beside it:
-   Denvil's revision packet asks each section to open with a doorway in his
-   own voice. It is still the same real, linkable, CMS-editable post. */
-const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
 const [featured, ...rest] = entries;
+const fillers = [
+  'You don’t need all the answers. Just the next faithful step.',
+  'Leadership is less about being in charge and more about taking care of people.',
+  'Some days you just need to breathe and begin again.',
+  'Gratitude doesn’t change everything, but it changes you.',
+  'The best conversations happen when we truly listen.',
+  'Peace is not passive. It’s a daily pursuit.',
+  'God’s timing is rarely early, but never late.',
+  'Do the small things with great love.',
+];
+const fillCount = Math.max(0,8-rest.length);
 ---
 <Shell title={`${labels.momentsHeading} · ${site.name}`} description={labels.momentsDek} current="moments">
   <div class="arch">
-    <Mark kind="brush" color="coral" class="edge edge-l mom-edge" />
+    <Mark kind="brush" color="coral" class="arch-brush" />
     <section class="shell mom-hero">
-      <div>
-        <h1 class="page-h is-display"><span class="c">{labels.momentsHeading}<Mark kind="circle-loose" color="yellow" draw={true} /></span></h1>
-        <p class="page-dek">{labels.momentsSubtitle}</p>
-      </div>
-      <div class="mom-quote">
-        {/* The sticky note read "Grace is not the absence of struggle, but the
-            presence of God." It was never supplied, it reads as a generic
-            inspirational line, and it interrupted the opening.
-
-            The helmet takes that space instead. It is the only humorous picture
-            on the site, so it belongs where someone has already chosen to come
-            rather than on the front page, where it would be spent on every
-            visit. Cut out on the page ground, one coral dot, and nothing else:
-            no tape, no doodles, no arrow. The restraint is the joke. */}
-        <Photo name="dl-helmet-v2" width={1000} height={1250} class="mom-art"
-               sizes="(max-width: 900px) 80vw, 34vw"
-               alt="Denvil Lee wearing a gold toy space helmet, cut out among drawn marks." />
-        <DotGrid cols={6} rows={4} class="mom-dots" />
-      </div>
+      <div><h1 class="page-h is-display"><span class="c">Moments<Mark kind="circle-loose" color="yellow" draw={true} /></span></h1><p class="page-dek">Short reflections, small observations, and <span class="u">ordinary grace<Mark kind="underline" color="green" /></span> for the everyday.</p></div>
+      <div class="mom-quote"><DotGrid cols={6} rows={4} class="mom-dots" /><StickyNote tone="blue" tilt={1.2} tape={true}>Grace is not the absence of struggle, but the presence of God.</StickyNote></div>
     </section>
 
-    {IntroBody && (
-      <Doorway tone="coral" collapsed={entries.length > 0}>
-        <IntroBody />
-        {/* Moments has no sticky note, because a note needs words and none
-            were written for it. Designed art instead, per Denvil's 30 Aug
-            note that not every page needs a photograph of him. */}
-        <ArtPlate slot="rail" kind="notice" class="artp-band" />
-      </Doorway>
-    )}
-
-    <section class="shell">
-      {/* When nothing is published the listing is simply absent. The site
-          never announces its own emptiness. */}
-      {featured && (
-        <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured}
-                       label="Featured moment" room={labels.momentsHeading} tone="coral" />
-      )}
-
-      {rest.length > 0 && (
-        <>
-          <div class="sec-head arch-sub"><h2 class="sec-h">Recent moments</h2></div>
-          <div class="mcards">
-            {rest.map((e: any, i: number) => (
-              <MomentCard href={`/moments/${e.id}/`} entry={e} i={i} />
-            ))}
-          </div>
-        </>
-      )}
-
+    <section class="shell mom-feature-layout">
+      <div><div class="sec-head" style="margin-bottom:.7rem"><h2 class="sec-h"><span class="u">Featured moment<Mark kind="underline" color="coral" /></span></h2></div>{featured ? <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured} label="Featured" room={labels.momentsHeading} tone="coral" /> : <div class="lead-mini"><h2>A quiet morning changes everything.</h2><p>There is something holy about starting the day before the world gets loud.</p></div>}</div>
+      <div class="tiny-observation"><h2><span class="u">Tiny observation<Mark kind="underline" color="blue" /></span></h2><div class="tiny-card"><span class="cico cico-yellow" aria-hidden="true">✦</span><p>Sunlight on the desk.<br />Birds without hurry.<br />A reminder to slow down.</p><time>Moments</time></div></div>
     </section>
+
+    <section class="shell" style="padding-top:1.5rem"><div class="sec-head" style="margin-bottom:.75rem"><h2 class="sec-h">Recent moments</h2></div>{rest.length>0 && <div class="mcards">{rest.slice(0,8).map((e:any,i:number)=><MomentCard href={`/moments/${e.id}/`} entry={e} i={i} />)}</div>}{fillCount>0 && <div class="moment-ghosts">{fillers.slice(0,fillCount).map((line,i)=><div class="moment-ghost" data-tone={['paper','green','lined','paper','paper','paper','paper','coral'][i]} style={`--tilt:${[-1.1,.8,-.6,1.2,-.7,.8,-.5,.5][i]}deg`}>{line}</div>)}</div>}</section>
+
+    <section class="shell mom-bottom"><div class="mom-bottom-copy"><ColorDisc lines={["theology","leadership","life"]} /><div><p>These aren't polished. They're just real.</p><p>Thanks for being here. I hope something here helps you notice what God may be revealing in your own ordinary life.</p><a class="go" href="/subscribe/">Keep me posted <span class="arw" aria-hidden="true">&rarr;</span></a></div></div><Photo name="dl-hero-v2" width={1600} height={1000} sizes="(max-width:900px) 92vw, 46vw" alt="Denvil Lee sitting at a table and smiling." /></section>
   </div>
-  {/* The Subscribe block was removed from every content page on 29 Aug.
-      The site asked for an email too often. Subscribe now lives in one
-      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>

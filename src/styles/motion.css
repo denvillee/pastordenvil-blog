@@ -1,45 +1,26 @@
+@import './reference.css';
+@import './fine-pass.css';
+@import './mockup-final.css';
+@import './mockup-tweaks.css';
+
 /* =========================================================================
    MOTION
-
-   Rules this file keeps to:
-   - Nothing moves that a reader is trying to read. No body text animates.
-   - Everything is under 600ms and happens once.
-   - Every effect here is additive. With this file removed, or with reduced
-     motion asked for, the site is complete and nothing is hidden.
-
-   The last point is why the reveal sets opacity in a media query rather than
-   in the base rule: if the observer never runs, or JavaScript fails, elements
-   must not be left invisible.
    ========================================================================= */
-
 @media (prefers-reduced-motion: no-preference) {
-
-  /* Sections arrive with a short lift. Applied by script to a small set of
-     blocks, never to paragraphs. */
-  .rv{opacity:0; transform:translateY(14px);
-      transition:opacity .5s var(--ease), transform .5s var(--ease)}
+  .rv{opacity:0; transform:translateY(14px);transition:opacity .5s var(--ease), transform .5s var(--ease)}
   .rv.is-in{opacity:1; transform:none}
-  /* Cards in a row arrive a beat apart, capped so a long grid does not
-     turn into a queue. */
   .rv:nth-child(2){transition-delay:.06s}
   .rv:nth-child(3){transition-delay:.12s}
   .rv:nth-child(4){transition-delay:.18s}
-
-  /* Photographs uncover rather than fade: a clip reads as the image arriving,
-     a fade reads as the page still loading. */
   .imask{clip-path:inset(0 0 0 0)}
-  .imask.rv{opacity:1; transform:none; clip-path:inset(0 100% 0 0);
-            transition:clip-path .6s var(--ease)}
+  .imask.rv{opacity:1; transform:none; clip-path:inset(0 100% 0 0);transition:clip-path .6s var(--ease)}
   .imask.rv.is-in{clip-path:inset(0 0 0 0)}
 }
-
-/* Hover, which needs no observer and no media query beyond the pointer. */
 @media (hover:hover) {
   .short:hover,.mcard:hover,.bcard:hover{will-change:transform}
   .ecard-art .imask,.fcard-art{overflow:hidden}
   .ecard-art img,.fcard-art img{transition:transform .5s var(--ease)}
   .ecard:hover .ecard-art img,.fcard:hover .fcard-art img{transform:scale(1.035)}
-  /* The underline extends a little under its own heading. */
   .sec-h .u .mk svg,.page-h .mk svg{transition:transform .35s var(--ease); transform-origin:left}
   .sec-h:hover .u .mk svg{transform:scaleX(1.03)}
 }

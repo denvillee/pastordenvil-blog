@@ -1,95 +1,38 @@
 ---
-/*
-  Bookshelf. Real covers, real books, Denvil's own one-line takeaways.
-
-  The reference shows a category filter bar. The reading collection has no
-  category field and inventing one would be a taxonomy the content cannot
-  support, so the page uses the axis the data actually has: what he is reading
-  now, this month's shelf, and what is next.
-*/
 import { getEntry, render } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
-import Doorway from '../components/Doorway.astro';
 import Mark from '../components/marks/Mark.astro';
 import BookCard from '../components/BookCard.astro';
-import StickyNote from '../components/marks/StickyNote.astro';
 import ImageMask from '../components/ImageMask.astro';
-import Placeholder from '../components/Placeholder.astro';
 import Photo from '../components/Photo.astro';
 import { live } from '../lib/publish';
 import site from '../data/site.json';
-import home from '../data/home.json';
 import labels from '../data/labels.json';
 
-const books = await live('reading');
-const now = books.find((b: any) => b.data.shelfStatus === 'now');
-const next = books.filter((b: any) => b.data.shelfStatus === 'next');
-const shelf = books.filter((b: any) => b !== now && b.data.shelfStatus !== 'next')
-  .sort((a: any, b: any) => a.data.order - b.data.order);
-
-/* The section's own introduction, in Denvil's voice, opening the page. */
-const landingDoc = await getEntry('landing', 'bookshelf');
-const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Content: null };
+const books=await live('reading');
+const now=books.find((b:any)=>b.data.shelfStatus==='now');
+const next=books.filter((b:any)=>b.data.shelfStatus==='next');
+const shelf=books.filter((b:any)=>b!==now&&b.data.shelfStatus!=='next').sort((a:any,b:any)=>a.data.order-b.data.order);
+const featured=shelf[0]??now;
+const shelfGrid=featured?shelf.filter((b:any)=>b!==featured):shelf;
+const landingDoc=await getEntry('landing','bookshelf');
+const {Content:LandingBody}=landingDoc?await render(landingDoc):{Content:null};
+const featureLine=featured?.body?.trim()??'';
+const filters=['All Books','Leadership','Theology','Personal Growth','Culture','Communication','Teams','Strategy'];
 ---
 <Shell title={`${labels.readingHeading} · ${site.name}`} description={labels.readingDek} current="reading">
   <div class="arch">
     <Mark kind="brush" color="coral" class="arch-brush" />
+    <section class="shell book-hero"><div><h1 class="page-h is-display">Bookshelf<span class="dot">.</span><Mark kind="underline" color="blue" class="page-uline" draw={true} /></h1><p class="page-dek">Books shape the way I <span class="u">think,<Mark kind="underline" color="yellow" /></span> <span class="u">lead,<Mark kind="underline" color="green" /></span> and <span class="u">live.<Mark kind="underline" color="coral" /></span><br />Here are the ones that have stayed with me.</p></div><ImageMask shape="torn" tape="coral"><Photo name="dl-books" width={1600} height={900} sizes="(max-width:900px) 92vw, 55vw" alt="Books, a mug, and a plant on a table." /></ImageMask></section>
 
-    <section class="shell book-hero">
-      <div>
-        <h1 class="page-h is-display">{labels.readingHeading}<span class="dot">.</span>
-          <Mark kind="underline" color="blue" class="page-uline" draw={true} />
-        </h1>
-        <p class="page-dek">
-          The books and voices shaping how I&#32;<span class="u">think,<Mark kind="underline" color="yellow" /></span>&#32;<span class="u">teach,<Mark kind="underline" color="green" /></span> and&#32;<span class="u">lead.<Mark kind="underline" color="coral" /></span>
-        </p>
-      </div>
-      <ImageMask shape="torn" tape="coral">
-        <Photo name="dl-books" width={1600} height={900}
-               sizes="(max-width: 900px) 92vw, 48vw"
-               alt="A shelf of Denvil's books, spines out: Ladd, McKnight, N. T. Wright, Boesak and a run of titles on the kingdom and Revelation." />
-      </ImageMask>
-    </section>
+    <div class="shell book-toolbar" aria-label="Bookshelf categories">{filters.map((f,i)=><span class:list={['book-filter',i===0&&'on']}>{f}</span>)}<span class="book-sort">Sort by: Recently added</span></div>
 
-    {LandingBody && (
-      <Doorway tone="green" collapsed={books.length > 0}>
-        <LandingBody />
-      </Doorway>
-    )}
+    {featured&&<section class="shell book-feature"><div class="book-feature-card"><div class="sec-head" style="margin-bottom:.6rem"><h2 class="sec-h" style="font-size:1.15rem"><span class="u">Featured Recommendation<Mark kind="underline" color="yellow" /></span></h2></div><BookCard book={featured} /></div><blockquote class="book-feature-quote">{featureLine ? <span set:html={featureLine}></span> : <>A book stays with me when it gives language to something I have been trying to understand.</>}</blockquote></section>}
 
-    {now && (
-      <section class="shell">
-        <div class="sec-head"><h2 class="sec-h"><span class="u">What I'm reading now<Mark kind="underline" color="yellow" /></span></h2></div>
-        <div class="book-feat"><BookCard book={now} /></div>
-      </section>
-    )}
+    {LandingBody&&<details class="shell" style="margin-top:.6rem"><summary class="go">Why these books are here <span aria-hidden="true">&rarr;</span></summary><div class="door-body" style="margin-top:.8rem"><LandingBody /></div></details>}
 
-    {shelf.length > 0 && (
-      <section class="band shell">
-        <div class="sec-head">
-          <h2 class="sec-h">On the shelf</h2>
-          {/* The count belongs to THIS section, not to the whole collection.
-              It said 13 while the section listed a subset, because "now" and
-              "next" are pulled out above and below it. */}
-          <span class="count">{shelf.length} {shelf.length === 1 ? 'book' : 'books'}</span>
-        </div>
-        <div class="bcards">{shelf.map((b: any) => <BookCard book={b} />)}</div>
-      </section>
-    )}
+    {shelfGrid.length>0&&<section class="shell" style="padding-top:1rem"><div class="bcards">{shelfGrid.map((b:any)=><BookCard book={b} />)}</div></section>}
 
-    {next.length > 0 && (
-      <section class="shell">
-        <div class="sec-head"><h2 class="sec-h">On my list next</h2></div>
-        <div class="bcards bcards-tight">{next.map((b: any) => <BookCard book={b} />)}</div>
-      </section>
-    )}
-
-    <section class="shell book-note">
-      <StickyNote tone="green" tilt={-1.4} tape={false}>{home.readingTie}</StickyNote>
-      <p class="mt"><a class="go" href="/bookshelf/all/">Every book <span class="arw" aria-hidden="true">&rarr;</span></a></p>
-    </section>
+    <section class="shell book-bottom"><div><h2 class="sec-h" style="font-size:1rem"><span class="u">What I'm reading now<Mark kind="underline" color="yellow" /></span></h2>{now?<div style="margin-top:.7rem"><BookCard book={now} /></div>:<p style="margin-top:.7rem">The current read can live here.</p>}</div><div><h2 class="sec-h" style="font-size:1rem"><span class="u">On my list next<Mark kind="underline" color="blue" /></span></h2><div class="book-next-covers" style="margin-top:.7rem">{next.map((b:any)=><BookCard book={b} />)}</div></div><div><p style="font-family:var(--hand);font-size:1.45rem;line-height:1.4">Always learning.<br />Always growing.</p><p><a class="go" href="/bookshelf/all/">Every book <span class="arw" aria-hidden="true">&rarr;</span></a></p></div></section>
   </div>
-  {/* The Subscribe block was removed from every content page on 29 Aug.
-      The site asked for an email too often. Subscribe now lives in one
-      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>

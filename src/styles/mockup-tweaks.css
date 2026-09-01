@@ -1,0 +1,10 @@
+/* Small composition details from the mockups. */
+.mast-search{width:1.8rem;height:1.8rem;display:grid;place-items:center}.mast-search svg{width:1.15rem;fill:none;stroke:currentColor;stroke-width:1.8}
+.abt-sign::after,.essay-new::after{background-image:url('/assets/img/dl-hero-v2.webp')!important}
+.essay-study-copy::before{content:"";position:absolute;width:4.4rem;height:6.5rem;left:-4.7rem;top:50%;transform:translateY(-50%);background-image:var(--scribble-blue);background-repeat:no-repeat;background-size:contain;z-index:-1}
+.moment-ghost[data-tone="green"]{background:#E7EFD8}.moment-ghost[data-tone="coral"]{background:#F7D4CE}.moment-ghost[data-tone="lined"]{background:repeating-linear-gradient(to bottom,#FFFDF8 0,#FFFDF8 28px,#D8E1F1 29px,#FFFDF8 30px);border-left:1px solid #E9A9A0}
+.std-coming-art picture,.std-coming-art img{width:100%;height:9rem;object-fit:cover;border-radius:10px}.std-coming-art{overflow:hidden;border-radius:10px}
+.book-feature-quote span{display:block}.book-feature-quote span::after{content:"";display:block;width:9rem;height:4px;background:var(--mock-coral);margin-top:.7rem;transform:rotate(-2deg)}
+.watch-cta .note{box-shadow:0 8px 20px rgba(0,0,0,.14)}
+.art-face{border-radius:50%;object-fit:cover}
+@media(max-width:860px){.essay-study-copy::before{display:none}}
