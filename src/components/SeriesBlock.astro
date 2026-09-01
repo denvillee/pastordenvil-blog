@@ -2,33 +2,50 @@
 /*
   THE CURRENT SERIES. Its name, its one line, and its parts in order.
 
-  Parts that are published link; the rest are listed as forthcoming with no
-  date, because a date that has not been chosen is a promise that has not been
-  made. A reader arriving on the section should be able to see the shape of the
-  whole run without reading a word of it.
+  Rebuilt 30 Aug 2026. Denvil sent a phone screenshot: the block was rendering
+  as a bare ordered list, numbered twice, with the titles reading as plain
+  text. Two causes, and they compounded.
 
-  The run comes from the series entry, not from counting the posts, so the
-  parts still to be written can be shown before the files exist.
+  The first was mechanical. Every .ser-* rule lived in styles/site.css, which
+  is imported only by Base.astro, which no page imports. So none of it ever
+  reached the browser: the <ol> fell back to the browser's own markers while
+  the component printed the part number again beside them, giving "1. 1 Who Do
+  You Think You Are?". Anything styled here belongs in page.css, which Shell
+  actually loads.
+
+  The second was editorial. Numbering the parts at all breaks his standing
+  rule: these go out as standalone essays, with no chapter numbers and nothing
+  that makes the site look like a book being serialised. The same rule already
+  took "Part 1 of 2" out of the article byline. So the numbers are gone, the
+  list is no longer an <ol>, and "2 of 2 published" only appears when some part
+  of the run is genuinely still to come. When everything is up it says nothing,
+  because there is nothing to say.
+
+  What is left is a run of real links, each row clickable across its full
+  width, which is what the block was always for.
 */
 interface Part { order: number; title: string; href?: string; live: boolean }
 interface Props { name: string; dek: string; parts: Part[] }
 const { name, dek, parts } = Astro.props;
 const liveCount = parts.filter((p) => p.live).length;
+const allLive = liveCount === parts.length;
 ---
 <section class="ser" aria-labelledby="ser-h">
   <p class="ser-eyebrow">The series</p>
   <h2 class="ser-name" id="ser-h">{name}</h2>
   <p class="ser-dek">{dek}</p>
-  <p class="ser-count">{liveCount} of {parts.length} published</p>
-  <ol class="ser-parts">
+  {!allLive && <p class="ser-count">{liveCount} of {parts.length} published</p>}
+
+  <ul class="ser-parts">
     {parts.map((p) => (
       <li class:list={['ser-part', !p.live && 'is-soon']}>
-        <span class="ser-n">{p.order}</span>
         {p.live && p.href
-          ? <a class="ser-t" href={p.href}>{p.title}</a>
-          : <span class="ser-t">{p.title}</span>}
-        {!p.live && <span class="ser-soon">Forthcoming</span>}
+          ? <a class="ser-t" href={p.href}>
+              <span class="ser-tt">{p.title}</span>
+              <span class="arw" aria-hidden="true">&rarr;</span>
+            </a>
+          : <span class="ser-t"><span class="ser-tt">{p.title}</span></span>}
       </li>
     ))}
-  </ol>
+  </ul>
 </section>

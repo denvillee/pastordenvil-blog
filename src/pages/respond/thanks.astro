@@ -1,0 +1,16 @@
+---
+/* Where the private response lands. No cadence is promised here: Denvil has
+   not said how quickly he replies, so the page does not say it for him. */
+import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import site from '../../data/site.json';
+---
+<Shell title={`Thank you · ${site.name}`} description="Your response is in." noindex={true}>
+  <section class="band shell err">
+    <div>
+      <h1 class="is-display" style="font-size:clamp(2rem,7vw,4rem)">It came <span class="u">through<Mark kind="underline" color="yellow" draw={true} /></span><span class="dot">.</span></h1>
+      <p class="art-dek" style="margin-inline:auto">Thank you for taking the time to write. It comes straight to me and it is not published anywhere on the site.</p>
+      <p><a class="btn btn-primary" href="/essays/">Back to the essays</a></p>
+    </div>
+  </section>
+</Shell>

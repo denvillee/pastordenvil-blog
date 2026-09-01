@@ -1,0 +1,89 @@
+---
+/*
+  The private response.
+
+  This is deliberately not a comments section. Denvil's ruling, 30 Aug: no
+  public thread, no moderation burden, no discussion board. What a reader
+  writes here goes to him and to nobody else, and nothing a reader sends is
+  ever rendered on the site.
+
+  It is opt-in per piece rather than site-wide, and the wording changes by
+  room, because the invitation an essay makes is not the invitation a study
+  makes. Moments get nothing at all by default: a short reflective piece ends
+  better on its own last line than on a form.
+
+  The word "feedback" is deliberately absent. Nobody is being asked to review
+  or grade the writing. They are being given somewhere quiet to say what the
+  piece opened up.
+
+  On surfacing a response publicly later: the structure is here for it, the
+  behaviour is not. Every submission carries the piece it belongs to and, when
+  the reader chose to give them, a name and an address, which is what a future
+  "may I share this?" conversation would need. That conversation happens
+  between two people by email. It is not a checkbox, and this version has no
+  path to publication at all.
+*/
+interface Props {
+  variant?: 'essays' | 'studies';
+  title: string;
+  url: string;
+}
+const { variant = 'essays', title, url } = Astro.props;
+
+const COPY = {
+  essays: {
+    heading: 'Keep the conversation going',
+    body: 'If this raised a question, challenged something, or helped you see it differently, you can leave a thought here.',
+    label: 'Your thought',
+    button: 'Send it to Denvil',
+  },
+  studies: {
+    heading: 'What did you find?',
+    body: 'I hope you see things I missed. If something in the passage opened up for you, you can share it here.',
+    label: 'What you found',
+    button: 'Send it to Denvil',
+  },
+} as const;
+
+const c = COPY[variant];
+/* One Netlify form per wording, so the two invitations stay separable in the
+   dashboard without needing a field to tell them apart. */
+const formName = `respond-${variant}`;
+---
+<aside class="respond">
+  <h2 class="respond-h">{c.heading}</h2>
+  <p class="respond-d">{c.body}</p>
+
+  <form class="respond-f" name={formName} method="POST"
+        data-netlify="true" netlify-honeypot="company"
+        action="/respond/thanks/">
+    <input type="hidden" name="form-name" value={formName} />
+    <input type="hidden" name="piece" value={title} />
+    <input type="hidden" name="page" value={url} />
+
+    <div class="respond-row">
+      <p class="respond-field">
+        <label for={`${formName}-name`}>Your name <span class="respond-opt">optional</span></label>
+        <input id={`${formName}-name`} name="name" type="text" autocomplete="name" />
+      </p>
+      <p class="respond-field">
+        <label for={`${formName}-email`}>Email <span class="respond-opt">optional, only if you would like a reply</span></label>
+        <input id={`${formName}-email`} name="email" type="email" autocomplete="email" />
+      </p>
+    </div>
+
+    <p class="respond-field">
+      <label for={`${formName}-body`}>{c.label}</label>
+      <textarea id={`${formName}-body`} name="response" rows="5" required></textarea>
+    </p>
+
+    <p class="respond-hp">
+      <label>Leave this empty <input name="company" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <p class="respond-act">
+      <button class="btn btn-blue" type="submit">{c.button}</button>
+      <span class="respond-print">This goes to Denvil. It is not published anywhere on the site.</span>
+    </p>
+  </form>
+</aside>

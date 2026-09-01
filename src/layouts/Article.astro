@@ -3,16 +3,23 @@ import Shell from './Shell.astro';
 import Mark from '../components/marks/Mark.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
 import RelatedContent from '../components/RelatedContent.astro';
+import Respond from '../components/Respond.astro';
+import ReadAloud from '../components/ReadAloud.astro';
 import { displayDate, isoDate, ROOMS, linkCitedBooks, type RoomKey } from '../lib/publish';
 import { getPassages } from '../lib/bible';
+import { enrich } from '../lib/enrich';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
 interface Sibling { k: string; t: string; m: string; href: string }
 interface Props {
   room: RoomKey;
-  title: string; dek: string; metaDescription?: string; feedback?: boolean;
+  title: string; dek: string; metaDescription?: string;
+  /* Opt-in, per piece. See components/Respond.astro for why this is not a
+     comments section and why Moments do not get one by default. */
+  respond?: boolean;
   image?: string; imageAlt?: string;
+  next?: { series: string; title: string; dek: string; href: string } | null;
   publishAt: Date; scripture?: string; series?: string;
   week?: number; idea?: string | null; movement?: string | null;
   seriesPlace?: { name: string; order: number; total: number } | null;
@@ -25,7 +32,7 @@ interface Props {
   slug?: string;
 }
 const {
-  room, title, dek, metaDescription, feedback = false, image, imageAlt, publishAt, scripture, series,
+  room, title, dek, metaDescription, respond = false, image, imageAlt, next = null, publishAt, scripture, series,
   week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
   titleMark, slug,
 } = Astro.props;
@@ -54,6 +61,14 @@ const jsonLd = {
   mainEntityOfPage: canonical,
 };
 const passages = await getPassages(scripture);
+
+/* The writing is authored as plain markdown and designed here. enrich() finds
+   the callouts and the scripture quotations in the rendered HTML and gives
+   them the treatments the rest of the site uses. See lib/enrich.ts. */
+/* Then every book named anywhere in the piece, footnotes included, becomes a
+   link to its Bookshelf entry, the same way the notes block already works.
+   Enrich first so a title inside a pulled quotation gets linked too. */
+const prose = await linkCitedBooks(await enrich((await Astro.slots.render('default')) ?? ''));
 ---
 <Shell
   title={`${title} · ${site.name}`}
@@ -86,11 +101,13 @@ const passages = await getPassages(scripture);
         <span><time datetime={isoDate(publishAt)}>{displayDate(publishAt)}</time></span>
         {scripture && <span>{scripture}</span>}
         {readMinutes ? <span>{readMinutes} min read</span> : null}
-        {/* Where this sits in its run, linking back to the list of the whole
-            thing. No previous and next arrows: with most of a series still to
-            come, the list is the more useful way back. */}
+        {/* The run's name, linking back to the whole list. It used to read
+            "Part 1 of 2", and Denvil's 30 Aug package rules that out: these go
+            out as standalone essays, with no chapter numbers and no language
+            that makes the site look like a book being serialised. The name is
+            the useful half anyway. */}
         {seriesPlace
-          ? <span><a class="art-series" href={`/${meta.path}/#ser-h`}>Part {seriesPlace.order} of {seriesPlace.total} &middot; {seriesPlace.name}</a></span>
+          ? <span><a class="art-series" href={`/${meta.path}/#ser-h`}>{seriesPlace.name}</a></span>
           : series && <span>{series}</span>}
       </div>
 
@@ -106,26 +123,32 @@ const passages = await getPassages(scripture);
         </figure>
       )}
 
+      {/* The opening passage uses the same control as every quotation in the
+          body, so one choice moves the whole page. */}
       {passages.length > 0 && (
-        <div class="art-verse" data-verse>
-          {passages.length > 1 && (
-            <div class="verse-tabs" role="group" aria-label="Translation">
-              {passages.map((p, i) => (
-                <button type="button" class="verse-tab" data-tab={p.code} aria-pressed={i === 0 ? 'true' : 'false'}>
-                  {p.label}
-                </button>
-              ))}
-            </div>
-          )}
+        <figure class="vs vs-head" data-vs data-ref={scripture}>
           {passages.map((p, i) => (
-            <blockquote class="verse-pane" data-pane={p.code} hidden={i !== 0}>
-              <p>&ldquo;{p.text}&rdquo;</p>
-              <cite>
-                {scripture} <a href={p.link} rel="noopener">({p.label})</a>
-              </cite>
+            <blockquote class="vs-pane" data-pane={p.code} hidden={i !== 0}>
+              <p>{p.text}</p>
+              {/* Named where it is quoted, the same as every passage in the
+                  body. The NET's licence asks for this. */}
+              {p.link && <p class="vs-src"><a href={p.link} rel="noopener">{p.label}</a></p>}
             </blockquote>
           ))}
-        </div>
+          <blockquote class="vs-pane" data-pane="NLT" hidden>
+            <p class="vs-wait">Loading the New Living Translation.</p>
+            <p class="vs-src"><a href="https://www.newlivingtranslation.com" rel="noopener">New Living Translation</a></p>
+          </blockquote>
+          <figcaption class="vs-cite">
+            <cite class="vs-ref">{scripture}</cite>
+            <span class="vs-tabs" role="group" aria-label={`Translation for ${scripture}`}>
+              {passages.map((p, i) => (
+                <button type="button" class="vs-tab" data-vs-set={p.code} aria-pressed={i === 0 ? 'true' : 'false'}>{p.label}</button>
+              ))}
+              <button type="button" class="vs-tab" data-vs-set="NLT" aria-pressed="false">NLT</button>
+            </span>
+          </figcaption>
+        </figure>
       )}
     </header>
 
@@ -137,9 +160,12 @@ const passages = await getPassages(scripture);
         </div>
       )}
 
-      <div class="prose">
-        <slot />
-      </div>
+      {/* Above the writing, not floating over it: somebody who wants to
+          listen decides that before they start reading, and somebody who does
+          not should be able to ignore one quiet line. */}
+      <ReadAloud />
+
+      <div class="prose" set:html={prose}></div>
 
       {notes && (
         <div class="notes-block">
@@ -158,24 +184,24 @@ const passages = await getPassages(scripture);
         </div>
       </div>
 
-      {/* Denvil's own invitation, on the pieces he is writing in public. It
-          is opt-in per piece rather than site-wide: a short Moment does not
-          need to ask anybody to review its argument. The address is the one
-          already in the footer, so there is no new inbox to watch. */}
-      {feedback && (
-        <aside class="art-ask">
-          <h2 class="art-ask-h">Tell me where this lands</h2>
-          <p>
-            I&rsquo;m developing these essays in public and would value thoughtful feedback.
-            Where did the argument feel clearest? Where did you find yourself pushing back?
-            What question did this leave you asking?
-          </p>
-          <p class="art-ask-act">
-            <a class="go" href={`mailto:${site.contactEmail}?subject=${encodeURIComponent(title)}`}>
-              Write to me about this piece <span class="arw" aria-hidden="true">&rarr;</span>
-            </a>
+      {/* The next essay in the run. It renders only when that essay is live,
+          so the last piece published never shows a card pointing at nothing. */}
+      {next && (
+        <aside class="art-onward">
+          <p class="art-onward-k">Next in {next.series}</p>
+          <h2 class="art-onward-t"><a href={next.href}>{next.title}</a></h2>
+          <p class="art-onward-d">{next.dek}</p>
+          <p class="art-onward-a">
+            <a class="btn btn-blue" href={next.href}>Continue the series <span class="arw" aria-hidden="true">&rarr;</span></a>
           </p>
         </aside>
+      )}
+
+      {/* Denvil's own invitation, on the pieces he is writing in public.
+          Not a comments section and never labelled feedback: see
+          components/Respond.astro. */}
+      {respond && (
+        <Respond variant={room === 'studies' ? 'studies' : 'essays'} title={title} url={canonical} />
       )}
 
       {/* An editorial invitation rather than a generic "thanks for reading".
@@ -185,7 +211,7 @@ const passages = await getPassages(scripture);
         <h2 class="art-next-h">Keep exploring</h2>
         <ul>
           <li><a class="go" href="/bookshelf/">See the books behind this essay <span class="arw" aria-hidden="true">&rarr;</span></a></li>
-          <li><a class="go" href={`/${ROOMS[room].path}/`}>Back to {ROOMS[room].label} <span class="arw" aria-hidden="true">&rarr;</span></a></li>
+          <li><a class="go" href={`/${ROOMS[room].path}/`}>Back to {ROOMS[room].plural ?? ROOMS[room].label} <span class="arw" aria-hidden="true">&rarr;</span></a></li>
         </ul>
       </nav>
 
@@ -210,17 +236,79 @@ const passages = await getPassages(scripture);
 </Shell>
 
 <script>
-  document.querySelectorAll<HTMLElement>('[data-verse]').forEach((wrap) => {
-    const tabs = wrap.querySelectorAll<HTMLButtonElement>('.verse-tab');
-    const panes = wrap.querySelectorAll<HTMLElement>('.verse-pane');
-    tabs.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const code = btn.dataset.tab;
-        tabs.forEach((b) => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
-        panes.forEach((p) => {
-          p.hidden = p.dataset.pane !== code;
-        });
+  import '../scripts/read-aloud.js';
+
+  /* One translation choice for the whole page, remembered between visits.
+
+     "As quoted" is the default and is what Denvil actually wrote: the other
+     panes are an offer, not a correction, so a reader who never touches the
+     control reads the essay exactly as he set it.
+
+     The NLT is the one translation not written into the page. Tyndale permits
+     displaying it and not storing it, so its pane ships empty and is filled
+     from our own /api/nlt proxy when a reader asks for it, held for the life
+     of the tab and gone when it closes. Same rule as the study site. */
+  const KEY = 'dl.translation';
+  const groups = Array.from(document.querySelectorAll<HTMLElement>('[data-vs]'));
+
+  if (groups.length) {
+    const nltMemory = new Map<string, string>();
+
+    const read = () => {
+      try { return localStorage.getItem(KEY) || 'AS'; } catch { return 'AS'; }
+    };
+
+    async function fillNlt(group: HTMLElement) {
+      const pane = group.querySelector<HTMLElement>('[data-pane="NLT"]');
+      const ref = group.dataset.ref || '';
+      if (!pane || !ref || pane.dataset.loaded === ref) return;
+      try {
+        let text = nltMemory.get(ref);
+        if (text === undefined) {
+          const res = await fetch('/api/nlt?ref=' + encodeURIComponent(ref), { cache: 'no-store' });
+          if (!res.ok) throw new Error(String(res.status));
+          const data = await res.json();
+          text = (data.verses || []).map((v: { t: string }) => v.t).join(' ');
+          if (!text) throw new Error('empty');
+          nltMemory.set(ref, text);
+        }
+        pane.textContent = '';
+        const p = document.createElement('p');
+        p.textContent = text;
+        pane.appendChild(p);
+        pane.dataset.loaded = ref;
+      } catch {
+        pane.textContent = '';
+        const p = document.createElement('p');
+        p.className = 'vs-wait';
+        p.textContent = navigator.onLine
+          ? 'The New Living Translation could not be loaded just now.'
+          : 'The New Living Translation needs a connection.';
+        pane.appendChild(p);
+      }
+    }
+
+    function apply(code: string) {
+      groups.forEach((group) => {
+        const panes = Array.from(group.querySelectorAll<HTMLElement>('.vs-pane'));
+        const tabs = Array.from(group.querySelectorAll<HTMLButtonElement>('.vs-tab'));
+        /* A group that has no pane for this translation keeps its own first
+           one, so a reference the build could not resolve never goes blank. */
+        const has = panes.some((p) => p.dataset.pane === code);
+        const shown = has ? code : (panes[0]?.dataset.pane ?? '');
+        panes.forEach((p) => { p.hidden = p.dataset.pane !== shown; });
+        tabs.forEach((t) => t.setAttribute('aria-pressed', String(t.dataset.vsSet === shown)));
+        if (shown === 'NLT') fillNlt(group);
+      });
+      try { localStorage.setItem(KEY, code); } catch {}
+    }
+
+    groups.forEach((group) => {
+      group.querySelectorAll<HTMLButtonElement>('.vs-tab').forEach((btn) => {
+        btn.addEventListener('click', () => apply(btn.dataset.vsSet || 'AS'));
       });
     });
-  });
+
+    apply(read());
+  }
 </script>

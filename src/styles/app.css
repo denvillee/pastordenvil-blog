@@ -71,7 +71,13 @@ p{margin:0 0 1em}
 .btn .arw{transition:translate var(--fast) var(--ease)}
 .btn:hover{transform:translateY(-2px); box-shadow:var(--shadow-lift)}
 .btn:hover .arw{translate:.22rem 0}
-.btn-blue{background:var(--blue); color:var(--on-blue)}
+/* .btn-primary is the name four pages already use: /speaking/ for its submit
+   button, and the three thank-you pages. It was only ever defined in site.css,
+   which no page on this site loads, so every one of those buttons rendered as
+   bare padded text with no ground under it. That was live on production until
+   30 Aug. Aliased here rather than rewritten at four call sites, so the name
+   works wherever anybody reaches for it next. */
+.btn-blue,.btn-primary{background:var(--blue); color:var(--on-blue)}
 .btn-yellow{background:var(--yellow); color:var(--on-yellow);
   border-radius:44% 56% 52% 48% / 50% 48% 52% 50%; padding-inline:1.5rem}
 .btn-dark{background:var(--dark); color:var(--on-dark)}

@@ -17,7 +17,9 @@ const roomSchema = z.object({
   /* Ask the reader for a response at the end of the piece. Off by default and
      set per piece: a short Moment does not need anybody to review its
      argument, and an invitation on everything stops being an invitation. */
-  feedback: z.boolean().default(false),
+  /* The private response block, opt-in per piece. Named for what it is: the
+     reader is not being asked to review the writing. Moments leave it off. */
+  respond: z.boolean().default(false),
   publishAt: z.coerce.date(),
   draft: z.boolean().default(false),
   week: z.number().optional(),
@@ -186,8 +188,24 @@ export const collections = {
       givenOn: z.coerce.date().optional(),
       /* Kept only so existing entries stay valid. Not printed. */
       note: z.string().optional(),
-      /* Runtime in seconds, straight from the provider. Shown as m:ss. */
+      /* Runtime in seconds, straight from the provider. */
       durationSeconds: z.number().int().optional(),
+
+      /* Where the teaching actually begins inside the recording, and where it
+         ends, as a timestamp: "42:10", or "1:02:30" past the hour.
+
+         Three of the talks here are whole services, ninety-eight to a hundred
+         minutes, because that is how the church posted them. Sending a reader
+         to minute zero of a service to hear a sermon that starts forty minutes
+         in is asking them to go looking for it. With a start set, the player
+         opens on the teaching and the length printed on the card is the length
+         of the teaching, not of the service.
+
+         Only the start is honoured by both players. YouTube takes an end too;
+         Vimeo's embed has no end parameter, so there an end only corrects the
+         printed length. */
+      startsAt: z.string().optional(),
+      endsAt: z.string().optional(),
 
       /* ── Fields for the full archive ────────────────────────────────────
          The library is expected to grow past a hundred messages, and a bulk

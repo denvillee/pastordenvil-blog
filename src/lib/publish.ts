@@ -104,9 +104,9 @@ export const isoDate = (d: Date) => d.toISOString();
    `path` is the URL and `cls` is the colour, and both stay in code on purpose —
    changing a path after launch breaks every link anyone has ever shared. */
 export const ROOMS = {
-  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '' },
-  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders' },
-  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments' },
+  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '',          plural: labels.navEssays },
+  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders', plural: labels.navLeaders },
+  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments', plural: labels.navMoments },
 } as const;
 export type RoomKey = keyof typeof ROOMS;
 
@@ -186,6 +186,25 @@ export async function seriesPlace(room: RoomKey, seriesName?: string, order?: nu
   return { name: def.data.name, order, total: def.data.parts.length };
 }
 
+/** The next published piece in the same run, for the card at the end of a piece.
+    Returns null when the next one has not been written yet, which is the whole
+    point: Denvil's instruction is that the card stays hidden until the essay it
+    points at is actually live, so a reader is never invited to click nothing. */
+export async function nextInSeries(room: RoomKey, seriesName?: string, order?: number) {
+  if (!seriesName || typeof order !== 'number') return null;
+  const posts = await live(room);
+  const next = posts.find(
+    (p: any) => p.data.series === seriesName && p.data.seriesOrder === order + 1,
+  );
+  if (!next) return null;
+  return {
+    series: seriesName,
+    title: next.data.title as string,
+    dek: (next.data.teaser ?? next.data.dek) as string,
+    href: `/${ROOMS[room].path}/${next.id}/`,
+  };
+}
+
 /** The other pieces published in the same week, for the "rest of this week" block. */
 export async function weekSiblings(week: number | undefined, selfId: string) {
   if (!week) return [];
@@ -224,11 +243,26 @@ export async function linkCitedBooks(html: string) {
   if (!html) return html;
   const books = await getCollection('reading' as any);
   const live = books.filter((b: any) => isLive(b.data));
-  /* Longest title first, so a title that contains a shorter one wins. */
-  const byLength = [...live].sort(
-    (a: any, b: any) => (b as any).data.title.length - (a as any).data.title.length
-  );
   const used = new Set<string>();
+  /* Both the title and the author are worth linking. An essay names Walton or
+     Imes in the prose paragraphs above and only gives the book title down in a
+     footnote, so linking titles alone leaves the name a reader actually reads
+     unlinked. Longest form first so "Carmen Joy Imes" wins over "Imes", and
+     each shelf entry is linked once per page either way. */
+  const needles: Array<{ id: string; kind: 'title' | 'author'; text: string }> = [];
+  for (const b of live) {
+    const d = (b as any).data;
+    const id = (b as any).id as string;
+    if (d.title && d.title.length >= 6) needles.push({ id, kind: 'title', text: d.title });
+    if (d.author && d.author.length >= 6) {
+      needles.push({ id, kind: 'author', text: d.author });
+      /* Surname alone, which is how he refers to them on second mention. */
+      const parts = String(d.author).trim().split(/\s+/);
+      const last = parts[parts.length - 1];
+      if (last && last.length >= 4) needles.push({ id, kind: 'author', text: last });
+    }
+  }
+  needles.sort((a, b) => b.text.length - a.text.length);
   /* Split on tags and only ever touch the text between them, so a title can be
      matched inside <em>...</em> without the markup interfering and without a
      match ever landing inside an attribute. */
@@ -242,23 +276,64 @@ export async function linkCitedBooks(html: string) {
       continue;
     }
     if (insideLink || !part.trim()) continue;
-    for (const b of byLength) {
-      const id = (b as any).id as string;
+    for (const n of needles) {
+      /* One link per book for the name and one for the title, not one per
+         book overall: he introduces a scholar by name in the prose and gives
+         the book only in a footnote, and both are worth a link. */
+      const id = `${n.id}:${n.kind}`;
       if (used.has(id)) continue;
-      const title = (b as any).data.title as string;
-      if (!title || title.length < 6) continue;
-      const at = parts[i].indexOf(title);
+      const title = n.text;
+      /* Match on a normalised copy and slice the original. A shelf entry is
+         typed with a straight apostrophe and the rendered prose has a curly
+         one, so "Being God's Image" never found "Being God\u2019s Image" and
+         two of the books cited in the essays quietly failed to link. Lengths
+         are identical, so an index into the normalised string is an index
+         into the real one. */
+      const hay = parts[i].replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
+      const needle = title.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"');
+      const at = hay.indexOf(needle);
       if (at === -1) continue;
-      const before = parts[i][at - 1];
-      const after = parts[i][at + title.length];
+      const before = hay[at - 1];
+      const after = hay[at + needle.length];
       /* A real word boundary in the text itself. */
       if (before && /[A-Za-z0-9]/.test(before)) continue;
       if (after && /[A-Za-z0-9]/.test(after)) continue;
       used.add(id);
       parts[i] = parts[i].slice(0, at)
-        + `<a class="cite-book" href="/bookshelf/#book-${id}">${title}</a>`
-        + parts[i].slice(at + title.length);
+        + `<a class="cite-book" href="/bookshelf/#book-${n.id}">${parts[i].slice(at, at + needle.length)}</a>`
+        + parts[i].slice(at + needle.length);
     }
   }
   return parts.join('');
+}
+
+/* A timestamp as a person writes it, in seconds.
+
+   Accepts "42:10", "1:02:30" and a bare "2530". Anything it cannot read comes
+   back undefined rather than zero, so a typo in the CMS leaves the video
+   starting where it always did instead of somewhere arbitrary. */
+export function toSeconds(v?: string | number): number | undefined {
+  if (v === undefined || v === null || v === '') return undefined;
+  if (typeof v === 'number') return Number.isFinite(v) && v >= 0 ? Math.floor(v) : undefined;
+  const raw = String(v).trim();
+  if (/^\d+$/.test(raw)) return Number(raw);
+  const parts = raw.split(':');
+  if (parts.length < 2 || parts.length > 3) return undefined;
+  if (!parts.every((p) => /^\d{1,2}$/.test(p.trim()))) return undefined;
+  const n = parts.map((p) => Number(p.trim()));
+  const secs = n.length === 3 ? n[0] * 3600 + n[1] * 60 + n[2] : n[0] * 60 + n[1];
+  return Number.isFinite(secs) ? secs : undefined;
+}
+
+/* h:mm:ss past the hour, m:ss under it. The old formatter printed a
+   hundred-minute service as "99:51", which reads as ninety-nine seconds shy
+   of a hundred minutes only if you already know what it means. */
+export function clockTime(total?: number): string | undefined {
+  if (!total || total < 0) return undefined;
+  const h = Math.floor(total / 3600);
+  const m = Math.floor((total % 3600) / 60);
+  const s = Math.floor(total % 60);
+  return h
+    ? `${h}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+    : `${m}:${String(s).padStart(2, '0')}`;
 }

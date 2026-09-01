@@ -30,9 +30,20 @@
   The fold is a details element and no JavaScript. The lead paragraph is split
   off the rendered body rather than typed twice, so there is still exactly one
   copy of the writing and it is still edited in the CMS.
+
+  The toggle runs on with the last sentence rather than sitting under it in a
+  block of its own. Denvil's note, 30 Aug, with the old version circled on his
+  phone: it read as a heading for the posts below it rather than as something
+  to click. It was set in the site's small-caps eyebrow style, which is exactly
+  what the section labels use, and a 44px tap target pushed it a line and a
+  half clear of the paragraph it belonged to. So it is now a link, in the
+  link's own colour, underlined the way every other link on the site is, and
+  it flows inline off the end of the paragraph: <details> and <summary> both
+  go display:inline, and only the revealed text goes back to block. The tap
+  target is kept by padding the inline box rather than by giving it height.
 */
 interface Props { tone?: 'blue' | 'yellow' | 'coral' | 'green'; collapsed?: boolean; label?: string }
-const { tone = 'yellow', collapsed = false, label = 'Read the rest' } = Astro.props;
+const { tone = 'yellow', collapsed = false, label = 'Read more' } = Astro.props;
 import Mark from './marks/Mark.astro';
 import Tape from './marks/Tape.astro';
 import DotGrid from './marks/DotGrid.astro';
@@ -48,14 +59,9 @@ const hasRail = Astro.slots.has('rail');
   <div class="door-in">
     {folds ? (
       <>
-        <div class="door-body"><Fragment set:html={lead} /></div>
-        <details class="door-fold">
-          <summary class="door-toggle">
-            <span class="door-toggle-t">{label}</span>
-            <span class="door-caret" aria-hidden="true">&#9662;</span>
-          </summary>
-          <div class="door-body door-rest"><Fragment set:html={rest} /></div>
-        </details>
+        {/* The lead and the toggle are one flow on purpose: the summary has
+            to land beside the last words, not underneath them. */}
+        <div class="door-body door-lead"><Fragment set:html={lead} /><details class="door-fold"><summary class="door-toggle"><span class="door-toggle-t">{label}</span><span class="door-caret" aria-hidden="true">&#9662;</span></summary><div class="door-body door-rest"><Fragment set:html={rest} /></div></details></div>
       </>
     ) : (
       <div class="door-body"><Fragment set:html={raw} /></div>
