@@ -7,9 +7,9 @@ publishAt: 2026-08-26T06:00:00-04:00
 draft: false
 pinned: true
 respond: true
-image: "/assets/img/essay-who-do-you-think-you-are.jpg"
+image: "/assets/img/essay-who-do-you-think-you-are-v2.jpg"
 imageAlt: "The essay's title card: More Than Body and Breath above the title Who Do You Think You Are?, on cream, with a strip of tape, a blue underline and a gold one, and a torn coral shape in the corner."
-ogImage: "/assets/img/og-who-do-you-think-you-are.jpg"
+ogImage: "/assets/img/og-who-do-you-think-you-are-v2.jpg"
 series: "More Than Body and Breath"
 seriesOrder: 1
 scripture: "Genesis 1:26-27"
