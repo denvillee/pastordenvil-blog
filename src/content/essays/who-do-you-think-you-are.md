@@ -1,6 +1,6 @@
 ---
 title: "Who Do You Think You Are?"
-dek: "Identity, the image of God, and why Genesis begins before Genesis 3"
+dek: "Identity and the Image of God"
 metaDescription: "Before Genesis tells us what went wrong with humanity, it tells us who we are: embodied image-bearers made to represent God in his world."
 teaser: "Who gets to tell you who you are? This essay begins before Genesis 3 and asks what changes when human identity starts with the image of God."
 publishAt: 2026-08-26T06:00:00-04:00
@@ -17,40 +17,52 @@ tags: ["anthropology", "image of God", "Genesis", "identity", "vocation"]
 notes: "This essay grows out of my Fuller Seminary paper &ldquo;Beyond Body and Breath: Towards a More Holistic Theological Anthropology&rdquo; (ST506, March 2024), which also draws on Stanley Grenz, <em>The Social God and the Relational Self</em>; Karl Barth, <em>Church Dogmatics</em> III/2; Paul Sands, &ldquo;The Imago Dei as Vocation&rdquo;; and N. T. Wright, <em>Surprised by Hope</em>."
 ---
 
-A few summers ago, I was invited to lead a prayer team retreat for a local church. I opened my first teaching with two questions:
+In the summer of 2023, I was invited to lead my church’s weekend prayer team retreat. With about fifty pastors and volunteer leaders in the room, I opened my first teaching with two questions:
 
 **“Who do you think you are?”** ....and.... **“What do you think you’re doing?”**
 
-Admittedly, I knew that the questions, and the way I asked them, were a little cheeky and maybe even a bit off-putting. But I was going somewhere!
+Admittedly, I knew both questions, not to mention the way I asked them, were a little cheeky and maybe even a bit off-putting for some. But I was going somewhere!
 
-*“Who do you think you are?”* is usually something we say when we are challenging someone’s behavior. And while behavior was certainly part of what I was getting at, I wasn’t trying to pick a fight with people who had entrusted me with their weekend. I was going after something I believed could change the way they ministered to others, the way they prayed, and maybe even the way they lived out the Gospel in their day-to-day lives.
+*“Who do you think you are?”* is usually not really a question. It is something we say when we are challenging someone’s behavior.
 
-Who we think we are, what we actually believe to be true about ourselves, shapes how we behave and how we understand what we’re doing.
+And while challenging certain behaviors was certainly part of what I was getting at, I wasn’t trying to pick a fight with people who had entrusted me with their weekend. I was going after something I believed could change the way we ministered to others, the way we prayed, and maybe even the way we lived out the Gospel in our day-to-day lives.
+
+Who we think we are, what we actually believe to be true about ourselves, shapes how we behave and how we understand what we’re doing with our lives.
 
 To put it another way:
 
 > [!BIG]
 > Identity precedes activity.
 
-Think about the people of Israel coming out of Egypt. For generations, their lives had been shaped by someone else’s definition of who they were. Pharaoh saw a workforce, the Egyptians saw slaves, and their value was measured in bricks, quotas, production, and what their bodies could produce for someone else’s kingdom.
+When I was in school, there weren’t a lot of kids with the last name Lee. Which meant I heard the same joke over and over: “Are you related to Bruce Lee?”
 
-And yet Israel’s Scriptures tell their story by reaching behind Egypt, behind Pharaoh, behind slavery, and all the way back to the beginning. Genesis says humanity was made in the image of God, and the story of the Hebrew people is rooted in that great beginning. Before they were slaves in Egypt, they belonged to a much older story about who human beings are and what God made them for.
+After about the hundredth time, I started responding, “If I was, do you think I’d be at this school?” It was a joke....mostly.
 
-That is a very different origin story.
+But the joke only works because we instinctively understand that identity changes expectations.
 
-A people who had been trained for generations to think like slaves came to understand themselves through a story much larger than slavery. Egypt was part of their history, but Egypt did not get to define them.
+If I actually belonged to some famous family, if I had grown up surrounded by an entirely different history, inheritance, and set of expectations, I assumed my life would probably look different too.
+
+A different identity would introduce different perspectives of our shared reality and different possibilities of my place within it.
+
+Now let’s take that idea and put some real weight on it.
+
+The book of Exodus shockingly introduces us to the promised descendants of Abraham enslaved in Egypt. For generations, their lives had been shaped by Pharaoh’s definition of who they were. Pharaoh saw a workforce, the Egyptians saw slaves, and their value was measured in bricks, quotas, production, and what their bodies could produce for someone else’s kingdom.
+
+As readers of Scripture, however, we already know something about these enslaved people that Pharaoh does not. Before Exodus introduces us to them in Egypt, Genesis has already traced their story back through Abraham and, ultimately, all the way to the beginning. Genesis says that humanity was made in the image of God, and among humanity, Abraham’s descendants, these very people now enslaved in Egypt, were chosen to participate in God’s purposes for all people. So, while their slavery in Egypt was painfully real, it was not the truest thing about them. Egypt described their present condition, but Genesis had already told us who they were and what larger story they belonged to.
 
 > [!QUOTE]
 > Pharaoh could tell them what bricks to make. He could not tell them who they were.
 
-Before they could fully inhabit what God was calling them into, they had to recover an identity that generations of slavery had taught them to forget.
+The question that hovers over Israel’s story is this: Who do they think they are? Again and again, their lives suggest that they have forgotten, stopped believing, or simply allowed the reality of their circumstances to overshadow the truth of who they are. Through Jeremiah, God says, “I thought you would call me ‘Father’ and not turn away from following me” (Jeremiah 3:19), confronting their belief of their father/son relationship with him. Jesus later brings that same tension into vivid focus when he tells his disciples, “You are the light of the world. A city set on a hill cannot be hidden” (Matthew 5:14); reminding them of what is already true before calling them to live accordingly.
 
-It was true for the *people of God* then, and it is still true for us now:
+A people who had been trained for generations to think like slaves had to learn to understand themselves through a story much larger than slavery. While Egypt was an undeniable part of their history, God was determined that it would never become the whole story through which they understood who they were.
+
+Before they could fully inhabit what God was calling them into, they had to learn to live from an identity that generations of slavery had taught them to forget. God was not simply leading them out of Egypt; he was forming them into a people who could understand themselves according to his story rather than Pharaoh’s.
+
+What was true for the people of God then is still true for us now:
 
 > [!BIG]
 > Whoever life has convinced you that you are, Genesis is going to tell you that you are more than that.
-
-<hr class="mid" />
 
 That is why this matters even in something as ordinary as serving at church.
 
@@ -66,7 +78,7 @@ And that is only the beginning of the claim Genesis is going to make.
 
 As the biblical story unfolds, we will see human beings placed at the meeting place of heaven and earth, made to represent God’s presence and rule in his world. And in Christ, by his Spirit, that calling becomes even clearer as God makes his home among and within his people.
 
-But if you answer **“Who do you think you are?”** differently, you might discover that the answer to **“What do you think you’re doing?”** changes too.
+But if you answer *“Who do you think you are?”* differently, you might discover that the answer to *“What do you think you’re doing?”* changes too.
 
 That is the change in pattern between working **for** identity and working **from** identity. One is driven by the need to become somebody. The other can become worship.
 
@@ -153,21 +165,21 @@ And this is part of what Genesis does for the people of God.
 
 For Israel, Genesis reaches behind Pharaoh and slavery and tells them who they were before Egypt ever tried to define them. And for those of us who follow Jesus, Genesis reaches behind sin itself and tells us something even more original about what it means to be human.
 
-Genesis 1 tells us what a human being is before Genesis 3 tells us what went wrong with humanity.
+Genesis 1 tells us what a human being **is** before Genesis 3 tells us what **went wrong** with humanity.
 
-Don’t miss the order…
+Don’t miss the order… 
 
 > [!BIG]
 > God gave humanity a purpose before there was a problem.
 
-Before anyone needed to be rescued from sin, human beings had already been named the *image of God.*
+Before anyone needed to be rescued from sin, human beings had already been named the image of God.
 
 That means sin is essential to understanding the human condition, but sin is not the starting point for understanding what a human being is.
 
 > [!BIG]
 > We are made in the image of God not in the image of sin.
 
-So, when Christians say, *“I’m just a sinner saved by grace,”* I understand what we mean, and there is something gloriously true in it. We are sinners, and we are saved only by grace.
+So, when Christians say, “I’m just a sinner saved by grace,” I understand what we mean, and there is something gloriously true in it. We are sinners, and we are saved only by grace.
 
 But that is a statement about what God has rescued us **from**, not the whole story of what God created us **for**.
 
