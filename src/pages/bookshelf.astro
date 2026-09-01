@@ -1,7 +1,6 @@
 ---
 import { getEntry, render } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
-import Doorway from '../components/Doorway.astro';
 import Mark from '../components/marks/Mark.astro';
 import BookCard from '../components/BookCard.astro';
 import ImageMask from '../components/ImageMask.astro';
@@ -10,32 +9,30 @@ import { live } from '../lib/publish';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
-const books = await live('reading');
-const now = books.find((b:any)=>b.data.shelfStatus==='now');
-const next = books.filter((b:any)=>b.data.shelfStatus==='next');
-const shelf = books.filter((b:any)=>b!==now && b.data.shelfStatus!=='next').sort((a:any,b:any)=>a.data.order-b.data.order);
-const featured = shelf[0] ?? now;
-const shelfGrid = featured ? shelf.filter((b:any)=>b!==featured) : shelf;
-const landingDoc = await getEntry('landing','bookshelf');
-const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Content:null };
-const featureLine = featured?.body?.trim() ?? '';
-const futureFilters = ['Leadership','Theology','Personal Growth','Culture','Communication','Teams','Strategy'];
+const books=await live('reading');
+const now=books.find((b:any)=>b.data.shelfStatus==='now');
+const next=books.filter((b:any)=>b.data.shelfStatus==='next');
+const shelf=books.filter((b:any)=>b!==now&&b.data.shelfStatus!=='next').sort((a:any,b:any)=>a.data.order-b.data.order);
+const featured=shelf[0]??now;
+const shelfGrid=featured?shelf.filter((b:any)=>b!==featured):shelf;
+const landingDoc=await getEntry('landing','bookshelf');
+const {Content:LandingBody}=landingDoc?await render(landingDoc):{Content:null};
+const featureLine=featured?.body?.trim()??'';
+const filters=['All Books','Leadership','Theology','Personal Growth','Culture','Communication','Teams','Strategy'];
 ---
 <Shell title={`${labels.readingHeading} · ${site.name}`} description={labels.readingDek} current="reading">
   <div class="arch">
     <Mark kind="brush" color="coral" class="arch-brush" />
-    <section class="shell book-hero">
-      <div><h1 class="page-h is-display">{labels.readingHeading}<span class="dot">.</span><Mark kind="underline" color="blue" class="page-uline" draw={true} /></h1><p class="page-dek">The books and voices shaping how I&#32;<span class="u">think,<Mark kind="underline" color="yellow" /></span>&#32;<span class="u">teach,<Mark kind="underline" color="green" /></span> and&#32;<span class="u">lead.<Mark kind="underline" color="coral" /></span></p></div>
-      <ImageMask shape="torn" tape="coral"><Photo name="dl-books" width={1600} height={900} sizes="(max-width: 900px) 92vw, 48vw" alt="A shelf of Denvil's books, spines out: Ladd, McKnight, N. T. Wright, Boesak and a run of titles on the kingdom and Revelation." /></ImageMask>
-    </section>
-    {LandingBody && <Doorway tone="green" collapsed={true}><LandingBody /></Doorway>}
-    <div class="shell book-toolbar" aria-label="Bookshelf categories prepared for future use"><span class="book-filter on">All Books</span>{futureFilters.map((f)=><span class="book-filter">{f}</span>)}<span class="book-sort">Sort by: Shelf order</span></div>
-    {featured && (<section class="shell book-feature"><div class="book-feature-card"><div class="sec-head" style="margin-bottom:.8rem"><h2 class="sec-h" style="font-size:1.2rem"><span class="u">Featured on the shelf<Mark kind="underline" color="yellow" /></span></h2></div><BookCard book={featured} /></div>{featureLine && <blockquote class="book-feature-quote" set:html={featureLine}></blockquote>}</section>)}
-    {shelfGrid.length > 0 && (<section class="shell"><div class="bcards">{shelfGrid.map((b:any)=><BookCard book={b} />)}</div></section>)}
-    <section class="shell book-bottom">
-      <div><h2 class="sec-h" style="font-size:1.05rem"><span class="u">What I'm reading now<Mark kind="underline" color="yellow" /></span></h2>{now ? <div style="margin-top:1rem"><BookCard book={now} /></div> : <p style="margin-top:1rem;color:var(--muted)">The current read can live here.</p>}</div>
-      <div><h2 class="sec-h" style="font-size:1.05rem"><span class="u">On my list next<Mark kind="underline" color="blue" /></span></h2><div class="book-next-covers" style="margin-top:1rem">{next.map((b:any)=><BookCard book={b} />)}</div></div>
-      <div><p style="font-family:var(--hand);font-size:1.45rem;line-height:1.4">Always learning. Always growing.</p><p><a class="go" href="/bookshelf/all/">Every book <span class="arw" aria-hidden="true">&rarr;</span></a></p></div>
-    </section>
+    <section class="shell book-hero"><div><h1 class="page-h is-display">Bookshelf<span class="dot">.</span><Mark kind="underline" color="blue" class="page-uline" draw={true} /></h1><p class="page-dek">Books shape the way I <span class="u">think,<Mark kind="underline" color="yellow" /></span> <span class="u">lead,<Mark kind="underline" color="green" /></span> and <span class="u">live.<Mark kind="underline" color="coral" /></span><br />Here are the ones that have stayed with me.</p></div><ImageMask shape="torn" tape="coral"><Photo name="dl-books" width={1600} height={900} sizes="(max-width:900px) 92vw, 55vw" alt="Books, a mug, and a plant on a table." /></ImageMask></section>
+
+    <div class="shell book-toolbar" aria-label="Bookshelf categories">{filters.map((f,i)=><span class:list={['book-filter',i===0&&'on']}>{f}</span>)}<span class="book-sort">Sort by: Recently added</span></div>
+
+    {featured&&<section class="shell book-feature"><div class="book-feature-card"><div class="sec-head" style="margin-bottom:.6rem"><h2 class="sec-h" style="font-size:1.15rem"><span class="u">Featured Recommendation<Mark kind="underline" color="yellow" /></span></h2></div><BookCard book={featured} /></div><blockquote class="book-feature-quote">{featureLine ? <span set:html={featureLine}></span> : <>A book stays with me when it gives language to something I have been trying to understand.</>}</blockquote></section>}
+
+    {LandingBody&&<details class="shell" style="margin-top:.6rem"><summary class="go">Why these books are here <span aria-hidden="true">&rarr;</span></summary><div class="door-body" style="margin-top:.8rem"><LandingBody /></div></details>}
+
+    {shelfGrid.length>0&&<section class="shell" style="padding-top:1rem"><div class="bcards">{shelfGrid.map((b:any)=><BookCard book={b} />)}</div></section>}
+
+    <section class="shell book-bottom"><div><h2 class="sec-h" style="font-size:1rem"><span class="u">What I'm reading now<Mark kind="underline" color="yellow" /></span></h2>{now?<div style="margin-top:.7rem"><BookCard book={now} /></div>:<p style="margin-top:.7rem">The current read can live here.</p>}</div><div><h2 class="sec-h" style="font-size:1rem"><span class="u">On my list next<Mark kind="underline" color="blue" /></span></h2><div class="book-next-covers" style="margin-top:.7rem">{next.map((b:any)=><BookCard book={b} />)}</div></div><div><p style="font-family:var(--hand);font-size:1.45rem;line-height:1.4">Always learning.<br />Always growing.</p><p><a class="go" href="/bookshelf/all/">Every book <span class="arw" aria-hidden="true">&rarr;</span></a></p></div></section>
   </div>
 </Shell>

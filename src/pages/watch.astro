@@ -8,48 +8,35 @@ import VideoCard from '../components/VideoCard.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
-const all = await getCollection('watch');
-const talks = all.filter((t:any)=>!t.data.draft).sort((a:any,b:any)=>{
-  if(a.data.year!==b.data.year) return b.data.year-a.data.year;
-  const ad=a.data.givenOn?a.data.givenOn.getTime():0;
-  const bd=b.data.givenOn?b.data.givenOn.getTime():0;
-  if(ad!==bd) return bd-ad;
-  return b.data.order-a.data.order || a.data.title.localeCompare(b.data.title);
-});
-const featured = talks[0];
-const browse = talks.slice(1,5);
-const recent = talks.slice(5,9);
-const archive = talks.slice(1);
-const years = [...new Set(archive.map((t:any)=>t.data.year))].sort((a,b)=>b-a);
+const all=await getCollection('watch');
+const talks=all.filter((t:any)=>!t.data.draft).sort((a:any,b:any)=>{if(a.data.year!==b.data.year)return b.data.year-a.data.year;const ad=a.data.givenOn?a.data.givenOn.getTime():0;const bd=b.data.givenOn?b.data.givenOn.getTime():0;if(ad!==bd)return bd-ad;return b.data.order-a.data.order||a.data.title.localeCompare(b.data.title)});
+const featured=talks[0];
+const browse=talks.slice(1,5);
+const recent=talks.slice(5,9);
+const archive=talks.slice(1);
+const years=[...new Set(archive.map((t:any)=>t.data.year))].sort((a,b)=>b-a);
 const hay=(t:any)=>[t.data.title,t.data.series,t.data.context,t.data.organization,t.data.scripture,t.data.location,...(t.data.tags??[])].filter(Boolean).join(' ').toLowerCase();
 ---
 <Shell title={`${labels.watchHeading} · ${site.name}`} description={labels.watchDek} current="watch">
   <div class="arch">
     <Mark kind="brush" color="yellow" class="arch-brush" />
-    <section class="shell watch-hero">
-      <div><h1 class="page-h is-display">{labels.watchHeading}<span class="dot">.</span><Mark kind="underline" color="blue" class="page-uline" draw={true} /></h1><p class="page-dek">Sermons, teachings, and conversations&#32;<span class="u">gathered in one place.<Mark kind="underline" color="yellow" /></span></p><p class="watch-copy-more">Teachings and conversations on Scripture, leadership, the kingdom of God, and ordinary life.</p></div>
-      <div class="watch-feat">{featured ? <VideoCard entry={featured} featured={true} /> : <div class="panel panel-dark">The next teaching will live here.</div>}<ColorDisc lines={["theology","leadership","life"]} class="watch-disc" /></div>
-    </section>
-    <section class="shell"><div class="watch-tools" style="margin-bottom:1.2rem"><span class="chip-btn on">All videos</span><span class="chip-btn">Teaching</span><span class="chip-btn">Leadership</span><span class="chip-btn">Conversations</span><span class="chip-btn">Q&amp;A</span><a class="go" style="margin-left:auto" href="#watch-archive">Browse all videos <span class="arw" aria-hidden="true">&rarr;</span></a></div>{browse.length > 0 && <div class="vcards">{browse.map((t:any)=><VideoCard entry={t} />)}</div>}</section>
-    {recent.length > 0 && (<section class="shell watch-recent"><div class="sec-head"><h2 class="sec-h"><span class="u">Most recent talks<Mark kind="underline" color="yellow" /></span></h2><a class="go" href="#watch-archive">See all talks <span class="arw" aria-hidden="true">&rarr;</span></a></div><div class="vcards">{recent.map((t:any)=><VideoCard entry={t} />)}</div></section>)}
-    <section class="shell watch-cta"><div><h2>Want more teachings like this?</h2><p>{site.signupCopy}</p><a class="btn btn-blue" href="/subscribe/">{site.signupButton} <span class="arw" aria-hidden="true">&rarr;</span></a></div><StickyNote tone="paper" tilt={1.5} tape={true}>Good news for ordinary life.</StickyNote><div class="watch-cta-list"><span>◉ New teaching when there is something worth sharing</span><span>✉ Reflections that go deeper</span><span>♡ Practical wisdom for ordinary life</span></div></section>
-    <section class="shell" id="watch-archive" style="padding-top:2.5rem"><div class="sec-head"><h2 class="sec-h">Teaching archive</h2></div><div class="watch-tools" id="watch-tools"><div class="wsearch"><label class="sr-only" for="watch-q">Search the talks</label><input id="watch-q" type="search" class="wsearch-in" autocomplete="off" placeholder="Search by title, series or passage" /></div><div class="arc-filters" role="group" aria-label="Filter by year"><button type="button" class="chip-btn on" data-year="all" aria-pressed="true">All years</button>{years.map(y=><button type="button" class="chip-btn" data-year={String(y)} aria-pressed="false">{y}</button>)}</div><p class="wcount" id="watch-count" role="status" aria-live="polite"></p></div>
-      {years.map((y)=>(<section class="watch-year" data-year-block={String(y)}><div class="sec-head"><h2 class="sec-h" style="font-size:1.25rem">{y}</h2></div><div class="vcards">{archive.filter((t:any)=>t.data.year===y).map((t:any)=>(<div class="vwrap" data-year={String(t.data.year)} data-hay={hay(t)}><VideoCard entry={t} /></div>))}</div></section>))}<p class="wempty" id="watch-empty" hidden>Nothing matches that. <button type="button" class="go" id="watch-clear">Clear the filters</button></p>
-    </section>
+    <section class="shell watch-hero"><div><h1 class="page-h is-display">Watch<span class="dot">.</span><Mark kind="underline" color="blue" class="page-uline" draw={true} /></h1><p class="page-dek">Teachings and conversations on <span class="u">theology,<Mark kind="underline" color="blue" /></span> <span class="u">leadership,<Mark kind="underline" color="yellow" /></span> and <span class="u">ordinary life.<Mark kind="underline" color="green" /></span></p><p class="watch-copy-more">Videos to help you think deeper, lead wiser, and live what you believe.</p></div><div class="watch-feat">{featured?<VideoCard entry={featured} featured={true}/>:<div class="panel panel-dark">The next teaching will live here.</div>}<ColorDisc lines={["theology","leadership","life"]} class="watch-disc" /></div></section>
+
+    <section class="shell"><div class="watch-tools" style="margin-bottom:1rem"><span class="chip-btn on">All videos</span><span class="chip-btn">Teaching</span><span class="chip-btn">Leadership</span><span class="chip-btn">Conversations</span><span class="chip-btn">Q&amp;A</span><a class="go" style="margin-left:auto" href="#watch-archive">Browse all videos <span class="arw" aria-hidden="true">&rarr;</span></a></div>{browse.length>0&&<div class="vcards">{browse.map((t:any)=><VideoCard entry={t}/>)}</div>}</section>
+
+    {recent.length>0&&<section class="shell watch-recent"><div class="sec-head"><h2 class="sec-h"><span class="u">Most recent talks<Mark kind="underline" color="yellow" /></span></h2><a class="go" href="#watch-archive">See all talks <span class="arw" aria-hidden="true">&rarr;</span></a></div><div class="vcards">{recent.map((t:any)=><VideoCard entry={t}/>)}</div></section>}
+
+    <section class="shell watch-cta"><div><h2>Want <span class="c">more<Mark kind="circle-loose" color="blue" /></span> teachings like this?</h2><p>Get new videos, reflections, and updates when there is something worth sharing.</p><a class="btn btn-blue" href="/subscribe/">Subscribe to updates <span class="arw" aria-hidden="true">&rarr;</span></a></div><StickyNote tone="paper" tilt={1.5} tape={true}>Good news for ordinary people.</StickyNote><div class="watch-cta-list"><span>◉ New teaching worth sharing</span><span>✉ Reflections that go deeper</span><span>♡ Practical wisdom for everyday life</span></div></section>
+
+    <section class="shell" id="watch-archive" style="padding-top:2rem"><div class="sec-head"><h2 class="sec-h">Teaching archive</h2></div><div class="watch-tools" id="watch-tools"><div class="wsearch"><label class="sr-only" for="watch-q">Search the talks</label><input id="watch-q" type="search" class="wsearch-in" autocomplete="off" placeholder="Search by title, series or passage" /></div><div class="arc-filters" role="group" aria-label="Filter by year"><button type="button" class="chip-btn on" data-year="all" aria-pressed="true">All years</button>{years.map(y=><button type="button" class="chip-btn" data-year={String(y)} aria-pressed="false">{y}</button>)}</div><p class="wcount" id="watch-count" role="status" aria-live="polite"></p></div>{years.map((y)=>(<section class="watch-year" data-year-block={String(y)}><div class="sec-head"><h2 class="sec-h" style="font-size:1.25rem">{y}</h2></div><div class="vcards">{archive.filter((t:any)=>t.data.year===y).map((t:any)=>(<div class="vwrap" data-year={String(t.data.year)} data-hay={hay(t)}><VideoCard entry={t}/></div>))}</div></section>))}<p class="wempty" id="watch-empty" hidden>Nothing matches that. <button type="button" class="go" id="watch-clear">Clear the filters</button></p></section>
   </div>
   <script>
-    const q = document.getElementById('watch-q') as HTMLInputElement | null;
-    const wraps = Array.from(document.querySelectorAll<HTMLElement>('.vwrap'));
-    const blocks = Array.from(document.querySelectorAll<HTMLElement>('[data-year-block]'));
-    const countEl = document.getElementById('watch-count');
-    const emptyEl = document.getElementById('watch-empty');
-    const clearBtn = document.getElementById('watch-clear');
-    let year = 'all';
-    const setPressed = (val: string) => { document.querySelectorAll<HTMLButtonElement>('button[data-year]').forEach((b) => { const on = b.dataset.year === val; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }); };
-    const apply = () => { const term = (q?.value ?? '').trim().toLowerCase(); let shown = 0; wraps.forEach((w) => { const ok = (year === 'all' || w.dataset.year === year) && (!term || (w.dataset.hay ?? '').includes(term)); w.hidden = !ok; if (ok) shown++; }); blocks.forEach((b) => { const any = Array.from(b.querySelectorAll<HTMLElement>('.vwrap')).some((w) => !w.hidden); b.hidden = !any; }); if (countEl) countEl.textContent = shown === wraps.length ? `${wraps.length} talk${wraps.length === 1 ? '' : 's'}` : `${shown} of ${wraps.length}`; if (emptyEl) emptyEl.hidden = shown !== 0; };
-    document.querySelectorAll<HTMLButtonElement>('button[data-year]').forEach((b) => { b.addEventListener('click', () => { year = b.dataset.year ?? 'all'; setPressed(year); apply(); }); });
-    q?.addEventListener('input', apply);
-    clearBtn?.addEventListener('click', () => { year = 'all'; if (q) q.value = ''; setPressed('all'); apply(); q?.focus(); });
-    apply();
+    const q=document.getElementById('watch-q') as HTMLInputElement|null;
+    const wraps=Array.from(document.querySelectorAll<HTMLElement>('.vwrap'));
+    const blocks=Array.from(document.querySelectorAll<HTMLElement>('[data-year-block]'));
+    const countEl=document.getElementById('watch-count');const emptyEl=document.getElementById('watch-empty');const clearBtn=document.getElementById('watch-clear');let year='all';
+    const setPressed=(val:string)=>{document.querySelectorAll<HTMLButtonElement>('button[data-year]').forEach((b)=>{const on=b.dataset.year===val;b.classList.toggle('on',on);b.setAttribute('aria-pressed',on?'true':'false')})};
+    const apply=()=>{const term=(q?.value??'').trim().toLowerCase();let shown=0;wraps.forEach((w)=>{const ok=(year==='all'||w.dataset.year===year)&&(!term||(w.dataset.hay??'').includes(term));w.hidden=!ok;if(ok)shown++});blocks.forEach((b)=>{const any=Array.from(b.querySelectorAll<HTMLElement>('.vwrap')).some((w)=>!w.hidden);b.hidden=!any});if(countEl)countEl.textContent=shown===wraps.length?`${wraps.length} talk${wraps.length===1?'':'s'}`:`${shown} of ${wraps.length}`;if(emptyEl)emptyEl.hidden=shown!==0};
+    document.querySelectorAll<HTMLButtonElement>('button[data-year]').forEach((b)=>{b.addEventListener('click',()=>{year=b.dataset.year??'all';setPressed(year);apply()})});q?.addEventListener('input',apply);clearBtn?.addEventListener('click',()=>{year='all';if(q)q.value='';setPressed('all');apply();q?.focus()});apply();
   </script>
 </Shell>

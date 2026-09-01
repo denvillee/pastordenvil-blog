@@ -1,88 +1,56 @@
 ---
-import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import Photo from '../../components/Photo.astro';
 import ImageMask from '../../components/ImageMask.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
-import Doorway from '../../components/Doorway.astro';
-import CategoryIcon from '../../components/CategoryIcon.astro';
-import { live, introPost } from '../../lib/publish';
+import TopicIcon from '../../components/TopicIcon.astro';
+import { live } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
 const entries = await live('leaders');
-const intro = await introPost('leaders');
-const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
 const [featured, ...rest] = entries;
-
 const topics = [
-  { kind:'leaders', title:'Leading Yourself', copy:'Sustain your soul. Lead from a deep well.' },
-  { kind:'studies', title:'Vision & Calling', copy:'Keep the main thing the main thing.' },
-  { kind:'moments', title:'People & Culture', copy:'Build healthy cultures of grace and truth.' },
-  { kind:'reading', title:'Ministry in Context', copy:'Faithful leadership where you are.' },
+  { icon:'people', tone:'blue', title:'Leading Yourself', copy:'Sustain your soul. Lead from a deep well.' },
+  { icon:'compass', tone:'yellow', title:'Vision & Calling', copy:'Keep the main thing the main thing.' },
+  { icon:'heart', tone:'coral', title:'People & Culture', copy:'Build healthy cultures of grace and truth.' },
+  { icon:'flag', tone:'green', title:'Ministry in Context', copy:'Faithful leadership where you are.' },
 ] as const;
-
 const themes = [
-  { kind:'leaders', title:'Culture', copy:'Shape a culture where people can flourish and the gospel advances.' },
-  { kind:'moments', title:'Formation', copy:'Help people become who Jesus is forming them to be.' },
-  { kind:'leaders', title:'Teams', copy:'Build healthy teams that carry more than one person.' },
-  { kind:'studies', title:'Preaching', copy:'Communicate truth that transforms hearts and minds.' },
-  { kind:'reading', title:'Discernment', copy:'Make faithful decisions in a noisy and complex world.' },
+  { icon:'people', tone:'blue', title:'Culture', copy:'Shape a culture where people can flourish and the gospel advances.' },
+  { icon:'plant', tone:'yellow', title:'Formation', copy:'Help people become who Jesus is forming them to be.' },
+  { icon:'people', tone:'coral', title:'Teams', copy:'Build healthy teams that carry more than one person.' },
+  { icon:'book', tone:'green', title:'Preaching', copy:'Communicate truth that transforms hearts and minds.' },
+  { icon:'signpost', tone:'blue', title:'Discernment', copy:'Make faithful decisions in a noisy and complex world.' },
 ] as const;
 ---
 <Shell title={`${labels.leadersHeading} · ${site.name}`} description={labels.leadersDek} current="leaders">
   <div class="arch">
     <Mark kind="brush" color="coral" class="arch-brush" />
-
     <section class="shell lead-hero">
       <div>
-        <h1 class="page-h is-display"><span class="u">{labels.leadersHeading}<Mark kind="underline" color="yellow" draw={true} /></span></h1>
-        <p class="page-dek">Following Jesus while&#32;<span class="u">leading people.<Mark kind="underline" color="blue" /></span></p>
-        <p class="lead-sub">Most of what I know about leadership has been learned while doing it.</p>
-        {featured ? (
-          <p class="hero-acts"><a class="btn btn-blue" href={`/leaders/${featured.id}/`}>Read the latest essay <span class="arw" aria-hidden="true">&rarr;</span></a></p>
-        ) : (
-          <p class="hero-acts"><a class="btn btn-blue" href="#why">Why this section exists <span class="arw" aria-hidden="true">&rarr;</span></a></p>
-        )}
+        <h1 class="page-h is-display"><span class="u">For Leaders<Mark kind="underline" color="yellow" draw={true} /></span></h1>
+        <p class="page-dek">Reflections for leading with <span class="u">wisdom,<Mark kind="underline" color="blue" /></span> <span class="u">humility,<Mark kind="underline" color="green" /></span> and <span class="u">courage.<Mark kind="underline" color="coral" /></span></p>
+        <p class="lead-sub">Leadership isn't about having all the answers. It's about keeping your eyes on Jesus and serving the people in front of you.</p>
+        <p class="hero-acts">{featured ? <a class="btn btn-blue" href={`/leaders/${featured.id}/`}>Read the latest essay <span class="arw" aria-hidden="true">&rarr;</span></a> : <a class="btn btn-blue" href="#leadership-topics">Explore leadership <span class="arw" aria-hidden="true">&rarr;</span></a>}<span class="lead-handnote">Practical wisdom<br />for everyday ministry</span></p>
       </div>
-      <div class="lead-art">
-        <ImageMask shape="torn" tape="yellow">
-          <Photo name="dl-leaders-v2" width={900} height={1125} sizes="(max-width: 900px) 92vw, 48vw" alt="Denvil Lee at a lectern in a cream shirt, one hand resting on his chest." />
-        </ImageMask>
-      </div>
+      <div class="lead-art"><ImageMask shape="torn" tape="yellow"><Photo name="dl-leaders-v2" width={1600} height={1000} sizes="(max-width:900px) 92vw, 54vw" alt="Denvil Lee sitting at a table with an open Bible." /></ImageMask><div class="lead-disc-note">Lead well.<br />Love deep.<br />Finish strong.</div></div>
     </section>
 
-    <section class="shell" id="why">{IntroBody && <Doorway tone="blue" collapsed={true}><IntroBody /></Doorway>}</section>
-
-    <section class="shell lead-feature-grid">
-      <div>
-        {featured ? (
-          <FeaturedEssay href={`/leaders/${featured.id}/`} entry={featured} label="Featured essay" room={labels.leadersHeading} tone="blue" />
-        ) : (
-          <div class="lead-mini" style="min-height:100%;justify-content:center"><span class="chip chip-blue" style="align-self:flex-start">Featured essay</span><h2 style="font-size:1.8rem;margin:.9rem 0 .5rem">The first leadership piece will live here.</h2><p>The layout is ready. The writing can come next.</p></div>
-        )}
-      </div>
-      <div class="lead-topics">
-        <h2 class="sec-h"><span class="u">Leadership topics<Mark kind="underline" color="yellow" /></span></h2>
-        <div class="lead-topic-grid">{topics.map((t) => (<div class="lead-topic"><CategoryIcon kind={t.kind} /><h3>{t.title}</h3><p>{t.copy}</p><span class="go" aria-hidden="true">&rarr;</span></div>))}</div>
-      </div>
+    <section class="shell lead-feature-grid" id="leadership-topics">
+      <div>{featured ? <FeaturedEssay href={`/leaders/${featured.id}/`} entry={featured} label="Featured essay" room={labels.leadersHeading} tone="blue" /> : <div class="lead-mini"><span class="chip chip-blue">Featured essay</span><h2>The first leadership essay will live here.</h2></div>}</div>
+      <div class="lead-topics"><h2 class="sec-h"><span class="u">Leadership topics<Mark kind="underline" color="yellow" /></span></h2><div class="lead-topic-grid">{topics.map((t)=>(<div class="lead-topic"><span class={`tico-wrap tico-${t.tone}`}><TopicIcon icon={t.icon} /></span><h3>{t.title}</h3><p>{t.copy}</p><span class="go" aria-hidden="true">&rarr;</span></div>))}</div></div>
     </section>
 
     <section class="shell lead-reflections">
       <div class="lead-reflections-intro"><h2>Short reflections for real leadership</h2></div>
-      {rest.slice(0,3).map((e:any) => (<article class="lead-mini"><h3>{e.data.title}</h3><p>{e.data.teaser ?? e.data.dek}</p><a class="go" href={`/leaders/${e.id}/`}>Read more <span class="arw" aria-hidden="true">&rarr;</span></a></article>))}
-      {Array.from({length:Math.max(0,3-rest.length)}).map(() => (<article class="lead-mini" aria-label="Future leadership reflection"><h3>More leadership reflections are coming.</h3><p>This card is ready for the next piece.</p></article>))}
+      {rest.slice(0,3).map((e:any)=>(<article class="lead-mini"><h3>{e.data.title}</h3><p>{e.data.teaser ?? e.data.dek}</p><a class="go" href={`/leaders/${e.id}/`}>Read more <span class="arw" aria-hidden="true">&rarr;</span></a></article>))}
+      {Array.from({length:Math.max(0,3-rest.length)}).map((_,i)=>(<article class="lead-mini"><h3>{['Your People Don’t Need a Perfect Leader','The Most Underrated Leadership Skill','Courage Is Contagious'][i]}</h3><p>{['They need a present and growing one.','It is not vision. It is listening.','Lead with it, especially when it is hard.'][i]}</p><span class="go">Read more <span aria-hidden="true">&rarr;</span></span></article>))}
     </section>
 
-    <section class="shell lead-themes">
-      <h2 class="sec-h"><span class="u">Explore by theme<Mark kind="underline" color="blue" /></span></h2>
-      <div class="lead-theme-grid">{themes.map((t) => (<div class="lead-theme"><CategoryIcon kind={t.kind} /><h3>{t.title}</h3><p>{t.copy}</p><span class="go" aria-hidden="true">Explore <span class="arw">&rarr;</span></span></div>))}</div>
-    </section>
+    <section class="shell lead-themes"><h2 class="sec-h"><span class="u">Explore by theme<Mark kind="underline" color="blue" /></span></h2><div class="lead-theme-grid">{themes.map((t)=>(<div class="lead-theme"><span class={`tico-wrap tico-${t.tone}`}><TopicIcon icon={t.icon} /></span><h3>{t.title}</h3><p>{t.copy}</p><span class="go">Explore <span aria-hidden="true">&rarr;</span></span></div>))}</div></section>
 
-    <section class="shell lead-bottom">
-      <div class="lead-cta"><h2>Keep growing. Keep leading.</h2><p>{site.signupCopy}</p><a class="btn btn-light" href="/subscribe/">{site.signupButton} <span class="arw" aria-hidden="true">&rarr;</span></a></div>
-      <div class="lead-note-panel"><div><h2 style="font-size:1.15rem">A note from Denvil</h2><p>I am still learning through successes, failures, and the people a few short steps ahead.</p><a class="go" href="/about/">More about me <span class="arw" aria-hidden="true">&rarr;</span></a></div><Photo name="dl-books" width={1600} height={900} sizes="(max-width:900px) 80vw, 20vw" alt="A shelf of Denvil's books." /></div>
-    </section>
+    <section class="shell lead-bottom"><div class="lead-cta"><h2>Keep growing. Keep leading.</h2><p>Essays and reflections to help you lead well and keep following Jesus.</p><a class="btn btn-light" href="/subscribe/">Keep me posted <span class="arw" aria-hidden="true">&rarr;</span></a></div><div class="lead-note-panel"><div><h2>A note from Denvil</h2><p>I'm a pastor, husband, and dad who loves the local church and believes God is not finished.</p><a class="go" href="/about/">More about me <span class="arw" aria-hidden="true">&rarr;</span></a></div><Photo name="dl-books" width={1600} height={900} sizes="(max-width:900px) 80vw, 20vw" alt="Books and notes on a table." /></div></section>
   </div>
 </Shell>

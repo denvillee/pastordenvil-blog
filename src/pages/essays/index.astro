@@ -1,44 +1,50 @@
 ---
-import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import EssayCard from '../../components/EssayCard.astro';
-import Doorway from '../../components/Doorway.astro';
 import TopicIcon from '../../components/TopicIcon.astro';
 import Placeholder from '../../components/Placeholder.astro';
 import Photo from '../../components/Photo.astro';
-import { live, introPost } from '../../lib/publish';
+import { live } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
 const entries = await live('essays');
-const intro = await introPost('essays');
-const { Content: IntroBody } = intro ? await render(intro) : { Content:null };
 const [featured, ...rest] = entries;
-const uniqueTags = [...new Set(entries.flatMap((e:any)=>e.data.tags ?? []))].slice(0,4);
-const tones = ['coral','green','blue','yellow'] as const;
-const topicIcons = ['crown','plant','people','sun'] as const;
 const ghostCount = Math.max(0,6-rest.length);
+const topics = [
+  { icon:'crown', tone:'coral', title:'Kingdom', copy:"Living as citizens of God's kingdom." },
+  { icon:'plant', tone:'green', title:'Formation', copy:'Becoming more like Jesus every day.' },
+  { icon:'people', tone:'blue', title:'Leadership', copy:'Leading with wisdom, humility, and courage.' },
+  { icon:'sun', tone:'yellow', title:'Everyday Faith', copy:'Faith for the ordinary moments.' },
+] as const;
 ---
 <Shell title={`${labels.essaysHeading} · ${site.name}`} description={labels.essaysDek} current="essays">
   <div class="arch">
     <Mark kind="brush" color="coral" class="arch-brush" />
-    <section class="shell essay-head"><div><h1 class="page-h is-display">{labels.essaysHeading}<span class="dot">.</span><Mark kind="underline" color="blue" class="page-uline" draw={true} /></h1><p class="page-dek">What there&#32;<span class="u">wasn't time to say<Mark kind="underline" color="yellow" /></span>&#32;on Sunday.</p></div><div class="essay-head-art"><DotGrid cols={7} rows={4} /></div></section>
-    {IntroBody && <Doorway tone="yellow" collapsed={true}><IntroBody /></Doorway>}
+    <section class="shell essay-head">
+      <div><h1 class="page-h is-display">Essays<span class="dot">.</span><Mark kind="underline" color="blue" class="page-uline" draw={true} /></h1><p class="page-dek">Thoughtful reflections on <span class="u">theology,<Mark kind="underline" color="yellow" /></span> <span class="u">leadership,<Mark kind="underline" color="blue" /></span> and <span class="u">ordinary life.<Mark kind="underline" color="green" /></span></p></div>
+      <div class="essay-head-art"><DotGrid cols={7} rows={4} /></div>
+    </section>
+
     <section class="shell essay-layout">
       <div class="essay-main">
         {featured ? <FeaturedEssay href={`/essays/${featured.id}/`} entry={featured} room={labels.essaysHeading} /> : <div class="lead-mini"><h2>The first essay will live here.</h2></div>}
         <div class="essay-toolbar"><div style="display:flex;align-items:baseline;gap:.75rem"><h2 class="sec-h">All essays</h2><span class="count">{entries.length} {entries.length===1?'essay':'essays'}</span></div><span class="essay-sort">Sort by: Newest</span></div>
-        <div class="ecards">{rest.slice(0,6).map((e:any)=><EssayCard href={`/essays/${e.id}/`} entry={e} room={labels.essaysHeading} />)}{Array.from({length:Math.min(ghostCount,6)}).map(()=> (<article class="ecard" aria-label="Space reserved for a future essay"><div class="ecard-art"><Placeholder label="Future essay artwork" ratio="3 / 2" /></div><h3 class="ecard-h">A future essay can live here.</h3><p class="ecard-dek">The archive grid is already built for the writing that comes next.</p></article>))}</div>
+        <div class="ecards">{rest.slice(0,6).map((e:any)=><EssayCard href={`/essays/${e.id}/`} entry={e} room={labels.essaysHeading} />)}{Array.from({length:Math.min(ghostCount,6)}).map(()=> (<article class="ecard" aria-label="Space reserved for a future essay"><div class="ecard-art"><Placeholder label="Future essay artwork" ratio="3 / 2" /></div><h3 class="ecard-h">A future essay can live here.</h3><p class="ecard-dek">The archive is ready for the writing that comes next.</p></article>))}</div>
       </div>
       <aside class="essay-side" aria-label="Explore essays">
-        <div class="side-card"><h2 class="side-h"><span class="u">Explore by topic<Mark kind="underline" color="yellow" /></span></h2><ul class="topics">{uniqueTags.length ? uniqueTags.map((tag,i)=>(<li><div class="topic"><span class={`tico-wrap tico-${tones[i%tones.length]}`}><TopicIcon icon={topicIcons[i%topicIcons.length]} /></span><span class="topic-txt"><strong>{tag}</strong><span>Essays connected to {tag} will collect here as the archive grows.</span></span></div></li>)) : (<li><span class="topic"><span class="topic-txt"><strong>Topics will grow with the archive.</strong></span></span></li>)}</ul></div>
-        <div class="essay-side-note">The kingdom is already here, and still coming. Most of what I write lives somewhere in that tension.</div>
-        <div class="essay-new"><h3>New here?</h3><p>A little about me, why this site exists, and where to start.</p><a class="go" href="/about/">Start here <span class="arw" aria-hidden="true">&rarr;</span></a></div>
+        <div class="side-card"><h2 class="side-h"><span class="u">Explore by topic<Mark kind="underline" color="yellow" /></span></h2><ul class="topics">{topics.map((t)=>(<li><a class="topic" href="/essays/"><span class={`tico-wrap tico-${t.tone}`}><TopicIcon icon={t.icon} /></span><span class="topic-txt"><strong>{t.title}</strong><span>{t.copy}</span></span><span class="arw" aria-hidden="true">&rarr;</span></a></li>))}</ul></div>
+        <div class="essay-side-note">Applied theology for ordinary life, from the tension of the kingdom already here and still coming.</div>
+        <div class="essay-new"><h3>New here?</h3><p>Start with some of the most loved essays.</p><a class="go" href="/about/">Read the favorites <span class="arw" aria-hidden="true">&rarr;</span></a></div>
       </aside>
     </section>
-    <section class="shell essay-study"><div class="essay-study-copy"><h2><span class="u">Grab your Bibles.<Mark kind="underline" color="blue" /></span></h2><p>Quietly at Work. Seven sessions in the book of Ruth, one screen at a time.</p><a class="btn btn-light" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">Start the study <span class="arw" aria-hidden="true">&rarr;</span></a></div><div class="essay-study-art"><Photo name="ruth-cover" width={1600} height={845} sizes="(max-width:620px) 70vw, 35vw" alt="Cover art for the Ruth study Quietly at Work." /></div></section>
+
+    <section class="shell essay-study">
+      <div class="essay-study-copy"><h2><span class="u">Grab your Bibles.<Mark kind="underline" color="blue" /></span></h2><p>A study through the book of Ruth.</p><a class="btn btn-light" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">Start the study <span class="arw" aria-hidden="true">&rarr;</span></a></div>
+      <div class="essay-study-art"><Photo name="ruth-cover" width={1600} height={845} sizes="(max-width:620px) 70vw, 35vw" alt="Cover art for the Ruth study Quietly at Work." /></div>
+    </section>
   </div>
 </Shell>

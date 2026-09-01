@@ -1,5 +1,4 @@
 ---
-import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
@@ -8,65 +7,39 @@ import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
 import Photo from '../../components/Photo.astro';
 import ColorDisc from '../../components/marks/ColorDisc.astro';
-import { live, introPost } from '../../lib/publish';
+import { live } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
 const entries = await live('moments');
-const intro = await introPost('moments');
-const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
 const [featured, ...rest] = entries;
-const ghostCount = Math.max(0, 8 - rest.length);
+const fillers = [
+  'You don’t need all the answers. Just the next faithful step.',
+  'Leadership is less about being in charge and more about taking care of people.',
+  'Some days you just need to breathe and begin again.',
+  'Gratitude doesn’t change everything, but it changes you.',
+  'The best conversations happen when we truly listen.',
+  'Peace is not passive. It’s a daily pursuit.',
+  'God’s timing is rarely early, but never late.',
+  'Do the small things with great love.',
+];
+const fillCount = Math.max(0,8-rest.length);
 ---
 <Shell title={`${labels.momentsHeading} · ${site.name}`} description={labels.momentsDek} current="moments">
   <div class="arch">
     <Mark kind="brush" color="coral" class="arch-brush" />
-
     <section class="shell mom-hero">
-      <div>
-        <h1 class="page-h is-display"><span class="c">{labels.momentsHeading}<Mark kind="circle-loose" color="yellow" draw={true} /></span></h1>
-        <p class="page-dek">{labels.momentsSubtitle}</p>
-      </div>
-      <div class="mom-quote">
-        <DotGrid cols={6} rows={4} class="mom-dots" />
-        <StickyNote tone="blue" tilt={1.2} tape={true}>These are the moments I am trying to notice before I explain them away.</StickyNote>
-      </div>
+      <div><h1 class="page-h is-display"><span class="c">Moments<Mark kind="circle-loose" color="yellow" draw={true} /></span></h1><p class="page-dek">Short reflections, small observations, and <span class="u">ordinary grace<Mark kind="underline" color="green" /></span> for the everyday.</p></div>
+      <div class="mom-quote"><DotGrid cols={6} rows={4} class="mom-dots" /><StickyNote tone="blue" tilt={1.2} tape={true}>Grace is not the absence of struggle, but the presence of God.</StickyNote></div>
     </section>
 
     <section class="shell mom-feature-layout">
-      <div>
-        <div class="sec-head" style="margin-bottom:1rem"><h2 class="sec-h"><span class="u">Featured moment<Mark kind="underline" color="coral" /></span></h2></div>
-        {featured ? (
-          <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured} label="Featured" room={labels.momentsHeading} tone="coral" />
-        ) : (
-          <div class="lead-mini" style="min-height:230px;justify-content:center"><span class="chip chip-coral" style="align-self:flex-start">Featured</span><h2 style="font-size:1.65rem;margin:.9rem 0 .45rem">The first Moment will live here.</h2><p>The frame is ready for a photograph, a short reflection, or one idea worth keeping.</p></div>
-        )}
-      </div>
-      <div class="tiny-observation">
-        <h2><span class="u">Tiny observation<Mark kind="underline" color="blue" /></span></h2>
-        <div class="tiny-card"><span class="cico cico-yellow" aria-hidden="true">✦</span><p>Something small can live here without needing to become an essay.</p><time>Moments</time></div>
-      </div>
+      <div><div class="sec-head" style="margin-bottom:.7rem"><h2 class="sec-h"><span class="u">Featured moment<Mark kind="underline" color="coral" /></span></h2></div>{featured ? <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured} label="Featured" room={labels.momentsHeading} tone="coral" /> : <div class="lead-mini"><h2>A quiet morning changes everything.</h2><p>There is something holy about starting the day before the world gets loud.</p></div>}</div>
+      <div class="tiny-observation"><h2><span class="u">Tiny observation<Mark kind="underline" color="blue" /></span></h2><div class="tiny-card"><span class="cico cico-yellow" aria-hidden="true">✦</span><p>Sunlight on the desk.<br />Birds without hurry.<br />A reminder to slow down.</p><time>Moments</time></div></div>
     </section>
 
-    <section class="shell" style="padding-top:2.2rem">
-      <div class="sec-head" style="margin-bottom:1rem"><h2 class="sec-h">Recent moments</h2></div>
-      {rest.length > 0 && <div class="mcards">{rest.map((e:any,i:number)=><MomentCard href={`/moments/${e.id}/`} entry={e} i={i} />)}</div>}
-      {ghostCount > 0 && (
-        <div class="moment-ghosts" aria-label="Space reserved for future Moments">
-          {Array.from({length:Math.min(ghostCount,8)}).map((_,i)=><div class="moment-ghost" style={`--tilt:${[-1.1,.8,-.6,1.2][i%4]}deg`}>A Moment can live here.</div>)}
-        </div>
-      )}
-    </section>
+    <section class="shell" style="padding-top:1.5rem"><div class="sec-head" style="margin-bottom:.75rem"><h2 class="sec-h">Recent moments</h2></div>{rest.length>0 && <div class="mcards">{rest.slice(0,8).map((e:any,i:number)=><MomentCard href={`/moments/${e.id}/`} entry={e} i={i} />)}</div>}{fillCount>0 && <div class="moment-ghosts">{fillers.slice(0,fillCount).map((line,i)=><div class="moment-ghost" data-tone={['paper','green','lined','paper','paper','paper','paper','coral'][i]} style={`--tilt:${[-1.1,.8,-.6,1.2,-.7,.8,-.5,.5][i]}deg`}>{line}</div>)}</div>}</section>
 
-    <section class="shell mom-bottom">
-      <div class="mom-bottom-copy">
-        <ColorDisc lines={["theology","leadership","life"]} />
-        <div>
-          <p>These are intentionally a little looser. Sometimes there may be a reflection, sometimes a photograph, sometimes simply an idea I do not want to lose.</p>
-          {IntroBody && (<details><summary class="go">Why Moments exists <span class="arw" aria-hidden="true">&rarr;</span></summary><div style="margin-top:1rem"><IntroBody /></div></details>)}
-        </div>
-      </div>
-      <Photo name="dl-about-v2" width={900} height={1180} sizes="(max-width:900px) 92vw, 46vw" alt="Denvil Lee standing and smiling." />
-    </section>
+    <section class="shell mom-bottom"><div class="mom-bottom-copy"><ColorDisc lines={["theology","leadership","life"]} /><div><p>These aren't polished. They're just real.</p><p>Thanks for being here. I hope something here helps you notice what God may be revealing in your own ordinary life.</p><a class="go" href="/subscribe/">Keep me posted <span class="arw" aria-hidden="true">&rarr;</span></a></div></div><Photo name="dl-hero-v2" width={1600} height={1000} sizes="(max-width:900px) 92vw, 46vw" alt="Denvil Lee sitting at a table and smiling." /></section>
   </div>
 </Shell>

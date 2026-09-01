@@ -1,34 +1,21 @@
 @import './reference.css';
 @import './fine-pass.css';
+@import './mockup-final.css';
+@import './mockup-tweaks.css';
 
 /* =========================================================================
    MOTION
-
-   Rules this file keeps to:
-   - Nothing moves that a reader is trying to read. No body text animates.
-   - Everything is under 600ms and happens once.
-   - Every effect here is additive. With this file removed, or with reduced
-     motion asked for, the site is complete and nothing is hidden.
-
-   The last point is why the reveal sets opacity in a media query rather than
-   in the base rule: if the observer never runs, or JavaScript fails, elements
-   must not be left invisible.
    ========================================================================= */
-
 @media (prefers-reduced-motion: no-preference) {
-  .rv{opacity:0; transform:translateY(14px);
-      transition:opacity .5s var(--ease), transform .5s var(--ease)}
+  .rv{opacity:0; transform:translateY(14px);transition:opacity .5s var(--ease), transform .5s var(--ease)}
   .rv.is-in{opacity:1; transform:none}
   .rv:nth-child(2){transition-delay:.06s}
   .rv:nth-child(3){transition-delay:.12s}
   .rv:nth-child(4){transition-delay:.18s}
-
   .imask{clip-path:inset(0 0 0 0)}
-  .imask.rv{opacity:1; transform:none; clip-path:inset(0 100% 0 0);
-            transition:clip-path .6s var(--ease)}
+  .imask.rv{opacity:1; transform:none; clip-path:inset(0 100% 0 0);transition:clip-path .6s var(--ease)}
   .imask.rv.is-in{clip-path:inset(0 0 0 0)}
 }
-
 @media (hover:hover) {
   .short:hover,.mcard:hover,.bcard:hover{will-change:transform}
   .ecard-art .imask,.fcard-art{overflow:hidden}
