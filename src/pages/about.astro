@@ -1,11 +1,11 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getEntry } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
 import Mark from '../components/marks/Mark.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
-import StickyNote from '../components/marks/StickyNote.astro';
 import Photo from '../components/Photo.astro';
 import CategoryIcon from '../components/CategoryIcon.astro';
+import Signup from '../components/Signup.astro';
 import { latest, ROOMS } from '../lib/publish';
 import site from '../data/site.json';
 
@@ -13,94 +13,45 @@ const entry = await getEntry('pages', 'about');
 const feature = await latest();
 const featureHref = feature ? `/${ROOMS[feature.room].path}/${feature.id}/` : '/essays/';
 
-/* Denvil's own line, already on the page, kept word for word. */
-/* Denvil's own paragraph, 29 Aug. */
 const conviction = "Everything here grows out of one conviction: God's kingdom has already arrived in Jesus, and it has not yet come in fullness. Most of the questions I care about live somewhere in that tension. I want to keep asking what the good news means for Scripture, leadership, work, relationships, formation, and the ordinary life in front of us.";
 
-/* The site's own rooms, in the site's own vocabulary. The page used to list
-   "Faith & Theology", "Everyday Faith" and "Leadership", which are three names
-   the site does not use anywhere else. */
 const areas = [
-  { kind: 'essays',  href: '/essays/',    t: 'Essays',
-    d: 'Longer reflections where I have room to follow an idea.' },
-  { kind: 'moments', href: '/moments/',   t: 'Moments',
-    d: 'Things I am trying to notice before I explain them away.' },
-  { kind: 'reading', href: '/bookshelf/', t: 'Bookshelf',
-    d: 'The books and voices shaping how I think.' },
-  { kind: 'studies', href: '/studies/',   t: 'Studies',
-    d: 'Ways to open Scripture and learn to see for yourself.' },
-  { kind: 'leaders', href: '/leaders/',   t: 'For Leaders',
-    d: 'Lessons from a few short steps ahead.' },
+  { kind: 'essays', href: '/essays/', t: 'Essays', d: 'Longer reflections where I have room to follow an idea.' },
+  { kind: 'moments', href: '/moments/', t: 'Moments', d: 'Things I am trying to notice before I explain them away.' },
+  { kind: 'reading', href: '/bookshelf/', t: 'Bookshelf', d: 'The books and voices shaping how I think.' },
+  { kind: 'studies', href: '/studies/', t: 'Studies', d: 'Ways to open Scripture and learn to see for yourself.' },
+  { kind: 'leaders', href: '/leaders/', t: 'For Leaders', d: 'Lessons from a few short steps ahead.' },
 ] as const;
 ---
 <Shell title={`About · ${site.name}`} description={entry!.data.dek} current="about">
   <div class="arch">
-    <Mark kind="arrow" color="coral" class="edge edge-r abt-edge" />
     <Mark kind="brush" color="coral" class="arch-brush" />
-
     <section class="shell abt-hero">
       <div>
-        <h1 class="page-h is-display">About<span class="dot">.</span>
-          <Mark kind="underline" color="blue" class="page-uline" draw={true} />
-        </h1>
+        <h1 class="page-h is-display">About<span class="dot">.</span><Mark kind="underline" color="blue" class="page-uline" draw={true} /></h1>
         <p class="abt-hi"><span class="u">Hey, I'm Denvil.<Mark kind="underline" color="yellow" /></span></p>
-        <p class="abt-bio">
-          I'm a follower of Jesus, husband to Krista, dad to three incredible kids, and a
-          pastor who cares about what faith looks like in the real world. I'm especially
-          interested in the&#32;<span class="u">kingdom of God,<Mark kind="underline" color="yellow" /></span> forming healthy leaders,
-          and helping people come alive to the reality of God's love in ordinary life.
-        </p>
-        <p class="hero-acts">
-          <a class="btn btn-blue" href={featureHref}>Read my latest essay <span class="arw" aria-hidden="true">&rarr;</span></a>
-        </p>
+        <p class="abt-bio">I'm a follower of Jesus, husband to Krista, dad to three incredible kids, and a pastor who cares about what faith looks like in the real world. I'm especially interested in the&#32;<span class="u">kingdom of God,<Mark kind="underline" color="yellow" /></span> forming healthy leaders, and helping people come alive to the reality of God's love in ordinary life.</p>
+        <p class="hero-acts"><a class="btn btn-blue" href={featureHref}>Read my latest essay <span class="arw" aria-hidden="true">&rarr;</span></a></p>
       </div>
       <div class="abt-art">
-          {/* One person, because a reader who came to find out who he is should
-              not have to guess which one he is. The lit panels behind him are
-              graded down to two soft darks; his shirt already sits close to
-              --card, which is why this frame belongs on this palette. */}
-          <Photo name="dl-about-v2" width={900} height={1180}
-                 sizes="(max-width: 900px) 92vw, 40vw"
-                 alt="Denvil Lee standing, hands in his pockets, looking at the camera." />
+        <Photo name="dl-about-v2" width={900} height={1180} sizes="(max-width: 900px) 92vw, 56vw" alt="Denvil Lee standing, hands in his pockets, looking at the camera." />
         <ColorDisc lines={["theology","leadership","life"]} class="abt-disc" />
       </div>
     </section>
 
     <section class="shell abt-why">
-      <div class="abt-why-copy">
-        <h2 class="sec-h"><span class="u">Why this site exists<Mark kind="underline" color="yellow" /></span></h2>
-        <p>{conviction}</p>
-      </div>
-      {/* The sticky note restated the paragraph beside it in slogan form and
-          was not supplied. */}
+      <div class="abt-why-copy"><h2 class="sec-h"><span class="u">Why this site exists<Mark kind="underline" color="yellow" /></span></h2><p>{conviction}</p></div>
+      <div class="abt-quote" aria-label="A central conviction"><span class="qmark q1" aria-hidden="true">“</span><blockquote>God's kingdom has already arrived in Jesus, and it has not yet come in fullness.</blockquote><span class="qmark q2" aria-hidden="true">”</span></div>
     </section>
 
     <section class="band shell">
-      <div class="sec-head">
-        <h2 class="sec-h"><span class="u">What we explore here<Mark kind="underline" color="green" /></span></h2>
-      </div>
-      <div class="shortcuts abt-areas">
-        {areas.map((a) => (
-          <a class="short" href={a.href}>
-            <CategoryIcon kind={a.kind} />
-            <h3>{a.t}</h3>
-            <p>{a.d}</p>
-            <span class="arw" aria-hidden="true">&rarr;</span>
-          </a>
-        ))}
+      <div class="sec-head"><h2 class="sec-h"><span class="u">What we explore here<Mark kind="underline" color="green" /></span></h2></div>
+      <div class="abt-explore">
+        <div class="shortcuts abt-areas">{areas.map((a) => (<a class="short" href={a.href}><CategoryIcon kind={a.kind} /><h3>{a.t}</h3><p>{a.d}</p><span class="arw" aria-hidden="true">&rarr;</span></a>))}</div>
+        <div class="panel panel-light abt-sign"><h2 class="panel-h"><span class="u">Kingdom theology. Ordinary life.<Mark kind="underline" color="blue" /></span></h2><p class="panel-dek">That's the heartbeat of everything I write. Thanks for being here.</p><p class="abt-name">Denvil</p></div>
       </div>
     </section>
 
-    <section class="shell">
-      <div class="panel panel-light abt-sign">
-        <Mark kind="zigzag" color="yellow" class="panel-zig panel-zig-r" />
-        <h2 class="panel-h"><span class="u">Kingdom theology. Ordinary life.<Mark kind="underline" color="blue" /></span></h2>
-        <p class="panel-dek">That's the heartbeat of everything I write. Thanks for being here.</p>
-        <p class="abt-name">Denvil</p>
-      </div>
-    </section>
+    <Signup tone="dark" source="/about/" />
   </div>
-  {/* The Subscribe block was removed from every content page on 29 Aug.
-      The site asked for an email too often. Subscribe now lives in one
-      place: the masthead action, the footer link, and /subscribe/. */}
 </Shell>
