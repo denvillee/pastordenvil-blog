@@ -344,7 +344,13 @@
   align-items:center; margin-bottom:clamp(2rem,4vw,3.4rem)}
 @media (max-width:900px){ .watch-hero{grid-template-columns:1fr} }
 .watch-feat{position:relative}
-.watch-disc{right:-1rem; bottom:-1.2rem}
+/* The disc is the only child of .watch-feat and it is absolutely positioned, so
+   that cell collapses to zero height. Anchored from the bottom, the disc's top
+   then landed about 105px ABOVE .arch, whose overflow:clip sliced more than half
+   of it away behind the header. Every other disc on the site sits in a box with
+   real height, a photograph, so only this one broke. Anchor from the top instead
+   and it hangs down into the page, level with the heading, fully visible. */
+.watch-disc{right:-1rem; top:0; bottom:auto}
 .watch-year{margin-bottom:clamp(2rem,4vw,3rem)}
 .vcards{display:grid; grid-template-columns:repeat(auto-fill,minmax(16rem,1fr));
   gap:clamp(1.2rem,3vw,2rem)}
@@ -632,8 +638,24 @@
    ground, so it reads as a cutout standing on the page rather than a photo in
    a box. No mask and no radius for the same reason: either one would draw the
    edge the cutout exists to avoid. */
-.mom-art{display:block; width:100%; max-width:26rem; margin:0 0 0 auto}
-.mom-art img{display:block; width:100%; height:auto}
+.mom-art{display:grid; place-items:center; width:100%; max-width:26rem;
+  margin:0 0 0 auto; aspect-ratio:1; border-radius:50%; overflow:hidden;
+  background:var(--cream); box-shadow:inset 0 0 0 2px var(--gold)}
+/* The picture is fitted to the circle by HEIGHT, not cropped to fill it.
+   Cover would take a square window out of a 4:5 frame and cut the helmet off
+   the top and the mug off the bottom, which is what it was doing. At 92% of
+   the diameter the whole cut-out survives, and so does the drawn art around
+   it: the taped corner, the blue scribble, the star, the arrow, the dots.
+   The photograph carries the page's own cream as its background, so the
+   space either side of it inside the circle is invisible.
+
+   Sized by WIDTH, not height. <picture> will not resolve a percentage height
+   for the image inside it, so height:92% silently fell back to intrinsic and
+   the photograph overflowed the circle. The frame is 4:5, so 74% of the
+   diameter in width is 92.5% of it in height, which is the same result
+   arithmetically and does not depend on the parent having a resolved height. */
+.mom-art img{display:block; width:74%; height:auto; max-width:none;
+  max-height:none; object-fit:fill}
 @media (max-width:900px){ .mom-art{max-width:20rem; margin-inline:0} }
 
 /* Speaking leads with the photograph rather than floating it: the page asks
@@ -724,13 +746,11 @@
    The About picture is a cut-out, not a crop, so it is excluded. Capping a
    cut-out with cover slices the top off the subject, which is exactly what it
    did to his head. It scales by width and keeps its whole self. */
-.mom-art,.std-art img,.lead-art img{max-height:25rem; object-fit:cover; object-position:50% 14%}
-.mom-art img{max-height:25rem; object-fit:cover; object-position:50% 8%}
+.std-art img,.lead-art img{max-height:25rem; object-fit:cover; object-position:50% 14%}
 .abt-art img{width:100%; height:auto; object-fit:contain; max-height:31rem}
 
-/* Moments stays the loosest page: the picture still tilts. */
-.mom-art{transform:rotate(-1.4deg); transform-origin:60% 40%}
-@media (max-width:900px){ .mom-art{transform:none; max-height:none} }
+/* The tilt is gone with the rectangle: rotating a circle shows nothing and
+   only skews its layout box. */
 
 /* About carries a cut-out rather than a framed photograph, so it sits on the
    page with no mask edge and the column ratio gives it the larger half. */
@@ -778,7 +798,7 @@
    they get the smallest pictures on the site: at 25rem the column beside them
    stood empty for a third of a screen. Placed at the end of the file on
    purpose, because they have to beat the shared 25rem cap above. */
-.mom-art,.mom-art img{max-height:20rem}
+.mom-art{max-width:22rem}
 .std-art img{max-height:20rem}
 
 /* Everything: the filter row. Same chip as the card studio so the site keeps
@@ -958,7 +978,8 @@
    What is left is the geometry of a two-column hero, and the only way to take
    it out entirely is to shrink the photographs past the point where they are
    worth having. */
-.mom-art,.mom-art img,.std-art img,.lead-art img{max-height:17rem}
+.mom-art{max-width:19rem}
+.std-art img,.lead-art img{max-height:17rem}
 .book-hero .imask img{max-height:15rem; object-fit:cover; object-position:50% 40%}
 .mom-hero,.std-hero,.lead-hero,.book-hero{margin-bottom:clamp(.6rem,1.4vw,1rem)}
 .door{padding-top:clamp(.2rem,1vw,.7rem)}
