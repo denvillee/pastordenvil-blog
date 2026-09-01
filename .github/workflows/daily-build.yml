@@ -22,11 +22,29 @@
 
 name: Daily build
 
+# PARKED, 1 Sep 2026. The daily schedule is commented out on purpose.
+#
+# NETLIFY_BUILD_HOOK has never been set, so every scheduled run since this file
+# landed has failed at the guard below and emailed Denvil a red X. Three failures
+# so far, and it would have been one a day forever.
+#
+# Nothing real is waiting on it. The only future-dated entries in the repo are
+# three files in the parked `frameworks` collection, one "Coming soon" stub, and
+# one unwritten leaders placeholder. No finished piece is banked behind a date.
+#
+# TO TURN IT BACK ON, once the secret exists:
+#   1. Netlify > Site configuration > Build & deploy > Build hooks > Add build
+#      hook. Name it "Daily publish", branch main. Copy the URL.
+#   2. GitHub > this repo > Settings > Secrets and variables > Actions > New
+#      repository secret. Name: NETLIFY_BUILD_HOOK. Value: that URL.
+#   3. Uncomment the two schedule lines below.
+#
+# The guard is deliberately left as `exit 1`. If this is ever scheduled again
+# without the secret it should fail loudly rather than pretend to publish.
+
 on:
-  schedule:
-    # 09:00 UTC every day. That is 05:00 Eastern in summer, 04:00 in winter, so
-    # anything dated "today" is live before anybody in the US is reading.
-    - cron: '0 9 * * *'
+  # schedule:
+  #   - cron: '0 9 * * *'
   workflow_dispatch:
 
 jobs:
