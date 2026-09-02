@@ -675,8 +675,17 @@
 .hero-art picture,
 .hero-art img{max-width:520px}
 .hero-art img{width:100%; height:auto; aspect-ratio:9/8; object-fit:cover}
+/* Stacked, the art has to constrain its OWN box, not just the picture inside it.
+   Capping the image at a flat 355px while .hero-art stayed full width left the
+   photo at under half the column with a void beside it, and stranded the coral
+   disc against the container's right edge instead of the photograph's. Denvil,
+   2 Sep, at half-screen: "It doesn't resize well."
+
+   So the box scales with the column and the picture fills the box, which keeps
+   the disc anchored to the photo at every width. */
 @media (max-width:900px){
-  .hero-art .mask,.hero-art picture,.hero-art img{max-width:355px}
+  .hero-art{max-width:min(100%, 34rem)}
+  .hero-art .mask,.hero-art picture,.hero-art img{max-width:100%}
 }
 
 /* The Moments landing page. The helmet is built on --cream, the page's own
