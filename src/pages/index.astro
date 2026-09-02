@@ -13,6 +13,7 @@ import Tape from '../components/marks/Tape.astro';
 import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
+import { KIT_ACTION } from '../lib/signup';
 import home from '../data/home.json';
 import labels from '../data/labels.json';
 
@@ -268,10 +269,16 @@ const shortcuts = [
       </div>
       <div class="sub-form">
         <p class="sub-dek">Get new essays, moments, and resources in your inbox.</p>
-        <form name="subscribe-home" method="POST" data-netlify="true" action="/subscribe/thanks/" class="sub-row">
-          <input type="hidden" name="form-name" value="subscribe-home" />
+        {/* One list. This posted to Netlify Forms while /subscribe/ posted to
+            Kit, which would have split the subscribers in two and put half of
+            them in a dashboard rather than on the mailing list. Same endpoint,
+            same field names, same honeypot as /subscribe/. */}
+        <form class="sub-row" method="post" action={KIT_ACTION}>
           <label class="vh" for="sub-email">Your email</label>
-          <input id="sub-email" type="email" name="email" required placeholder="Your email" autocomplete="email" />
+          <input id="sub-email" type="email" name="email_address" required
+                 placeholder="Your email" autocomplete="email" />
+          <input type="hidden" name="fields[source]" value="/" />
+          <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp" />
           <button type="submit" class="btn btn-gold">Subscribe <span class="arw" aria-hidden="true">&rarr;</span></button>
         </form>
       </div>
