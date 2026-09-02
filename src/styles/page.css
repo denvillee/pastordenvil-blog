@@ -1768,8 +1768,13 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
    column and the dot field sits under and left of it, both in flow. The dots
    used to be pinned above the column because there was a photograph to hang
    them off; there is not one any more, so they are placed. */
-.mom-quote{position:relative; display:grid; justify-items:end; gap:1.1rem}
-.mom-dots{position:static; margin-right:auto; color:var(--ink)}
+.mom-quote{position:relative; display:grid; justify-items:end}
+/* Denvil, 2 Sep: Moments still has weird spacing at the top. This was it. The
+   dot field had been put back into the flow, so it sat under the blue note as
+   a real row, added its own height plus the grid gap, and stretched the hero
+   to 312px for content that fills 180. Decoration does not take up space:
+   back to absolute, tucked under the note. */
+.mom-dots{position:absolute; left:-.4rem; bottom:-2.2rem; color:var(--ink)}
 
 /* The comp sets a handwritten pull quote beside the Featured Recommendation,
    with a drawn asterisk at its shoulder and a coloured rule under the last
@@ -1970,6 +1975,16 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .lb-k{font-family:var(--sans); font-size:.75rem; font-weight:800;
   letter-spacing:.15em; text-transform:uppercase; color:var(--sage-ink);
   margin:0 0 .55rem}
+/* In the two-feature band these are not captions, they are the promo. Bigger,
+   heavier, and on their own line above everything. */
+.twofeat .lb-k{
+  font-size:clamp(.95rem,1.5vw,1.15rem); letter-spacing:.12em;
+  margin:0 0 .9rem; display:inline-block;
+}
+.twofeat .lb-k::after{
+  content:''; display:block; height:.3rem; margin-top:.35rem;
+  border-radius:.3rem; background:currentColor; opacity:.28;
+}
 .lb-h{font-size:clamp(1.7rem,3.6vw,2.6rem); font-weight:900; line-height:1.06;
   letter-spacing:-.025em; margin:0 0 .7rem}
 .lb-h a:hover{color:var(--blue-ink)}
@@ -2282,18 +2297,43 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
 /* ── the two features ────────────────────────────────────────────────────
    Newest essay, newest moment, one band. Not a 50/50 split: the essay is the
    larger piece and takes the wider column. */
-.twofeat{display:grid; grid-template-columns:minmax(0,1.32fr) minmax(0,1fr);
+.twofeat{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   gap:clamp(1.6rem,4vw,3.4rem);
   /* Top aligned so the two eyebrows sit on one line. Centred, the shorter
      column floated and the labels landed at different heights, which read as
      a mistake rather than as two things side by side. */
   align-items:start}
 @media (max-width:900px){ .twofeat{grid-template-columns:1fr; gap:clamp(2rem,6vw,3rem)} }
-.tf-essay{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);
-  gap:clamp(1.2rem,3vw,2.2rem); align-items:center}
-@media (max-width:1100px){ .tf-essay{grid-template-columns:1fr} }
+/* Both cards print whole at the same ratio and the same corner. */
+.tf-essay .lb-art .imask, .tf-moment-art{width:100%}
+/* Denvil, 2 Sep: the two pictures were lopsided and should look like each
+   other. Side by side inside its own column, the essay's art was 270px while
+   the moment's card was 400, so two pieces of 3:2 artwork in one band sat at
+   two sizes. There is no ratio that fits a matching picture AND a readable
+   column of text in half a band, so the essay stops splitting: art on top,
+   words underneath, exactly the shape of the moment beside it. Two columns,
+   two cards, same width. */
+.tf-essay{display:grid; gap:clamp(.9rem,2vw,1.3rem); align-content:start}
 .tf-essay .lb-art{max-width:none}
-.tf-moment{display:grid; gap:.8rem; justify-items:start; max-width:25rem}
+/* Denvil, 2 Sep: the two pictures were lopsided. They were: the essay's title
+   card printed at its own ratio while the moment's card was a different width
+   again, so two pieces of artwork in the same band sat at two sizes and two
+   shapes. Both are 3:2 designed cards, so both now print at 3:2 with the same
+   corner, and neither is cropped -- cropping a title card cuts off the only
+   thing on it. */
+.tf-essay .lb-art .imask,
+.tf-moment-art{border-radius:var(--r); overflow:hidden}
+.tf-essay .lb-art img{display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:contain;
+  background:var(--paper)}
+.tf-moment-art img{aspect-ratio:3/2; object-fit:contain; background:var(--paper)}
+.tf-moment{position:relative; display:grid; gap:clamp(.9rem,2vw,1.3rem);
+  justify-items:start; align-content:start}
+/* The drawn divider he asked for. A hand-ruled line, not a border: the band
+   is the one place on the page where two different kinds of thing sit side by
+   side, and a hairline would read as a table. */
+.tf-rule{position:absolute; left:calc(-1 * clamp(.8rem,2.1vw,1.7rem)); top:0; bottom:0;
+  width:2.4rem; height:auto; color:var(--rule-strong); opacity:.85}
+@media (max-width:900px){ .tf-rule{display:none} }
 .tf-moment-h{font-size:var(--step-1); margin:0}
 .tf-moment-art{display:block; width:100%; border-radius:var(--r); overflow:hidden;
   background:var(--paper);
@@ -2309,3 +2349,7 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
 .cband-note-k{font-family:var(--sans); font-size:.75rem; font-weight:800;
   letter-spacing:.15em; text-transform:uppercase; color:var(--gold);
   margin:0 0 .5rem}
+
+/* The tab row is a section header now, not a strip above the fold. */
+.wtabs-row{display:grid; gap:.9rem; justify-items:start}
+.wtabs-h{margin:0}

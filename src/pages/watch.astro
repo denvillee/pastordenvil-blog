@@ -179,24 +179,11 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
 
     
 
-    {/* The comp's tab row, with "Browse all videos" pushed to the right on the
-        same baseline. */}
-    <section class="shell wtabs-row">
-      <div class="wtabs" role="group" aria-label="Filter by kind">
-        <button type="button" class="wtab on" data-cat="all" aria-pressed="true">All videos</button>
-        {cats.map((c) => (
-          <button type="button" class="wtab" data-cat={c} aria-pressed="false">{CAT_LABEL[c]}</button>
-        ))}
-      </div>
-      <a class="go" href="#watch-all">Browse all videos <span class="arw" aria-hidden="true">&rarr;</span></a>
-    </section>
-
     <section class="shell wrecent">
       <Mark kind="scribble" color="blue"  class="wrecent-zig-l" />
       <Mark kind="scribble" color="green" class="wrecent-zig-r" />
       <div class="sec-head">
         <h2 class="sec-h"><span class="u">Latest talks<Mark kind="underline" color="yellow" draw={true} /></span></h2>
-        <a class="go" href="#watch-all">Browse the library <span class="arw" aria-hidden="true">&rarr;</span></a>
       </div>
       <div class="vcards vcards-lat">
         {latest.map((t: any) => (
@@ -208,6 +195,27 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
       </div>
     </section>
 
+
+    {/* ── all videos ──────────────────────────────────────────────────────
+        Denvil, 2 Sep: all videos goes under the latest talks. It sat above
+        them, so the page opened by asking a visitor to filter a library they
+        had not seen yet. Now it reads the way the page is used: here is the
+        newest, and here is everything.
+
+        The "Browse all videos" link that used to sit on this row is gone with
+        the move. It pointed at the grid immediately below it. */}
+    <section class="shell wtabs-row">
+      <h2 class="sec-h wtabs-h"><span class="u">All videos<Mark kind="underline" color="blue" draw={true} /></span></h2>
+      <div class="wtabs" role="group" aria-label="Filter by kind">
+        {/* "All" rather than "All videos": the heading directly above it
+            already says All videos, and the same two words twice in three
+            inches reads as a mistake. */}
+        <button type="button" class="wtab on" data-cat="all" aria-pressed="true">All</button>
+        {cats.map((c) => (
+          <button type="button" class="wtab" data-cat={c} aria-pressed="false">{CAT_LABEL[c]}</button>
+        ))}
+      </div>
+    </section>
 
     {/* The full library, with its own controls. The comp does not put a search
         box between the hero and the tab row, so it lives here with the thing it

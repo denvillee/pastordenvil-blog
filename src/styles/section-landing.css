@@ -136,15 +136,31 @@
    half sat empty on every section page. The pack draws a rail there and the
    pages already pass one; it was being suppressed whenever the story folded.
    Rail width is the pack's 12 to 18rem. */
+/* Denvil, 2 Sep: the story fills two thirds of the band and the rest is empty
+   colour, and it should wrap more of the band and shrink with the page.
+
+   Measured: band 1200, copy capped at 62ch (613), rail 15rem (240), gap 48.
+   That is 901 of 1200 used, and the 300 left over sat between the text and
+   the rail because the cap was inside the column rather than on it.
+
+   So the cap comes off the copy and goes on the grid. The text column is a
+   fraction of the band now, not a fixed measure, and the rail is a fraction
+   too. Both shrink together as the window narrows, and at 62ch the text still
+   never runs past a comfortable line: the fraction is chosen so the widest
+   case lands near it rather than beyond it. */
 .arch > .door{
-  display:grid; grid-template-columns:minmax(0,1fr) minmax(11rem,15rem);
-  gap:clamp(1.6rem,3.4vw,3rem); align-items:center;
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,17rem);
+  gap:clamp(1.4rem,2.8vw,2.6rem); align-items:center;
 }
+.arch > .door .door-in{max-width:none}
+.arch > .door .door-body{max-width:72ch}
+/* The rail column was 425px wide with a 92px mark floating in it. Whatever a
+   page puts in the rail fills the column it was given, so the band reads as
+   text on the left and art on the right rather than text and a gap. */
+.arch > .door .door-rail > *:not(.tape):not(.dotgrid){width:100%; max-width:none}
+.arch > .door .door-rail .artp{max-width:none}
 .arch > .door:not(:has(.door-rail)){ grid-template-columns:minmax(0,1fr) }
-/* A doorway with no rail keeps its measure rather than stretching the band's
-   ground behind 550px of nothing. */
-.arch > .door:not(:has(.door-rail)) .door-in{max-width:64ch}
-.arch > .door .door-rail{position:relative; margin:0; min-height:0}
+.arch > .door .door-rail{position:relative; margin:0; min-height:0; width:100%; justify-self:stretch}
 @media (max-width:820px){
   .arch > .door{grid-template-columns:1fr}
   .arch > .door .door-rail{display:none}

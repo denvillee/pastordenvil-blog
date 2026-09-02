@@ -147,6 +147,10 @@ const shortcuts = [
 
         {featEssay && (
           <article class="tf-essay">
+            {/* The label leads, the way it does on the moment beside it. With
+                the art stacked on top it was landing underneath the picture
+                on one side and above it on the other. */}
+            <p class="lb-k">Latest essay</p>
             <a class="lb-art" href={`/essays/${featEssay.id}/`} tabindex="-1" aria-hidden="true">
               <Tape color="green" class="lb-tape" />
               <ImageMask shape="soft">
@@ -156,7 +160,6 @@ const shortcuts = [
               </ImageMask>
             </a>
             <div class="lb-body">
-              <p class="lb-k">Latest essay</p>
               <h2 class="lb-h"><a href={`/essays/${featEssay.id}/`}>{featEssay.data.title}</a></h2>
               <p class="lb-d">{featEssay.data.teaser || featEssay.data.dek || openingParagraph(featEssay.body, 165)}</p>
               <p class="lb-meta">
@@ -195,6 +198,11 @@ const shortcuts = [
 
         {featMoment && (
           <article class="tf-moment">
+            {/* The drawn line between the two, per Denvil 2 Sep. */}
+            <svg class="tf-rule" viewBox="0 0 24 400" fill="none" aria-hidden="true" preserveAspectRatio="none">
+              <path d="M12 4c-4 46 5 92 1 138-4 44 4 88 0 132-3 42 4 84 1 122"
+                    stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
+            </svg>
             <p class="lb-k lb-k-coral">Latest moment</p>
             {/* The card carries the sentence, so the heading is here for
                 screen readers, search and the outline and out of the layout,
