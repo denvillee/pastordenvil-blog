@@ -248,7 +248,39 @@
   padding:.06em .1em 0 0; color:var(--ink);
 }
 .prose > * + *{margin-top:1.15em}
-.prose h2{font-size:var(--step-2); font-weight:800; margin-top:2.2em; line-height:1.15}
+/* A section heading has to be unmistakably structural. Denvil, 2 Sep: "the
+   section headers should be identifiably different from phrases that stand
+   out." Measured before the change: the heading was 28.8px/800 while the core
+   idea and the turn were 21.6px/700 and a big idea 41.3px/900 -- all the same
+   family, so a heading sat BETWEEN two kinds of emphasis and read as just
+   another loud line.
+
+   The fix is structure rather than size: a rule across the measure, and the
+   section's number in the margin. Emphasis never carries either, so the two
+   can no longer be confused. The counter means the numbering is automatic and
+   correct in every essay, and the sections of an argument genuinely are a
+   sequence, which is the only thing that earns a number. */
+.prose{counter-reset:sec}
+.prose h2{
+  counter-increment:sec;
+  font-size:var(--step-2); font-weight:800; line-height:1.15;
+  margin-top:2.6em; padding-top:1.15em; border-top:2px solid var(--ink);
+  position:relative;
+}
+.prose h2::before{
+  content:counter(sec, decimal-leading-zero);
+  position:absolute; top:.6em; left:0;
+  font-size:.7rem; font-weight:800; letter-spacing:.14em;
+  font-variant-numeric:tabular-nums; color:var(--coral-ink);
+}
+/* The number sits above the heading, so the heading needs room for it. */
+.prose h2{padding-top:2.4em}
+@media (pointer: coarse){ .prose h2::before{font-size:.74rem} }
+/* The notes are apparatus, not a section of the argument: no rule, no number. */
+.prose .footnotes h2{counter-increment:none; border-top:0; padding-top:0;
+  font-size:var(--step-0); text-transform:uppercase; letter-spacing:.1em;
+  color:var(--muted)}
+.prose .footnotes h2::before{content:none}
 .prose h3{font-size:var(--step-1); font-weight:800; margin-top:1.8em}
 .prose a{color:var(--blue-ink); text-decoration:underline; text-underline-offset:.16em}
 .prose strong{font-weight:800}

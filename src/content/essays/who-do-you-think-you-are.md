@@ -128,7 +128,7 @@ But David has been living inside a different story....
 > [!QUOTE]
 > The story we live in is the story we live out.
 >
-> ~ Adapted from Pete Hughes[^4]
+> ~ Pete Hughes, *All Things New*, 2020[^4]
 
 One chapter earlier, Samuel had poured oil over his head and identified him as God’s choice, and “from that day on the Spirit of the LORD came powerfully upon David” (1 Samuel 16:13).
 
