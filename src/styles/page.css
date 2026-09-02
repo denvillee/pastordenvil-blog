@@ -1752,3 +1752,11 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .mom-close-art img{width:100%; height:auto; aspect-ratio:16/10; object-fit:cover;
   border-radius:var(--r); display:block}
 .abt-pola picture{display:block; width:100%}
+
+/* A room with one or two posts in it should not lay them out on a four-column
+   grid and leave the rest of the row empty. Fit the track count to what is
+   actually there; the room fills up and this rule stops applying by itself. */
+.ecards-few{grid-template-columns:repeat(auto-fit, minmax(16rem, 22rem))}
+.ecard-plate{display:block; background:var(--card); border-radius:var(--r);
+  padding:.6rem; aspect-ratio:3 / 2; display:grid; place-items:center}
+.ecard-plate .artp{max-width:14rem}

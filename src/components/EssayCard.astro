@@ -1,12 +1,13 @@
 ---
 import ImageMask from './ImageMask.astro';
 import Placeholder from './Placeholder.astro';
+import ArtPlate from './ArtPlate.astro';
 import { readMinutes, displayDate, isoDate } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import SeriesTag from './SeriesTag.astro';
 
-interface Props { href: string; entry: any; room: string; tone?: string }
-const { href, entry, room, tone = 'yellow' } = Astro.props;
+interface Props { href: string; entry: any; room: string; tone?: string ; plate?: string }
+const { href, entry, room, tone = 'yellow' , plate } = Astro.props;
 const d = entry.data;
 const words = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
 const mins = words >= 150 ? readMinutes(entry.body) : undefined;
@@ -16,7 +17,9 @@ const mins = words >= 150 ? readMinutes(entry.body) : undefined;
     <ImageMask shape="soft">
       {d.image && !isStandin(d.image)
         ? <img src={d.image} alt="" width="720" height="480" loading="lazy" decoding="async" />
-        : <Placeholder label={`Image for ${d.title}`} ratio="3 / 2" />}
+        : plate
+          ? <span class="ecard-plate"><ArtPlate kind={plate as any} /></span>
+          : <Placeholder label={`Image for ${d.title}`} ratio="3 / 2" />}
     </ImageMask>
   </a>
   <h3 class="ecard-h"><a href={href}>{d.title}</a></h3>

@@ -30,6 +30,12 @@ const roomSchema = z.object({
   scripture: z.string().optional(),
   tags: z.array(z.string()).default([]),
   ogImage: z.string().optional(),
+  /* Names a drawn ArtPlate to carry a piece that has no photograph. Denvil,
+     30 Aug: "All pages don't need photos of me. we'll design photos / stock for
+     what we need." Leaving this unset keeps the loud Placeholder, which is
+     deliberate: a slot genuinely waiting on a picture should look like it is. */
+  plate: z.enum(['stack','passage','shelf','letter','timeline','lost','notice',
+                 'morning','shelter']).optional(),
   /* The section page's own introduction, as a real post rather than a panel:
      linkable, shareable, and editable in the same place as everything else.
      It pins to the top of its section's list and is excluded from the Latest

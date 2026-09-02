@@ -87,18 +87,19 @@ const [featured, ...rest] = entries;
         {/* No empty state: the doorway carries the page until there is a piece. */}
         {featured && (
           <FeaturedEssay href={`/leaders/${featured.id}/`} entry={featured}
-                         label="Featured essay" room={labels.leadersHeading} tone="blue" />
+                         label="Featured essay" room={labels.leadersHeading} tone="blue"
+                         plate={featured.data.plate} />
         )}
 
         {rest.length > 0 && (
           <>
             <div class="sec-head arch-sub">
               <h2 class="sec-h">Short reflections for real leadership</h2>
-              <span class="count">{entries.length}</span>
             </div>
-            <div class="ecards">
+            <div class:list={["ecards", rest.length < 3 && "ecards-few"]}>
               {rest.map((e: any) => (
-                <EssayCard href={`/leaders/${e.id}/`} entry={e} room={labels.leadersHeading} tone="blue" />
+                <EssayCard href={`/leaders/${e.id}/`} entry={e} room={labels.leadersHeading} tone="blue"
+                           plate={e.data.plate} />
               ))}
             </div>
           </>
