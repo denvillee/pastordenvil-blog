@@ -103,10 +103,15 @@ export const isoDate = (d: Date) => d.toISOString();
    `label` comes from the CMS so renaming a room renames it everywhere at once;
    `path` is the URL and `cls` is the colour, and both stay in code on purpose —
    changing a path after launch breaks every link anyone has ever shared. */
+/* `piece` is what ONE item in this room is called, in running text. Without it
+   the shared article furniture called everything an essay, so a Moment offered
+   "Read essay", "Listen to this essay" and "See the books behind this essay".
+   `sources` says whether a piece in this room is the kind of thing that has
+   books behind it; a Moment is not. */
 export const ROOMS = {
-  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '',          plural: labels.navEssays },
-  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders', plural: labels.navLeaders },
-  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments', plural: labels.navMoments },
+  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '',          plural: labels.navEssays,  piece: 'essay',  sources: true },
+  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders', plural: labels.navLeaders, piece: 'essay',  sources: true },
+  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments', plural: labels.navMoments, piece: 'moment', sources: false },
 } as const;
 export type RoomKey = keyof typeof ROOMS;
 

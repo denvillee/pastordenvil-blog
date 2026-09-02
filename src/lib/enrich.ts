@@ -162,6 +162,20 @@ function bigIdea(inner: string) {
     `<span class="bigidea-u">${mark('underline-double', 'yellow')}</span></aside>`;
 }
 
+/* A labelled statement. Denvil sets one of these off in the manuscript with a
+   run-in label -- THE CORE IDEA -- above the claim, which is a different move
+   from a big idea: a big idea is the sentence the paragraph was building to,
+   while this one names what the passage is about before saying it. So it gets
+   its own treatment rather than being flattened into a bigidea: a rule down
+   the side, the label in the site's small-caps voice, the claim beneath it.
+   First paragraph is the label, the rest is the claim. */
+function coreIdea(paras: string[]) {
+  const [label, ...rest] = paras;
+  const body = (rest.length ? rest : [label]).join('</p><p class="core-t">');
+  const eyebrow = rest.length ? `<p class="core-k">${label}</p>` : '';
+  return `<aside class="core">${eyebrow}<p class="core-t">${body}</p></aside>`;
+}
+
 function circled(inner: string) {
   return `<aside class="bigidea bigidea-c"><p class="bigidea-t"><span class="c">${inner}${mark('circle-loose', 'coral')}</span></p></aside>`;
 }
@@ -200,13 +214,14 @@ export async function enrich(html: string): Promise<string> {
     const paras = [...job.inner.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((p) => p[1].trim());
     if (!paras.length) continue;
 
-    const flag = paras[0].match(/^\[!(BIG|CIRCLE|QUOTE)\]\s*/i);
+    const flag = paras[0].match(/^\[!(BIG|CIRCLE|QUOTE|CORE)\]\s*/i);
     if (flag) {
       const kind = flag[1].toUpperCase();
       const cleaned = [paras[0].slice(flag[0].length).trim(), ...paras.slice(1)].filter(Boolean);
       if (!cleaned.length) continue;
       if (kind === 'BIG') replacements.push([job.whole, bigIdea(cleaned.join('</p><p class="bigidea-t">'))]);
       else if (kind === 'CIRCLE') replacements.push([job.whole, circled(cleaned[0])]);
+      else if (kind === 'CORE') replacements.push([job.whole, coreIdea(cleaned)]);
       else replacements.push([job.whole, taped(cleaned)]);
       continue;
     }

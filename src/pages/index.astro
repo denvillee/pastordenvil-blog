@@ -8,7 +8,6 @@ import CategoryIcon from '../components/CategoryIcon.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Placeholder from '../components/Placeholder.astro';
 import Photo from '../components/Photo.astro';
-import SeriesTag from '../components/SeriesTag.astro';
 import { latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
@@ -115,7 +114,6 @@ const shortcuts = [
           </a>
           <div class="feat-body">
             <h3 class="feat-h"><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h3>
-            <SeriesTag room={feature.room} data={feature.data} />
             {/* The teaser when the piece has one: this card is the first thing a
                 stranger meets, and the deck was written for somebody already
                 on the page. */}

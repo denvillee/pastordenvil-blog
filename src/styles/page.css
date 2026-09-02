@@ -90,6 +90,7 @@
   position:relative; display:block; padding:.2rem 0 2.1rem;
   background:none; border-radius:0;
 }
+.short p{max-width:34ch}
 .short:hover h3{text-decoration:underline; text-underline-offset:3px}
 .short h3{font-size:var(--step-1); font-weight:800; margin:.9rem 0 .35rem}
 .short p{font-size:.88rem; color:var(--muted); margin:0}
@@ -148,6 +149,12 @@
 @media (max-width:640px){ .fcard{grid-template-columns:1fr} }
 .fcard-art{position:relative; display:block}
 .fcard-art img,.fcard-art .ph{width:100%; height:100%; object-fit:cover}
+/* A title card is a designed image with words set on it, so cropping it to the
+   slot's ratio cuts the title in half. Denvil, 2 Sep: "the image for the first
+   essay isn't right." Contain it and let the card's own ground show, which is
+   the same cream the artwork is drawn on, so nothing reads as letterboxed. */
+.fcard-art{background:var(--paper)}
+.fcard-art img{object-fit:contain}
 .fcard-chip{position:absolute; left:.85rem; top:.85rem; z-index:2}
 .fcard-body{padding:clamp(1.2rem,3vw,2rem)}
 .fcard-h{font-size:var(--step-2); font-weight:800}
@@ -521,8 +528,12 @@
 .abt-hero{display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(1.6rem,4vw,3.4rem);
   align-items:center; margin-bottom:clamp(2rem,4vw,3.4rem)}
 @media (max-width:900px){ .abt-hero{grid-template-columns:1fr} }
+/* .page-h is inline-block, so an inline-block greeting after it sat on the
+   same line as "About." Denvil, 2 Sep: it belongs underneath, on its own line.
+   The drawn underline still hugs the words because the mark lives on the inner
+   .u span, not on this paragraph. */
 .abt-hi{font-family:var(--hand); font-weight:600; font-size:clamp(1.6rem,3.4vw,2.4rem);
-  margin:1.2rem 0 1rem; display:inline-block}
+  margin:1.2rem 0 1rem; display:block}
 .abt-art{position:relative}
 .abt-disc{right:-1.2rem; bottom:-1.2rem}
 .abt-why{display:grid; grid-template-columns:1.05fr .95fr; gap:clamp(1.4rem,4vw,3rem);
@@ -1594,9 +1605,19 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .wtab.on{background:var(--ink); color:var(--cream)}
 .wtab:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
 
-/* Four across on the deck, three on the recent row. */
+/* Four across on the deck, three on the recent row, three in the library.
+
+   The .vcards-3 rule that used to sit here at 19rem was dead: the same
+   selector is declared again further down at 22rem and won on order. Same
+   class of bug as the four cascade defects already fixed on this project, so
+   it is removed rather than left to mislead the next reader.
+
+   The library had been sharing .vcards-4, which put five tracks across at
+   1440 and squeezed each card to 252px against the 347px it had before the
+   rebuild. The deck above it is four across because Denvil asked for four
+   there; the library is where someone actually reads titles. */
 .vcards-4{grid-template-columns:repeat(auto-fill,minmax(15rem,1fr))}
-.vcards-3{grid-template-columns:repeat(auto-fill,minmax(19rem,1fr))}
+.vcards-lib{grid-template-columns:repeat(auto-fill,minmax(20rem,1fr))}
 
 /* "Most recent talks" carries a zigzag at each outer margin in the comp, blue
    on the left and green on the right. */
@@ -1718,10 +1739,12 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .abt-q-c{right:0; bottom:-1.1rem}
 
 /* "What we explore here" runs beside the blue panel in the comp. */
-.abt-explore{display:grid; grid-template-columns:1.35fr 1fr;
+.abt-explore{display:grid; grid-template-columns:1.9fr 1fr;
   gap:clamp(1.4rem,3.4vw,2.6rem); align-items:start}
-@media (max-width:900px){ .abt-explore{grid-template-columns:1fr} }
-.abt-explore .abt-areas{grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr))}
+@media (max-width:1080px){ .abt-explore{grid-template-columns:1fr} }
+/* 9.5rem let three tracks fit at 186px each, which wrapped every room blurb to
+   four lines. 12.5rem holds two roomy columns until there is width for three. */
+.abt-explore .abt-areas{grid-template-columns:repeat(auto-fit,minmax(12.5rem,1fr))}
 .abt-panel{position:relative; background:var(--tint-navy); border-radius:var(--r-lg);
   padding:clamp(1.3rem,3vw,1.9rem); overflow:clip}
 .abt-panel-h{font-size:var(--step-1); font-weight:800; line-height:1.2; margin:0 0 .5rem}
@@ -1736,7 +1759,7 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .abt-panel-zig{position:absolute; right:-.8rem; bottom:.8rem; width:3rem}
 @media (max-width:900px){ .abt-panel-zig{display:none} }
 .abt-panel .abt-name{position:relative; display:inline-block; margin:.9rem 0 0;
-  font-family:var(--hand); font-size:1.15rem; color:var(--ink)}
+  font-family:var(--hand); font-size:1.5rem; color:var(--ink)}
 
 /* A drawn plate standing in for a photograph inside a featured card: it fills
    the art slot at the card's own ratio and sits on the page ground rather than
@@ -1760,3 +1783,18 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .ecard-plate{display:block; background:var(--card); border-radius:var(--r);
   padding:.6rem; aspect-ratio:3 / 2; display:grid; place-items:center}
 .ecard-plate .artp{max-width:14rem}
+
+/* ── the core idea panel ─────────────────────────────────────────────────
+   A labelled statement inside an essay: the label names what the passage is
+   about, the claim follows. Distinct from .bigidea, which is a sentence the
+   paragraph was building to and carries the drawn underline; this one is a
+   held aside, so it takes a rule rather than a mark. */
+.core{position:relative; margin:clamp(1.6rem,3.4vw,2.4rem) 0;
+  padding:clamp(.9rem,2vw,1.2rem) 0 clamp(.9rem,2vw,1.2rem) clamp(1.1rem,2.4vw,1.6rem);
+  border-left:3px solid var(--navy)}
+.core-k{margin:0 0 .5rem; font-family:var(--sans); font-size:.74rem; font-weight:800;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--blue-ink)}
+.core-t{margin:0; font-size:var(--step-1); font-weight:700; line-height:1.35;
+  max-width:34ch; color:var(--ink)}
+.core-t + .core-t{margin-top:.6rem}
+@media (pointer: coarse){ .core-k{font-size:.72rem} }

@@ -1,4 +1,6 @@
 ---
+interface Props { piece?: string }
+const { piece = 'piece' } = Astro.props;
 /*
   READ ALOUD. The essay, spoken by the reader's own device.
 
@@ -40,7 +42,7 @@
         <g class="ra-pause" hidden><rect x="8" y="5.5" width="3.4" height="13" rx="1" fill="currentColor" /><rect x="13.6" y="5.5" width="3.4" height="13" rx="1" fill="currentColor" /></g>
       </svg>
     </span>
-    <span class="ra-label" data-ra-label>Listen to this essay</span>
+    <span class="ra-label" data-ra-label>Listen to this {piece}</span>
   </button>
   <button type="button" class="ra-stop" data-ra-stop hidden>Stop</button>
   <p class="ra-note">Read aloud by your device, not by Denvil.</p>

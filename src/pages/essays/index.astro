@@ -9,6 +9,7 @@
   that does nothing is worse than no control.
 */
 import { render } from 'astro:content';
+import CloseBand from '../../components/CloseBand.astro';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
@@ -141,15 +142,17 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
       </aside>
     </div>
 
-    <section class="shell">
-      <div class="panel panel-dark panel-wide">
-        <Mark kind="zigzag" color="blue" class="panel-zig" />
-        <h2 class="panel-h"><span class="u">Grab your Bibles.<Mark kind="underline" color="blue" /></span></h2>
-        <p class="panel-dek">Quietly at Work. Seven sessions in the book of Ruth, one screen at a time.</p>
-        <a class="btn btn-light" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">
-          Start the study <span class="arw" aria-hidden="true">&rarr;</span>
-        </a>
-      </div>
-    </section>
+    {/* This was a bespoke full-width panel with a single zigzag, and everything
+        in it sat in the left third against two thirds of empty navy. Denvil,
+        2 Sep: "look at the grab your bibles bar, it looks boring." It is the
+        same job as the closing band he liked on Bookshelf and For Leaders, so
+        it uses that component: two columns, a zigzag at the outer corner and
+        speckles opposite. */}
+    <CloseBand tone="dark"
+               heading="Grab your Bibles."
+               mark="Bibles"
+               dek="Quietly at Work. Seven sessions in the book of Ruth, one screen at a time."
+               href="https://grabyourbibles.com/quietly-at-work/"
+               cta="Start the study" external={true} />
   </div>
 </Shell>

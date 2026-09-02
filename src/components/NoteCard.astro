@@ -35,10 +35,16 @@ const {
 
 /* Split the line around the emphasised phrase so the mark can wrap only that
    phrase. Case-insensitive, first occurrence only, and a miss is silent. */
-const i = emphasis ? text.toLowerCase().indexOf(emphasis.toLowerCase()) : -1;
+let phrase = emphasis;
+if (emphasis) {
+  const at = text.toLowerCase().indexOf(emphasis.toLowerCase());
+  const next = at >= 0 ? text.charAt(at + emphasis.length) : '';
+  if (next === '.' || next === ',' || next === '?' || next === '!') phrase = emphasis + next;
+}
+const i = phrase ? text.toLowerCase().indexOf(phrase.toLowerCase()) : -1;
 const before = i >= 0 ? text.slice(0, i) : text;
-const hit = i >= 0 ? text.slice(i, i + (emphasis as string).length) : '';
-const after = i >= 0 ? text.slice(i + (emphasis as string).length) : '';
+const hit = i >= 0 ? text.slice(i, i + (phrase as string).length) : '';
+const after = i >= 0 ? text.slice(i + (phrase as string).length) : '';
 
 const Tag = href ? 'a' : 'div';
 ---
@@ -56,7 +62,9 @@ const Tag = href ? 'a' : 'div';
     {hit && (
       emphasisMark === 'highlight'
         ? <mark class:list={['ncard-hl', `hl-${tone}`]}>{hit}</mark>
-        : <span class="u">{hit}<Mark kind={emphasisMark === 'circle' ? 'circle-loose' : 'underline'} color={tone} /></span>
+        : emphasisMark === 'circle'
+          ? <span class="c">{hit}<Mark kind="circle-loose" color={tone} /></span>
+          : <span class="u">{hit}<Mark kind="underline" color={tone} /></span>
     )}
     {after}
   </p>

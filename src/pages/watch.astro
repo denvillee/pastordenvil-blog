@@ -25,6 +25,7 @@ import { getCollection } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
 import Mark from '../components/marks/Mark.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
+import { toSeconds } from '../lib/publish';
 import DotGrid from '../components/marks/DotGrid.astro';
 import Tape from '../components/marks/Tape.astro';
 import VideoCard from '../components/VideoCard.astro';
@@ -153,7 +154,19 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
               {feat.data.context && <span class="vfeat-d">{feat.data.context}</span>}
               <span class="vfeat-m">
                 <span class="vfeat-go">Watch now <span class="arw" aria-hidden="true">&rarr;</span></span>
-                {feat.data.durationSeconds && <span class="vfeat-dur">{mmss(feat.data.durationSeconds)}</span>}
+                {/* The whole-service recordings run past an hour and a half, but
+                    the message inside them starts well in: Let's Stay Together is
+                    a 1:39:51 file whose teaching begins at 34:41. VideoCard already
+                    subtracts startsAt; this featured block was printing the raw
+                    file length, so it advertised the service, not the sermon.
+                    Denvil, 2 Sep: "lets stay together should be a bit shorter". */}
+                {feat.data.durationSeconds && (
+                  <span class="vfeat-dur">
+                    {mmss(Math.max(0,
+                      (toSeconds(feat.data.endsAt) ?? feat.data.durationSeconds)
+                      - (toSeconds(feat.data.startsAt) ?? 0)))}
+                  </span>
+                )}
               </span>
             </span>
           </a>
@@ -231,7 +244,7 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
     )}
     {restTalks.length > 0 && (
       <section class="shell watch-all" id="watch-all">
-        <div class="vcards vcards-4">
+        <div class="vcards vcards-lib">
           {restTalks.map((t: any) => (
             <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
                  data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''} data-hay={hay(t)}>
