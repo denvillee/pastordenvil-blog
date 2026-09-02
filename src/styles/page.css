@@ -2251,3 +2251,17 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
 }
 
 .arch-list{margin-top:clamp(2rem,4vw,3rem)}
+
+/* ── the two subscribe steps ─────────────────────────────────────────────
+   Submitted, and confirmed. Both are landing pages Kit sends people to, so
+   they are centred and short: somebody is here for four seconds. */
+.sub-step{position:relative; text-align:center; max-width:44rem;
+  margin-inline:auto; padding-block:clamp(3rem,8vw,6rem)}
+.sub-step-k{font-family:var(--sans); font-size:.75rem; font-weight:800;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin:0 0 .9rem}
+.sub-step-h{font-size:clamp(2.2rem,7vw,4rem); font-weight:900; line-height:1.03;
+  letter-spacing:-.035em; margin:0 0 1.1rem}
+.sub-step-d{font-size:var(--step-1); line-height:1.5; margin:0 auto 1rem; max-width:34ch}
+.sub-step-n{font-size:.95rem; color:var(--muted); margin:0 auto 1.8rem; max-width:44ch}
+.sub-step-go{display:flex; gap:.7rem; justify-content:center; flex-wrap:wrap}
+.sub-step-dots{left:50%; translate:-50% 0; top:1rem; opacity:.5}

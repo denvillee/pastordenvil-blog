@@ -1,16 +1,36 @@
 ---
+/*
+  Where Kit sends a reader the moment they submit the form.
+
+  Set on the Kit form, 2 Sep: "Redirect to an external page" pointing here.
+  Before that, Kit showed its own bare success message on app.kit.com, so
+  somebody who signed up on denvillee.com was handed off to a page with none
+  of his site on it.
+
+  The heading used to read "You are in", which was not true yet: the list is
+  double opt-in, so nobody is in until they click the link in the email. This
+  page's whole job is to make that second step obvious enough that people
+  actually take it, because an unconfirmed subscriber is the same as no
+  subscriber.
+*/
 import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
 import site from '../../data/site.json';
 ---
-<Shell title={`You are in · ${site.name}`} description="Confirm your email." noindex={true}>
-  <section class="band shell err">
-    <div>
-      <h1 style="font-size:clamp(2rem,7vw,4rem)">You are in</h1>
-      <p class="art-dek" style="margin-inline:auto">
-        Check your inbox and confirm your email. If it is not there in a few minutes, look in
-        promotions.
-      </p>
-      <p><a class="btn btn-primary" href="/">Back home</a></p>
-    </div>
+<Shell title={`One more step · ${site.name}`} description="Confirm your email." noindex={true}>
+  <section class="band shell sub-step">
+    <p class="sub-step-k">Almost there</p>
+    <h1 class="sub-step-h is-display">
+      Check your inbox to <span class="u">confirm<Mark kind="underline" color="blue" draw={true} /></span><span class="dot">.</span>
+    </h1>
+    <p class="sub-step-d">
+      There is an email on its way from Denvil Lee. Open it and click the
+      confirm link, and you are on the list.
+    </p>
+    <p class="sub-step-n">
+      If it is not there in a few minutes, look in promotions or spam. Marking
+      it as not spam helps the next one land where you can see it.
+    </p>
+    <p><a class="btn btn-primary" href="/">Back home</a></p>
   </section>
 </Shell>

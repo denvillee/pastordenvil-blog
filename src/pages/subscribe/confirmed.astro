@@ -1,0 +1,34 @@
+---
+/*
+  Where Kit sends a reader after they click the confirm link in the email.
+
+  Kit's default was app.kit.com/confirm-subscription: a bare page on somebody
+  else's domain, at the exact moment a new subscriber has just said yes. This
+  is the same moment on his own site.
+
+  Point Kit at this page in Form Settings > Confirmation email > "After
+  confirming redirect to", once this page is live in production.
+*/
+import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import DotGrid from '../../components/marks/DotGrid.astro';
+import site from '../../data/site.json';
+---
+<Shell title={`You are in · ${site.name}`} description="Your email is confirmed." noindex={true}>
+  <section class="band shell sub-step">
+    <DotGrid cols={7} rows={4} class="sub-step-dots" />
+    <p class="sub-step-k">Confirmed</p>
+    <h1 class="sub-step-h is-display">
+      You are <span class="u">in<Mark kind="underline" color="yellow" draw={true} /></span><span class="dot">.</span>
+    </h1>
+    <p class="sub-step-d">
+      Thanks for reading. When there is something worth sharing, it will come
+      to you.
+    </p>
+    <p class="sub-step-n">Nothing to do now. Have a look around while you are here.</p>
+    <div class="sub-step-go">
+      <a class="btn btn-primary" href="/essays/">Read an essay</a>
+      <a class="btn btn-light" href="/moments/">See the moments</a>
+    </div>
+  </section>
+</Shell>
