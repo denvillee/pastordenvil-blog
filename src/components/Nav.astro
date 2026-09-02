@@ -17,15 +17,17 @@ import labels from '../data/labels.json';
 interface Props { current?: string }
 const { current } = Astro.props;
 
-/* One content order, used here and on the home page: Essays, Moments,
-   Bookshelf, Studies, For Leaders, then About and Watch. Speaking and
-   Subscribe stay secondary actions in the panel and the footer. */
+/* One content order, used here and on the home page, and it is the order
+   Denvil's layout map sets: Essays, For Leaders, Moments, Studies, Bookshelf,
+   then About and Watch. The masthead and the six pathway cards now read the
+   same way round, which is the point. Speaking and Subscribe stay secondary
+   actions in the panel and the footer. */
 const links = [
   { key: 'essays',   href: '/essays/',    label: labels.navEssays },
-  { key: 'moments',  href: '/moments/',   label: labels.navMoments },
-  { key: 'reading',  href: '/bookshelf/', label: labels.navReading },
-  { key: 'studies',  href: '/studies/',   label: labels.navStudies },
   { key: 'leaders',  href: '/leaders/',   label: labels.navLeaders },
+  { key: 'moments',  href: '/moments/',   label: labels.navMoments },
+  { key: 'studies',  href: '/studies/',   label: labels.navStudies },
+  { key: 'reading',  href: '/bookshelf/', label: labels.navReading },
   { key: 'about',    href: '/about/',     label: labels.navAbout },
   { key: 'watch',    href: '/watch/',     label: labels.navWatch },
 ];

@@ -65,6 +65,11 @@ const shortcuts = [
   {/* ── hero ─────────────────────────────────────────────────────────── */}
   <section class="hero">
     <Mark kind="brush" color="coral" class="hero-brush" />
+    {/* The map's marginalia: a small blue star at the top corner and a green
+        coil beside the introduction. They are the difference between a layout
+        and a page somebody drew. */}
+    <Mark kind="star" color="blue" class="hero-star" />
+    <Mark kind="spiral" color="green" class="hero-coil" />
     <div class="shell hero-in">
       <div class="hero-copy">
         <h1 class="hero-h is-display">
@@ -96,68 +101,69 @@ const shortcuts = [
                  alt="Denvil Lee teaching on stage in a coral polo, both hands reaching out as he makes a point." />
         </ImageMask>
         <ColorDisc lines={["theology","leadership","life"]} class="hero-disc" />
+        {/* The arrow the map draws under the photo, running into the disc. */}
+        <Mark kind="arrow" color="ink" class="hero-curl" />
       </div>
     </div>
   </section>
 
-  {/* ── latest ───────────────────────────────────────────────────────── */}
-  <section class="band shell sec-latest">
-    <div class="sec-head">
-      <h2 class="sec-h"><span class="u">Latest {featureRoom ? featureRoom.piece : 'essay'}<Mark kind="underline" color="yellow" draw={true} /></span></h2>
-      <a class="go" href={`/${featureRoom ? featureRoom.path : 'essays'}/`}>
-        See all {featureRoom ? featureRoom.plural.toLowerCase() : 'essays'} <span class="arw" aria-hidden="true">&rarr;</span>
-      </a>
-    </div>
+  {/* ── latest ───────────────────────────────────────────────────────────
+      The map gives this its own tinted band, photo taped down on the left and
+      the copy beside it, under a small green label rather than a headline. It
+      is the one band on the page that changes every time he publishes, and
+      the tint is what says so without a word.
 
-    <div class="latest-deck">
-      {feature ? (
-        <article class="feat">
-          <a class="feat-art" href={`/${featureRoom!.path}/${feature.id}/`} tabindex="-1" aria-hidden="true">
-            <ImageMask shape="soft">
-              {feature.data.image && !isStandin(feature.data.image)
-                ? <img src={feature.data.image} alt="" width="960" height="640" loading="lazy" decoding="async" />
-                : feature.room === 'moments'
-                  ? <span class="feat-plate"><ArtPlate kind="morning" /></span>
-                  : <Placeholder label={`Image for ${feature.data.title}`} ratio="3 / 2" />}
-            </ImageMask>
-            <span class="chip chip-yellow">{featureRoom!.label}</span>
+      This goes back to side by side. It was stacked on 1 Sep because it was
+      sharing its row with the pathways and the photo was landing wrong in a
+      narrow column. The pathways have their own band now, so the photo has
+      the room the map draws it in. */}
+  {feature && (
+    <section class="latestband">
+      <div class="shell lb-in">
+        <a class="lb-art" href={`/${featureRoom!.path}/${feature.id}/`} tabindex="-1" aria-hidden="true">
+          <Tape color="green" class="lb-tape" />
+          <ImageMask shape="soft">
+            {feature.data.image && !isStandin(feature.data.image)
+              ? <img src={feature.data.image} alt="" width="960" height="720" loading="lazy" decoding="async" />
+              : feature.room === 'moments'
+                ? <span class="lb-plate"><ArtPlate kind="morning" /></span>
+                : <Placeholder label={`Image for ${feature.data.title}`} ratio="4 / 3" />}
+          </ImageMask>
+        </a>
+
+        <div class="lb-body">
+          <p class="lb-k">Latest {featureRoom!.piece}</p>
+          <h2 class="lb-h"><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h2>
+          {/* Moments carry no teaser, so the band falls back to the opening
+              line rather than leaving a gap where the sentence should be. */}
+          <p class="lb-d">{feature.data.teaser || feature.data.dek || openingParagraph(feature.body, 165)}</p>
+          <p class="lb-meta">
+            <time datetime={isoDate(feature.data.publishAt)}>{displayDate(feature.data.publishAt)}</time>
+            {featureMinutes && <> &middot; {featureMinutes} min read</>}
+          </p>
+          <a class="lb-go" href={`/${featureRoom!.path}/${feature.id}/`}>
+            <span class="u">Read the {featureRoom!.piece}<Mark kind="underline" color="yellow" draw={true} /></span>
+            <span class="arw" aria-hidden="true">&rarr;</span>
           </a>
-          <div class="feat-body">
-            <h3 class="feat-h"><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h3>
-            {/* The teaser when the piece has one: this card is the first thing a
-                stranger meets, and the deck was written for somebody already
-                on the page. */}
-            <p class="feat-dek">{feature.data.teaser ?? feature.data.dek}</p>
-            <p class="feat-open">{openingParagraph(feature.body, 190)}</p>
-            <p class="feat-meta">
-              <time datetime={isoDate(feature.data.publishAt)}>{displayDate(feature.data.publishAt)}</time>
-              {featureMinutes && <> &middot; {featureMinutes} min read</>}
-            </p>
-            <a class="go" href={`/${featureRoom!.path}/${feature.id}/`}>Read now <span class="arw" aria-hidden="true">&rarr;</span></a>
 
-            {featureSeries && (
-              <p class="feat-ser">
-                Part of <a href="/essays/#ser-h">{featureSeries}</a>
-                {featureNext && (
-                  <>
-                    {' '}&middot; Next: <a href={featureNext.href}>{featureNext.title}</a>
-                  </>
-                )}
-              </p>
-            )}
-          </div>
-        </article>
-      ) : null}
-    </div>
-  </section>
+          {featureSeries && (
+            <p class="lb-ser">
+              Part of <a href="/essays/#ser-h">{featureSeries}</a>
+              {featureNext && (<>{' '}&middot; Next: <a href={featureNext.href}>{featureNext.title}</a></>)}
+            </p>
+          )}
+        </div>
+      </div>
+      <DotGrid cols={9} rows={6} class="lb-dots" />
+    </section>
+  )}
 
   {/* ── the six pathways ───────────────────────────────────────
       Denvil's map puts the six main areas in their own full width band, drawn
       "Big, visual, colorful", not tucked beside something else. So they get
       the whole measure and a row of their own rather than a column next to
       the featured piece. */}
-  <section class="shell paths">
-    <h2 class="paths-k">Where to start</h2>
+  <section class="shell paths" aria-label="Explore">
     <div class="shortcuts">
       {shortcuts.map((s) => (
         <a class="short" href={s.href}>
@@ -178,17 +184,21 @@ const shortcuts = [
       sit here have gone: two grey boxes side by side were not punching. */}
   <section class="shell gyb-wrap">
     <div class="gyb">
-      <Mark kind="zigzag" color="blue" class="gyb-scribble" />
-      <div class="gyb-copy">
-        <h2 class="gyb-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
-        <a class="btn btn-light gyb-cta" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">
-          Start reading Ruth <span class="arw" aria-hidden="true">&rarr;</span>
-        </a>
-      </div>
+      <Mark kind="spiral" color="blue" class="gyb-coil" />
+      {/* Heading, sentence and button are three siblings rather than two
+          groups, so the band can place them by grid area: heading over button
+          on the left with the sentence beside them on a wide screen, and
+          heading, sentence, button in that order once it stacks. Grouped the
+          other way, the phone got the button before the sentence explaining
+          what it was for. */}
+      <h2 class="gyb-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
       <p class="gyb-dek">
         The book of Ruth is a story of grace, loyalty, and God's faithfulness in
         unexpected places.
       </p>
+      <a class="btn btn-light gyb-cta" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">
+        Start reading Ruth <span class="arw" aria-hidden="true">&rarr;</span>
+      </a>
       <div class="gyb-art">
         <span class="gyb-splash" aria-hidden="true"></span>
         <Photo name="ruth-cover" width={520} height={720}
@@ -198,7 +208,16 @@ const shortcuts = [
           <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
         </span>
       </div>
-      <DotGrid cols={8} rows={4} class="gyb-dots" />
+      {/* The spray of white specks the map throws off the bottom of the
+          splash. Hand placed rather than gridded: a grid of dots is a
+          pattern, and this is meant to read as something that scattered. */}
+      <svg class="gyb-speck" viewBox="0 0 120 64" fill="none" aria-hidden="true">
+        {[[6,44],[15,30],[19,50],[27,38],[31,17],[34,56],[41,29],[45,45],[52,12],[54,35],
+          [60,52],[63,24],[70,41],[74,9],[78,57],[84,31],[88,47],[95,19],[99,38],[104,54],
+          [110,27],[114,44]].map(([x,y], i) => (
+          <circle cx={x} cy={y} r={i % 3 === 0 ? 2.4 : i % 3 === 1 ? 1.7 : 1.2} fill="currentColor" />
+        ))}
+      </svg>
     </div>
   </section>
 
@@ -210,7 +229,10 @@ const shortcuts = [
     <section class="shell recents">
       <div class="sec-head">
         <h2 class="recents-k">Recent essays</h2>
-        <a class="go" href="/essays/">View all essays <span class="arw" aria-hidden="true">&rarr;</span></a>
+        <a class="go" href="/essays/">
+          <span class="u">View all essays<Mark kind="underline" color="yellow" /></span>
+          <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
       </div>
       <div class="recent-grid">
         {recentEssays.map((e: any) => (
@@ -255,6 +277,7 @@ const shortcuts = [
           <button type="submit" class="btn btn-gold">Subscribe <span class="arw" aria-hidden="true">&rarr;</span></button>
         </form>
       </div>
+      <DotGrid cols={7} rows={4} class="subband-dots" />
       <span class="sub-env" aria-hidden="true">
         <svg viewBox="0 0 90 64" fill="none">
           <path d="M6 12h78v46H6z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>

@@ -81,6 +81,11 @@
   --disc-gold:#F3C64B;      --disc-gold-ink:#4A2E00;
   --disc-coral:#F58C74;     --disc-coral-ink:#58200F;
   --disc-sage:#B9CCA2;      --disc-sage-ink:#33452A;
+  /* Tape green. --sage is the olive that holds as a drawn stroke; the tape in
+     Denvil's map is a leaf green, and tape is a fill, not a stroke. */
+  --tape-green:#8FBF6E;
+  /* A drawn green with more life in it than the olive, for doodles on cream. */
+  --green-draw:#6E9E4E;
 
   --tint-navy:#DDE4EB;      /* navy on it 9.54 · ink 14.57 */
   --tint-gold:#F9E6C1;      /* gold-ink on it 4.52 · ink 15.23 */
@@ -104,6 +109,9 @@
      layout map. Navy is the reading colour; this is the shout. White on it
      measures 5.9, which clears AA for the body text it carries. */
   --blue-band:#1F63D6;
+  /* The face gold measures 2.72 on that band, which fails even the 3:1 large
+     text threshold. Same hue, lifted: 3.53. */
+  --gold-on-blue:#F8C94F;
   --yellow:var(--gold);
   --green:var(--sage);
   --blue-ink:var(--navy);
