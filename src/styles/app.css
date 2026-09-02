@@ -55,7 +55,12 @@ p{margin:0 0 1em}
 @media (max-width:1080px){ .mast-nav{display:none} }
 
 .mast-cta{margin-left:auto}
-@media (max-width:1080px){ .mast-cta{display:none} }
+/* .btn is declared after this rule and also sets display, at equal specificity,
+   so a bare .mast-cta{display:none} lost the cascade and the Subscribe pill kept
+   rendering in the mobile masthead: a duplicate of the one already inside the
+   menu panel, and enough extra width to push the hamburger 15px off-screen at
+   320px. Qualifying with .btn wins on specificity rather than order. */
+@media (max-width:1080px){ .btn.mast-cta{display:none} }
 
 /* ── buttons ────────────────────────────────────────────────────────────
    The container is a squashed pill rather than a true one: the references'

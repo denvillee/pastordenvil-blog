@@ -127,13 +127,32 @@ export const collections = {
     caption: z.string().optional(),
   }),
   moments: room('moments', {
-    /* Three kinds of post, each a fixed layout, chosen from a dropdown: a short
-       written note, a picture with a caption, or a full essay. The freedom
-       being asked for here is freedom of kind, not freedom of arrangement, so
-       there is no rich editor and no per-post layout control. */
-    format: z.enum(['note', 'image', 'essay']).default('note'),
+    /* Kinds of post, each a fixed layout, chosen from a dropdown: a short
+       written note, a picture with a caption, a full essay, or — new, 1 Sep —
+       a `tiny` observation. The freedom being asked for here is freedom of
+       kind, not freedom of arrangement, so there is no rich editor and no
+       per-post layout control.
+
+       `tiny` is shorter than a note and has no argument in it: two or three
+       fragments and a date, the way the comp shows it. It gets no title on the
+       page, so `title` is used only for the URL and the archive. */
+    format: z.enum(['note', 'image', 'essay', 'tiny']).default('note'),
     /* The line under the picture, for format: image. */
     caption: z.string().optional(),
+
+    /* ── the note-card grid ───────────────────────────────────────────
+       The comp's Moments page is eight handwritten cards on visibly different
+       paper. Authored rather than randomised: a random paper would reshuffle
+       on every build and the page would never look the same twice, which is
+       exactly the kind of restlessness a page about noticing should not have. */
+    paper: z.enum(['plain', 'green', 'lined', 'cream', 'pink']).default('plain'),
+    /* What is holding it to the page. */
+    clip: z.enum(['none', 'tape', 'paperclip']).default('none'),
+    /* One word or short phrase inside the card that gets a drawn mark, and
+       which mark it gets. The word must appear in the card's own text; if it
+       does not, nothing is drawn rather than something being invented. */
+    emphasis: z.string().optional(),
+    emphasisMark: z.enum(['highlight', 'circle', 'underline']).default('underline'),
   }),
 
   /* PARKED, 28 Aug 2026. The Frameworks room is retired: no route, no CMS tab,
@@ -217,6 +236,14 @@ export const collections = {
          grouping than year, which is why they are named rather than folded
          into the single free-text `context` line the page leads with today. */
       series: z.string().optional(),
+      /* The comp's four Watch tabs: Teaching, Leadership, Conversations, Q&A.
+         Optional on purpose. Every one of the 61 talks currently in the library
+         is a weekend message, so defaulting them all to "teaching" would render
+         a four-tab control with 61 in the first tab and nothing in the other
+         three — a filter that filters nothing, which is worse than no filter.
+         The tab row renders only the categories that actually have entries, so
+         the control appears as Denvil categorises and not before. */
+      category: z.enum(['teaching', 'leadership', 'conversation', 'qa']).optional(),
       organization: z.string().optional(),
       location: z.string().optional(),
       scripture: z.string().optional(),
@@ -251,6 +278,21 @@ export const collections = {
          a first-person reaction belongs, and it appears only when he writes
          one. */
       note: z.string().optional(),
+      /* The comp's Bookshelf filter row: All Books, Leadership, Theology,
+         Personal Growth, Culture, Communication, Teams, Strategy. Optional, and
+         the row renders only the categories that actually have books, so it
+         appears as the shelf is labelled rather than showing eight chips with
+         nothing behind six of them. */
+      category: z.enum(['leadership','theology','formation','culture',
+                        'communication','teams','strategy']).optional(),
+      /* The comp's "Featured Recommendation" panel. One book at a time; if more
+         than one is flagged the first by `order` wins. */
+      featured: z.boolean().default(false),
+      /* The comp sets a handwritten pull quote beside the Featured
+         Recommendation, with a drawn asterisk and a coloured underline. It is a
+         line FROM the book, so it is attributed to the author, not to Denvil.
+         Optional: no quote, no panel. */
+      pullQuote: z.string().optional(),
       spine: z.enum(['cobalt', 'ivy', 'brass', 'ember', 'ink']).default('ivy'),
       link: z.string().default(''),
       order: z.number().default(0),

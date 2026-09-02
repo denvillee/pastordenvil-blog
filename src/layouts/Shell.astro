@@ -11,6 +11,10 @@ import '../styles/app.css';
 import '../styles/page.css';
 import '../styles/cards.css';
 import '../styles/motion.css';
+/* Last on purpose. Its touch-target floors have to outrank every rule that sets
+   display or min-height on the same controls, and a media query grants no extra
+   specificity, so load order is what protects them. Keep this import last. */
+import '../styles/touch.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import site from '../data/site.json';

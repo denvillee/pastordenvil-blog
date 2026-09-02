@@ -16,7 +16,7 @@
   Every plate is decorative: aria-hidden, and never carrying meaning that the
   page does not also say in words.
 */
-interface Props { kind: 'stack' | 'passage' | 'shelf' | 'letter' | 'timeline' | 'lost' | 'notice'; class?: string }
+interface Props { kind: 'stack' | 'passage' | 'shelf' | 'letter' | 'timeline' | 'lost' | 'notice' | 'morning'; class?: string }
 const { kind, class: cls = '' } = Astro.props;
 ---
 <div class:list={['artp', `artp-${kind}`, cls]} aria-hidden="true">
@@ -105,6 +105,36 @@ const { kind, class: cls = '' } = Astro.props;
         <path d="M264 222l20 16-18 14" fill="none" stroke="var(--navy)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
         <rect x="152" y="26" width="76" height="22" rx="1" fill="var(--gold)" opacity=".9" transform="rotate(-3 190 37)" />
         <circle cx="326" cy="176" r="7" fill="var(--gold)" />
+      </>
+    )}
+
+    {kind === 'morning' && (
+      <>
+        {/* The comp's featured Moment is a still life: an open book and a mug on
+            a table by a window, early, before the day starts. Drawn here in the
+            site's own vocabulary rather than bought as stock — the art direction
+            has been against faith stock photography from the start, and this
+            slot is one Denvil will replace with his own picture anyway. */}
+        {/* light falling through the window onto the table */}
+        <path d="M96 214l46-150h104l46 150z" fill="var(--gold)" opacity=".20" />
+        {/* the window */}
+        <rect x="136" y="30" width="128" height="150" rx="6" fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="4" />
+        <path d="M200 32v146M138 106h124" stroke="var(--rule-strong)" stroke-width="4" stroke-linecap="round" />
+        {/* the table edge */}
+        <path d="M52 236h296" stroke="var(--ink)" stroke-width="5" stroke-linecap="round" />
+        {/* an open book, spine up */}
+        <path d="M108 232c22-13 44-13 62-2 18-11 40-11 62 2-20-8-42-7-62 4-20-11-42-12-62-4z"
+              fill="var(--white)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" />
+        <path d="M170 230v-4" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" />
+        {/* a mug */}
+        <path d="M252 196h44v22a12 12 0 0 1-12 12h-20a12 12 0 0 1-12-12z"
+              fill="var(--navy)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" />
+        <path d="M296 202h7a9 9 0 0 1 0 18h-7" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" />
+        {/* steam */}
+        <path d="M264 186c4-6-3-9 1-15M280 186c4-6-3-9 1-15" fill="none" stroke="var(--sage)" stroke-width="3.4" stroke-linecap="round" />
+        {/* the sun through the glass, and a drawn underline on the sill */}
+        <circle cx="238" cy="66" r="13" fill="var(--coral)" />
+        <path d="M92 250c34 10 74 12 112 5" fill="none" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" />
       </>
     )}
 

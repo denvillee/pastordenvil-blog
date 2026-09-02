@@ -186,6 +186,40 @@ export async function seriesPlace(room: RoomKey, seriesName?: string, order?: nu
   return { name: def.data.name, order, total: def.data.parts.length };
 }
 
+/* The same placement, plus a way back to the opening piece.
+
+   Denvil, 1 Sep: if the newest essay keeps landing at the top of a list, a
+   reader arriving cold meets part two first and has no idea it is part two.
+   So the CARD says which part it is and offers the start of the run.
+
+   This does not undo his 30 Aug rule. That rule was about the essay page
+   itself, where "Part 1 of 2" made the writing read like a serialised book;
+   the article page still shows the run's name and nothing more. A card in a
+   list is a different job: it is signposting, not a chapter heading.
+
+   `total` is only reported once the run is finished. While a series is still
+   `current`, "Part 2 of 2" would tell a reader the story is over when Denvil
+   is still writing it, so the count is withheld until it is true. */
+export async function seriesTag(room: RoomKey, data: any) {
+  const name = data?.series as string | undefined;
+  const order = data?.seriesOrder as number | undefined;
+  if (!name || typeof order !== 'number') return null;
+  const all = await getCollection('series' as any);
+  const def = all.find((s: any) => s.data.name === name && s.data.room === room);
+  if (!def || !def.data.parts?.length) return null;
+
+  const posts = await live(room);
+  const first = posts.find((p: any) => p.data.series === name && p.data.seriesOrder === 1);
+
+  return {
+    name,
+    order,
+    total: def.data.current ? undefined : def.data.parts.length,
+    firstHref: first && order !== 1 ? `/${ROOMS[room].path}/${first.id}/` : undefined,
+    firstTitle: first?.data.title as string | undefined,
+  };
+}
+
 /** The next published piece in the same run, for the card at the end of a piece.
     Returns null when the next one has not been written yet, which is the whole
     point: Denvil's instruction is that the card stays hidden until the essay it

@@ -1,0 +1,63 @@
+---
+/*
+  A handwritten note on a torn scrap of paper.
+
+  The comp's Moments page is eight of these in two rows of four, each on visibly
+  different stock — plain, green, red-margin lined, cream, pink — some taped,
+  one held by a paperclip, with a word inside each one highlighted, circled or
+  underlined. It is the visual signature of that page and the reason it reads as
+  a desk rather than a feed.
+
+  Everything here is authored, not randomised. A random paper would reshuffle on
+  every build and the page would never look the same twice, which is exactly the
+  restlessness a page about noticing should not have.
+
+  The emphasis word is matched against the card's own text. If it is not found,
+  nothing is drawn — the mark can only ever sit on a word Denvil actually wrote.
+*/
+import Mark from './marks/Mark.astro';
+import Tape from './marks/Tape.astro';
+
+interface Props {
+  text: string;
+  date?: string;
+  paper?: 'plain' | 'green' | 'lined' | 'cream' | 'pink';
+  clip?: 'none' | 'tape' | 'paperclip';
+  emphasis?: string;
+  emphasisMark?: 'highlight' | 'circle' | 'underline';
+  tone?: 'blue' | 'yellow' | 'coral' | 'green';
+  href?: string;
+}
+const {
+  text, date, paper = 'plain', clip = 'none',
+  emphasis, emphasisMark = 'underline', tone = 'blue', href,
+} = Astro.props;
+
+/* Split the line around the emphasised phrase so the mark can wrap only that
+   phrase. Case-insensitive, first occurrence only, and a miss is silent. */
+const i = emphasis ? text.toLowerCase().indexOf(emphasis.toLowerCase()) : -1;
+const before = i >= 0 ? text.slice(0, i) : text;
+const hit = i >= 0 ? text.slice(i, i + (emphasis as string).length) : '';
+const after = i >= 0 ? text.slice(i + (emphasis as string).length) : '';
+
+const Tag = href ? 'a' : 'div';
+---
+<Tag class:list={['ncard', `ncard-${paper}`, href && 'ncard-link']} href={href}>
+  {clip === 'tape' && <Tape color={tone === "yellow" ? "yellow" : "blue"} class="ncard-tape" />}
+  {clip === 'paperclip' && (
+    <svg class="ncard-clip" viewBox="0 0 24 40" aria-hidden="true" fill="none">
+      <path d="M17 12v16a5 5 0 0 1-10 0V10a3.2 3.2 0 0 1 6.4 0v17a1.6 1.6 0 0 1-3.2 0V12"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    </svg>
+  )}
+  {date && <p class="ncard-d">{date}</p>}
+  <p class="ncard-t">
+    {before}
+    {hit && (
+      emphasisMark === 'highlight'
+        ? <mark class:list={['ncard-hl', `hl-${tone}`]}>{hit}</mark>
+        : <span class="u">{hit}<Mark kind={emphasisMark === 'circle' ? 'circle-loose' : 'underline'} color={tone} /></span>
+    )}
+    {after}
+  </p>
+</Tag>

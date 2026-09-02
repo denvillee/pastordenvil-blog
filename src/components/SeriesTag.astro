@@ -1,0 +1,32 @@
+---
+/* The run's name and which part this is, for a card in a list.
+
+   Denvil, 1 Sep: "if we continue putting the newest one at the top, it'll say
+   'part # of the set' in case a new reader wants to jump in."
+
+   Two deliberate restraints:
+
+   1. No count while the run is open. `seriesTag` withholds `total` for a series
+      still marked `current`, because "Part 2 of 2" reads as finished and this
+      one is not. Once the run closes the count appears on its own.
+
+   2. The link to the opening piece only renders when this is not that piece,
+      and only when the opening piece is actually published. A reader is never
+      offered a start that does not exist yet.
+*/
+import { seriesTag } from '../lib/publish';
+
+interface Props { room: any; data: any; }
+const { room, data } = Astro.props;
+const tag = await seriesTag(room, data);
+---
+{tag && (
+  <p class="stag">
+    <span class="stag-name">{tag.name}</span>
+    <span class="stag-sep" aria-hidden="true">&middot;</span>
+    <span class="stag-part">Part {tag.order}{tag.total ? ` of ${tag.total}` : ''}</span>
+    {tag.firstHref && (
+      <a class="stag-start" href={tag.firstHref}>Start at Part 1</a>
+    )}
+  </p>
+)}

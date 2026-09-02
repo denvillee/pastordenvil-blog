@@ -1,11 +1,17 @@
 ---
 import ImageMask from './ImageMask.astro';
 import Placeholder from './Placeholder.astro';
+import ArtPlate from './ArtPlate.astro';
 import { openingParagraph, readMinutes, displayDate, isoDate } from '../lib/publish';
 import { isStandin } from '../lib/media';
+import SeriesTag from './SeriesTag.astro';
 
-interface Props { href: string; entry: any; label?: string; room: string; tone?: string }
-const { href, entry, label = 'Featured essay', room, tone = 'yellow' } = Astro.props;
+interface Props { href: string; entry: any; label?: string; room: string; tone?: string; plate?: string }
+/* `plate` names a drawn ArtPlate to stand in when the entry carries no picture.
+   Without it the slot falls back to the labelled grey box, which is right for a
+   piece that is waiting on a photograph and wrong for a room where the design
+   calls for artwork rather than a photograph of Denvil. */
+const { href, entry, label = 'Featured essay', room, tone = 'yellow', plate } = Astro.props;
 const d = entry.data;
 const words = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
 const mins = words >= 150 ? readMinutes(entry.body) : undefined;
@@ -15,10 +21,13 @@ const mins = words >= 150 ? readMinutes(entry.body) : undefined;
     <span class="chip chip-yellow fcard-chip">{label}</span>
     {d.image && !isStandin(d.image)
       ? <img src={d.image} alt="" width="900" height="700" loading="lazy" decoding="async" />
-      : <Placeholder label={`Image for ${d.title}`} ratio="9 / 7" />}
+      : plate
+        ? <span class="fcard-plate"><ArtPlate kind={plate as any} /></span>
+        : <Placeholder label={`Image for ${d.title}`} ratio="9 / 7" />}
   </a>
   <div class="fcard-body">
     <h2 class="fcard-h"><a href={href}>{d.title}</a></h2>
+    <SeriesTag room="essays" data={d} />
     {/* The teaser when the piece has one, the deck otherwise. */}
     <p class="fcard-dek">{d.teaser ?? d.dek}</p>
     <p class="fcard-open">{openingParagraph(entry.body, 150)}</p>

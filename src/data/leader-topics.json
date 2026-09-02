@@ -1,0 +1,16 @@
+{
+  "note": "The comp's own two taxonomies for For Leaders, built as content Denvil fills. Kept in data rather than in the page so he can edit them without touching markup. Colours cycle blue, yellow, coral, green, which is the rotation the whole design uses.",
+  "topics": [
+    { "label": "Leading Yourself",   "dek": "Sustain your soul. Lead from a deep well.", "icon": "people",  "tone": "blue" },
+    { "label": "Vision & Calling",   "dek": "Keep the main thing the main thing.",       "icon": "compass", "tone": "yellow" },
+    { "label": "People & Culture",   "dek": "Build healthy cultures of grace and truth.","icon": "heart",   "tone": "coral" },
+    { "label": "Ministry in Context","dek": "Faithful leadership where you are.",        "icon": "flag",    "tone": "green" }
+  ],
+  "themes": [
+    { "label": "Culture",     "dek": "Shape a culture where people can flourish and the gospel advances.", "icon": "people", "tone": "blue" },
+    { "label": "Formation",   "dek": "Help people become who Jesus is forming them to be.",               "icon": "plant",  "tone": "yellow" },
+    { "label": "Teams",       "dek": "Build healthy teams that carry more than one person.",              "icon": "people", "tone": "coral" },
+    { "label": "Preaching",   "dek": "Communicate truth that transforms hearts and minds.",               "icon": "book",   "tone": "green" },
+    { "label": "Discernment", "dek": "Make faithful decisions in a noisy and complex world.",             "icon": "sign",   "tone": "blue" }
+  ]
+}

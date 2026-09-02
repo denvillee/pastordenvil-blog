@@ -182,6 +182,17 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
         <a href={`mailto:?subject=${enc(title)}&body=${enc(canonical)}`}>Email</a>
         <a href={canonical} data-copy-link>Copy link</a>
         </div>
+
+        {/* The comp closes a piece with a handwritten thanks and a drawn arrow
+            pointing back at the share row. Its wording was "Thanks for reading!
+            If this helped you, share it with a friend." — Denvil's own version of
+            that sentence already exists, at the end of his For Leaders
+            introduction, so his is used rather than the comp's. */}
+        <p class="art-thanks">
+          I hope this helps. If not, just share it with somebody you think it
+          might benefit.
+          <Mark kind="arrow-curl" color="ink" class="art-thanks-arw" />
+        </p>
       </div>
 
       {/* The next essay in the run. It renders only when that essay is live,

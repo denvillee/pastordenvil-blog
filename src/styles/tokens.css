@@ -65,6 +65,23 @@
      and the sidebar, --wash-* backs the pinboard cards. Hand-levelled to the
      same lightness rather than the same mix percentage, because navy is far
      darker than the other three and a flat percentage makes it a bruise. */
+  /* The icon discs.
+
+     These were originally the --tint-* pales, chosen so that --*-ink TEXT sat
+     on them at 4.5:1. That was the wrong constraint: a disc holds a stroked
+     ICON, which is a graphical object and needs 3:1, not 4.5:1. Holding the
+     text ratio bleached every disc on the site, and the discs are the backbone
+     device of the comps -- the reason unrelated taxonomies read as one system.
+     So they get their own saturated set, and the icon ink is deepened to keep
+     the contrast well clear of the graphical minimum.
+
+     Measured icon-on-fill: blue 6.28, yellow 7.72, coral 5.46, green 6.03.
+     The pales stay where they belong, behind text: highlights and side panels. */
+  --disc-blue:#9CBCF2;      --disc-blue-ink:#0A3662;
+  --disc-gold:#F3C64B;      --disc-gold-ink:#4A2E00;
+  --disc-coral:#F58C74;     --disc-coral-ink:#58200F;
+  --disc-sage:#B9CCA2;      --disc-sage-ink:#33452A;
+
   --tint-navy:#DDE4EB;      /* navy on it 9.54 · ink 14.57 */
   --tint-gold:#F9E6C1;      /* gold-ink on it 4.52 · ink 15.23 */
   --tint-coral:#FBE5D4;     /* coral-ink on it 4.52 · ink 15.36 */

@@ -3,6 +3,7 @@ import ImageMask from './ImageMask.astro';
 import Placeholder from './Placeholder.astro';
 import { readMinutes, displayDate, isoDate } from '../lib/publish';
 import { isStandin } from '../lib/media';
+import SeriesTag from './SeriesTag.astro';
 
 interface Props { href: string; entry: any; room: string; tone?: string }
 const { href, entry, room, tone = 'yellow' } = Astro.props;
@@ -19,6 +20,7 @@ const mins = words >= 150 ? readMinutes(entry.body) : undefined;
     </ImageMask>
   </a>
   <h3 class="ecard-h"><a href={href}>{d.title}</a></h3>
+  <SeriesTag room="essays" data={d} />
   {/* The teaser when the piece has one, the deck otherwise. */}
     <p class="ecard-dek">{d.teaser ?? d.dek}</p>
   <p class="ecard-meta">

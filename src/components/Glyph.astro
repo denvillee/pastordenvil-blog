@@ -1,0 +1,121 @@
+---
+/*
+  A sketched line icon in a coloured disc.
+
+  This is the backbone device of the comps: every taxonomy on every page —
+  topics, themes, study steps, categories — is a filled pastel circle with a
+  hand-drawn icon inside it, and the colour rotates blue → yellow → coral →
+  green down the row. That rotation is why unrelated sections still read as one
+  system.
+
+  `CategoryIcon` already drew exactly this, but it was hard-wired to the five
+  rooms and shipped on two pages. This is the same drawing style opened up: name
+  the icon, name the tone. The paths are drawn here rather than pulled from an
+  icon set for the reason the original comment gave, which still holds — a
+  library would give neat pictograms in somebody else's house style, and these
+  want to look sketched.
+
+  Every glyph is drawn on the same 48-unit box at the same 2.4 stroke, so a row
+  of them sits on one optical weight.
+*/
+interface Props {
+  name: string;
+  tone?: 'blue' | 'yellow' | 'coral' | 'green';
+  class?: string;
+}
+const { name, tone = 'blue', class: cls = '' } = Astro.props;
+
+const G: Record<string, string[]> = {
+  /* ── people and leading ─────────────────────────────────────────── */
+  people: [
+    'M18 20a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9z',
+    'M9 39v-4a9 9 0 0 1 9-9h0a9 9 0 0 1 9 9v4',
+    'M33 18a3.6 3.6 0 1 0 0-7.2 3.6 3.6 0 0 0 0 7.2z',
+    'M31 25a7.5 7.5 0 0 1 8 7.4V37',
+  ],
+  crown: [
+    'M9 32h30', 'M9 32 7 15l9 7 8-11 8 11 9-7-2 17z',
+    'M18 25.5h.01', 'M30 25.5h.01',
+  ],
+  flag: ['M13 41V9', 'M13 11c7-3 14 3 21 0v14c-7 3-14-3-21 0'],
+  /* ── growth and formation ───────────────────────────────────────── */
+  plant: [
+    'M24 41V21', 'M24 24c-1-7-6-10-12-10 0 8 5 12 12 12z',
+    'M24 26c1-6 5-9 11-9 0 7-5 11-11 11z',
+  ],
+  sun: [
+    'M24 32a8 8 0 1 0 0-16 8 8 0 0 0 0 16z',
+    'M24 6v4', 'M24 38v4', 'M6 24h4', 'M38 24h4',
+    'M11 11l3 3', 'M34 34l3 3', 'M37 11l-3 3', 'M14 34l-3 3',
+  ],
+  /* ── reading and writing ────────────────────────────────────────── */
+  book: [
+    'M6 14c6-2 12-2 18 2 6-4 12-4 18-2v20c-6-2-12-2-18 2-6-4-12-4-18-2z',
+    'M24 16v20',
+  ],
+  books: ['M11 12h6v26h-6z', 'M19 12h6v26h-6z', 'M28 13l6 1-4 25-6-1z'],
+  pencil: [
+    'M14 34 30 18l6 6L20 40l-8 2z',
+    'M30 18l4-4a3 3 0 0 1 4 0l2 2a3 3 0 0 1 0 4l-4 4',
+    'M13 41l3-1',
+  ],
+  note: [
+    'M12 8h18l6 6v26H12z', 'M30 8v6h6', 'M18 22h12', 'M18 29h12', 'M18 36h7',
+  ],
+  /* ── attention and prayer ───────────────────────────────────────── */
+  eye: [
+    'M4 24s7-11 20-11 20 11 20 11-7 11-20 11S4 24 4 24z',
+    'M24 29a5 5 0 1 0 0-10 5 5 0 0 0 0 10z',
+  ],
+  heart: ['M24 39S8 30 8 19a8 8 0 0 1 16-3 8 8 0 0 1 16 3c0 11-16 20-16 20z'],
+  cloud: [
+    'M16 32a7 7 0 0 1 .8-13.9A10 10 0 0 1 36 20a6 6 0 0 1-1 12z',
+    'M12 38h.01', 'M17 41h.01',
+  ],
+  key: [
+    'M31 12a7 7 0 1 1-4.9 12L14 36l-4-1-1-4 12-12A7 7 0 0 1 31 12z',
+    'M33 17h.01', 'M18 28l3 3',
+  ],
+  /* ── going and doing ────────────────────────────────────────────── */
+  steps: [
+    'M15 15c3-2 6 0 6 4s-1 7-4 7-5-3-5-6 1-4 3-5z',
+    'M31 25c3-2 6 0 6 4s-1 7-4 7-5-3-5-6 1-4 3-5z',
+    'M12 10h.01', 'M28 20h.01',
+  ],
+  burst: [
+    'M24 24m-6 0a6 6 0 1 0 12 0 6 6 0 1 0-12 0',
+    'M24 5v7', 'M24 36v7', 'M5 24h7', 'M36 24h7',
+    'M10 10l5 5', 'M33 33l5 5', 'M38 10l-5 5', 'M15 33l-5 5',
+  ],
+  arrow: ['M24 40a16 16 0 1 0 0-32 16 16 0 0 0 0 32z', 'M18 24h12', 'M25 19l5 5-5 5'],
+  compass: [
+    'M24 41a17 17 0 1 0 0-34 17 17 0 0 0 0 34z',
+    'M31 17l-4 10-10 4 4-10z',
+  ],
+  calendar: [
+    'M9 13h30v27H9z', 'M9 21h30', 'M17 8v8', 'M31 8v8',
+    'M17 28h.01', 'M24 28h.01', 'M31 28h.01',
+  ],
+  check: ['M24 41a17 17 0 1 0 0-34 17 17 0 0 0 0 34z', 'M16 24l6 6 12-13'],
+  cup: [
+    'M13 17h20v14a8 8 0 0 1-8 8h-4a8 8 0 0 1-8-8z',
+    'M33 21h3a5 5 0 0 1 0 10h-3', 'M17 11c1 2-1 3 0 5', 'M24 10c1 2-1 3 0 5',
+  ],
+  play: ['M24 41a17 17 0 1 0 0-34 17 17 0 0 0 0 34z', 'M20 17l12 7-12 7z'],
+  mail: ['M7 12h34v24H7z', 'M7 14l17 12 17-12'],
+  star: ['M24 7l5.2 10.9 11.8 1.6-8.6 8.2 2.1 11.8L24 33.9 13.5 39.5l2.1-11.8L7 19.5l11.8-1.6z'],
+  sign: [
+    'M24 41V13', 'M24 16h14l4 4-4 4H24z', 'M24 27H10l-4 4 4 4h14z',
+  ],
+};
+
+const d = G[name] ?? G.book;
+---
+<span class:list={['cico', `cico-${tone}`, cls]} aria-hidden="true">
+  <svg viewBox="0 0 48 48" fill="none" focusable="false">
+    {d.map((path) => (
+      <path d={path} stroke="currentColor" stroke-width="2.4"
+            stroke-linecap="round" stroke-linejoin="round" />
+    ))}
+  </svg>
+</span>
