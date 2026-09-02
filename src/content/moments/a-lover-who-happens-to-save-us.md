@@ -5,6 +5,9 @@ publishAt: 2026-08-30T06:00:00-04:00
 pinned: true
 format: "essay"
 scripture: "John 3:16"
+image: "/assets/img/mom-a-lover-who-saves.jpg"
+imageAlt: "A torn paper collage of a deep blue cliff split by a ravine, one figure reaching down with a rope to another climbing up, beside the words: God is not a savior who happens to love us. He is a lover who happens to save us."
+titleInImage: true
 ---
 
 Genesis 1 comes before Genesis 3.

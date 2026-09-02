@@ -116,12 +116,20 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
               <span class="chip chip-coral mfeat-chip">Featured</span>
             </a>
             <div class="mfeat-body">
+              {/* The headline stays visible here even though the artwork
+                  carries the sentence too. That is the mockup, and it is the
+                  right call in a feature: the picture is the draw, the
+                  headline is the link, and with it hidden the column beside a
+                  full width card was a date and nothing else. On the listing
+                  cards and on the post itself the picture is directly under
+                  the masthead with nothing competing, so there the heading
+                  still steps aside. */}
               <h3 class="mfeat-h">
                 <a href={`/moments/${featured.id}/`}>
                   <span class="u">{featured.data.title}<Mark kind="underline" color="blue" draw={true} /></span>
                 </a>
               </h3>
-              <p class="mfeat-d">{featured.data.teaser || featured.data.dek || openingParagraph(featured.body, 150)}</p>
+              <p class="mfeat-d">{featured.data.teaser || featured.data.dek || openingParagraph(featured.body, 260)}</p>
               <p class="mfeat-meta">
                 <time datetime={isoDate(featured.data.publishAt)}>{displayDate(featured.data.publishAt)}</time>
               </p>
@@ -196,7 +204,7 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
                sizes="(max-width: 900px) 92vw, 46vw"
                alt="Denvil Lee teaching on stage in a yellow hoodie, both hands open, under a Come Alive banner." />
       </div>
-      <Mark kind="zigzag" color="yellow" class="mom-close-zig" />
+      <Mark kind="scribble" color="yellow" class="mom-close-zig" />
     </section>
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.

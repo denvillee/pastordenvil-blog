@@ -251,7 +251,7 @@ const shortcuts = [
       handwriting rather than in a headline, and the form is one field. */}
   <section class="shell sub-wrap">
     <div class="subband">
-      <Tape color="green" class="sub-tape" />
+
       <div class="sub-copy">
         <p class="sub-hand">
           Thanks for reading.
@@ -271,7 +271,10 @@ const shortcuts = [
         </form>
       </div>
       <DotGrid cols={7} rows={4} class="subband-dots" />
+      {/* The tape lives on the envelope. On its own in open blue it was a
+          green rectangle; on a corner it is tape. */}
       <span class="sub-env" aria-hidden="true">
+        <Tape color="green" class="sub-tape" />
         <svg viewBox="0 0 90 64" fill="none">
           <path d="M6 12h78v46H6z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
           <path d="M6 14l39 27 39-27" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>

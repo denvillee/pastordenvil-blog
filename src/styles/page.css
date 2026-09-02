@@ -127,7 +127,7 @@
 .panel-dark .panel-h .mk{color:var(--blue)}
 .panel-dek{max-width:34ch; margin-bottom:1.4rem}
 .panel-dark .panel-dek{color:var(--dek-on-dark)}
-.panel-zig{left:-.9rem; bottom:1.4rem}
+.panel-zig{left:.7rem; bottom:1.1rem; width:3.6rem; height:3.6rem}
 .panel-zig-r{left:auto; right:-.9rem}
 .panel-note{max-width:22rem; margin:0 0 1.4rem}
 @media (max-width:760px){ .panel-zig{display:none} }
@@ -1812,7 +1812,7 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .abt-pola figcaption{position:relative; display:inline-block;
   font-family:var(--hand); font-size:1.05rem; color:var(--ink); padding:.5rem .1rem .6rem}
 .abt-pola-tape{top:-.5rem; left:50%; translate:-50% 0; width:3.2rem; height:1rem; rotate:-2deg}
-.abt-panel-zig{position:absolute; right:-.8rem; bottom:.8rem; width:3rem}
+.abt-panel-zig{position:absolute; right:.7rem; bottom:.7rem; width:3.6rem; height:3.6rem}
 @media (max-width:900px){ .abt-panel-zig{display:none} }
 .abt-panel .abt-name{position:relative; display:inline-block; margin:.9rem 0 0;
   font-family:var(--hand); font-size:1.5rem; color:var(--ink)}
@@ -2103,10 +2103,14 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .sub-row input{flex:1 1 12rem; min-width:0; border:0; border-radius:4px;
   padding:.85rem .9rem; font:inherit; font-size:.95rem; color:var(--ink); background:var(--white)}
 .btn-gold{background:var(--gold); color:var(--ink); border-radius:4px}
-.sub-tape{position:absolute; right:10.5%; top:2.9rem; width:4.6rem; rotate:-11deg}
+/* It was floating in open blue with nothing under it, which is exactly why it
+   read as a green rectangle and not as tape. Tape has to be holding something
+   down, so it now lands across the top left corner of the envelope. */
+.sub-tape{position:absolute; left:-1.1rem; top:-.9rem; width:4.4rem; rotate:-19deg; z-index:2}
+@media (max-width:900px){ .sub-tape{display:none} }
 .subband-dots{right:.8rem; bottom:.7rem; color:var(--white); opacity:.5}
 @media (max-width:900px){ .subband-dots{display:none} }
-.sub-env{width:5.6rem; color:rgba(255,255,255,.9); justify-self:end}
+.sub-env{position:relative; width:7.4rem; color:rgba(255,255,255,.92); justify-self:end}
 .sub-env svg{width:100%; height:100%; display:block}
 .vh{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
 
@@ -2173,11 +2177,18 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 /* No tiny observation published means the featured moment has the row to
    itself, which is when it can run art beside words the way the mockup draws
    it. With a tiny beside it the deck splits and this stacks on its own. */
-.mom-deck:has(> :only-child) .mfeat{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+/* With no tiny observation published the deck has one child, and the empty
+   second column was leaving the feature squeezed into two thirds of the page
+   with nothing beside it. */
+.mom-deck:has(> :only-child){grid-template-columns:1fr}
+.mom-deck:has(> :only-child) .mfeat{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr)}
 .mfeat{display:grid; grid-template-columns:1fr; background:var(--card);
-  border-radius:var(--r); overflow:hidden; align-items:stretch}
+  border-radius:var(--r); overflow:hidden; align-items:center}
 .mfeat-art{position:relative; display:block; background:var(--paper)}
-.mfeat-art img{display:block; width:100%; height:100%; object-fit:cover}
+/* The artwork is a designed card with type on it, so it prints whole at its
+   own ratio. Cropping one cuts the sentence off, which is the only thing on
+   it. */
+.mfeat-art img{display:block; width:100%; height:auto}
 .mfeat-plate{display:grid; place-items:center; height:100%; min-height:15rem; padding:1.5rem}
 .mfeat-plate .artp{max-width:16rem}
 .mfeat-chip{position:absolute; left:.85rem; top:.85rem; z-index:2}
@@ -2201,3 +2212,22 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 
 /* Mockup rule 3: the blue card is a solid blue rectangle, and it is big. */
 .mom-note{max-width:22rem; font-size:1.4rem; padding:1.6rem 1.6rem 1.4rem}
+
+/* ── the icon discs, drawn rather than struck ────────────────────────────
+   Denvil, 2 Sep: some of the design elements still feel flat. A perfect
+   circle is the flattest thing on a page whose whole language is hand made,
+   and these were perfect circles. The site's colour disc has always used an
+   uneven radius for exactly this reason; the icon discs now do the same, and
+   each one leans a fraction differently so a row of them is not a row of
+   identical stamps.
+
+   Deliberately small: an eighth of a degree either side of level and a few
+   percent off round is the difference between "drawn" and "broken". */
+.cico,.tico-wrap,.step-n{
+  border-radius:49% 51% 52% 48% / 51% 48% 52% 49%;
+}
+.cico:nth-of-type(even),.tico-wrap:nth-of-type(even){rotate:1.6deg}
+.cico:nth-of-type(odd),.tico-wrap:nth-of-type(odd){rotate:-1.4deg}
+li:nth-child(3n) .cico,li:nth-child(3n) .tico-wrap{rotate:2.2deg}
+li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
+.step-n{rotate:-1.8deg}

@@ -80,10 +80,25 @@
 .mk-white{color:var(--white)}
 
 /* ── tape ───────────────────────────────────────────────────────────── */
+/* Tape, not a rectangle. Denvil, 2 Sep: the green strip on the newsletter band
+   is flat and out of place. It was a solid opaque box with square corners,
+   which is a swatch. Real tape is torn at both ends, never quite parallel,
+   and you can see what is under it. So: an uneven clip on both ends, a little
+   translucency, and a highlight running along it the way light catches the
+   crease of a strip pulled off a roll. */
 .tape{
-  position:absolute; z-index:3; width:clamp(3.4rem,7vw,5.6rem); height:1.55rem;
-  transform:rotate(-1.5deg); opacity:.92;
+  position:absolute; z-index:3; width:clamp(3.4rem,7vw,5.6rem); height:1.6rem;
+  transform:rotate(-1.5deg); opacity:.86;
+  clip-path:polygon(0% 12%, 6% 2%, 30% 6%, 62% 0%, 94% 4%, 100% 16%, 97% 96%, 66% 90%, 34% 100%, 4% 94%);
   box-shadow:0 1px 2px rgba(17,17,17,.10);
+}
+/* Two hairlines, not a gradient. A soft light-to-dark ramp across the whole
+   strip made it read as a tube; tape is flat, with a crease or two in it. */
+.tape::after{
+  content:''; position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, transparent 0 26%, rgba(255,255,255,.34) 26% 28%,
+                    transparent 28% 71%, rgba(17,17,17,.08) 71% 73%, transparent 73%);
 }
 .tape-blue{background:var(--blue)}
 .tape-coral{background:var(--coral)}
@@ -133,8 +148,14 @@
 .note-coral{background:var(--coral); color:var(--on-coral)}
 .note-tape{
   position:absolute; top:-.7rem; left:50%; translate:-50% 0;
-  width:4.2rem; height:1.4rem; background:var(--blue); opacity:.9;
+  width:4.6rem; height:1.5rem; background:var(--blue); opacity:.88;
   transform:rotate(-2deg);
+  clip-path:polygon(0% 12%, 6% 2%, 30% 6%, 62% 0%, 94% 4%, 100% 16%, 97% 96%, 66% 90%, 34% 100%, 4% 94%);
+}
+.note-tape::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 0 26%, rgba(255,255,255,.3) 26% 28%,
+                             transparent 28% 71%, rgba(17,17,17,.07) 71% 73%, transparent 73%);
 }
 .note p{margin:0 0 .5em}
 .note p:last-child{margin-bottom:0}
