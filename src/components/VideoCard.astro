@@ -1,5 +1,6 @@
 ---
 import labels from '../data/labels.json';
+import VideoPoster from './VideoPoster.astro';
 import { toSeconds, clockTime } from '../lib/publish';
 /*
   Click to load. The poster is a still; the player is only built when somebody
@@ -75,7 +76,7 @@ const CAT: Record<string,string> = {
       ) : remotePoster ? (
         <img src={remotePoster} alt="" width="640" height="360"
              loading={featured ? 'eager' : 'lazy'} decoding="async" referrerpolicy="no-referrer" />
-      ) : <span class="vposter-none" aria-hidden="true"></span>}
+      ) : <VideoPoster title={d.title} series={d.series} category={d.category} />}
       <span class="vveil" aria-hidden="true"></span>
       <span class="vtri" aria-hidden="true">&#9654;</span>
       {len && <span class="vlen">{len}</span>}

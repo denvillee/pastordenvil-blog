@@ -81,26 +81,28 @@ const cats = ['teaching','leadership','conversation','qa'].filter((c) => catCoun
 const showSearch = talks.length >= 8;
 const showYears = years.length >= 2;
 const showSeries = series.length >= 2;
-/* The comp shows the tab row unconditionally: All videos, Teaching, Leadership,
-   Conversations, Q&A. Shown always so the page reads as the comp does; a tab
-   with nothing behind it simply filters to an empty state, which the page
-   already handles. */
-const ALL_CATS = ['teaching','leadership','conversation','qa'];
+/* A tab appears only when talks actually carry that category. Denvil, 2 Sep:
+   "An empty Q&A tab makes the library feel unfinished." The row grows as the
+   library gets labelled and never advertises a room with nothing in it. */
 
 /* Denvil, 1 Sep: "videos don't need years per se. Just put the content as the
-   layout is." So the year headings are gone. The comp's shape is a four-across
-   deck, a rule, then a smaller three-across "Most recent talks" row. */
-const deck = talks.slice(0, 4);
-const recent = talks.slice(4, 7);
-const restTalks = talks.slice(7);
+   layout is." So the year headings are gone. */
+/* The featured talk is chosen, not inherited from the sort order. It is then
+   REMOVED from everything below: the deck used to start at talks[0] as well, so
+   the same message appeared twice within one screen. */
+const feat: any = talks.find((t: any) => t.data.featured) ?? talks[0];
+const rest = talks.filter((t: any) => t !== feat);
+
+/* One "recent" section, not two. The page ran Featured -> four cards -> Most
+   recent talks -> the library, which is three versions of the same idea before
+   a reader reaches anything they can browse. Now: Featured, Latest talks,
+   Browse the library. */
+const latest = rest.slice(0, 6);
+const restTalks = rest.slice(6);
 const anyControls = showSearch || showYears || showSeries || showCats;
 
 /* One searchable string per talk, built here rather than in the browser: the
    markup carries it, so the script does no work before the reader types. */
-/* The comp leads Watch with one large featured video card beside the heading:
-   poster, play button, title over the image, and the runtime. The newest talk
-   takes the slot, which is what "featured" means on a page ordered by date. */
-const feat: any = talks[0];
 const featPoster = feat?.data.poster
   ? `/assets/img/${feat.data.poster}.jpg`
   : (feat?.data.provider === 'youtube' ? `https://i.ytimg.com/vi/${feat.data.videoId}/hqdefault.jpg` : undefined);
@@ -182,16 +184,22 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
     <section class="shell wtabs-row">
       <div class="wtabs" role="group" aria-label="Filter by kind">
         <button type="button" class="wtab on" data-cat="all" aria-pressed="true">All videos</button>
-        {ALL_CATS.map((c) => (
+        {cats.map((c) => (
           <button type="button" class="wtab" data-cat={c} aria-pressed="false">{CAT_LABEL[c]}</button>
         ))}
       </div>
       <a class="go" href="#watch-all">Browse all videos <span class="arw" aria-hidden="true">&rarr;</span></a>
     </section>
 
-    <section class="shell">
-      <div class="vcards vcards-4">
-        {deck.map((t: any) => (
+    <section class="shell wrecent">
+      <Mark kind="zigzag" color="blue"  class="wrecent-zig-l" />
+      <Mark kind="zigzag" color="green" class="wrecent-zig-r" />
+      <div class="sec-head">
+        <h2 class="sec-h"><span class="u">Latest talks<Mark kind="underline" color="yellow" draw={true} /></span></h2>
+        <a class="go" href="#watch-all">Browse the library <span class="arw" aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="vcards vcards-lat">
+        {latest.map((t: any) => (
           <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
                data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''} data-hay={hay(t)}>
             <VideoCard entry={t} />
@@ -200,24 +208,6 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
       </div>
     </section>
 
-    {recent.length > 0 && (
-      <section class="shell wrecent">
-        <Mark kind="zigzag" color="blue"  class="wrecent-zig-l" />
-        <Mark kind="zigzag" color="green" class="wrecent-zig-r" />
-        <div class="sec-head">
-          <h2 class="sec-h"><span class="u">Most recent talks<Mark kind="underline" color="yellow" draw={true} /></span></h2>
-          <a class="go" href="#watch-all">See all talks <span class="arw" aria-hidden="true">&rarr;</span></a>
-        </div>
-        <div class="vcards vcards-3 vcards-wide">
-          {recent.map((t: any) => (
-            <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
-                 data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''} data-hay={hay(t)}>
-              <VideoCard entry={t} />
-            </div>
-          ))}
-        </div>
-      </section>
-    )}
 
     {/* The full library, with its own controls. The comp does not put a search
         box between the hero and the tab row, so it lives here with the thing it

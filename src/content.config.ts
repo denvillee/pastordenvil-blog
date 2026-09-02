@@ -194,6 +194,10 @@ export const collections = {
       /* Set by hand, always. Deriving it from the upload date puts a talk
          given in December and posted in January under the wrong year. */
       year: z.number().int(),
+    /* Which talk leads the page. Newest is not the same as best: a page ordered
+       by date was promoting whatever happened to be last uploaded. Denvil picks
+       one. Newest is only the fallback when nothing is flagged. */
+    featured: z.boolean().default(false),
       provider: z.enum(['youtube', 'vimeo']).default('youtube'),
       /* The id only, not a URL. */
       videoId: z.string(),
