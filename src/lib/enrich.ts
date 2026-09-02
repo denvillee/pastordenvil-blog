@@ -176,29 +176,39 @@ function coreIdea(paras: string[]) {
   return `<aside class="core">${eyebrow}<p class="core-t">${body}</p></aside>`;
 }
 
-/* The turn. Denvil's essay pivots on one preposition -- working FOR identity
-   against working FROM identity -- and says so twice. A sentence in bold does
-   not show a pivot; two lines with the hinge word drawn between them does. So
-   the two states are set one above the other with an arrow from the first to
-   the second, and the preposition in each is circled, because the whole claim
-   is that those two small words are the difference.
+/* The turn, built to Denvil's own printed spread: a titled panel holding two
+   states, each a label with the pivot word circled in his hand, and a plain
+   gloss under it. The first version set the two states with an arrow between
+   them; his layout is clearer, because the difference is not motion from one to
+   the other, it is what each one means.
 
-   Two paragraphs: the state being left, then the state being moved into. */
+   Paragraphs: an optional title, then label and gloss in pairs. Anything the
+   author writes inside a label wrapped in .c is circled, which is how the FOR
+   and the FROM carry the whole claim. */
+/* Put the drawn loop inside every .c the author marked. Writing the SVG into
+   the markdown would put a drawing in the prose, which is exactly what the
+   callout syntax exists to avoid. */
+function withCircles(html: string) {
+  return html.replace(/<span class="c">([\s\S]*?)<\/span>/g,
+    (_m, inner) => `<span class="c">${inner}${mark('circle-loose', 'coral')}</span>`);
+}
+
 function theTurn(paras: string[]) {
-  const [from, to] = paras;
-  if (!to) return bigIdea(from);
+  const odd = paras.length % 2 === 1;
+  const title = odd ? paras[0] : '';
+  const body = odd ? paras.slice(1) : paras;
+  const rows: string[] = [];
+  for (let i = 0; i < body.length; i += 2) {
+    rows.push(
+      `<div class="turn-row">` +
+      `<p class="turn-l">${withCircles(body[i])}</p>` +
+      (body[i + 1] ? `<p class="turn-g">${body[i + 1]}</p>` : '') +
+      `</div>`
+    );
+  }
   return `<aside class="turn">` +
-    `<p class="turn-a">${from}</p>` +
-    /* Drawn here rather than through mark(): this module deliberately carries
-       only the two shapes it needed, and reaching for a third that does not
-       exist is what broke the build the first time. */
-    `<span class="turn-arw" aria-hidden="true">` +
-    `<svg viewBox="0 0 60 24" fill="none" aria-hidden="true">` +
-    `<path d="M4 12c14-3 30-3 50 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>` +
-    `<path d="M46 6l8 6-8 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>` +
-    `</svg></span>` +
-    `<p class="turn-b">${to}</p>` +
-    `</aside>`;
+    (title ? `<p class="turn-k">${title}</p>` : '') +
+    `<div class="turn-in">${rows.join('')}</div></aside>`;
 }
 
 function circled(inner: string) {

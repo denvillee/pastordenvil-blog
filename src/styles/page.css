@@ -248,38 +248,40 @@
   padding:.06em .1em 0 0; color:var(--ink);
 }
 .prose > * + *{margin-top:1.15em}
-/* A section heading has to be unmistakably structural. Denvil, 2 Sep: "the
-   section headers should be identifiably different from phrases that stand
-   out." Measured before the change: the heading was 28.8px/800 while the core
-   idea and the turn were 21.6px/700 and a big idea 41.3px/900 -- all the same
-   family, so a heading sat BETWEEN two kinds of emphasis and read as just
-   another loud line.
+/* A section heading, in the register of Denvil's own printed layout.
 
-   The fix is structure rather than size: a rule across the measure, and the
-   section's number in the margin. Emphasis never carries either, so the two
-   can no longer be confused. The counter means the numbering is automatic and
-   correct in every essay, and the sections of an argument genuinely are a
-   sequence, which is the only thing that earns a number. */
-.prose{counter-reset:sec}
+   The first attempt used a rule above and a numbered marker in the margin. He
+   cut both: "i dont like the line and numbers to divide sections. how about
+   center the header, different font (still on brand) and maybe a design
+   element." His page sets section titles as centred small caps over a hairline,
+   with a dinkus above as the break.
+
+   The register change is real without a third typeface: Archivo is variable, so
+   the heading narrows on the width axis, drops to label size, goes uppercase and
+   picks up heavy letterspacing. Emphasis on this site is always large, wide and
+   sentence case, so the two can no longer be read as the same thing. The dinkus
+   is drawn from repeating gradients rather than typed, because a character in a
+   ::before is still copy and copy does not belong in a stylesheet. */
 .prose h2{
-  counter-increment:sec;
-  font-size:var(--step-2); font-weight:800; line-height:1.15;
-  margin-top:2.6em; padding-top:1.15em; border-top:2px solid var(--ink);
-  position:relative;
+  text-align:center; text-transform:uppercase;
+  font-size:var(--step-0); font-weight:800; letter-spacing:.16em;
+  font-variation-settings:"wdth" 88;
+  line-height:1.3;
+  max-width:34ch; margin:3.4em auto 1.6em;
+  padding-bottom:.85em; border-bottom:1px solid var(--rule-strong);
 }
 .prose h2::before{
-  content:counter(sec, decimal-leading-zero);
-  position:absolute; top:.6em; left:0;
-  font-size:.7rem; font-weight:800; letter-spacing:.14em;
-  font-variant-numeric:tabular-nums; color:var(--coral-ink);
+  content:""; display:block; width:3.4rem; height:.55rem;
+  margin:0 auto 1.9em;
+  /* The strip has to be taller than the dot or the dot is clipped flat at the
+     bottom, which is what happened at .32rem against a 5.2px circle. */
+  background:radial-gradient(circle 2.6px at 50% 50%, var(--coral) 98%, transparent 100%)
+             0 0 / 1.13rem .55rem repeat-x;
 }
-/* The number sits above the heading, so the heading needs room for it. */
-.prose h2{padding-top:2.4em}
-@media (pointer: coarse){ .prose h2::before{font-size:.74rem} }
-/* The notes are apparatus, not a section of the argument: no rule, no number. */
-.prose .footnotes h2{counter-increment:none; border-top:0; padding-top:0;
-  font-size:var(--step-0); text-transform:uppercase; letter-spacing:.1em;
-  color:var(--muted)}
+/* The notes are apparatus, not argument: no dinkus, no rule, and set quietly. */
+.prose .footnotes h2{
+  border-bottom:0; margin-top:2.6em; padding-bottom:0;
+  color:var(--muted); font-variation-settings:"wdth" 100; letter-spacing:.1em}
 .prose .footnotes h2::before{content:none}
 .prose h3{font-size:var(--step-1); font-weight:800; margin-top:1.8em}
 .prose a{color:var(--blue-ink); text-decoration:underline; text-underline-offset:.16em}
@@ -1852,19 +1854,26 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 @media (prefers-reduced-motion:reduce){ .ra.is-live{box-shadow:none} }
 
 /* ── the turn ────────────────────────────────────────────────────────────
-   Two states with an arrow between them. The first is set back and lighter
-   because it is the thing being left; the second carries the weight. On a
-   phone the arrow rotates to point down, since the two lines stack. */
-.turn{display:grid; gap:.5rem; justify-items:start;
-  margin:clamp(1.8rem,3.8vw,2.6rem) 0; padding:clamp(1rem,2.4vw,1.4rem) 0;
-  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule)}
-.turn-a,.turn-b{margin:0; font-size:var(--step-1); line-height:1.3; font-weight:700}
-.turn-a{color:var(--muted); font-weight:600}
-.turn-b{color:var(--ink)}
-.turn-a .c,.turn-b .c{font-family:var(--hand); font-weight:600}
-.turn-arw{display:block; width:2.6rem; height:1.4rem; color:var(--coral);
-  rotate:90deg; margin:.3rem 0 .3rem .6rem}
-.turn-arw svg{width:100%; height:100%; display:block}
+   A titled panel with two states in it, following Denvil's printed spread. The
+   label carries the pivot word circled in his hand; the gloss under it says
+   what that state actually means. */
+.turn{margin:clamp(1.8rem,3.8vw,2.6rem) 0}
+.turn-k{margin:0; display:inline-block;
+  background:var(--tint-gold); color:var(--ink);
+  font-family:var(--sans); font-size:.72rem; font-weight:800;
+  letter-spacing:.13em; text-transform:uppercase;
+  padding:.5rem .9rem; border-radius:4px 4px 0 0}
+.turn-in{border:1px solid var(--rule-strong); border-radius:0 6px 6px 6px;
+  padding:clamp(1.1rem,2.6vw,1.6rem); display:grid; gap:1.1rem}
+.turn-row + .turn-row{border-top:1px solid var(--rule); padding-top:1.1rem}
+.turn-l{margin:0 0 .35rem; font-family:var(--sans); font-weight:800;
+  font-size:var(--step-1); letter-spacing:.01em; text-transform:uppercase;
+  font-variation-settings:"wdth" 92}
+.turn-l .c{font-family:var(--hand); font-weight:600; text-transform:none;
+  font-size:1.22em; padding-inline:.5em}
+.turn-g{margin:0; color:var(--muted); font-size:.98rem; line-height:1.55;
+  text-transform:none; font-weight:400}
+@media (pointer: coarse){ .turn-k{font-size:.74rem} }
 .feat-plate{display:grid; place-items:center; aspect-ratio:3/2;
   background:var(--card); padding:clamp(1rem,3vw,2rem)}
 .feat-plate .artp{max-width:18rem}

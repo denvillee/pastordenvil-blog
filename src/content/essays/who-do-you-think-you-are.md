@@ -93,9 +93,15 @@ But if you answer **“Who do you think you are?”** differently, you might dis
 That is the change in pattern between working for identity and working from identity.
 
 > [!TURN]
+> Working for vs. working from identity
+>
 > Working <span class="c">for</span> identity
 >
+> I do to earn, to prove, to be enough.
+>
 > Working <span class="c">from</span> identity
+>
+> I do from who I am in relationship with God.
 
 One is driven by the need to become somebody. The other can become worship.
 
