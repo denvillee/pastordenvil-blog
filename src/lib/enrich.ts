@@ -176,6 +176,31 @@ function coreIdea(paras: string[]) {
   return `<aside class="core">${eyebrow}<p class="core-t">${body}</p></aside>`;
 }
 
+/* The turn. Denvil's essay pivots on one preposition -- working FOR identity
+   against working FROM identity -- and says so twice. A sentence in bold does
+   not show a pivot; two lines with the hinge word drawn between them does. So
+   the two states are set one above the other with an arrow from the first to
+   the second, and the preposition in each is circled, because the whole claim
+   is that those two small words are the difference.
+
+   Two paragraphs: the state being left, then the state being moved into. */
+function theTurn(paras: string[]) {
+  const [from, to] = paras;
+  if (!to) return bigIdea(from);
+  return `<aside class="turn">` +
+    `<p class="turn-a">${from}</p>` +
+    /* Drawn here rather than through mark(): this module deliberately carries
+       only the two shapes it needed, and reaching for a third that does not
+       exist is what broke the build the first time. */
+    `<span class="turn-arw" aria-hidden="true">` +
+    `<svg viewBox="0 0 60 24" fill="none" aria-hidden="true">` +
+    `<path d="M4 12c14-3 30-3 50 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/>` +
+    `<path d="M46 6l8 6-8 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>` +
+    `</svg></span>` +
+    `<p class="turn-b">${to}</p>` +
+    `</aside>`;
+}
+
 function circled(inner: string) {
   return `<aside class="bigidea bigidea-c"><p class="bigidea-t"><span class="c">${inner}${mark('circle-loose', 'coral')}</span></p></aside>`;
 }
@@ -214,7 +239,7 @@ export async function enrich(html: string): Promise<string> {
     const paras = [...job.inner.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((p) => p[1].trim());
     if (!paras.length) continue;
 
-    const flag = paras[0].match(/^\[!(BIG|CIRCLE|QUOTE|CORE)\]\s*/i);
+    const flag = paras[0].match(/^\[!(BIG|CIRCLE|QUOTE|CORE|TURN)\]\s*/i);
     if (flag) {
       const kind = flag[1].toUpperCase();
       const cleaned = [paras[0].slice(flag[0].length).trim(), ...paras.slice(1)].filter(Boolean);
@@ -222,6 +247,7 @@ export async function enrich(html: string): Promise<string> {
       if (kind === 'BIG') replacements.push([job.whole, bigIdea(cleaned.join('</p><p class="bigidea-t">'))]);
       else if (kind === 'CIRCLE') replacements.push([job.whole, circled(cleaned[0])]);
       else if (kind === 'CORE') replacements.push([job.whole, coreIdea(cleaned)]);
+      else if (kind === 'TURN') replacements.push([job.whole, theTurn(cleaned)]);
       else replacements.push([job.whole, taped(cleaned)]);
       continue;
     }

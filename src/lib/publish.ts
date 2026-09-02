@@ -109,9 +109,9 @@ export const isoDate = (d: Date) => d.toISOString();
    `sources` says whether a piece in this room is the kind of thing that has
    books behind it; a Moment is not. */
 export const ROOMS = {
-  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '',          plural: labels.navEssays,  piece: 'essay',  sources: true },
-  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders', plural: labels.navLeaders, piece: 'essay',  sources: true },
-  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments', plural: labels.navMoments, piece: 'moment', sources: false },
+  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '',          plural: labels.navEssays,  piece: 'essay',  sources: true,  listen: true },
+  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders', plural: labels.navLeaders, piece: 'essay',  sources: true,  listen: true },
+  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments', plural: labels.navMoments, piece: 'moment', sources: false, listen: false },
 } as const;
 export type RoomKey = keyof typeof ROOMS;
 

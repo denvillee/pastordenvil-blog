@@ -94,13 +94,23 @@ if (wrap && article && supported) {
      way to tell a browser that refused from one that simply finished. */
   let started = false;
 
+  /* The idle wording belongs to the room, not to this script: a Moment offers
+     "Listen to this moment". It is carried on the element so there is one
+     source for it. */
+  const idleLabel = wrap.dataset.raIdle || 'Listen';
+
   function paint(state) {
     speaking = state === 'playing';
     label.textContent =
-      state === 'playing' ? 'Pause' : state === 'paused' ? 'Resume' : 'Listen to this essay';
+      state === 'playing' ? 'Pause' : state === 'paused' ? 'Resume' : idleLabel;
     playIcon.hidden = state === 'playing';
     pauseIcon.hidden = state !== 'playing';
     stopBtn.hidden = state === 'idle';
+    /* Denvil, 2 Sep: reading on his phone, he had to scroll back up to the top
+       of the essay to pause. Once it is actually reading, the bar rides with
+       the reader; at rest it sits in the flow where it belongs and takes no
+       room from the writing. */
+    wrap.classList.toggle('is-live', state !== 'idle');
   }
 
   function speakFrom(i) {

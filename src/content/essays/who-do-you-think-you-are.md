@@ -61,6 +61,8 @@ Through Jeremiah, God says, “I thought you would call me ‘Father’ and not 
 >
 > Knowing who they are in relationship to who God is.
 
+Some see him as equal. Some see him as a punisher, some see him as competition. But having a relationship with God begins with knowing who we are in relationship with him. Relationship with God is not founded on a set of predetermined markers of Christianity. It is predicated on who we are in relationship to him.
+
 A people who had been trained for generations to think like slaves had to learn to understand themselves through a story much larger than slavery. While Egypt was an undeniable part of their history, God was determined that it would never become the whole story through which they understood who they were.
 
 Before they could fully inhabit what God was calling them into, they had to learn to live from an identity that generations of slavery had taught them to forget. God was not simply leading them out of Egypt; he was forming them into a people who could understand themselves according to his story rather than Pharaoh’s.
@@ -88,7 +90,14 @@ As the biblical story unfolds, we will see human beings placed at the meeting pl
 
 But if you answer **“Who do you think you are?”** differently, you might discover that the answer to **“What do you think you’re doing?”** changes too.
 
-That is the change in pattern between working **for** identity and working **from** identity. One is driven by the need to become somebody. The other can become worship.
+That is the change in pattern between working for identity and working from identity.
+
+> [!TURN]
+> Working <span class="c">for</span> identity
+>
+> Working <span class="c">from</span> identity
+
+One is driven by the need to become somebody. The other can become worship.
 
 You can watch this play out all over Scripture, but two familiar scenes make the point especially clear, one in the life of David and the other in the life of Jesus.
 
@@ -115,7 +124,11 @@ The little brother. The shepherd. The inexperienced kid.
 The underqualified volunteer who somehow wandered onto the battlefield.
 
 But David has been living inside a different story....
-**the story we live in is the story we live out!**[^4]
+
+> [!QUOTE]
+> The story we live in is the story we live out.
+>
+> ~ Adapted from Pete Hughes[^4]
 
 One chapter earlier, Samuel had poured oil over his head and identified him as God’s choice, and “from that day on the Spirit of the LORD came powerfully upon David” (1 Samuel 16:13).
 
@@ -161,7 +174,7 @@ That distinction matters because Christ-like humility does not come from uncerta
 
 So as we see David walking toward a giant and Jesus kneeling to wash dirty feet, though the outward actions look dramatically different, the movement underneath them is the same.
 
-**Neither is working** **for** **identity and both are working** **from** **it.**
+**Neither is working for identity and both are working from it.**
 
 And this is part of what Genesis does for the people of God.
 

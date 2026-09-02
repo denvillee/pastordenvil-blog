@@ -34,7 +34,7 @@ const { piece = 'piece' } = Astro.props;
   offering a button that does nothing.
 */
 ---
-<div class="ra" data-read-aloud hidden>
+<div class="ra" data-read-aloud data-ra-idle={`Listen to this ${piece}`} hidden>
   <button type="button" class="ra-btn" data-ra-toggle aria-live="polite">
     <span class="ra-ico" aria-hidden="true">
       <svg viewBox="0 0 24 24" fill="none" focusable="false">

@@ -38,6 +38,14 @@ p{margin:0 0 1em}
 .wm-dot{color:var(--blue)}
 
 /* ── masthead ───────────────────────────────────────────────────────── */
+/* --mast-h is what anything else that wants to stick below the masthead has to
+   clear. It was referenced in two places and defined in none, so both were
+   guessing. Measured: 74px at desktop, 77px on a phone. Set a shade under the
+   real height so a sticky child tucks behind the masthead rather than leaving a
+   sliver of scrolling text visible between them; the masthead has the higher
+   z-index and paints over it. */
+:root{--mast-h:4.55rem}
+@media (max-width:520px){ :root{--mast-h:4.7rem} }
 .mast{position:sticky; top:0; z-index:40; background:var(--cream);
   border-bottom:1px solid var(--rule)}
 .mast-in{

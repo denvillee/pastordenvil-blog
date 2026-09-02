@@ -7,6 +7,7 @@ import StickyNote from '../components/marks/StickyNote.astro';
 import CategoryIcon from '../components/CategoryIcon.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Placeholder from '../components/Placeholder.astro';
+import ArtPlate from '../components/ArtPlate.astro';
 import Photo from '../components/Photo.astro';
 import { latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
 import { isStandin } from '../lib/media';
@@ -97,8 +98,10 @@ const shortcuts = [
   {/* ── latest ───────────────────────────────────────────────────────── */}
   <section class="band shell sec-latest">
     <div class="sec-head">
-      <h2 class="sec-h"><span class="u">Latest essay<Mark kind="underline" color="yellow" draw={true} /></span></h2>
-      <a class="go" href="/essays/">See all essays <span class="arw" aria-hidden="true">&rarr;</span></a>
+      <h2 class="sec-h"><span class="u">Latest {featureRoom ? featureRoom.piece : 'essay'}<Mark kind="underline" color="yellow" draw={true} /></span></h2>
+      <a class="go" href={`/${featureRoom ? featureRoom.path : 'essays'}/`}>
+        See all {featureRoom ? featureRoom.plural.toLowerCase() : 'essays'} <span class="arw" aria-hidden="true">&rarr;</span>
+      </a>
     </div>
 
     <div class="latest-deck">
@@ -108,7 +111,9 @@ const shortcuts = [
             <ImageMask shape="soft">
               {feature.data.image && !isStandin(feature.data.image)
                 ? <img src={feature.data.image} alt="" width="960" height="640" loading="lazy" decoding="async" />
-                : <Placeholder label={`Image for ${feature.data.title}`} ratio="3 / 2" />}
+                : feature.room === 'moments'
+                  ? <span class="feat-plate"><ArtPlate kind="morning" /></span>
+                  : <Placeholder label={`Image for ${feature.data.title}`} ratio="3 / 2" />}
             </ImageMask>
             <span class="chip chip-yellow">{featureRoom!.label}</span>
           </a>

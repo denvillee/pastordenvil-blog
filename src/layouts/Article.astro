@@ -163,7 +163,7 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
       {/* Above the writing, not floating over it: somebody who wants to
           listen decides that before they start reading, and somebody who does
           not should be able to ignore one quiet line. */}
-      <ReadAloud piece={ROOMS[room].piece} />
+      {ROOMS[room].listen && <ReadAloud piece={ROOMS[room].piece} />}
 
       <div class="prose" set:html={prose}></div>
 
