@@ -82,7 +82,6 @@
    into 2 or 3 across on its own instead of leaving a widow in a fixed pair. */
 .shortcuts{display:grid; gap:clamp(.9rem,2.4vw,1.6rem);
   grid-template-columns:repeat(auto-fit, minmax(15rem, 1fr))}
-@media (max-width:520px){ .shortcuts{grid-template-columns:1fr} }
 /* No card. The comp sets the rooms in open space -- disc, name, sentence --
    and the filled box was mine, not his. A fill plus a radius plus a shadow on
    every room flattens five different doorways into one repeating tile. */
@@ -1916,3 +1915,119 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .vnp-md .vnp-t{font-size:1.1rem}
 .vnp-sm .vnp-t{font-size:.92rem}
 @media (pointer: coarse){ .vnp-k{font-size:.72rem} }
+
+/* ═══ HOME, to Denvil's layout map ═══════════════════════════════════════ */
+
+/* ── the six pathways ────────────────────────────────────────────────────
+   The map draws them as six white cards in a row: big, visual, colourful,
+   clear entry points. Six across only where there is room for six; they fold
+   to three, then two, and the card is what makes them read as doors. */
+/* The featured piece no longer shares its row with the pathways, so it stops
+   being a narrow column and becomes the page's one big card. Denvil, 1 Sep:
+   stack the photo and the synopsis rather than setting them side by side. The
+   cap is what keeps a full bleed image from swallowing the fold. */
+.latest-deck{display:block}
+.latest-deck .feat{max-width:44rem}
+
+/* ── the six pathways ────────────────────────────────────────────────────
+   Their own band, full measure, six across where there is room; they fold to
+   three and then two on their own. */
+.paths{margin-block:clamp(1.4rem,3vw,2.4rem) clamp(2rem,4.5vw,3.2rem)}
+/* The Latest band already sets its own generous bottom padding; without this
+   the two bands stack their whitespace and open a hole between them. */
+.sec-latest{padding-bottom:clamp(1.2rem,2.6vw,2rem)}
+/* The drawn plate stands in for a photograph, so it should occupy the frame
+   the way a photograph would rather than float in the middle of it. */
+.latest-deck .feat-plate .artp{max-width:26rem}
+.paths-k{font-family:var(--sans); font-size:.72rem; font-weight:800;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--muted);
+  margin:0 0 1.1rem}
+.shortcuts{grid-template-columns:repeat(6,minmax(0,1fr))}
+@media (max-width:1180px){ .shortcuts{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:760px){ .shortcuts{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:359px){ .shortcuts{grid-template-columns:1fr} }
+.short{background:var(--white); border-radius:var(--r);
+  padding:1.2rem 1.1rem 2.4rem; box-shadow:0 1px 0 var(--rule),0 14px 26px -24px rgba(31,28,22,.45)}
+.short:hover{transform:translateY(-3px); box-shadow:0 1px 0 var(--rule),0 18px 30px -22px rgba(31,28,22,.5)}
+.short h3{font-size:1.02rem; margin:.75rem 0 .3rem}
+.short p{font-size:.82rem; line-height:1.45; max-width:none}
+.short .arw{left:1.1rem; bottom:1rem}
+.hglyph{display:block; width:2.9rem; height:2.9rem}
+.hglyph svg{width:100%; height:100%; display:block}
+.hglyph-blue{color:var(--navy)}
+.hglyph-green{color:var(--sage-ink)}
+.hglyph-yellow{color:#C98A0E}
+.hglyph-coral{color:var(--coral)}
+
+/* ── Grab your Bibles ────────────────────────────────────────────────────
+   The one full-bleed dark band on the page, and the only place the page
+   raises its voice. */
+.gyb-wrap{margin-block:clamp(2.4rem,5vw,3.6rem)}
+.gyb{position:relative; overflow:clip; background:var(--ink); color:var(--white);
+  border-radius:var(--r-lg); padding:clamp(1.6rem,4vw,2.8rem);
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.9fr) 16rem;
+  gap:clamp(1.2rem,3vw,2.2rem); align-items:center}
+@media (max-width:980px){ .gyb{grid-template-columns:1fr 1fr} 
+  /* The cover crosses both columns here, so it needs a cap of its own or
+     it grows to the full band and outshouts the words. */
+  .gyb-art{grid-column:span 2; width:min(100%,17rem); justify-self:center; margin-top:.6rem} }
+@media (max-width:640px){ .gyb{grid-template-columns:1fr} .gyb-art{grid-column:auto} }
+.gyb-h{font-size:clamp(2rem,5vw,3.1rem); font-weight:900; line-height:1.02;
+  letter-spacing:-.03em; margin:0 0 1.1rem}
+.gyb-dek{margin:0; color:rgba(255,255,255,.86); font-size:.95rem; line-height:1.6; max-width:30ch}
+.gyb-cta{background:var(--white); color:var(--ink)}
+/* Out of the headline. preserveAspectRatio is none on every mark, so a width
+   without a height stretches the zigzag into a bolt across the copy. */
+.gyb-scribble{position:absolute; left:.9rem; top:1rem; width:2.4rem; height:3.4rem; opacity:.6}
+.gyb-h .mk{color:var(--gold)}
+.gyb-art{position:relative; display:grid; place-items:center}
+/* The splash sits behind the cover, bleeding past it on two sides. */
+.gyb-splash{position:absolute; inset:-8% -12% -14% -10%; background:var(--gold);
+  border-radius:46% 54% 38% 62% / 58% 42% 60% 40%; rotate:-3deg}
+.gyb-art picture,.gyb-art img{position:relative; display:block; width:100%; height:auto;
+  border-radius:3px; box-shadow:0 14px 34px -18px rgba(0,0,0,.7)}
+.gyb-heart{position:absolute; top:-1.1rem; right:-.4rem; width:1.9rem; color:var(--coral)}
+.gyb-heart svg{width:100%; height:100%; display:block}
+.gyb-dots{position:absolute; left:34%; bottom:1rem; color:rgba(255,255,255,.5)}
+@media (max-width:640px){ .gyb-dots,.gyb-scribble{display:none} }
+
+/* ── recent essays ───────────────────────────────────────────────────────
+   Three, scannable, no ceremony. */
+.recents{margin-block:clamp(2rem,4vw,3rem)}
+.recents-k{font-family:var(--sans); font-size:.74rem; font-weight:800;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink); margin:0}
+.recent-grid{display:grid; gap:clamp(1rem,2.4vw,1.6rem);
+  grid-template-columns:repeat(auto-fit,minmax(16rem,1fr)); margin-top:1.1rem}
+.recent{display:grid; grid-template-columns:7.5rem 1fr; gap:.9rem; align-items:start}
+@media (max-width:520px){ .recent{grid-template-columns:6rem 1fr} }
+.recent-art{display:block; border-radius:var(--r-sm); overflow:hidden; background:var(--card)}
+.recent-art img{width:100%; height:100%; aspect-ratio:4/3; object-fit:cover; display:block}
+.recent-art .artp{padding:.5rem}
+.recent-body{display:grid; gap:.3rem}
+.recent-h{font-weight:800; font-size:1rem; line-height:1.2}
+.recent-d{font-size:.82rem; color:var(--muted); line-height:1.45}
+
+/* ── stay connected ──────────────────────────────────────────────────────
+   Simple, human, not salesy: the invitation is in his hand, the form is one
+   field, and nothing here says "join the community". */
+.sub-wrap{margin-block:clamp(2.4rem,5vw,3.6rem)}
+.subband{position:relative; overflow:clip; background:var(--blue-band,#1F63D6); color:var(--white);
+  border-radius:var(--r-lg); padding:clamp(1.6rem,4vw,2.6rem);
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.15fr) 6rem;
+  gap:clamp(1.2rem,3vw,2rem); align-items:center}
+@media (max-width:900px){ .subband{grid-template-columns:1fr} .sub-env{display:none} }
+.sub-hand{font-family:var(--hand); font-size:clamp(1.6rem,3.6vw,2.3rem); line-height:1.15;
+  margin:0; display:flex; align-items:center; gap:.5rem}
+.sub-hand-y{color:var(--gold); text-decoration:underline; text-underline-offset:.18em;
+  text-decoration-thickness:2px; margin-top:.3rem}
+.sub-heart{width:1.5rem; color:var(--coral); flex:0 0 auto}
+.sub-heart svg{width:100%; height:100%; display:block}
+.sub-dek{margin:0 0 .9rem; font-size:.95rem; line-height:1.55; color:rgba(255,255,255,.92); max-width:32ch}
+.sub-row{display:flex; gap:.6rem; flex-wrap:wrap}
+.sub-row input{flex:1 1 12rem; min-width:0; border:0; border-radius:4px;
+  padding:.85rem .9rem; font:inherit; font-size:.95rem; color:var(--ink); background:var(--white)}
+.btn-gold{background:var(--gold); color:var(--ink); border-radius:4px}
+.sub-tape{position:absolute; right:16%; top:-.4rem; width:4.2rem; rotate:-4deg}
+.sub-env{width:5.6rem; color:rgba(255,255,255,.9); justify-self:end}
+.sub-env svg{width:100%; height:100%; display:block}
+.vh{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}

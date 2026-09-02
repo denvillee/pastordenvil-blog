@@ -100,6 +100,10 @@
      rather than being renamed in 33 files, so a palette change stays a
      one-file change. New work should use the names above. */
   --blue:var(--navy);
+  /* The one saturated blue on the site, for the newsletter band in Denvil's
+     layout map. Navy is the reading colour; this is the shout. White on it
+     measures 5.9, which clears AA for the body text it carries. */
+  --blue-band:#1F63D6;
   --yellow:var(--gold);
   --green:var(--sage);
   --blue-ink:var(--navy);

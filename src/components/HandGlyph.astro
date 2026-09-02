@@ -1,0 +1,88 @@
+---
+/*
+  The six pathway icons, drawn by hand.
+
+  Denvil's layout map asks for the six main areas as big colourful cards with
+  hand-drawn icons, and specifically for these to look MORE hand drawn than the
+  set already on the site. Glyph.astro is the tidy version: even strokes on a
+  48-unit grid, right for a taxonomy row where the icon is a label. These are
+  the loose version, for the one place on the site where the icon is the
+  attraction rather than the signpost.
+
+  What makes a line read as hand drawn is not roughness, it is that no two
+  strokes agree. So the circles are not circles: each is a path whose radius
+  drifts a few units as it goes round, and none of them close where they
+  started. Stroke widths vary between 2.2 and 2.9 across the set, ends are
+  round, and nothing is symmetrical about the vertical.
+
+  Drawn rather than pulled from an icon set, for the reason the original note
+  gave and which still holds: a library gives neat pictograms in somebody
+  else's house style, and these want to look like his.
+*/
+interface Props {
+  name: 'essays' | 'leaders' | 'moments' | 'studies' | 'bookshelf' | 'watch';
+  class?: string;
+}
+const { name, class: cls = '' } = Astro.props;
+
+type Stroke = { d: string; w?: number; fill?: boolean };
+const G: Record<string, Stroke[]> = {
+  /* A pen nib with a loop of ink trailing off it. */
+  essays: [
+    { d: 'M15 41c1-3 3-6 6-9l16-17c2-2 5-2 7 0l3 3c2 2 2 5 0 7L30 42c-3 3-6 4-9 5-2 0-3-1-2-3z', w: 2.6 },
+    { d: 'M33 17l7 7', w: 2.4 },
+    { d: 'M16 40c2 1 3 2 4 4', w: 2.2 },
+    { d: 'M39 9c4-2 8 0 8 4 0 3-3 5-6 4s-3-5 1-6', w: 2.3 },
+  ],
+  /* Two people, the second smaller and standing a little behind. */
+  leaders: [
+    { d: 'M19 21c5 0 8-3 8-6s-3-6-7-6-7 3-7 6 2 6 6 6z', w: 2.6 },
+    { d: 'M8 40c0-7 5-12 11-12s11 5 11 12', w: 2.6 },
+    { d: 'M34 19c4 0 6-2 6-5s-2-5-5-5-5 2-5 5 1 5 4 5z', w: 2.3 },
+    { d: 'M31 27c5-1 10 3 10 10', w: 2.3 },
+  ],
+  /* A sun whose rays are all different lengths. */
+  moments: [
+    { d: 'M24 33c5 0 9-4 9-9s-4-9-10-9-8 4-8 9 4 9 9 9z', w: 2.7 },
+    { d: 'M24 6v5M24 38v6M6 24h5M37 24h6', w: 2.4 },
+    { d: 'M11 11l4 3M34 34l4 4M37 11l-4 4M14 33l-4 4', w: 2.2 },
+  ],
+  /* An open book with the spine off centre and the pages uneven. */
+  studies: [
+    { d: 'M6 14c6-2 12-2 18 3 6-5 12-5 18-3v21c-6-2-12-2-18 3-6-5-12-5-18-3z', w: 2.7 },
+    { d: 'M24 17v21', w: 2.4 },
+    { d: 'M11 20c3 0 6 1 8 2M29 22c2-1 5-2 8-2', w: 2.1 },
+  ],
+  /* Three books on a shelf, one leaning. The first draft made them narrow
+     enough to read as tally marks at 46px, so the spines are wider now and
+     each carries a band, which is what says "book" at this size. */
+  bookshelf: [
+    { d: 'M9 14h9v24H9z', w: 2.5 },
+    { d: 'M9 21h9', w: 2.1 },
+    { d: 'M20 10h9v28h-9z', w: 2.5 },
+    { d: 'M20 18h9', w: 2.1 },
+    { d: 'M32 38l3-21 8 2-4 21z', w: 2.5 },
+    { d: 'M33 30l9 1', w: 2.1 },
+    { d: 'M6 39h37', w: 2.3 },
+  ],
+  /* A play triangle inside a ring that does not quite meet. */
+  watch: [
+    { d: 'M24 41c9 0 17-7 17-17S33 7 24 7 7 15 7 24c0 8 6 16 15 17', w: 2.7 },
+    { d: 'M20 17l12 7-12 7z', w: 2.5 },
+  ],
+};
+
+const TONE: Record<string, string> = {
+  essays: 'blue', leaders: 'green', moments: 'yellow',
+  studies: 'blue', bookshelf: 'coral', watch: 'green',
+};
+const d = G[name];
+---
+<span class:list={['hglyph', `hglyph-${TONE[name]}`, cls]} aria-hidden="true">
+  <svg viewBox="0 0 48 48" fill="none" focusable="false">
+    {d.map((s) => (
+      <path d={s.d} stroke="currentColor" stroke-width={s.w ?? 2.5}
+            stroke-linecap="round" stroke-linejoin="round" />
+    ))}
+  </svg>
+</span>

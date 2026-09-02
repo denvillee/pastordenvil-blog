@@ -4,18 +4,24 @@ import Mark from '../components/marks/Mark.astro';
 import DotGrid from '../components/marks/DotGrid.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
-import CategoryIcon from '../components/CategoryIcon.astro';
+import HandGlyph from '../components/HandGlyph.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Placeholder from '../components/Placeholder.astro';
 import ArtPlate from '../components/ArtPlate.astro';
 import Photo from '../components/Photo.astro';
-import { latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
+import Tape from '../components/marks/Tape.astro';
+import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
 import home from '../data/home.json';
 import labels from '../data/labels.json';
 
 const feature = await latest();
+/* The three newest live essays, excluding whatever is already in the featured
+   slot above so the page never shows the same piece twice. */
+const recentEssays = (await live('essays'))
+  .filter((e: any) => e.id !== feature?.id)
+  .slice(0, 3);
 const featureRoom = feature ? ROOMS[feature.room] : null;
 /* The launch module from Denvil's 30 Aug package: the featured essay carries a
    small series label under it, and once the following essay is live it is
@@ -33,17 +39,24 @@ const featureMinutes = feature && feature.body.trim().split(/\s+/).filter(Boolea
    is a doorway rather than a description: the words are his, verbatim from the
    29 Aug revision packet, and they are the same sentences that open each
    section's own page. */
+/* The six main areas, in the order Denvil's layout map sets them, with his own
+   captions. Watch joins the row: the map asks for six pathways and Watch was the
+   one room the old five-item list left out, even though it is in the masthead.
+   Each caption is a doorway rather than a description, and they are the same
+   sentences that open each section's own page. */
 const shortcuts = [
-  { kind: 'essays',  href: '/essays/',    label: labels.essaysHeading,
-    dek: 'Longer reflections where I have room to follow ideas from Scripture, theology, ministry, and life beyond what I can say in a sermon.' },
-  { kind: 'moments', href: '/moments/',   label: labels.momentsHeading,
-    dek: 'Shorter reflections on the ordinary places where something suddenly opens up and I find myself noticing God, Scripture, or life differently.' },
-  { kind: 'reading', href: '/bookshelf/', label: labels.readingHeading,
-    dek: 'A look at the books and voices I am reading, wrestling with, and returning to, especially the ones shaping how I think, teach, and lead.' },
-  { kind: 'studies', href: '/studies/',   label: labels.studiesHeading,
-    dek: 'Guided ways into Scripture designed to help you make your own observations, ask better questions, and participate in the process of transformation.' },
-  { kind: 'leaders', href: '/leaders/',   label: labels.leadersHeading,
-    dek: 'Lessons I am learning about following Jesus while leading people, teams, ministries, and organizations entrusted to our care.' },
+  { kind: 'essays',    href: '/essays/',    label: labels.essaysHeading,
+    dek: 'Ideas and reflections on faith, life, and the kingdom of God.' },
+  { kind: 'leaders',   href: '/leaders/',   label: labels.leadersHeading,
+    dek: 'Practical wisdom for pastors and everyday leaders.' },
+  { kind: 'moments',   href: '/moments/',   label: labels.momentsHeading,
+    dek: 'Short thoughts to encourage you in the in-between.' },
+  { kind: 'studies',   href: '/studies/',   label: labels.studiesHeading,
+    dek: 'Guides to help you go deeper with Scripture.' },
+  { kind: 'bookshelf', href: '/bookshelf/', label: labels.readingHeading,
+    dek: 'Books that have shaped my thinking and ministry.' },
+  { kind: 'watch',     href: '/watch/',     label: labels.watchHeading,
+    dek: 'Messages and conversations to watch and share.' },
 ] as const;
 ---
 {/* Denvil supplied this title exactly, with a pipe. */}
@@ -66,14 +79,10 @@ const shortcuts = [
           I'm Denvil, a&#32;<span class="u">pastor and teacher<Mark kind="underline" color="yellow" /></span> trying to help
           people see what the good news of God's kingdom means for real life.
         </p>
-        <p class="hero-acts">
-          {feature && (
-            <a class="btn btn-blue" href={`/${featureRoom!.path}/${feature.id}/`}>
-              Read the latest essay <span class="arw" aria-hidden="true">&rarr;</span>
-            </a>
-          )}
-          <a class="go hero-go" href="/studies/">Start a study <span class="arw" aria-hidden="true">&rarr;</span></a>
-        </p>
+        {/* No buttons. Denvil's layout map: "Big introduction. Clear who I am.
+            No buttons. Strong visual energy." The hero states who he is; the
+            six pathways below are where a reader chooses. A pair of calls to
+            action here asks for a decision before the page has earned one. */}
       </div>
 
       <div class="hero-art">
@@ -138,46 +147,121 @@ const shortcuts = [
             )}
           </div>
         </article>
-      ) : (
-        <span />
-      )}
-
-      <div class="shortcuts">
-        {shortcuts.map((s) => (
-          <a class="short" href={s.href}>
-            <CategoryIcon kind={s.kind} />
-            <h3>{s.label}</h3>
-            <p>{s.dek}</p>
-            <span class="arw" aria-hidden="true">&rarr;</span>
-          </a>
-        ))}
-      </div>
+      ) : null}
     </div>
   </section>
 
-  {/* ── the two panels ───────────────────────────────────────────────── */}
-  <section class="band shell panels">
-    <div class="panel panel-dark">
-      <Mark kind="zigzag" color="blue" class="panel-zig" />
-      <h2 class="panel-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
-      <p class="std-feat-name">Quietly at Work</p>
-      <p class="panel-dek">
-        God never speaks out loud in Ruth, and he never stops working. Seven sessions
-        learning to recognize God's presence in loss, provision, waiting, ordinary
-        faithfulness, and the parts of the story we cannot yet see.
-      </p>
-      <a class="btn btn-light" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">
-        {home.studiesCta} <span class="arw" aria-hidden="true">&rarr;</span>
-      </a>
+  {/* ── the six pathways ───────────────────────────────────────
+      Denvil's map puts the six main areas in their own full width band, drawn
+      "Big, visual, colorful", not tucked beside something else. So they get
+      the whole measure and a row of their own rather than a column next to
+      the featured piece. */}
+  <section class="shell paths">
+    <h2 class="paths-k">Where to start</h2>
+    <div class="shortcuts">
+      {shortcuts.map((s) => (
+        <a class="short" href={s.href}>
+          <HandGlyph name={s.kind} />
+          <h3>{s.label}</h3>
+          <p>{s.dek}</p>
+          <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
+      ))}
     </div>
+  </section>
 
-    <div class="panel panel-light">
-      <Mark kind="zigzag" color="yellow" class="panel-zig panel-zig-r" />
-      <h2 class="panel-h"><span class="u">New here?<Mark kind="underline" color="green" /></span></h2>
-      <p class="panel-dek">A little about me, why this site exists, and where to start.</p>
-      {/* The sticky note repeated the hero's own sentence back at the reader.
-          The hero has already established it. */}
-      <a class="go" href="/about/">Start here <span class="arw" aria-hidden="true">&rarr;</span></a>
+  {/* ── Grab your Bibles, the signature banner ───────────────────────────
+      Denvil's map: "Signature section. Encouragement. Visual punch." Black
+      ground, the blue scribble at the left, a yellow splash behind the study's
+      cover, a heart, and the dots. This is the one full-bleed dark band on the
+      page and it is doing the punching, which is why the panels that used to
+      sit here have gone: two grey boxes side by side were not punching. */}
+  <section class="shell gyb-wrap">
+    <div class="gyb">
+      <Mark kind="zigzag" color="blue" class="gyb-scribble" />
+      <div class="gyb-copy">
+        <h2 class="gyb-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
+        <a class="btn btn-light gyb-cta" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">
+          Start reading Ruth <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+      <p class="gyb-dek">
+        The book of Ruth is a story of grace, loyalty, and God's faithfulness in
+        unexpected places.
+      </p>
+      <div class="gyb-art">
+        <span class="gyb-splash" aria-hidden="true"></span>
+        <Photo name="ruth-cover" width={520} height={720}
+               sizes="(max-width: 900px) 40vw, 16rem"
+               alt="The cover of the Quietly at Work study in the book of Ruth." />
+        <span class="gyb-heart" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+      <DotGrid cols={8} rows={4} class="gyb-dots" />
+    </div>
+  </section>
+
+  {/* ── Recent essays ────────────────────────────────────────────────────
+      "3 latest essays. Quick scan. Easy to dive in." The featured slot above
+      can hold any room, so this row is the one place on the page that is
+      always essays. */}
+  {recentEssays.length > 0 && (
+    <section class="shell recents">
+      <div class="sec-head">
+        <h2 class="recents-k">Recent essays</h2>
+        <a class="go" href="/essays/">View all essays <span class="arw" aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="recent-grid">
+        {recentEssays.map((e: any) => (
+          <a class="recent" href={`/essays/${e.id}/`}>
+            <span class="recent-art">
+              {e.data.image && !isStandin(e.data.image)
+                ? <img src={e.data.image} alt="" width="640" height="480" loading="lazy" decoding="async" />
+                : <ArtPlate kind="passage" />}
+            </span>
+            <span class="recent-body">
+              <span class="recent-h">{e.data.title}</span>
+              <span class="recent-d">{e.data.teaser ?? e.data.dek}</span>
+              <span class="go">Read essay <span class="arw" aria-hidden="true">&rarr;</span></span>
+            </span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {/* ── Stay connected ───────────────────────────────────────────────────
+      "Simple invite. Human, warm. Not salesy." So the invitation is in his
+      handwriting rather than in a headline, and the form is one field. */}
+  <section class="shell sub-wrap">
+    <div class="subband">
+      <Tape color="green" class="sub-tape" />
+      <div class="sub-copy">
+        <p class="sub-hand">
+          Thanks for reading.
+          <span class="sub-heart" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </span>
+        </p>
+        <p class="sub-hand sub-hand-y">You&#8217;re not alone.</p>
+      </div>
+      <div class="sub-form">
+        <p class="sub-dek">Get new essays, moments, and resources in your inbox.</p>
+        <form name="subscribe-home" method="POST" data-netlify="true" action="/subscribe/thanks/" class="sub-row">
+          <input type="hidden" name="form-name" value="subscribe-home" />
+          <label class="vh" for="sub-email">Your email</label>
+          <input id="sub-email" type="email" name="email" required placeholder="Your email" autocomplete="email" />
+          <button type="submit" class="btn btn-gold">Subscribe <span class="arw" aria-hidden="true">&rarr;</span></button>
+        </form>
+      </div>
+      <span class="sub-env" aria-hidden="true">
+        <svg viewBox="0 0 90 64" fill="none">
+          <path d="M6 12h78v46H6z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M6 14l39 27 39-27" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M78 4l5-3M86 12l5-1M74 2l1-4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </span>
     </div>
   </section>
 
