@@ -6,4 +6,8 @@ format: "image"
 image: "/assets/img/mom-his-presence.jpg"
 imageAlt: "Two people walking away down a wet city street under one umbrella in the rain, beside the words: God does not promise easy. He promises his presence."
 titleInImage: true
+paper: "green"
+clip: "none"
+emphasis: "presence"
+emphasisMark: "circle"
 ---

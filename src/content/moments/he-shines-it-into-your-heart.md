@@ -7,5 +7,9 @@ scripture: "2 Corinthians 4:6"
 image: "/assets/img/mom-shines-into-your-heart.jpg"
 imageAlt: "A woman reading an open Bible by a window as morning light pours across the room, beside the words: God does not merely tell you the truth. He shines it into your heart."
 titleInImage: true
+paper: "pink"
+clip: "none"
+emphasis: "shines"
+emphasisMark: "circle"
 ---
 

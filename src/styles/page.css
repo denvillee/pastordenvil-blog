@@ -2164,3 +2164,40 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 
 .qplate-t .mk-underline{height:.5rem; bottom:-.15rem}
 @media (max-width:760px){ .qplate-mk{display:block} }
+
+
+/* ── Moments, back to the mockup ─────────────────────────────────────────
+   Denvil, 2 Sep: the card artwork goes on the feature here, on the front page
+   feature, and on the post. The listing is post-its. */
+
+/* No tiny observation published means the featured moment has the row to
+   itself, which is when it can run art beside words the way the mockup draws
+   it. With a tiny beside it the deck splits and this stacks on its own. */
+.mom-deck:has(> :only-child) .mfeat{grid-template-columns:minmax(0,1.05fr) minmax(0,1fr)}
+.mfeat{display:grid; grid-template-columns:1fr; background:var(--card);
+  border-radius:var(--r); overflow:hidden; align-items:stretch}
+.mfeat-art{position:relative; display:block; background:var(--paper)}
+.mfeat-art img{display:block; width:100%; height:100%; object-fit:cover}
+.mfeat-plate{display:grid; place-items:center; height:100%; min-height:15rem; padding:1.5rem}
+.mfeat-plate .artp{max-width:16rem}
+.mfeat-chip{position:absolute; left:.85rem; top:.85rem; z-index:2}
+.mfeat-body{padding:clamp(1.2rem,3vw,2rem); align-self:center}
+.mfeat-h{font-size:var(--step-2); font-weight:800; line-height:1.12; margin:0 0 .7rem}
+.mfeat-h a:hover{color:var(--blue-ink)}
+.mfeat-d{color:var(--muted); margin:0 0 .8rem; max-width:38ch}
+.mfeat-meta{font-size:.8rem; color:var(--faint); margin:0 0 .8rem}
+@media (max-width:820px){ .mom-deck:has(> :only-child) .mfeat{grid-template-columns:1fr} }
+
+/* Mockup rule 6: the handwriting is much larger than the metadata. It was
+   1.12rem against a .72rem date, which is not "much". */
+.ncards{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:1080px){ .ncards{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:820px){ .ncards{grid-template-columns:repeat(2,minmax(0,1fr))} }
+@media (max-width:520px){ .ncards{grid-template-columns:1fr} }
+.ncard{padding:1.3rem 1.25rem 1.6rem}
+.ncard-lined{padding-left:2.3rem}
+.ncard-t{font-size:1.3rem; line-height:1.45}
+.ncard-d{font-size:.68rem; letter-spacing:.04em}
+
+/* Mockup rule 3: the blue card is a solid blue rectangle, and it is big. */
+.mom-note{max-width:22rem; font-size:1.4rem; padding:1.6rem 1.6rem 1.4rem}

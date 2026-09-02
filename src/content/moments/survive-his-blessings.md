@@ -6,4 +6,8 @@ format: "image"
 image: "/assets/img/mom-gifts-are-forming.jpg"
 imageAlt: "Two hands holding a basket of bread, grapes, wheat and a book, beside the words: God cares as much about who his gifts are forming as he does about the gifts themselves. Do not let the gift replace the Giver."
 titleInImage: true
+paper: "cream"
+clip: "none"
+emphasis: "forming"
+emphasisMark: "circle"
 ---

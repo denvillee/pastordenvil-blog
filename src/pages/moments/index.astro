@@ -4,6 +4,7 @@ import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
 import Photo from '../../components/Photo.astro';
+import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
 import Doorway from '../../components/Doorway.astro';
@@ -11,7 +12,8 @@ import ArtPlate from '../../components/ArtPlate.astro';
 import ColorDisc from '../../components/marks/ColorDisc.astro';
 import NoteCard from '../../components/NoteCard.astro';
 import Glyph from '../../components/Glyph.astro';
-import { live, introPost, displayDate } from '../../lib/publish';
+import { live, introPost, displayDate, isoDate, openingParagraph } from '../../lib/publish';
+import { isStandin } from '../../lib/media';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
@@ -21,10 +23,13 @@ const intro = await introPost('moments');
    Denvil's revision packet asks each section to open with a doorway in his
    own voice. It is still the same real, linkable, CMS-editable post. */
 const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
+/* The blue note's line: his own, from the intro post that opens this room. */
+const noteLine = intro?.data.dek ?? '';
 const pinnedIdx = entries.findIndex((e: any) => e.data.pinned);
 const ordered = pinnedIdx > 0
   ? [entries[pinnedIdx], ...entries.filter((_: any, i: number) => i !== pinnedIdx)]
   : entries;
+const [featured, ...rest] = ordered;
 
 /* The comp splits the page three ways, and the split is by FORMAT, not by date:
    one featured moment, one "tiny observation" pulled out beside it, and the
@@ -34,6 +39,8 @@ const ordered = pinnedIdx > 0
    because putting it in the grid would make it look like a note that ran short.
    Newest tiny wins; if none is published the slot is simply absent, the way the
    rest of this page already handles emptiness. */
+const tiny = rest.find((e: any) => e.data.format === 'tiny');
+const cards = rest.filter((e: any) => e !== tiny);
 
 /* The paper, the clip and the drawn mark are authored per post in the CMS. The
    tone cycles blue -> yellow -> coral -> green so a row of scraps carries the
@@ -49,14 +56,24 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
         <p class="page-dek">{labels.momentsSubtitle}</p>
       </div>
       <div class="mom-quote">
-        {/* PULLED, 2 Sep. The blue note here carried "Grace is not the
-            absence of struggle, but the presence of God." Nobody wrote it.
-            The comment above it in the previous version said so, and then a
-            second comment claimed it came from one of Denvil's documents, and
-            both cannot be true. A sentence in his voice, in his colours, on
-            his page, is his whether or not it is in quotation marks, so it
-            comes out until he supplies one he actually said. The space is
-            better empty than borrowed. */}
+        {/* The taped blue note the mockup puts at the top right, white
+            handwriting on blue with a heart. The mockup's own README calls
+            its copy "scaffolding copied from the design mockup", and the line
+            it carried -- "Grace is not the absence of struggle, but the
+            presence of God" -- is exactly that: nobody wrote it. So the note
+            takes the sentence Denvil wrote to open this room instead, from
+            the Moments intro post, which is about this page and is his. If he
+            wants a different line here it is one field in the CMS. */}
+        {noteLine && (
+          <StickyNote tone="blue" tilt={-2.2} tape={true} class="mom-note">
+            <span class="mom-note-q" aria-hidden="true">&ldquo;</span>
+            {noteLine}
+            <span class="mom-note-heart" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+            </span>
+          </StickyNote>
+        )}
+
         <DotGrid cols={6} rows={4} class="mom-dots" />
       </div>
     </section>
@@ -72,34 +89,96 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
     )}
 
     <section class="shell">
-      {/* ── the wall ──────────────────────────────────────────────────────
-          Denvil, 2 Sep: "the moments are supposed to be the photos." So the
-          page is the wall of cards and nothing else. The old split -- one
-          featured moment in a big box, a tiny observation beside it, then a
-          grid -- was three treatments for what is now one kind of thing, and
-          the featured box was advertising the one Moment that has no card yet
-          by drawing a placeholder in its place.
-
-          A Moment with a card is its card. A Moment that is a piece of writing
-          rather than a card keeps the note treatment, so the wall never has a
-          hole in it. Pinned leads, and leads at double width when it has the
-          art to carry it.
-
-          When nothing is published the listing is simply absent. The site
+      {/* When nothing is published the listing is simply absent. The site
           never announces its own emptiness. */}
-      {ordered.length > 0 && (
-        <>
+      {(featured || tiny) && (
+      <div class="mom-deck">
+        {featured && (
+        <div>
           <div class="sec-head">
+            <h2 class="sec-h"><span class="u">Featured moment<Mark kind="underline" color="coral" draw={true} /></span></h2>
+          </div>
+          {/* Denvil, 2 Sep: the card artwork belongs here, on the front page
+              feature, and on the post itself. So this is written out rather
+              than handed to FeaturedEssay: the mockup sets the art on the left
+              and the words beside it, and FeaturedEssay stacks, because a
+              stacked feature is what the front page needed on 1 Sep.
+
+              A Moment with no card yet gets the drawn plate. Not the quote
+              plate: that sets the sentence inside the art, and the sentence is
+              already the headline beside it. Twice in one card. */}
+          <article class="mfeat">
+            <a class="mfeat-art" href={`/moments/${featured.id}/`} tabindex="-1" aria-hidden="true">
+              {featured.data.image && !isStandin(featured.data.image)
+                ? <img src={featured.data.image} alt="" width="1536" height="1024"
+                       loading="eager" fetchpriority="high" decoding="async" />
+                : <span class="mfeat-plate"><ArtPlate kind="morning" /></span>}
+              <span class="chip chip-coral mfeat-chip">Featured</span>
+            </a>
+            <div class="mfeat-body">
+              <h3 class="mfeat-h">
+                <a href={`/moments/${featured.id}/`}>
+                  <span class="u">{featured.data.title}<Mark kind="underline" color="blue" draw={true} /></span>
+                </a>
+              </h3>
+              <p class="mfeat-d">{featured.data.teaser || featured.data.dek || openingParagraph(featured.body, 150)}</p>
+              <p class="mfeat-meta">
+                <time datetime={isoDate(featured.data.publishAt)}>{displayDate(featured.data.publishAt)}</time>
+              </p>
+              <a class="go" href={`/moments/${featured.id}/`}>Read moment <span class="arw" aria-hidden="true">&rarr;</span></a>
+            </div>
+          </article>
+        </div>
+        )}
+        {tiny && (
+          <div>
+            <div class="sec-head">
+              <h2 class="sec-h"><span class="u">Tiny observation<Mark kind="underline" color="blue" draw={true} /></span></h2>
+            </div>
+            <div class="tiny">
+              <Glyph name="sun" tone="yellow" />
+              <div>
+                <p class="tiny-t">
+                  {tiny.body.trim().split('\n').filter(Boolean).map((l: string) => <span>{l.trim()}</span>)}
+                </p>
+                <p class="tiny-d">{displayDate(tiny.data.publishAt)}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      )}
+
+
+
+      {cards.length > 0 && (
+        <>
+          <div class="sec-head arch-sub">
             <h2 class="sec-h"><span class="u">Recent moments<Mark kind="underline" color="coral" draw={true} /></span></h2>
           </div>
-          <div class="mwall">
-            {ordered.map((e: any, i: number) => (
-              <MomentCard href={`/moments/${e.id}/`} entry={e} i={i}
-                          lead={i === 0} eager={i < 3} />
+          {/* Denvil, 2 Sep: the card artwork belongs on the feature above,
+              on the front page feature, and on the post itself. Here it is
+              post-its. That is the signature of this page and the reason it
+              reads as a desk rather than a feed, and a wall of full-bleed
+              pictures was not it.
+
+              Paper, clip and drawn mark are authored per post in the CMS
+              rather than randomised: a random paper would reshuffle on every
+              build and the page would never look the same twice, which is
+              exactly the restlessness a page about noticing should not have. */}
+          <div class="ncards">
+            {cards.map((e: any, i: number) => (
+              <NoteCard href={`/moments/${e.id}/`}
+                        text={e.data.title}
+                        date={displayDate(e.data.publishAt)}
+                        paper={e.data.paper} clip={e.data.clip}
+                        emphasis={e.data.emphasis} emphasisMark={e.data.emphasisMark}
+                        tone={TONES[i % 4]} />
             ))}
           </div>
         </>
       )}
+
     </section>
 
     {/* The comp closes Moments with a band on the page ground: the colour disc
@@ -117,7 +196,7 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
                sizes="(max-width: 900px) 92vw, 46vw"
                alt="Denvil Lee teaching on stage in a yellow hoodie, both hands open, under a Come Alive banner." />
       </div>
-      <Mark kind="scribble" color="yellow" class="mom-close-zig" />
+      <Mark kind="zigzag" color="yellow" class="mom-close-zig" />
     </section>
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.

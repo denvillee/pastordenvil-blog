@@ -6,5 +6,9 @@ format: "image"
 image: "/assets/img/mom-love-moves.jpg"
 imageAlt: "One pair of hands passing a loaf of bread to another across a set table, beside the words: Love does not stay private. It moves toward someone."
 titleInImage: true
+paper: "lined"
+clip: "tape"
+emphasis: "private"
+emphasisMark: "highlight"
 ---
 
