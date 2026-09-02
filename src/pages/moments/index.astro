@@ -25,7 +25,6 @@ const pinnedIdx = entries.findIndex((e: any) => e.data.pinned);
 const ordered = pinnedIdx > 0
   ? [entries[pinnedIdx], ...entries.filter((_: any, i: number) => i !== pinnedIdx)]
   : entries;
-const [featured, ...rest] = ordered;
 
 /* The comp splits the page three ways, and the split is by FORMAT, not by date:
    one featured moment, one "tiny observation" pulled out beside it, and the
@@ -35,8 +34,6 @@ const [featured, ...rest] = ordered;
    because putting it in the grid would make it look like a note that ran short.
    Newest tiny wins; if none is published the slot is simply absent, the way the
    rest of this page already handles emptiness. */
-const tiny = rest.find((e: any) => e.data.format === 'tiny');
-const cards = rest.filter((e: any) => e !== tiny);
 
 /* The paper, the clip and the drawn mark are authored per post in the CMS. The
    tone cycles blue -> yellow -> coral -> green so a row of scraps carries the
@@ -75,75 +72,34 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
     )}
 
     <section class="shell">
-      {/* When nothing is published the listing is simply absent. The site
+      {/* ── the wall ──────────────────────────────────────────────────────
+          Denvil, 2 Sep: "the moments are supposed to be the photos." So the
+          page is the wall of cards and nothing else. The old split -- one
+          featured moment in a big box, a tiny observation beside it, then a
+          grid -- was three treatments for what is now one kind of thing, and
+          the featured box was advertising the one Moment that has no card yet
+          by drawing a placeholder in its place.
+
+          A Moment with a card is its card. A Moment that is a piece of writing
+          rather than a card keeps the note treatment, so the wall never has a
+          hole in it. Pinned leads, and leads at double width when it has the
+          art to carry it.
+
+          When nothing is published the listing is simply absent. The site
           never announces its own emptiness. */}
-      {(featured || tiny) && (
-      <div class="mom-deck">
-        {featured && (
-        <div>
-          <div class="sec-head">
-            <h2 class="sec-h"><span class="u">Featured moment<Mark kind="underline" color="coral" draw={true} /></span></h2>
-          </div>
-          {/* Denvil, 1 Sep: "use a stock photo for moments and only have my
-              image at the bottom like the mockup image." A drawn plate is used
-              rather than bought stock — the art direction has been against faith
-              stock photography from the start — and the only photograph of him
-              on this page is now the one in the closing band, which is where the
-              comp puts it. */}
-          <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured}
-                         label="Featured" room={labels.momentsHeading} tone="coral"
-                         plate="morning" piece="moment" />
-        </div>
-        )}
-        {tiny && (
-          <div>
-            <div class="sec-head">
-              <h2 class="sec-h"><span class="u">Tiny observation<Mark kind="underline" color="blue" draw={true} /></span></h2>
-            </div>
-            <div class="tiny">
-              <Glyph name="sun" tone="yellow" />
-              <div>
-                <p class="tiny-t">
-                  {tiny.body.trim().split('\n').filter(Boolean).map((l: string) => <span>{l.trim()}</span>)}
-                </p>
-                <p class="tiny-d">{displayDate(tiny.data.publishAt)}</p>
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
-      )}
-
-
-
-      {cards.length > 0 && (
+      {ordered.length > 0 && (
         <>
-          <div class="sec-head arch-sub">
+          <div class="sec-head">
             <h2 class="sec-h"><span class="u">Recent moments<Mark kind="underline" color="coral" draw={true} /></span></h2>
           </div>
-          {/* Scraps for the short forms, full cards for anything longer. A note
-              is one line and belongs on paper; an essay-length moment has a dek
-              and a read time and would be cramped on one. */}
-          <div class="ncards">
-            {cards.filter((e: any) => e.data.format === 'note').map((e: any, i: number) => (
-              <NoteCard href={`/moments/${e.id}/`}
-                        text={e.data.title}
-                        date={displayDate(e.data.publishAt)}
-                        paper={e.data.paper} clip={e.data.clip}
-                        emphasis={e.data.emphasis} emphasisMark={e.data.emphasisMark}
-                        tone={TONES[i % 4]} />
+          <div class="mwall">
+            {ordered.map((e: any, i: number) => (
+              <MomentCard href={`/moments/${e.id}/`} entry={e} i={i}
+                          lead={i === 0} eager={i < 3} />
             ))}
           </div>
-          {cards.some((e: any) => e.data.format !== 'note') && (
-            <div class="mcards arch-sub">
-              {cards.filter((e: any) => e.data.format !== 'note').map((e: any, i: number) => (
-                <MomentCard href={`/moments/${e.id}/`} entry={e} i={i} />
-              ))}
-            </div>
-          )}
         </>
       )}
-
     </section>
 
     {/* The comp closes Moments with a band on the page ground: the colour disc
@@ -161,7 +117,7 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
                sizes="(max-width: 900px) 92vw, 46vw"
                alt="Denvil Lee teaching on stage in a yellow hoodie, both hands open, under a Come Alive banner." />
       </div>
-      <Mark kind="zigzag" color="yellow" class="mom-close-zig" />
+      <Mark kind="scribble" color="yellow" class="mom-close-zig" />
     </section>
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.

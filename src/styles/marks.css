@@ -57,6 +57,10 @@
 .mk-arrow,.mk-arrow-curl{width:clamp(3.4rem,7vw,6.5rem); height:clamp(1.8rem,3.6vw,3.2rem)}
 .mk-star,.mk-asterisk{width:clamp(1.2rem,2.4vw,2rem); height:clamp(1.2rem,2.4vw,2rem)}
 .mk-spiral{width:clamp(2rem,4vw,3.4rem); height:clamp(4.2rem,9vw,7.4rem)}
+.mk-scribble{width:clamp(3rem,5.5vw,5rem); height:clamp(3rem,5.5vw,5rem)}
+.mk-paint{width:clamp(12rem,30vw,22rem); height:clamp(4.7rem,11.8vw,8.6rem)}
+.mk-sprinkle{width:clamp(6rem,14vw,11rem); height:clamp(3rem,7vw,5.5rem)}
+.mk-loop{width:clamp(4rem,8vw,7rem); height:clamp(3.3rem,6.7vw,5.8rem)}
 
 /* ── the dot grid ───────────────────────────────────────────────────── */
 .dotgrid{
@@ -68,8 +72,12 @@
      above, so nothing else moves. */
   background-image:radial-gradient(currentColor var(--d), transparent var(--d));
   background-size:var(--gap) var(--gap);
-  opacity:.5;
+  /* Kit rule 10, 2 Sep: "If a mark is so faint that it reads as texture, it
+     is probably too timid for this visual system." It was at .5. */
+  opacity:.68;
 }
+
+.mk-white{color:var(--white)}
 
 /* ── tape ───────────────────────────────────────────────────────────── */
 .tape{
@@ -148,7 +156,7 @@
 /* ── small screens ──────────────────────────────────────────────────────
    Decoration gets out of the way rather than sitting on top of the words. */
 @media (max-width:760px){
-  .mk-brush,.mk-zigzag,.mk-spiral,.mk-arrow,.mk-arrow-curl,.dotgrid{display:none}
+  .mk-brush,.mk-zigzag,.mk-spiral,.mk-scribble,.mk-arrow,.mk-arrow-curl,.mk-loop,.dotgrid{display:none}
   .disc{width:5.4rem; font-size:.9rem}
   .note{transform:none}
 }

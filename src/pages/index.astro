@@ -101,8 +101,9 @@ const shortcuts = [
                  alt="Denvil Lee teaching on stage in a coral polo, both hands reaching out as he makes a point." />
         </ImageMask>
         <ColorDisc lines={["theology","leadership","life"]} class="hero-disc" />
-        {/* The arrow the map draws under the photo, running into the disc. */}
-        <Mark kind="arrow" color="ink" class="hero-curl" />
+        {/* The looping arrow from his kit, running into the disc, which is the
+            gesture the map draws under the photo. */}
+        <Mark kind="loop" color="ink" class="hero-curl" />
       </div>
     </div>
   </section>
@@ -200,7 +201,7 @@ const shortcuts = [
         Start reading Ruth <span class="arw" aria-hidden="true">&rarr;</span>
       </a>
       <div class="gyb-art">
-        <span class="gyb-splash" aria-hidden="true"></span>
+        <Mark kind="paint" color="yellow" class="gyb-paint" />
         <Photo name="ruth-cover" width={520} height={720}
                sizes="(max-width: 900px) 40vw, 16rem"
                alt="The cover of the Quietly at Work study in the book of Ruth." />
@@ -208,16 +209,8 @@ const shortcuts = [
           <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
         </span>
       </div>
-      {/* The spray of white specks the map throws off the bottom of the
-          splash. Hand placed rather than gridded: a grid of dots is a
-          pattern, and this is meant to read as something that scattered. */}
-      <svg class="gyb-speck" viewBox="0 0 120 64" fill="none" aria-hidden="true">
-        {[[6,44],[15,30],[19,50],[27,38],[31,17],[34,56],[41,29],[45,45],[52,12],[54,35],
-          [60,52],[63,24],[70,41],[74,9],[78,57],[84,31],[88,47],[95,19],[99,38],[104,54],
-          [110,27],[114,44]].map(([x,y], i) => (
-          <circle cx={x} cy={y} r={i % 3 === 0 ? 2.4 : i % 3 === 1 ? 1.7 : 1.2} fill="currentColor" />
-        ))}
-      </svg>
+      {/* The spray of specks that comes off the paint. */}
+      <Mark kind="sprinkle" color="white" class="gyb-speck" />
     </div>
   </section>
 
