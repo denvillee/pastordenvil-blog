@@ -4,6 +4,7 @@ author: "Ken Gire"
 year: 1998
 shelfStatus: shelf
 shelfMonth: "2026-08"
+category: formation
 spine: ink
 cover: /assets/covers/gire-moments.jpg
 order: 3

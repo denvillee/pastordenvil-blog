@@ -4,6 +4,7 @@ author: "John H. Walton"
 year: 2015
 shelfStatus: shelf
 shelfMonth: "2026-08"
+category: theology
 spine: ink
 cover: /assets/covers/walton-lost-world-adam.jpg
 order: 8

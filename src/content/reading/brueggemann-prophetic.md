@@ -4,6 +4,7 @@ author: "Walter Brueggemann"
 year: 1978
 shelfStatus: next
 shelfMonth: "2026-08"
+category: theology
 spine: cobalt
 cover: /assets/covers/brueggemann-prophetic.jpg
 order: 4

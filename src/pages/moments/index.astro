@@ -9,7 +9,10 @@ import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
 import Doorway from '../../components/Doorway.astro';
 import ArtPlate from '../../components/ArtPlate.astro';
-import { live, introPost } from '../../lib/publish';
+import ColorDisc from '../../components/marks/ColorDisc.astro';
+import NoteCard from '../../components/NoteCard.astro';
+import Glyph from '../../components/Glyph.astro';
+import { live, introPost, displayDate } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
@@ -19,7 +22,27 @@ const intro = await introPost('moments');
    Denvil's revision packet asks each section to open with a doorway in his
    own voice. It is still the same real, linkable, CMS-editable post. */
 const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
-const [featured, ...rest] = entries;
+const pinnedIdx = entries.findIndex((e: any) => e.data.pinned);
+const ordered = pinnedIdx > 0
+  ? [entries[pinnedIdx], ...entries.filter((_: any, i: number) => i !== pinnedIdx)]
+  : entries;
+const [featured, ...rest] = ordered;
+
+/* The comp splits the page three ways, and the split is by FORMAT, not by date:
+   one featured moment, one "tiny observation" pulled out beside it, and the
+   remainder as a grid of handwritten scraps.
+
+   A tiny is shorter than a note and carries no argument. It gets its own slot
+   because putting it in the grid would make it look like a note that ran short.
+   Newest tiny wins; if none is published the slot is simply absent, the way the
+   rest of this page already handles emptiness. */
+const tiny = rest.find((e: any) => e.data.format === 'tiny');
+const cards = rest.filter((e: any) => e !== tiny);
+
+/* The paper, the clip and the drawn mark are authored per post in the CMS. The
+   tone cycles blue -> yellow -> coral -> green so a row of scraps carries the
+   same four-colour rotation the rest of the system uses. */
+const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
 ---
 <Shell title={`${labels.momentsHeading} · ${site.name}`} description={labels.momentsDek} current="moments">
   <div class="arch">
@@ -39,9 +62,21 @@ const [featured, ...rest] = entries;
             rather than on the front page, where it would be spent on every
             visit. Cut out on the page ground, one coral dot, and nothing else:
             no tape, no doodles, no arrow. The restraint is the joke. */}
-        <Photo name="dl-helmet-v2" width={1000} height={1250} class="mom-art"
-               sizes="(max-width: 900px) 80vw, 34vw"
-               alt="Denvil Lee wearing a gold toy space helmet, cut out among drawn marks." />
+        {/* The comp puts a large taped blue note at the top right of Moments,
+            white handwriting on blue, with a heart. It was cut once before
+            because the line in the comp was a generic inspirational quote nobody
+            had written. This one is Denvil's own sentence, from
+            `To know that you are loved changes everything - John 14,
+            2 Corinthians 4.docx`, and it is about exactly what this room is
+            about: God getting past the ear and into the person. */}
+        <StickyNote tone="blue" tilt={-2.2} tape={true} class="mom-note">
+          <span class="mom-note-q" aria-hidden="true">&ldquo;</span>
+          Grace is not the absence of struggle, but the presence of&#32;<span class="u">God.<Mark kind="underline" color="yellow" /></span>
+          <span class="mom-note-heart" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+          </span>
+        </StickyNote>
+
         <DotGrid cols={6} rows={4} class="mom-dots" />
       </div>
     </section>
@@ -59,22 +94,91 @@ const [featured, ...rest] = entries;
     <section class="shell">
       {/* When nothing is published the listing is simply absent. The site
           never announces its own emptiness. */}
-      {featured && (
-        <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured}
-                       label="Featured moment" room={labels.momentsHeading} tone="coral" />
+      {(featured || tiny) && (
+      <div class="mom-deck">
+        {featured && (
+        <div>
+          <div class="sec-head">
+            <h2 class="sec-h"><span class="u">Featured moment<Mark kind="underline" color="coral" draw={true} /></span></h2>
+          </div>
+          {/* Denvil, 1 Sep: "use a stock photo for moments and only have my
+              image at the bottom like the mockup image." A drawn plate is used
+              rather than bought stock — the art direction has been against faith
+              stock photography from the start — and the only photograph of him
+              on this page is now the one in the closing band, which is where the
+              comp puts it. */}
+          <FeaturedEssay href={`/moments/${featured.id}/`} entry={featured}
+                         label="Featured" room={labels.momentsHeading} tone="coral"
+                         plate="morning" />
+        </div>
+        )}
+        {tiny && (
+          <div>
+            <div class="sec-head">
+              <h2 class="sec-h"><span class="u">Tiny observation<Mark kind="underline" color="blue" draw={true} /></span></h2>
+            </div>
+            <div class="tiny">
+              <Glyph name="sun" tone="yellow" />
+              <div>
+                <p class="tiny-t">
+                  {tiny.body.trim().split('\n').filter(Boolean).map((l: string) => <span>{l.trim()}</span>)}
+                </p>
+                <p class="tiny-d">{displayDate(tiny.data.publishAt)}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
       )}
 
-      {rest.length > 0 && (
+
+
+      {cards.length > 0 && (
         <>
-          <div class="sec-head arch-sub"><h2 class="sec-h">Recent moments</h2></div>
-          <div class="mcards">
-            {rest.map((e: any, i: number) => (
-              <MomentCard href={`/moments/${e.id}/`} entry={e} i={i} />
+          <div class="sec-head arch-sub">
+            <h2 class="sec-h"><span class="u">Recent moments<Mark kind="underline" color="coral" draw={true} /></span></h2>
+          </div>
+          {/* Scraps for the short forms, full cards for anything longer. A note
+              is one line and belongs on paper; an essay-length moment has a dek
+              and a read time and would be cramped on one. */}
+          <div class="ncards">
+            {cards.filter((e: any) => e.data.format === 'note').map((e: any, i: number) => (
+              <NoteCard href={`/moments/${e.id}/`}
+                        text={e.data.title}
+                        date={displayDate(e.data.publishAt)}
+                        paper={e.data.paper} clip={e.data.clip}
+                        emphasis={e.data.emphasis} emphasisMark={e.data.emphasisMark}
+                        tone={TONES[i % 4]} />
             ))}
           </div>
+          {cards.some((e: any) => e.data.format !== 'note') && (
+            <div class="mcards arch-sub">
+              {cards.filter((e: any) => e.data.format !== 'note').map((e: any, i: number) => (
+                <MomentCard href={`/moments/${e.id}/`} entry={e} i={i} />
+              ))}
+            </div>
+          )}
         </>
       )}
 
+    </section>
+
+    {/* The comp closes Moments with a band on the page ground: the colour disc
+        at the left, two short lines, and a photograph on the right. Its words
+        are the comp's, held until Denvil replaces them. */}
+    <section class="shell mom-close">
+      <ColorDisc lines={["theology","leadership","life"]} class="mom-close-disc" />
+      <div class="mom-close-t">
+        <p>These aren't polished. They're just real.</p>
+        <p>Thanks for being here. I hope something here encourages you today.</p>
+        <a class="go" href="/subscribe/">Subscribe for more <span class="arw" aria-hidden="true">&rarr;</span></a>
+      </div>
+      <div class="mom-close-art">
+        <Photo name="dl-stage-open" width={1600} height={1000}
+               sizes="(max-width: 900px) 92vw, 46vw"
+               alt="Denvil Lee teaching on stage in a yellow hoodie, both hands open, under a Come Alive banner." />
+      </div>
+      <Mark kind="zigzag" color="yellow" class="mom-close-zig" />
     </section>
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.

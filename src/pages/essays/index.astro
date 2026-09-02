@@ -16,6 +16,8 @@ import ArtPlate from '../../components/ArtPlate.astro';
 import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import EssayCard from '../../components/EssayCard.astro';
+import TopicList from '../../components/TopicList.astro';
+import Tape from '../../components/marks/Tape.astro';
 import SeriesBlock from '../../components/SeriesBlock.astro';
 import Doorway from '../../components/Doorway.astro';
 import { live, introPost, currentSeries } from '../../lib/publish';
@@ -30,7 +32,19 @@ const intro = await introPost('essays');
 const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
 const series = await currentSeries('essays');
 
-const [featured, ...rest] = entries;
+/* The featured slot honours `pinned`, matching what latest() does for the home
+   page. Before this they disagreed: home showed the pinned opening essay while
+   this page led with the newest, so the same series had a different "first"
+   depending on which page you arrived on, and a new reader landed on part two.
+   Denvil, 1 Sep: "the first essay should be the first one." */
+const pinnedIdx = entries.findIndex((e: any) => e.data.pinned);
+const ordered = pinnedIdx > 0
+  ? [entries[pinnedIdx], ...entries.filter((_: any, i: number) => i !== pinnedIdx)]
+  : entries;
+const [featured, ...rest] = ordered;
+/* The front door for a first-time reader: the pinned essay, which is Denvil
+   saying where to start. Null when nothing is pinned, and the card goes with it. */
+const frontDoor = entries.find((e: any) => e.data.pinned);
 ---
 <Shell title={`${labels.essaysHeading} · ${site.name}`} description={labels.essaysDek} current="essays">
   <div class="arch">
@@ -92,15 +106,38 @@ const [featured, ...rest] = entries;
       </div>
 
       <aside class="arch-side" aria-label="More on this site">
-        {/* Explore by topic is hidden until a topic has enough pieces to be
-            worth exploring. Two of the four led to a page with one essay on
-            it, which exposes the content system rather than the content. Tags
-            stay in the model and on the article. */}
+        {/* Explore by topic, restored 1 Sep to match the comp. It had been
+            pulled because two of the four topics led to a page with a single
+            essay on it, which exposes the content system rather than the
+            content. That was a content problem, not a design one, and the
+            component already guards itself: a topic renders only when a
+            published piece actually carries one of its tags. As the archive
+            fills, the rest turn themselves on. */}
+        <TopicList rooms={['essays']} />
 
         <StickyNote tone="green" tilt={-1.6} tape={false} class="side-note">
           The kingdom is already here, and still coming. Most of what I write
           lives somewhere in that tension.
         </StickyNote>
+
+        {/* The comp's "New here?" card. Its wording was "Start with some of the
+            most loved essays" — not used, because nothing measures which essays
+            are loved and the site would be claiming something it cannot know.
+            The pinned essay is the honest front door: pinning one IS Denvil
+            saying where to start. The card disappears when nothing is pinned. */}
+        {frontDoor && (
+          <section class="side-card side-new" aria-labelledby="newhere-h">
+            <h2 class="side-h" id="newhere-h">New here?</h2>
+            <p>Start where the run starts.</p>
+            <a class="go" href={`/essays/${frontDoor.id}/`}>
+              {frontDoor.data.title} <span class="arw" aria-hidden="true">&rarr;</span>
+            </a>
+            <p class="side-slip">
+              <Tape color="blue" class="side-slip-tape" />
+              {site.tagline}
+            </p>
+          </section>
+        )}
       </aside>
     </div>
 

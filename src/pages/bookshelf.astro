@@ -1,4 +1,5 @@
 ---
+import CloseBand from '../components/CloseBand.astro';
 /*
   Bookshelf. Real covers, real books, Denvil's own one-line takeaways.
 
@@ -26,6 +27,22 @@ const now = books.find((b: any) => b.data.shelfStatus === 'now');
 const next = books.filter((b: any) => b.data.shelfStatus === 'next');
 const shelf = books.filter((b: any) => b !== now && b.data.shelfStatus !== 'next')
   .sort((a: any, b: any) => a.data.order - b.data.order);
+
+/* The comp's Featured Recommendation panel. One book, flagged in the editor. */
+const pick = shelf.find((b: any) => b.data.featured);
+const rest = pick ? shelf.filter((b: any) => b !== pick) : shelf;
+
+/* The comp's filter row. Same rule as Watch: a chip renders only when books
+   actually carry that category, so the row grows as the shelf is labelled and
+   never shows a chip with nothing behind it. */
+const CAT: Record<string,string> = {
+  leadership:'Leadership', theology:'Theology', formation:'Personal Growth',
+  culture:'Culture', communication:'Communication', teams:'Teams', strategy:'Strategy',
+};
+const catCount = new Map<string,number>();
+for (const b of shelf) { const c = (b as any).data.category; if (c) catCount.set(c,(catCount.get(c)??0)+1); }
+const cats = Object.keys(CAT).filter((c) => catCount.has(c));
+const showCats = cats.length >= 2;
 
 /* The section's own introduction, in Denvil's voice, opening the page. */
 const landingDoc = await getEntry('landing', 'bookshelf');
@@ -73,7 +90,34 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
               "next" are pulled out above and below it. */}
           <span class="count">{shelf.length} {shelf.length === 1 ? 'book' : 'books'}</span>
         </div>
-        <div class="bcards">{shelf.map((b: any) => <BookCard book={b} />)}</div>
+        {showCats && (
+          <div class="arc-filters bfilters" role="group" aria-label="Filter by category">
+            <button type="button" class="chip-btn on" data-bcat="all" aria-pressed="true">All Books</button>
+            {cats.map((c) => (
+              <button type="button" class="chip-btn" data-bcat={c} aria-pressed="false">{CAT[c]}</button>
+            ))}
+          </div>
+        )}
+
+        {pick && (
+          <div class="bfeat">
+            <p class="bfeat-k">Featured recommendation</p>
+            <div class="bfeat-in">
+              <BookCard book={pick} />
+              {pick.data.pullQuote && (
+                <blockquote class="bfeat-q">
+                  <Mark kind="asterisk" color="coral" class="bfeat-star" />
+                  <p>{pick.data.pullQuote}<Mark kind="underline" color="coral" /></p>
+                  <cite>{pick.data.author}</cite>
+                </blockquote>
+              )}
+            </div>
+          </div>
+        )}
+
+        <div class="bcards">{rest.map((b: any) => (
+          <div class="bwrap" data-bcat={b.data.category ?? ''}><BookCard book={b} /></div>
+        ))}</div>
       </section>
     )}
 
@@ -92,4 +136,30 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
   {/* The Subscribe block was removed from every content page on 29 Aug.
       The site asked for an email too often. Subscribe now lives in one
       place: the masthead action, the footer link, and /subscribe/. */}
+
+  <CloseBand tone="dark"
+             heading="Always learning. Always growing."
+             mark="learning"
+             dek="The books and voices shaping how I think, teach, and lead."
+             href="/subscribe/" cta="Subscribe" />
+
+  <script>
+    /* Same shape as the Watch filter: chips toggle, cards hide, and the whole
+       control is absent from the markup when there is nothing to filter. */
+    {
+      const wraps = Array.from(document.querySelectorAll<HTMLElement>('.bwrap'));
+      const btns  = Array.from(document.querySelectorAll<HTMLElement>('button[data-bcat]'));
+      if (wraps.length && btns.length) {
+        btns.forEach((b) => b.addEventListener('click', () => {
+          const v = b.dataset.bcat ?? 'all';
+          btns.forEach((x) => {
+            const on = x.dataset.bcat === v;
+            x.classList.toggle('on', on);
+            x.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+          wraps.forEach((w) => { w.hidden = !(v === 'all' || w.dataset.bcat === v); });
+        }));
+      }
+    }
+  </script>
 </Shell>

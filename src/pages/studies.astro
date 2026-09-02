@@ -1,4 +1,5 @@
 ---
+import Glyph from '../components/Glyph.astro';
 /*
   The handoff page. The studies live on grabyourbibles.com because they are a
   different kind of thing than an essay, and canonical stays there: this page
@@ -91,9 +92,42 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
       </div>
     </section>
 
-    {/* The four-step "How studies work" block came out on 29 Aug. Grab Your
-        Bibles has its own methodology page that does the job properly, and
-        duplicating it here made denvillee.com compete with the study site. */}
+    {/* "How studies work", restored 1 Sep to match the comp.
+
+        It was removed on 29 Aug to stop denvillee.com competing with Grab Your
+        Bibles in search. That reasoning conflated two different things. GYB's
+        methodology page is the seven-move rhythm inside a session — Read,
+        Reflect, Key Truth, Respond, Go Further, Breakthrough, Next Steps. These
+        four steps are about choosing a study and fitting it into a week, which
+        GYB does not say anywhere. Nothing here is duplicated, so nothing here
+        competes, and the link still sends the method question to GYB. */}
+    <section class="shell howto">
+      <div class="sec-head">
+        <h2 class="sec-h"><span class="u">How studies work<Mark kind="underline" color="green" draw={true} /></span></h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <Glyph name="book" tone="blue" />
+          <h3>Choose a study</h3>
+          <p>Pick one that fits the season you are actually in.</p>
+        </li>
+        <li>
+          <Glyph name="calendar" tone="yellow" />
+          <h3>Set your rhythm</h3>
+          <p>Work through it at your own pace, on your own or with a group.</p>
+        </li>
+        <li>
+          <Glyph name="people" tone="coral" />
+          <h3>Go deeper together</h3>
+          <p>Use the prompts and the passage to make your own observations.</p>
+        </li>
+        <li>
+          <Glyph name="plant" tone="green" />
+          <h3>Live it out</h3>
+          <p>Take what you find into the week, the work and the people in front of you.</p>
+        </li>
+      </ol>
+    </section>
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.
       The site asked for an email too often. Subscribe now lives in one

@@ -4,6 +4,7 @@ author: "George Eldon Ladd"
 year: 1974
 shelfStatus: shelf
 shelfMonth: "2026-08"
+category: theology
 spine: ivy
 cover: /assets/covers/ladd-presence.jpg
 order: 1
