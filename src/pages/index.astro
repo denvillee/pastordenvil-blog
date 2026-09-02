@@ -134,7 +134,12 @@ const shortcuts = [
 
         <div class="lb-body">
           <p class="lb-k">Latest {featureRoom!.piece}</p>
-          <h2 class="lb-h"><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h2>
+          {/* Side by side, the headline reads as the caption to the picture.
+              Stacked on a phone it lands directly under artwork that has just
+              said the same sentence, which is the same words twice with
+              nothing between them. So where the art carries the title, the
+              headline steps aside once the two columns collapse. */}
+          <h2 class:list={['lb-h', feature.data.titleInImage && 'in-art']}><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h2>
           {/* Moments carry no teaser, so the band falls back to the opening
               line rather than leaving a gap where the sentence should be. */}
           <p class="lb-d">{feature.data.teaser || feature.data.dek || openingParagraph(feature.body, 165)}</p>
@@ -223,7 +228,7 @@ const shortcuts = [
       <div class="sec-head">
         <h2 class="recents-k">Recent essays</h2>
         <a class="go" href="/essays/">
-          <span class="u">View all essays<Mark kind="underline" color="yellow" /></span>
+          <span class="u">See all essays<Mark kind="underline" color="yellow" /></span>
           <span class="arw" aria-hidden="true">&rarr;</span>
         </a>
       </div>
@@ -238,7 +243,7 @@ const shortcuts = [
             <span class="recent-body">
               <span class="recent-h">{e.data.title}</span>
               <span class="recent-d">{e.data.teaser ?? e.data.dek}</span>
-              <span class="go">Read essay <span class="arw" aria-hidden="true">&rarr;</span></span>
+              <span class="go">Read the essay <span class="arw" aria-hidden="true">&rarr;</span></span>
             </span>
           </a>
         ))}

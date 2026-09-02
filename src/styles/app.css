@@ -144,7 +144,7 @@ p{margin:0 0 1em}
 @media (max-width:860px){ .foot-in{grid-template-columns:1fr 1fr} }
 @media (max-width:520px){ .foot-in{grid-template-columns:1fr} }
 .foot-brand p{color:var(--muted); font-size:.92rem; max-width:26ch; margin-top:.7rem}
-.foot-col h2{font-size:.7rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
+.foot-col h2{font-size:.75rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
   color:var(--faint); margin-bottom:.85rem}
 .foot-col ul{list-style:none; margin:0; padding:0; display:grid; gap:.5rem}
 .foot-col a{font-size:.92rem; color:var(--fg)}
@@ -155,5 +155,5 @@ p{margin:0 0 1em}
 .foot-base a:hover{color:var(--blue-ink)}
 .foot-line{font-family:var(--hand); font-size:1.05rem; color:var(--faint)}
 .foot-legal{margin-top:1rem}
-.foot-legal p{margin:0 0 .3rem; font-size:.72rem; color:var(--faint); max-width:80ch}
+.foot-legal p{margin:0 0 .3rem; font-size:.75rem; color:var(--faint); max-width:80ch}
 .foot-legal a{text-decoration:underline}

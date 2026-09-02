@@ -70,7 +70,7 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
     {IntroBody && (
       <Doorway tone="yellow" collapsed={entries.length > 0}>
         <IntroBody />
-        <StickyNote slot="rail" tone="green" tilt={-1.6} tape={false} class="side-note">
+        <StickyNote slot="rail" tone="green" tilt={-1.6} tape={true} class="side-note">
           The kingdom is already here, and still coming. Most of what I write
           lives somewhere in that tension.
         </StickyNote>
@@ -88,20 +88,6 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
           <SeriesBlock name={series.name} dek={series.dek} parts={series.parts} />
         )}
 
-        {rest.length > 0 && (
-          <>
-            <div class="sec-head arch-sub">
-              <h2 class="sec-h">All essays</h2>
-              <span class="count">{entries.length} {entries.length === 1 ? 'essay' : 'essays'}</span>
-            </div>
-            <div class="ecards">
-              {rest.map((e: any) => (
-                <EssayCard href={`/essays/${e.id}/`} entry={e} room={labels.essaysHeading} />
-              ))}
-            </div>
-          </>
-        )}
-
         {/* No empty state. If nothing is published the doorway carries the
             page on its own. */}
       </div>
@@ -116,7 +102,7 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
             fills, the rest turn themselves on. */}
         <TopicList rooms={['essays']} />
 
-        <StickyNote tone="green" tilt={-1.6} tape={false} class="side-note">
+        <StickyNote tone="green" tilt={-1.6} tape={true} class="side-note">
           The kingdom is already here, and still coming. Most of what I write
           lives somewhere in that tension.
         </StickyNote>
@@ -141,6 +127,24 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
         )}
       </aside>
     </div>
+
+    {/* The listing takes the full measure. The rail beside it is two blocks
+        tall and the listing is not, so keeping the listing inside the rail's
+        column left a column of empty page down the right for the whole
+        scroll. */}
+    {rest.length > 0 && (
+      <section class="shell arch-list">
+        <div class="sec-head">
+          <h2 class="sec-h">All essays</h2>
+          <span class="count">{entries.length} {entries.length === 1 ? 'essay' : 'essays'}</span>
+        </div>
+        <div class="ecards">
+          {rest.map((e: any) => (
+            <EssayCard href={`/essays/${e.id}/`} entry={e} room={labels.essaysHeading} />
+          ))}
+        </div>
+      </section>
+    )}
 
     {/* This was a bespoke full-width panel with a single zigzag, and everything
         in it sat in the left third against two thirds of empty navy. Denvil,

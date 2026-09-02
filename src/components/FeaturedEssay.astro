@@ -31,7 +31,7 @@ const mins = words >= 150 ? readMinutes(entry.body) : undefined;
     {/* The teaser when the piece has one, the deck otherwise. */}
     <p class="fcard-dek">{d.teaser ?? d.dek}</p>
     <p class="fcard-open">{openingParagraph(entry.body, 150)}</p>
-    <a class="go" href={href}>Read {piece} <span class="arw" aria-hidden="true">&rarr;</span></a>
+    <a class="go" href={href}>Read the {piece} <span class="arw" aria-hidden="true">&rarr;</span></a>
     <p class="fcard-meta">
       <time datetime={isoDate(d.publishAt)}>{displayDate(d.publishAt)}</time>
       {mins && <> &middot; {mins} min read</>}

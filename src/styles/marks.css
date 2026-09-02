@@ -146,6 +146,9 @@
 .note-yellow{background:var(--yellow); color:var(--on-yellow)}
 .note-green{background:var(--green); color:var(--on-green)}
 .note-coral{background:var(--coral); color:var(--on-coral)}
+/* Navy tape on a navy note was a lump on the top edge. The tape has to sit
+   against whatever it is holding down, so the dark notes get a warm one. */
+.note-blue .note-tape,.note-coral .note-tape{background:var(--gold)}
 .note-tape{
   position:absolute; top:-.7rem; left:50%; translate:-50% 0;
   width:4.6rem; height:1.5rem; background:var(--blue); opacity:.88;
@@ -179,5 +182,8 @@
 @media (max-width:760px){
   .mk-brush,.mk-zigzag,.mk-spiral,.mk-scribble,.mk-arrow,.mk-arrow-curl,.mk-loop,.dotgrid{display:none}
   .disc{width:5.4rem; font-size:.9rem}
-  .note{transform:none}
+  /* Half the tilt rather than none. Flat on a phone is what made these read
+     as filled boxes; the original worry was corners colliding with body copy,
+     and half a degree on a full width note clears that by itself. */
+  .note{transform:rotate(calc(var(--tilt,-1.4deg) * .5))}
 }

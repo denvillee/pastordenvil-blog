@@ -113,7 +113,9 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
                 ? <img src={featured.data.image} alt="" width="1536" height="1024"
                        loading="eager" fetchpriority="high" decoding="async" />
                 : <span class="mfeat-plate"><ArtPlate kind="morning" /></span>}
-              <span class="chip chip-coral mfeat-chip">Featured</span>
+              {/* No FEATURED chip. The heading directly above already says
+                  "Featured moment", and on a phone the chip landed on top of
+                  the first line of the artwork's own sentence. */}
             </a>
             <div class="mfeat-body">
               {/* The headline stays visible here even though the artwork
@@ -124,7 +126,7 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
                   cards and on the post itself the picture is directly under
                   the masthead with nothing competing, so there the heading
                   still steps aside. */}
-              <h3 class="mfeat-h">
+              <h3 class:list={['mfeat-h', featured.data.titleInImage && 'in-art']}>
                 <a href={`/moments/${featured.id}/`}>
                   <span class="u">{featured.data.title}<Mark kind="underline" color="blue" draw={true} /></span>
                 </a>
@@ -133,7 +135,7 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
               <p class="mfeat-meta">
                 <time datetime={isoDate(featured.data.publishAt)}>{displayDate(featured.data.publishAt)}</time>
               </p>
-              <a class="go" href={`/moments/${featured.id}/`}>Read moment <span class="arw" aria-hidden="true">&rarr;</span></a>
+              <a class="go" href={`/moments/${featured.id}/`}>Read the moment <span class="arw" aria-hidden="true">&rarr;</span></a>
             </div>
           </article>
         </div>

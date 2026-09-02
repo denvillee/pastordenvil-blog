@@ -80,7 +80,7 @@ const [featured, ...rest] = entries;
         {/* While the room is empty the note moves up beside the doorway. The
             aside below it has nothing to sit against yet, and the doorway's
             own column left the right half of the page blank for 800px. */}
-        <StickyNote slot="rail" tone="blue" tilt={-1.6} tape={false} class="side-note">
+        <StickyNote slot="rail" tone="blue" tilt={-1.6} tape={true} class="side-note">
           Leadership isn't about having all the answers. It's about keeping your
           eyes on Jesus and serving the people in front of you.
         </StickyNote>
@@ -96,19 +96,6 @@ const [featured, ...rest] = entries;
                          plate={featured.data.plate} />
         )}
 
-        {rest.length > 0 && (
-          <>
-            <div class="sec-head arch-sub">
-              <h2 class="sec-h">Short reflections for real leadership</h2>
-            </div>
-            <div class:list={["ecards", rest.length < 3 && "ecards-few"]}>
-              {rest.map((e: any) => (
-                <EssayCard href={`/leaders/${e.id}/`} entry={e} room={labels.leadersHeading} tone="blue"
-                           plate={e.data.plate} />
-              ))}
-            </div>
-          </>
-        )}
       </div>
 
       {entries.length > 0 && (
@@ -122,7 +109,7 @@ const [featured, ...rest] = entries;
               fills out as he writes. */}
           <TopicList rooms={['leaders']} />
 
-          <StickyNote tone="blue" tilt={-1.6} tape={false} class="side-note">
+          <StickyNote tone="blue" tilt={-1.6} tape={true} class="side-note">
             Leadership isn't about having all the answers. It's about keeping your
             eyes on Jesus and serving the people in front of you.
           </StickyNote>
