@@ -13,16 +13,30 @@ import Tape from '../components/marks/Tape.astro';
 import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
+import QuotePlate from '../components/QuotePlate.astro';
 import { KIT_ACTION } from '../lib/signup';
 import home from '../data/home.json';
 import labels from '../data/labels.json';
 
-const feature = await latest();
-/* The three newest live essays, excluding whatever is already in the featured
-   slot above so the page never shows the same piece twice. */
+/* Two features, not one. `latest()` picks the newest piece across every room,
+   and Moments outnumber Essays roughly five to one and always will, because a
+   Moment is a sentence and an essay is a week. Left as it was, the front page
+   would lead with a Moment nearly every day and the essays would never surface
+   on it at all. Frequency should not decide prominence.
+
+   They are not given equal room, because they are not equal. The essay is the
+   larger commitment from him and from the reader, so it takes the bigger
+   column with its headline and its opening. The Moment is a card that already
+   contains its own sentence, so it takes the smaller column and needs nothing
+   written underneath it. */
+const featEssay = (await live('essays'))[0] ?? null;
+const featMoment = (await live('moments'))[0] ?? null;
+/* Whatever essays are left after the featured one. The row hides itself rather
+   than showing a single lonely card. */
 const recentEssays = (await live('essays'))
-  .filter((e: any) => e.id !== feature?.id)
+  .filter((e: any) => e.id !== featEssay?.id)
   .slice(0, 3);
+const feature = featEssay;
 const featureRoom = feature ? ROOMS[feature.room] : null;
 /* The launch module from Denvil's 30 Aug package: the featured essay carries a
    small series label under it, and once the following essay is live it is
@@ -109,57 +123,78 @@ const shortcuts = [
     </div>
   </section>
 
-  {/* ── latest ───────────────────────────────────────────────────────────
-      The map gives this its own tinted band, photo taped down on the left and
-      the copy beside it, under a small green label rather than a headline. It
-      is the one band on the page that changes every time he publishes, and
-      the tint is what says so without a word.
+  {/* ── the two features ─────────────────────────────────────────────────
+      One tinted band, two pieces: the newest essay and the newest moment.
 
-      This goes back to side by side. It was stacked on 1 Sep because it was
-      sharing its row with the pathways and the photo was landing wrong in a
-      narrow column. The pathways have their own band now, so the photo has
-      the room the map draws it in. */}
-  {feature && (
+      Denvil, 2 Sep. Until now this slot took whatever was newest across every
+      room, which sounds fair and is not: Moments outnumber Essays about five
+      to one and always will, because a Moment is a sentence and an essay is a
+      week. The front page would have led with a Moment nearly every day and
+      the essays would never have surfaced on it.
+
+      They do not get equal room. The essay is the larger commitment, from him
+      and from the reader, so it takes the wider column with a headline, an
+      opening line and a reading time. The Moment is a card that already
+      contains its own sentence, so it takes the narrower one and carries
+      nothing written underneath. */}
+  {(featEssay || featMoment) && (
     <section class="latestband">
-      <div class="shell lb-in">
-        <a class="lb-art" href={`/${featureRoom!.path}/${feature.id}/`} tabindex="-1" aria-hidden="true">
-          <Tape color="green" class="lb-tape" />
-          <ImageMask shape="soft">
-            {feature.data.image && !isStandin(feature.data.image)
-              ? <img src={feature.data.image} alt="" width="960" height="720" loading="lazy" decoding="async" />
-              : feature.room === 'moments'
-                ? <span class="lb-plate"><ArtPlate kind="morning" /></span>
-                : <Placeholder label={`Image for ${feature.data.title}`} ratio="4 / 3" />}
-          </ImageMask>
-        </a>
+      <div class="shell twofeat">
 
-        <div class="lb-body">
-          <p class="lb-k">Latest {featureRoom!.piece}</p>
-          {/* Side by side, the headline reads as the caption to the picture.
-              Stacked on a phone it lands directly under artwork that has just
-              said the same sentence, which is the same words twice with
-              nothing between them. So where the art carries the title, the
-              headline steps aside once the two columns collapse. */}
-          <h2 class:list={['lb-h', feature.data.titleInImage && 'in-art']}><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h2>
-          {/* Moments carry no teaser, so the band falls back to the opening
-              line rather than leaving a gap where the sentence should be. */}
-          <p class="lb-d">{feature.data.teaser || feature.data.dek || openingParagraph(feature.body, 165)}</p>
-          <p class="lb-meta">
-            <time datetime={isoDate(feature.data.publishAt)}>{displayDate(feature.data.publishAt)}</time>
-            {featureMinutes && <> &middot; {featureMinutes} min read</>}
-          </p>
-          <a class="lb-go" href={`/${featureRoom!.path}/${feature.id}/`}>
-            <span class="u">Read the {featureRoom!.piece}<Mark kind="underline" color="yellow" draw={true} /></span>
-            <span class="arw" aria-hidden="true">&rarr;</span>
-          </a>
+        {featEssay && (
+          <article class="tf-essay">
+            <a class="lb-art" href={`/essays/${featEssay.id}/`} tabindex="-1" aria-hidden="true">
+              <Tape color="green" class="lb-tape" />
+              <ImageMask shape="soft">
+                {featEssay.data.image && !isStandin(featEssay.data.image)
+                  ? <img src={featEssay.data.image} alt="" width="960" height="720" loading="eager" fetchpriority="high" decoding="async" />
+                  : <Placeholder label={`Image for ${featEssay.data.title}`} ratio="4 / 3" />}
+              </ImageMask>
+            </a>
+            <div class="lb-body">
+              <p class="lb-k">Latest essay</p>
+              <h2 class="lb-h"><a href={`/essays/${featEssay.id}/`}>{featEssay.data.title}</a></h2>
+              <p class="lb-d">{featEssay.data.teaser || featEssay.data.dek || openingParagraph(featEssay.body, 165)}</p>
+              <p class="lb-meta">
+                <time datetime={isoDate(featEssay.data.publishAt)}>{displayDate(featEssay.data.publishAt)}</time>
+                {featureMinutes && <> &middot; {featureMinutes} min read</>}
+              </p>
+              <a class="lb-go" href={`/essays/${featEssay.id}/`}>
+                <span class="u">Read the essay<Mark kind="underline" color="yellow" draw={true} /></span>
+                <span class="arw" aria-hidden="true">&rarr;</span>
+              </a>
+              {featureSeries && (
+                <p class="lb-ser">
+                  Part of <a href="/essays/#ser-h">{featureSeries}</a>
+                  {featureNext && (<>{' '}&middot; Next: <a href={featureNext.href}>{featureNext.title}</a></>)}
+                </p>
+              )}
+            </div>
+          </article>
+        )}
 
-          {featureSeries && (
-            <p class="lb-ser">
-              Part of <a href="/essays/#ser-h">{featureSeries}</a>
-              {featureNext && (<>{' '}&middot; Next: <a href={featureNext.href}>{featureNext.title}</a></>)}
-            </p>
-          )}
-        </div>
+        {featMoment && (
+          <article class="tf-moment">
+            <p class="lb-k lb-k-coral">Latest moment</p>
+            {/* The card carries the sentence, so the heading is here for
+                screen readers, search and the outline and out of the layout,
+                the same rule the Moments listing and the post itself follow. */}
+            <h2 class:list={['lb-h', 'tf-moment-h', featMoment.data.titleInImage && 'vh']}>
+              <a href={`/moments/${featMoment.id}/`}>{featMoment.data.title}</a>
+            </h2>
+            <a class="tf-moment-art" href={`/moments/${featMoment.id}/`}>
+              {featMoment.data.image && !isStandin(featMoment.data.image)
+                ? <img src={featMoment.data.image} alt={featMoment.data.imageAlt ?? featMoment.data.title}
+                       width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async" />
+                : <QuotePlate text={featMoment.data.title} i={2} />}
+            </a>
+            <a class="lb-go" href="/moments/">
+              <span class="u">See all moments<Mark kind="underline" color="coral" draw={true} /></span>
+              <span class="arw" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+        )}
+
       </div>
       <DotGrid cols={9} rows={6} class="lb-dots" />
     </section>
@@ -224,7 +259,12 @@ const shortcuts = [
       "3 latest essays. Quick scan. Easy to dive in." The featured slot above
       can hold any room, so this row is the one place on the page that is
       always essays. */}
-  {recentEssays.length > 0 && (
+  {/* Two or more, never one. With the newest essay now featured above, this
+      row had exactly one card left in it, stretched across the full page,
+      which reads as a bug. The same rule the related-pieces block already
+      follows: the whole block disappears rather than showing one lonely
+      card. It comes back on its own as he writes. */}
+  {recentEssays.length > 1 && (
     <section class="shell recents">
       <div class="sec-head">
         <h2 class="recents-k">Recent essays</h2>

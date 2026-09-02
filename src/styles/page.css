@@ -2265,3 +2265,30 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
 .sub-step-n{font-size:.95rem; color:var(--muted); margin:0 auto 1.8rem; max-width:44ch}
 .sub-step-go{display:flex; gap:.7rem; justify-content:center; flex-wrap:wrap}
 .sub-step-dots{left:50%; translate:-50% 0; top:1rem; opacity:.5}
+
+/* ── the two features ────────────────────────────────────────────────────
+   Newest essay, newest moment, one band. Not a 50/50 split: the essay is the
+   larger piece and takes the wider column. */
+.twofeat{display:grid; grid-template-columns:minmax(0,1.32fr) minmax(0,1fr);
+  gap:clamp(1.6rem,4vw,3.4rem);
+  /* Top aligned so the two eyebrows sit on one line. Centred, the shorter
+     column floated and the labels landed at different heights, which read as
+     a mistake rather than as two things side by side. */
+  align-items:start}
+@media (max-width:900px){ .twofeat{grid-template-columns:1fr; gap:clamp(2rem,6vw,3rem)} }
+.tf-essay{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.02fr);
+  gap:clamp(1.2rem,3vw,2.2rem); align-items:center}
+@media (max-width:1100px){ .tf-essay{grid-template-columns:1fr} }
+.tf-essay .lb-art{max-width:none}
+.tf-moment{display:grid; gap:.8rem; justify-items:start; max-width:25rem}
+.tf-moment-h{font-size:var(--step-1); margin:0}
+.tf-moment-art{display:block; width:100%; border-radius:var(--r); overflow:hidden;
+  background:var(--paper);
+  box-shadow:0 1px 0 var(--rule),0 16px 30px -26px rgba(31,28,22,.55);
+  transition:transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease)}
+.tf-moment-art:hover{transform:translateY(-3px);
+  box-shadow:0 1px 0 var(--rule),0 22px 36px -24px rgba(31,28,22,.6)}
+.tf-moment-art img{display:block; width:100%; height:auto}
+/* The two labels are coloured apart so the eye reads two things, not one long
+   row. Green for the essay, coral for the moment, the rooms' own colours. */
+.lb-k-coral{color:var(--coral-ink)}
