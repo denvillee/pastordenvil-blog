@@ -1,5 +1,5 @@
 ---
-title: "David Pt. 5 - 1 Samuel 18"
+title: "David and Jonathan"
 year: 2023
 provider: "youtube"
 videoId: "owGQYSpWx20"

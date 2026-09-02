@@ -1,5 +1,5 @@
 ---
-title: "Part 5"
+title: "We Are the Body of Christ"
 year: 2022
 provider: "vimeo"
 videoId: "720023851"

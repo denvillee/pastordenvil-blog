@@ -1,5 +1,5 @@
 ---
-title: "Part 6"
+title: "Peter and John Before the Sanhedrin"
 year: 2020
 provider: "vimeo"
 videoId: "502702948"
