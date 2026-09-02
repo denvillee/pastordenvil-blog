@@ -1556,7 +1556,13 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
    there is no margin for a margin note to live in. */
 .hero-anno{position:relative; display:inline-flex; align-items:center; gap:.55rem;
   max-width:16rem}
-.hero-anno-arw{width:2.6rem; flex:none; color:var(--ink); rotate:180deg}
+/* Every mark is position:absolute by default, so with no offsets set this one
+   was taking itself out of the flex row and floating above the sentence
+   instead of pointing back at the button beside it. Static puts it back in
+   the row; the ratio matches the mark's 2:1 viewBox so the head keeps its
+   shape. */
+.hero-anno-arw{position:static; width:3rem; height:1.5rem; flex:none;
+  color:var(--ink); rotate:180deg}
 .hero-anno-t{font-family:var(--hand); font-size:1.08rem; line-height:1.35; color:var(--muted)}
 @media (max-width:900px){ .hero-anno{display:none} }
 
@@ -1973,7 +1979,11 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .lb-go{display:inline-flex; align-items:baseline; gap:.4rem; font-weight:700}
 .lb-go .arw{transition:translate var(--fast) var(--ease)}
 .lb-go:hover .arw{translate:.22rem 0}
-.lb-ser{font-size:.82rem; color:var(--muted); margin:1rem 0 0}
+.lb-ser{font-size:.85rem; color:var(--muted); margin:0 0 .9rem}
+.lb-ser a{color:var(--blue-ink); font-weight:700; text-decoration:underline;
+  text-underline-offset:2px; text-decoration-thickness:1.5px}
+.lb-ser-sep{margin-inline:.45rem; color:var(--faint)}
+.lb-ser-part{white-space:nowrap}
 /* The dot field the map tucks into the bottom corner, clipped to a triangle
    so it reads as a drift rather than a swatch. */
 .lb-dots{right:0; bottom:0; opacity:.6; clip-path:polygon(100% 0,100% 100%,0 100%)}
@@ -2292,3 +2302,7 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
 /* The two labels are coloured apart so the eye reads two things, not one long
    row. Green for the essay, coral for the moment, the rooms' own colours. */
 .lb-k-coral{color:var(--coral-ink)}
+
+.cband-note-k{font-family:var(--sans); font-size:.75rem; font-weight:800;
+  letter-spacing:.15em; text-transform:uppercase; color:var(--gold);
+  margin:0 0 .5rem}

@@ -68,7 +68,7 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
     </section>
 
     {IntroBody && (
-      <Doorway tone="yellow" collapsed={entries.length > 0}>
+      <Doorway tone="yellow" heading={intro?.data.dek} collapsed={entries.length > 0}>
         <IntroBody />
         <StickyNote slot="rail" tone="green" tilt={-1.6} tape={true} class="side-note">
           The kingdom is already here, and still coming. Most of what I write

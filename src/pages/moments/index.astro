@@ -78,6 +78,12 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
       </div>
     </section>
 
+    {/* No doorway heading on this page alone. The blue taped note in the hero
+        already carries the one sentence he wrote to open this room, and it was
+        landing twice: once in the note and again three inches below it in the
+        same words. The note keeps it, because the note is the more distinctive
+        object and it is what his mockup draws. One more short line from him and
+        the heading turns on here too. */}
     {IntroBody && (
       <Doorway tone="coral" collapsed={entries.length > 0}>
         <IntroBody />

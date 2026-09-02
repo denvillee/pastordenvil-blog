@@ -10,6 +10,9 @@ import '../styles/marks.css';
 import '../styles/app.css';
 import '../styles/page.css';
 import '../styles/cards.css';
+/* After page.css, because it overrides the per page spacing those rules set.
+   Media queries grant no specificity, so load order is what decides. */
+import '../styles/section-landing.css';
 import '../styles/motion.css';
 /* Last on purpose. Its touch-target floors have to outrank every rule that sets
    display or min-height on the same controls, and a media query grants no extra

@@ -75,7 +75,7 @@ const [featured, ...rest] = entries;
     </section>
 
     {IntroBody && (
-      <Doorway tone="blue" collapsed={entries.length > 0}>
+      <Doorway tone="blue" heading={intro?.data.dek} collapsed={entries.length > 0}>
         <IntroBody />
         {/* While the room is empty the note moves up beside the doorway. The
             aside below it has nothing to sit against yet, and the doorway's
@@ -161,10 +161,17 @@ const [featured, ...rest] = entries;
              mark="growing"
              dek="Lessons I am learning about following Jesus while leading people."
              href="/subscribe/" cta="Subscribe">
+    {/* Denvil, 2 Sep: Speaking and Coaching should be an invitation on this
+        page, not a line in the footer. This is the room where somebody who
+        might book him is already reading, and it is the only page on the site
+        where that is true. "A note from Denvil" pointing at /about/ was here
+        before; About is already in the masthead and the footer, and this is
+        the more useful thing to offer a leader. */}
     <div class="cband-note" slot="aside">
-      <h3 class="cband-note-h">A note from Denvil</h3>
-      <p>I'm a pastor, husband, and dad who loves the local church and believes God is not finished.</p>
-      <a class="go go-light" href="/about/">More about me <span class="arw" aria-hidden="true">&rarr;</span></a>
+      <p class="cband-note-k">Speaking + Coaching</p>
+      <h3 class="cband-note-h">Bring this to your team.</h3>
+      <p>Teaching, coaching, and time with leaders and teams who are carrying something.</p>
+      <a class="go go-light" href="/speaking/">Start a conversation <span class="arw" aria-hidden="true">&rarr;</span></a>
     </div>
   </CloseBand>
 </Shell>

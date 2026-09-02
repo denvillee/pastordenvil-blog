@@ -10,7 +10,7 @@ import Placeholder from '../components/Placeholder.astro';
 import ArtPlate from '../components/ArtPlate.astro';
 import Photo from '../components/Photo.astro';
 import Tape from '../components/marks/Tape.astro';
-import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
+import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries, seriesTag } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
 import QuotePlate from '../components/QuotePlate.astro';
@@ -44,6 +44,10 @@ const featureRoom = feature ? ROOMS[feature.room] : null;
    chapter. Both lines disappear on their own when the piece is not part of a
    run, or when nothing follows it yet. */
 const featureSeries = feature?.data.series as string | undefined;
+/* Denvil, 2 Sep: the line should name the run, say which part this piece is,
+   and link to the run. `seriesTag` already withholds the total while the run
+   is still open, because "Part 2 of 2" reads as finished and it is not. */
+const featTag = featEssay ? await seriesTag('essays', featEssay.data) : null;
 const featureNext = feature && feature.room === 'essays'
   ? await nextInSeries('essays', featureSeries, feature.data.seriesOrder)
   : null;
@@ -159,16 +163,27 @@ const shortcuts = [
                 <time datetime={isoDate(featEssay.data.publishAt)}>{displayDate(featEssay.data.publishAt)}</time>
                 {featureMinutes && <> &middot; {featureMinutes} min read</>}
               </p>
+              {/* Above the call to action, not below it. A reader decides
+                  whether to start something by knowing what it is part of and
+                  where in the run it sits, and that decision comes before the
+                  click, not after it. */}
+              {featTag && (
+                <p class="lb-ser">
+                  Part of <a href="/essays/#ser-h">{featTag.name}</a>
+                  <span class="lb-ser-sep" aria-hidden="true">&middot;</span>
+                  <span class="lb-ser-part">Part {featTag.order}{featTag.total ? ` of ${featTag.total}` : ''}</span>
+                  {featTag.firstHref && (
+                    <>
+                      <span class="lb-ser-sep" aria-hidden="true">&middot;</span>
+                      <a href={featTag.firstHref}>Start at Part 1</a>
+                    </>
+                  )}
+                </p>
+              )}
               <a class="lb-go" href={`/essays/${featEssay.id}/`}>
                 <span class="u">Read the essay<Mark kind="underline" color="yellow" draw={true} /></span>
                 <span class="arw" aria-hidden="true">&rarr;</span>
               </a>
-              {featureSeries && (
-                <p class="lb-ser">
-                  Part of <a href="/essays/#ser-h">{featureSeries}</a>
-                  {featureNext && (<>{' '}&middot; Next: <a href={featureNext.href}>{featureNext.title}</a></>)}
-                </p>
-              )}
             </div>
           </article>
         )}
