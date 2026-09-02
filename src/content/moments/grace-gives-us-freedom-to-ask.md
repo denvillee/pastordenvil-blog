@@ -1,11 +1,9 @@
 ---
-title: "Grace gives us freedom to ask stupid questions so he can straighten out the heart."
+title: "Grace gives us room to ask the wrong question while God reaches the deeper thing beneath it."
 dek: ""
 publishAt: 2026-08-26T06:00:00-04:00
-format: "note"
-paper: "green"
-clip: "none"
-emphasis: "Grace"
-emphasisMark: "highlight"
-tone: "green"
+format: "image"
+image: "/assets/img/mom-wrong-question.jpg"
+imageAlt: "An open notebook with three questions crossed out in red and an arrow curving down to a small heart drawn in the dark beneath the page, beside the words: Grace gives us room to ask the wrong question while God reaches the deeper thing beneath it."
+titleInImage: true
 ---

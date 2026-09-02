@@ -1,11 +1,9 @@
 ---
-title: "Easy is not one of the promises of God."
+title: "God does not promise easy. He promises his presence."
 dek: ""
 publishAt: 2026-08-28T06:00:00-04:00
-format: "note"
-paper: "plain"
-clip: "tape"
-emphasis: "Easy"
-emphasisMark: "circle"
-tone: "yellow"
+format: "image"
+image: "/assets/img/mom-his-presence.jpg"
+imageAlt: "Two people walking away down a wet city street under one umbrella in the rain, beside the words: God does not promise easy. He promises his presence."
+titleInImage: true
 ---

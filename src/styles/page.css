@@ -2102,3 +2102,24 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .sub-env{width:5.6rem; color:rgba(255,255,255,.9); justify-self:end}
 .sub-env svg{width:100%; height:100%; display:block}
 .vh{position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap}
+
+
+/* ── Moments as Denvil's own cards ───────────────────────────────────────
+   From 2 Sep the Moments are artwork: the sentence is set inside a 3:2 card
+   over a photograph, with the marks drawn on. So the listing card is the
+   picture and a date, and nothing else. The drawn note card stays for a
+   moment that has no artwork yet, which is why both live in MomentCard. */
+.mpic{position:relative; display:block; border-radius:var(--r);
+  overflow:hidden; background:var(--paper);
+  box-shadow:0 1px 0 var(--rule),0 16px 30px -26px rgba(31,28,22,.55);
+  transition:transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease)}
+.mpic:hover{transform:translateY(-3px);
+  box-shadow:0 1px 0 var(--rule),0 22px 36px -24px rgba(31,28,22,.6)}
+.mpic img{display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:cover}
+/* The date sits on the card rather than under it, so a wall of cards keeps
+   one clean edge. White on a scrim, because the corner it lands in is a
+   photograph and its brightness is not ours to predict. */
+.mpic-date{position:absolute; right:.55rem; bottom:.5rem; z-index:1;
+  font-family:var(--sans); font-size:.68rem; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; color:var(--white);
+  background:rgba(20,18,16,.72); padding:.2rem .45rem; border-radius:3px}

@@ -1,11 +1,9 @@
 ---
-title: "When we see Jesus in his glory we lose the obsession with ourselves."
+title: "When Jesus fills the frame, we stop trying to be the center of it."
 dek: ""
 publishAt: 2026-08-19T06:00:00-04:00
-format: "note"
-paper: "cream"
-clip: "paperclip"
-emphasis: "obsession"
-emphasisMark: "underline"
-tone: "blue"
+format: "image"
+image: "/assets/img/mom-fills-the-frame.jpg"
+imageAlt: "A person standing alone in a gallery in front of a large painting of light breaking over a valley, beside the words: When Jesus fills the frame, we stop trying to be the center of it."
+titleInImage: true
 ---

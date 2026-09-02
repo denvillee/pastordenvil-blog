@@ -29,12 +29,15 @@ interface Props {
      a heading. Optional and per piece, because which word carries the idea is
      an editorial judgement and not something a template can guess. */
   titleMark?: string;
+  /* The artwork already sets the title. The h1 stays in the document for
+     screen readers, search and the outline, and comes out of the picture. */
+  titleInImage?: boolean;
   slug?: string;
 }
 const {
   room, title, dek, metaDescription, respond = false, image, imageAlt, next = null, publishAt, scripture, series,
   week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
-  titleMark, slug,
+  titleMark, titleInImage = false, slug,
 } = Astro.props;
 
 /* Split the title around the marked word so the circle wraps just that word. */
@@ -86,10 +89,10 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
         <span class={`type ${meta.cls}`}>{meta.label}</span>
         {week && <span class="wk">Season one &middot; week {week}{movement ? ` · ${movement}` : ''}</span>}
       </div>
-      <h1 class="art-title is-display">{titleParts
+      <h1 class:list={['art-title', 'is-display', titleInImage && 'vh']}>{titleParts
         ? <>{titleParts[0]}<span class="c">{titleParts[1]}<Mark kind="circle" color="yellow" draw={true} /></span>{titleParts[2]}</>
         : title}<span class="dot">.</span></h1>
-      <p class="art-dek">{dek}</p>
+      {!titleInImage && <p class="art-dek">{dek}</p>}
       <div class="art-meta">
         {/* The site's own mark rather than a photograph. A face at 30px is a
             smudge, it dates the moment the photograph does, and the name is

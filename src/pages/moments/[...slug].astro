@@ -38,8 +38,14 @@ const mins = fmt === 'essay' ? readMinutes(entry.body) : undefined;
   notes={entry.data.notes}
   ogImage={entry.data.ogImage}
   siblings={siblings}
+  image={entry.data.titleInImage ? entry.data.image : undefined}
+  imageAlt={entry.data.imageAlt}
+  titleInImage={entry.data.titleInImage}
 >
-  {fmt === 'image' && entry.data.image && (
+  {/* A card that carries its own title is the page's hero and the layout
+      renders it. A picture with a caption under it is a figure inside the
+      post, which is a different thing, so both paths stay. */}
+  {fmt === 'image' && entry.data.image && !entry.data.titleInImage && (
     <PostFigure src={entry.data.image} alt={entry.data.imageAlt} caption={entry.data.caption} />
   )}
   {Diagram && (

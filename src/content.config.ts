@@ -146,6 +146,14 @@ export const collections = {
     /* The line under the picture, for format: image. */
     caption: z.string().optional(),
 
+    /* Denvil's Moments cards carry the sentence inside the artwork: the quote
+       is set in the image, over a photograph, with the marks drawn on. When
+       that is true the page must not print the same sentence again above the
+       picture, so the heading is kept for screen readers and search and taken
+       out of the visual layout. Per post, because it is only true of the
+       cards. */
+    titleInImage: z.boolean().default(false),
+
     /* ── the note-card grid ───────────────────────────────────────────
        The comp's Moments page is eight handwritten cards on visibly different
        paper. Authored rather than randomised: a random paper would reshuffle

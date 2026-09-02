@@ -4,7 +4,6 @@ import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
 import DotGrid from '../../components/marks/DotGrid.astro';
 import Photo from '../../components/Photo.astro';
-import StickyNote from '../../components/marks/StickyNote.astro';
 import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import MomentCard from '../../components/MomentCard.astro';
 import Doorway from '../../components/Doorway.astro';
@@ -53,30 +52,14 @@ const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
         <p class="page-dek">{labels.momentsSubtitle}</p>
       </div>
       <div class="mom-quote">
-        {/* The sticky note read "Grace is not the absence of struggle, but the
-            presence of God." It was never supplied, it reads as a generic
-            inspirational line, and it interrupted the opening.
-
-            The helmet takes that space instead. It is the only humorous picture
-            on the site, so it belongs where someone has already chosen to come
-            rather than on the front page, where it would be spent on every
-            visit. Cut out on the page ground, one coral dot, and nothing else:
-            no tape, no doodles, no arrow. The restraint is the joke. */}
-        {/* The comp puts a large taped blue note at the top right of Moments,
-            white handwriting on blue, with a heart. It was cut once before
-            because the line in the comp was a generic inspirational quote nobody
-            had written. This one is Denvil's own sentence, from
-            `To know that you are loved changes everything - John 14,
-            2 Corinthians 4.docx`, and it is about exactly what this room is
-            about: God getting past the ear and into the person. */}
-        <StickyNote tone="blue" tilt={-2.2} tape={true} class="mom-note">
-          <span class="mom-note-q" aria-hidden="true">&ldquo;</span>
-          Grace is not the absence of struggle, but the presence of&#32;<span class="u">God.<Mark kind="underline" color="yellow" /></span>
-          <span class="mom-note-heart" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
-          </span>
-        </StickyNote>
-
+        {/* PULLED, 2 Sep. The blue note here carried "Grace is not the
+            absence of struggle, but the presence of God." Nobody wrote it.
+            The comment above it in the previous version said so, and then a
+            second comment claimed it came from one of Denvil's documents, and
+            both cannot be true. A sentence in his voice, in his colours, on
+            his page, is his whether or not it is in quotation marks, so it
+            comes out until he supplies one he actually said. The space is
+            better empty than borrowed. */}
         <DotGrid cols={6} rows={4} class="mom-dots" />
       </div>
     </section>
