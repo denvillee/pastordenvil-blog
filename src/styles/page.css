@@ -2329,7 +2329,9 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
    Newest essay, newest moment, one band. Not a 50/50 split: the essay is the
    larger piece and takes the wider column. */
 .twofeat{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-  gap:clamp(1.6rem,4vw,3.4rem);
+  /* Wider than it was, because the gap is now the only thing between the two
+     columns and a gap has to be big enough to read as a decision. */
+  gap:clamp(2.2rem,5.4vw,4.6rem);
   /* Top aligned so the two eyebrows sit on one line. Centred, the shorter
      column floated and the labels landed at different heights, which read as
      a mistake rather than as two things side by side. */
@@ -2359,12 +2361,10 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
 .tf-moment-art img{aspect-ratio:3/2; object-fit:contain; background:var(--paper)}
 .tf-moment{position:relative; display:grid; gap:clamp(.9rem,2vw,1.3rem);
   justify-items:start; align-content:start}
-/* The drawn divider he asked for. A hand-ruled line, not a border: the band
-   is the one place on the page where two different kinds of thing sit side by
-   side, and a hairline would read as a table. */
-.tf-rule{position:absolute; left:calc(-1 * clamp(.8rem,2.1vw,1.7rem)); top:0; bottom:0;
-  width:2.4rem; height:auto; color:var(--rule-strong); opacity:.85}
-@media (max-width:900px){ .tf-rule{display:none} }
+/* The divider is gone. It was a drawn line stretched to whatever height the
+   taller column happened to be, which is the one thing a hand-drawn mark
+   cannot survive. What separates the columns now is the gap, widened below,
+   and their own coloured eyebrows. */
 .tf-moment-h{font-size:var(--step-1); margin:0}
 .tf-moment-art{display:block; width:100%; border-radius:var(--r); overflow:hidden;
   background:var(--paper);

@@ -18,6 +18,7 @@ notes: "This essay grows out of my Fuller Seminary paper &ldquo;Beyond Body and 
 ---
 
 In the summer of 2023, I was invited to lead my church’s weekend prayer team retreat. With about fifty pastors and volunteer leaders in the room, I opened my first teaching with two questions:
+
 **“Who do you think you are?”** .... and.... **“What do you think you’re doing?”**
 
 Admittedly, I knew both questions, not to mention the way I asked them, were a little cheeky and maybe even a bit off-putting for some. But I was going somewhere!
@@ -28,14 +29,13 @@ And while challenging certain behaviors was certainly part of what I was getting
 
 Who we think we are, what we actually believe to be true about ourselves, shapes how we behave and how we understand what we’re doing with our lives.
 
-To put it another way:
-
 > [!BIG]
 > Identity precedes activity.
 
 When I was in school, there weren’t a lot of kids with the last name Lee. Which meant I heard the same joke over and over: “Are you related to Bruce Lee?”
 
 After about the hundredth time, I started responding, “If I was, do you think I’d be at *this* school?”
+
 It was a joke.... mostly.
 
 But the joke only works because we instinctively understand that our social identity is tied to our social privileges and lifestyles.
@@ -61,8 +61,6 @@ Through Jeremiah, God says, “I thought you would call me ‘Father’ and not 
 >
 > Knowing who they are in relationship to who God is.
 
-Some see him as equal. Some see him as a punisher, some see him as competition. But having a relationship with God begins with knowing who we are in relationship with him. Relationship with God is not founded on a set of predetermined markers of Christianity. It is predicated on who we are in relationship to him.
-
 A people who had been trained for generations to think like slaves had to learn to understand themselves through a story much larger than slavery. While Egypt was an undeniable part of their history, God was determined that it would never become the whole story through which they understood who they were.
 
 Before they could fully inhabit what God was calling them into, they had to learn to live from an identity that generations of slavery had taught them to forget. God was not simply leading them out of Egypt; he was forming them into a people who could understand themselves according to his story rather than Pharaoh’s.
@@ -72,7 +70,7 @@ What was true for the people of God then is still true for us now:
 > [!BIG]
 > Whoever life has convinced you that you are, the truth of Scripture tells you that you are more than that.
 
-•  •  •
+---
 
 That is why this matters even in something as ordinary as serving at church.
 
@@ -90,20 +88,7 @@ As the biblical story unfolds, we will see human beings placed at the meeting pl
 
 But if you answer **“Who do you think you are?”** differently, you might discover that the answer to **“What do you think you’re doing?”** changes too.
 
-That is the change in pattern between working for identity and working from identity.
-
-> [!TURN]
-> Working for vs. working from identity
->
-> Working <span class="c">for</span> identity
->
-> I do to earn, to prove, to be enough.
->
-> Working <span class="c">from</span> identity
->
-> I do from who I am in relationship with God.
-
-One is driven by the need to become somebody. The other can become worship.
+That is the change in pattern between working **for** identity and working **from** identity. One is driven by the need to become somebody. The other can become worship.
 
 You can watch this play out all over Scripture, but two familiar scenes make the point especially clear, one in the life of David and the other in the life of Jesus.
 
@@ -129,12 +114,10 @@ The little brother. The shepherd. The inexperienced kid.
 
 The underqualified volunteer who somehow wandered onto the battlefield.
 
-But David has been living inside a different story....
-
 > [!QUOTE]
-> The story we live in is the story we live out.
+> But David has been living inside a different story....
 >
-> ~ Pete Hughes, *All Things New*, 2020[^4]
+> the story we live in is the story we live out![^4]
 
 One chapter earlier, Samuel had poured oil over his head and identified him as God’s choice, and “from that day on the Spirit of the LORD came powerfully upon David” (1 Samuel 16:13).
 
@@ -169,7 +152,9 @@ John tells us that “Jesus knew that the Father had put all things under his po
 
 Jesus knew where he had come from, where he was going, and what the Father had entrusted to him. And out of that certainty about who he was, look at what he did:
 
-> “So he got up from the meal, took off his outer clothing, and wrapped a towel around his waist. After that, he poured water into a basin and began to wash his disciples’ feet, drying them with the towel that was wrapped around him.” (John 13:4-5).
+> “So he got up from the meal, took off his outer clothing, and wrapped a towel around his waist” (John 13:4).
+
+> “After that, he poured water into a basin and began to wash his disciples’ feet, drying them with the towel that was wrapped around him.” (John 13:5).
 
 Jesus does not wash their feet in order to become a great leader. He washes their feet knowing that the Father has already placed all things under his authority.
 
@@ -180,7 +165,8 @@ That distinction matters because Christ-like humility does not come from uncerta
 
 So as we see David walking toward a giant and Jesus kneeling to wash dirty feet, though the outward actions look dramatically different, the movement underneath them is the same.
 
-**Neither is working for identity and both are working from it.**
+> [!BIG]
+> Neither is working <span class="c">for</span> identity and both are working <span class="c">from</span> it.
 
 And this is part of what Genesis does for the people of God.
 
@@ -188,17 +174,15 @@ For Israel, Genesis reaches behind Pharaoh and slavery and tells of who they wer
 
 First, Genesis 1 tells us what a human being is before Genesis 3 tells us what went wrong with humanity.
 
-Don’t miss the order....
-
 > [!BIG]
-> Don’t miss the order… God gave humanity a purpose before there was a problem.
+> Don’t miss the order.... God gave humanity a purpose before there was a problem.
 
 Before anyone needed to be rescued from sin, human beings had already been named the *image of God.*
 
 That means sin is essential to understanding the human condition, but sin is not the starting point for understanding what a human being is and their relationship to God.
 
 > [!BIG]
-> We are made in the image of God, not in the image of sin.
+> Simply put, we are made in the image of God, not in the image of sin.
 
 So, when Christians say, *“I’m just a sinner saved by grace,”* I understand what we mean, and there is something gloriously true in it. We are sinners, and we are saved only by grace. But that is a statement about what God has rescued us **from**, not the whole story of what God created us **for**.
 
@@ -206,11 +190,12 @@ Genesis 3 tells the truth about what has gone wrong with us while Genesis 1 tell
 
 So before we ask what is wrong with us, maybe we need to ask the earlier question:
 
-**Who do you think you are?**
+> [!BIG]
+> Who do you think you are?
 
 ## The answer that is too small
 
-Ask most Christians what makes a human a human and, sooner or later, you will get some version of Genesis 2:7: dust creatures ... given the breath of life ... a creature with a soul
+Ask most Christians what makes a human a human and, sooner or later, you will get some version of Genesis 2:7: dust creatures.... given the breath of life.... a creature with a soul
 
 > “Then the LORD God formed a man from the dust of the ground and breathed into his nostrils the breath of life, and the man became a living being.” (Genesis 2:7)
 
@@ -222,31 +207,35 @@ So, yes, body and breath make us alive, but they do not, by themselves, explain 
 
 Theologian Joel Green points out that *nephesh* is not a thing a person has, as if the body were one part and the soul another thing stored inside it. Instead, he suggests that it is a way of describing the whole living person. Green argues that Genesis 2:7 is better understood as “the human being became fully alive” rather than as ‘the moment a soul got installed’.[^1]
 
-If we build our whole definition of humanity on human bodies and divine breath, we have built it on something Scripture says we share with the animals. That is not insignificant; in fact, later I will argue that Christians have sometimes made the opposite mistake and treated the body as though it hardly matters at all. But body and breath still cannot carry the weight of the whole biblical picture of what it means to be human.
+If we build our whole definition of humanity on human bodies and divine breath, we have built it on something Scripture says we share with the animals. That is not insignificant; in fact, later I will demonstrate how Christians have sometimes made the opposite mistake and treated the body as though it hardly matters at all. But body and breath still cannot carry the weight of the whole biblical picture of what it means to be human.
 
-**So, while Genesis 2 tells us that human beings are living creatures, Genesis 1 tells us** **what kind** **of living creatures we are.**
+> [!BIG]
+> So, while Genesis 2 tells us that human beings are living creatures, Genesis 1 tells us what kind of living creatures we are.
 
 ## What Genesis 1 actually says
 
 The book of Genesis does not begin by telling us only about the body and breath we are made of. It tells us what we are made **as**, and then what we are made **for**.
 
-> “Then God said, ‘Let us make humankind in our image, according to our likeness, so that they may rule…’” (Genesis 1:26).
+> “Then God said, ‘Let us make humankind in our image, according to our likeness, so that they may rule....’” (Genesis 1:26).
 
 Carmen Imes makes a case I find persuasive that the little Hebrew preposition we usually translate “in” can carry the sense of “as.” In other words, humanity is made **as God’s image**, not merely with something called ‘the image’ somewhere inside us.[^2]
 
 In this view, God does not make human beings and then place his image inside them like a feature that can be added, damaged, or removed. He makes humans **as** his image.
 
-Thus, **image is not a capacity we possess, like intelligence, morality, consciousness, or even some detachable thing we call a soul; it is who we are.**
+Thus, **image is not a capacity we possess, like intelligence, morality, consciousness, or even some detachable thing we call a soul; it is who we are.**[^5]
 
 In fact, the rest of Scripture keeps talking this way even after Genesis 3.
 
 Genesis 9:6 still grounds the value of fallen human life in the fact that humanity is made in God’s image. James says that with our tongues we curse human beings “who have been made in God’s likeness” (James 3:9).
 
-**So, yes, the fall damages plenty, but it does not erase the image.**
+> [!BIG]
+> So, yes, the fall damages plenty, but it does not erase the image.
 
-**The good news of being made as image means that disability cannot diminish it and failure cannot forfeit it. Similarly, no increase in intelligence, independence, usefulness, or spiritual maturity can increase it, and no loss of those things can decrease it.**
+> [!BIG]
+> **The good news of being made as image means that disability cannot diminish it, and failure cannot forfeit it. Similarly, no increase in intelligence, independence, usefulness, or spiritual maturity can increase it, and no loss of those things can decrease it.**[^6]
 
-Michael Heiser, working with the same Hebrew construction, reaches a similar conclusion: 
+Michael Heiser, working with the same Hebrew construction, reaches a similar conclusion:
+
 “The image of God is not a quality within human beings; it is what humans are.” He argues that “in” can carry the sense of “as” or “in the capacity of.”[^3]
 
 The phrase *in the capacity of* helps me most because we use similar language to describe an occupational role a person occupies. I often say that *my mother and sister work* **in** *medicine*, or that *my brother works* **in** *landscaping*. The language tells us something about the role they occupy and the work they do. That is the larger idea here.
@@ -255,22 +244,31 @@ To be made **as God’s image**, or to be **in God’s image**, is to be made as
 
 In this we can see why identity and activity have been sitting so close together from the beginning. Genesis does not give us an identity and then, much later, invent something for us to do with it.
 
-God defines for the humans what it means to live as his image: 
+God defines for the humans what it means to live as his image:
+
 **28** God blessed them and said to them, “Be fruitful and increase in number; fill the earth and subdue it. Rule over the fish in the sea and the birds in the sky and over every living creature that moves on the ground.”
 
 Who we are is already pointing toward what we are for. That is where the series will go next.
 
 But for now, stay with the first question.
 
-**Who do you think you are?**
-
-> [!BIG]
+> [!CIRCLE]
+> Who do you think you are?
+>
 > Genesis says you are God’s image.
 
-[^1]: Joel B. Green, *Body, Soul, and Human Life: The Nature of Humanity in the Bible* (Grand Rapids: Baker Academic, 2008), ch. 2. Green argues that “soul” is not a uniquely human possession in Genesis and suggests Genesis 2:7 can be understood as “the human being became fully alive.”
+---
+
+**Scripture quotations are from the New International Version unless a quotation is marked otherwise.**
+
+[^1]: Joel B. Green, *Body, Soul, and Human Life: The Nature of Humanity in the Bible* (Grand Rapids: Baker Academic, 2008), 61-64. Green argues that “soul” is not a uniquely human possession in Genesis and suggests Genesis 2:7 can be understood as “the human being became fully alive.”
 
 [^2]: Carmen Joy Imes, *Being God’s Image: Why Creation Still Matters* (Downers Grove, IL: IVP Academic, 2023), 6. Imes argues that speaking of humans as God’s image reinforces the image as essential to human identity rather than a capacity that can be lost.
 
 [^3]: Michael S. Heiser, “Image of God,” in *The Lexham Bible Dictionary*, ed. John D. Barry et al. (Bellingham, WA: Lexham Press, 2016).
 
 [^4]: Pete Hughes, *All Things New: Joining God’s Story of Re-Creation* (Colorado Springs: David C Cook, 2020). The line in this essay adapts Hughes’s recurring formulation, “The story you live in is the story you live out.” For the broader biblical-story framework, see Craig G. Bartholomew and Michael W. Goheen, *The Drama of Scripture: Finding Our Place in the Biblical Story* (Grand Rapids: Baker Academic, 2004), 20-22, on learning to appropriate the Bible “as our story.”
+
+[^5]: Paul Sands, “The Imago Dei as Vocation,” *Evangelical Quarterly* 82, no. 1 (2010): 28-41. Sands argues for a vocational reading of the *imago Dei* in contrast to accounts based on human capacities. This series draws on that insight while distinguishing humanity’s enduring identity as God’s image from the faithful exercise of image-bearing vocation.
+
+[^6]: Hans S. Reinders, *Receiving the Gift of Friendship: Profound Disability, Theological Anthropology, and Ethics* (Grand Rapids: Eerdmans, 2008). Reinders challenges capacity-based accounts of personhood through his theological treatment of profound intellectual disability, arguing that human dignity cannot depend upon rationality, autonomy, achievement, or other capacities.

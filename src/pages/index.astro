@@ -198,11 +198,14 @@ const shortcuts = [
 
         {featMoment && (
           <article class="tf-moment">
-            {/* The drawn line between the two, per Denvil 2 Sep. */}
-            <svg class="tf-rule" viewBox="0 0 24 400" fill="none" aria-hidden="true" preserveAspectRatio="none">
-              <path d="M12 4c-4 46 5 92 1 138-4 44 4 88 0 132-3 42 4 84 1 122"
-                    stroke="currentColor" stroke-width="2.4" stroke-linecap="round" />
-            </svg>
+            {/* No drawn line between the two columns. Denvil, 2 Sep: "the line
+                between these two dont look great". It did not: the path was
+                drawn for a 400-unit box and stretched over about 700px with
+                preserveAspectRatio="none", so a hand-ruled line became a slow
+                grey snake down the middle of the page. The same stretch bug as
+                every other mark that has been given a height it was not drawn
+                for. Air separates the two columns now, and the eyebrows do the
+                rest: sage over the essay, coral over the moment. */}
             <p class="lb-k lb-k-coral">Latest moment</p>
             {/* The card carries the sentence, so the heading is here for
                 screen readers, search and the outline and out of the layout,
