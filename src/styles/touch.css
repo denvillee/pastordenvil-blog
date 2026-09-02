@@ -58,10 +58,12 @@
    is 9.9-10.6px. That reads fine on a desktop at arm's length and is tight on a
    phone. Raised to .72rem here only.
 
-   .72rem, not the .68rem first proposed: .68 would have moved these by a third
-   of a pixel, which is a gesture rather than a fix. .72rem is a step the design
-   system already uses (.mcard-date, .arc-item .r, .vs-src all sit there), so
-   nothing new is invented and the scale keeps its shape.
+   .78rem. This started at .72rem, which was chosen because the design system
+   already used that step. Measured on a 390px phone it renders at 11.52px,
+   which is still under twelve, so the floor it was written to enforce was not
+   being enforced. .78rem is 12.48px: above the line rather than on it, and far
+   enough above that a browser's own minimum-font setting cannot drop it back
+   under. Re-measured after the change: no eyebrow wraps to a second line.
 
    Desktop is untouched: this is inside pointer:coarse. Deliberately excluded are
    .bcover-t/.bcover-a and .mini.plate, which are lettering inside a drawn book
@@ -78,5 +80,5 @@
   .ser-eyebrow, .std-eyebrow, .vs-tab,
   /* .70 tier, same family */
   .foot-col h2, .list-item .r, .share .lbl, .signup-eyebrow, .verse-tab{
-    font-size:.72rem}
+    font-size:.78rem}
 }

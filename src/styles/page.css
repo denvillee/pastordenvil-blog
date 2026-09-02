@@ -7,6 +7,11 @@
 .chip{
   display:inline-block; font-size:.75rem; font-weight:800; letter-spacing:.11em;
   text-transform:uppercase; padding:.34rem .6rem; border-radius:var(--r-sm);
+  /* A chip is a label, not a sentence. "Featured essay" broke across two lines
+     on a 360px phone once the mobile type floor went up, and a two-line pill
+     reads as a mistake rather than as emphasis. Every chip on the site is two
+     words or fewer, so nothing is at risk of running off the edge. */
+  white-space:nowrap;
 }
 .chip-yellow{background:var(--yellow); color:var(--on-yellow)}
 .chip-blue{background:var(--blue); color:var(--on-blue)}
@@ -1648,8 +1653,30 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 /* A white pill, as in the comp, not a text link. */
 .vfeat-go{display:inline-flex; align-items:center; gap:.5rem;
   background:var(--white); color:var(--ink); font-weight:700; font-size:.88rem;
-  padding:.6rem 1.05rem; border-radius:var(--r-sm)}
+  padding:.6rem 1.05rem; border-radius:var(--r-sm);
+  /* On a 390px phone the pill was 60% of a 358px card, and "Watch now" broke
+     across two lines with the arrow stranded on its own beside the second.
+     A button is one line. */
+  white-space:nowrap}
 .vfeat-dur{font-size:.85rem; color:var(--on-dark)}
+
+/* The featured card at phone width. The copy block's 60% cap is right beside a
+   16:9 still on a laptop and wrong on a phone, where the picture is the full
+   width of the screen and the text has nowhere else to go. */
+@media (max-width:560px){
+  .vfeat-body{max-width:100%}
+  .vfeat-m{gap:.7rem; flex-wrap:wrap}
+  /* And the coral disc bleeds 10px past the right edge, which the page frame
+     clips: on a laptop it hangs off the corner of the card by design, on a
+     phone the three words were cut in half. Bring it inside. */
+  .watch-disc{right:.4rem; bottom:-.6rem}
+  /* Once the copy runs the full width, a centred play ring sits on top of the
+     title: "Let's Stay Together" ran straight through it. The ring moves to
+     the top right, where there is nothing, and the copy keeps the bottom
+     left. The whole card is the link either way, so nothing is harder to hit. */
+  .vfeat-play{inset:auto 1rem auto auto; top:1rem; place-items:start end}
+  .vfeat-play svg{width:3.4rem; height:3.4rem}
+}
 
 /* ── the tab row ─────────────────────────────────────────────────────────
    Active tab is a solid black pill; the rest are plain text with no border,
@@ -1683,8 +1710,12 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 
 /* "Most recent talks" carries a zigzag at each outer margin in the comp, blue
    on the left and green on the right. */
-.wrecent{position:relative; margin-top:clamp(2rem,4.5vw,3.4rem);
-  padding-top:clamp(1.4rem,3vw,2.2rem); border-top:1px solid var(--rule)}
+/* Denvil, 2 Sep: "you left two lines at the top". Measured: the hero already
+   ends on a hairline, and this rule drew a second one 78px below it with
+   nothing between them. The border here dates from when the tab row sat
+   between the hero and this section and needed separating from it. The tab row
+   has moved, so the second rule is a leftover. The hero's rule does the job. */
+.wrecent{position:relative; margin-top:clamp(2rem,4.5vw,3.4rem)}
 .wrecent-zig-l{position:absolute; left:-3.6rem; top:44%; width:4rem; height:4rem}
 .wrecent-zig-r{position:absolute; right:-3.6rem; top:44%; width:4rem; height:4rem}
 @media (max-width:1180px){ .wrecent-zig-l,.wrecent-zig-r{display:none} }
@@ -2350,6 +2381,75 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
   letter-spacing:.15em; text-transform:uppercase; color:var(--gold);
   margin:0 0 .5rem}
 
-/* The tab row is a section header now, not a strip above the fold. */
+/* ── audio only ──────────────────────────────────────────────────────────
+   Denvil, 2 Sep: "I'd put them under 'watch' and just put them under something
+   that says Audio only".
+
+   An episode has no still, so the card leads with a drawn plate instead of a
+   photograph: the room's own colour, four hand-drawn bars, and the runtime in
+   the corner where the video card puts it, so the two kinds of card read as
+   the same family at a glance. Wider than a video card at three across,
+   because an episode title is a sentence and a sermon title is two words. */
+.aud-row{position:relative}
+.aud-note{margin:-.6rem 0 1.4rem; color:var(--muted); max-width:52ch}
+.acards{display:grid; grid-template-columns:repeat(auto-fill,minmax(22rem,1fr));
+  gap:clamp(1.2rem,3vw,2rem)}
+.acard{display:flex; flex-direction:column; height:100%}
+
+.aplate{position:relative; display:grid; place-items:center;
+  aspect-ratio:16/9; border-radius:var(--r); overflow:hidden}
+.aplate-blue  {background:var(--tint-navy);  color:var(--blue-ink)}
+.aplate-coral {background:var(--tint-coral); color:var(--coral-ink)}
+.aplate-green {background:var(--tint-sage);  color:var(--sage-ink)}
+.aplate-yellow{background:var(--tint-gold);  color:var(--gold-ink)}
+.abars{width:min(58%,15rem); height:auto; opacity:.9}
+/* Bottom left, exactly where .vlen sits on a video card, so the two kinds of
+   card read as one family. */
+.alen{position:absolute; left:.85rem; bottom:.85rem;
+  font-family:var(--sans); font-size:.82rem; font-weight:700;
+  background:var(--ink); color:var(--cream);
+  padding:.2rem .5rem; border-radius:var(--r-sm)}
+
+.ameta{padding-top:.9rem; display:flex; flex-direction:column; flex:1}
+.aeyebrow{margin:0 0 .35rem; font-family:var(--sans); font-size:.78rem;
+  font-weight:800; letter-spacing:.13em; text-transform:uppercase; color:var(--coral-ink)}
+.atitle{margin:0; font-size:var(--step-1); font-weight:800; line-height:1.2}
+.adek{margin:.45rem 0 0; font-size:.9rem; line-height:1.5; color:var(--muted)}
+.asub{margin:.5rem 0 0; font-size:.85rem; color:var(--muted)}
+
+/* The native player. Full width of the card, and given real room: a squeezed
+   audio element is the one control on a page that people genuinely cannot
+   use. Height is the browser's own; only the width and the spacing are ours. */
+/* margin-top:auto rather than a fixed gap: episode descriptions are one line
+   or three, and without this the players sat at four different heights across
+   one row, which reads as four cards that were laid out separately. */
+.aplayer{margin-top:auto; padding-top:.9rem}
+.aaudio{width:100%; display:block}
+.asrc{margin:.7rem 0 0; font-size:.88rem}
+.asrc .go{font-size:.88rem}
+
+@media (max-width:560px){
+  .acards{grid-template-columns:1fr}
+  .abars{width:52%}
+}
+
+/* The topical tab row is a section header now, not a strip above the fold. */
 .wtabs-row{display:grid; gap:.9rem; justify-items:start}
 .wtabs-h{margin:0}
+
+/* The kind row IS a strip above the fold, and that is the difference between
+   the two. Video / Audio / Podcasts is the first question a visitor answers,
+   so it sits directly under the hero rule and filters everything below it.
+   Tight to the rule above, generous below, so it reads as belonging to the
+   page rather than to Latest talks. */
+.wkinds-row{margin-top:clamp(1rem,2.2vw,1.6rem) !important;
+  margin-bottom:clamp(.4rem,1.4vw,1rem)}
+.wkinds-row .wtabs{margin-left:-1.15rem}   /* optical: the pill has 1.15rem of
+  padding, so an unpadded left edge sets the first label past the H1 above it */
+@media (max-width:640px){
+  .wkinds-row{overflow-x:auto; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none}
+  .wkinds-row::-webkit-scrollbar{display:none}
+  .wkinds-row .wtabs{flex-wrap:nowrap}
+  .wkinds-row .wtab{white-space:nowrap}
+}

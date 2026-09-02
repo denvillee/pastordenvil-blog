@@ -29,6 +29,7 @@ import { toSeconds } from '../lib/publish';
 import DotGrid from '../components/marks/DotGrid.astro';
 import Tape from '../components/marks/Tape.astro';
 import VideoCard from '../components/VideoCard.astro';
+import AudioCard from '../components/AudioCard.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
@@ -77,10 +78,31 @@ for (const t of talks) {
 }
 const cats = ['teaching','leadership','conversation','qa'].filter((c) => catCount.has(c));
 
+/* Kind is not category. Category is what a talk is about; kind is what it is:
+   something to watch, something to listen to, or an episode of somebody else's
+   show that Denvil was a guest on. Derived when the entry does not say, so the
+   library labels itself and nothing has to be back-filled by hand. */
+const KIND_LABEL: Record<string,string> = {
+  video: 'Video', audio: 'Audio', podcast: 'Podcasts',
+};
+const kindOf = (t: any): string =>
+  t.data.kind ?? (t.data.audioSrc && !t.data.videoId ? 'audio' : 'video');
+const kindCount = new Map<string, number>();
+for (const t of talks) kindCount.set(kindOf(t), (kindCount.get(kindOf(t)) ?? 0) + 1);
+const kinds = ['video','audio','podcast'].filter((k) => kindCount.has(k));
+
 /* The thresholds. A control that filters a list you can see all of is noise. */
 const showSearch = talks.length >= 8;
 const showYears = years.length >= 2;
 const showSeries = series.length >= 2;
+/* One kind is not a choice. The row appears the day the first podcast episode
+   or audio-only teaching lands, and not a day earlier: today every one of the
+   71 entries is a video, so a Video / Audio / Podcasts row would be a control
+   with one live tab and two dead ones. */
+const showKinds = kinds.length >= 2;
+/* Same rule for the topical tabs, which have been rendering a lone "All"
+   button because nothing in the library carries a category yet. */
+const showCats = cats.length >= 1;
 /* A tab appears only when talks actually carry that category. Denvil, 2 Sep:
    "An empty Q&A tab makes the library feel unfinished." The row grows as the
    library gets labelled and never advertises a room with nothing in it. */
@@ -90,8 +112,17 @@ const showSeries = series.length >= 2;
 /* The featured talk is chosen, not inherited from the sort order. It is then
    REMOVED from everything below: the deck used to start at talks[0] as well, so
    the same message appeared twice within one screen. */
-const feat: any = talks.find((t: any) => t.data.featured) ?? talks[0];
-const rest = talks.filter((t: any) => t !== feat);
+/* Denvil, 2 Sep: "I'd put them under 'watch' and just put them under
+   something that says Audio only". So the episodes are pulled out of the video
+   decks entirely and given their own row, rather than being dropped into a
+   grid of stills with nothing to show. The kind tabs at the top still filter
+   across all of it, which is the other half of what he asked for: the row
+   groups them, the tabs find them. */
+const heard = talks.filter((t: any) => kindOf(t) !== 'video');
+const watched = talks.filter((t: any) => kindOf(t) === 'video');
+
+const feat: any = watched.find((t: any) => t.data.featured) ?? watched[0];
+const rest = watched.filter((t: any) => t !== feat);
 
 /* One "recent" section, not two. The page ran Featured -> four cards -> Most
    recent talks -> the library, which is three versions of the same idea before
@@ -177,7 +208,25 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
       </div>
     </section>
 
-    
+    {/* ── what kind of thing ──────────────────────────────────────────────
+        Denvil, 2 Sep: the tabs go back at the top now that there is audio and
+        there are podcasts. At the top is right for kind, because kind is the
+        first question a visitor answers: am I sitting down to watch, or am I
+        putting this in my ears in the car. It filters both rows below it, so
+        picking Podcasts turns the whole page into the podcast page.
+
+        What is about is a different question, and it stays down with the
+        library where a reader is already browsing titles. */}
+    {showKinds && (
+      <section class="shell wkinds-row">
+        <div class="wtabs" role="group" aria-label="Filter by kind">
+          <button type="button" class="wtab on" data-kind="all" aria-pressed="true">Everything</button>
+          {kinds.map((k) => (
+            <button type="button" class="wtab" data-kind={k} aria-pressed="false">{KIND_LABEL[k]}</button>
+          ))}
+        </div>
+      </section>
+    )}
 
     <section class="shell wrecent">
       <Mark kind="scribble" color="blue"  class="wrecent-zig-l" />
@@ -188,13 +237,36 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
       <div class="vcards vcards-lat">
         {latest.map((t: any) => (
           <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
-               data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''} data-hay={hay(t)}>
+               data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''}
+               data-kind={kindOf(t)} data-hay={hay(t)}>
             <VideoCard entry={t} />
           </div>
         ))}
       </div>
     </section>
 
+
+    {/* ── audio only ──────────────────────────────────────────────────────
+        Podcast episodes and anything else without a picture. Under Latest
+        talks, above the library, because it is a short row that would be lost
+        at the bottom of seventy videos. */}
+    {heard.length > 0 && (
+      <section class="shell aud-row" id="audio-only">
+        <div class="sec-head">
+          <h2 class="sec-h"><span class="u">Audio only<Mark kind="underline" color="coral" draw={true} /></span></h2>
+        </div>
+        <p class="aud-note">Conversations and episodes to listen to rather than watch.</p>
+        <div class="acards">
+          {heard.map((t: any) => (
+            <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
+                 data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''}
+                 data-kind={kindOf(t)} data-hay={hay(t)}>
+              <AudioCard entry={t} />
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
 
     {/* ── all videos ──────────────────────────────────────────────────────
         Denvil, 2 Sep: all videos goes under the latest talks. It sat above
@@ -205,16 +277,18 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
         The "Browse all videos" link that used to sit on this row is gone with
         the move. It pointed at the grid immediately below it. */}
     <section class="shell wtabs-row">
-      <h2 class="sec-h wtabs-h"><span class="u">All videos<Mark kind="underline" color="blue" draw={true} /></span></h2>
-      <div class="wtabs" role="group" aria-label="Filter by kind">
-        {/* "All" rather than "All videos": the heading directly above it
-            already says All videos, and the same two words twice in three
-            inches reads as a mistake. */}
-        <button type="button" class="wtab on" data-cat="all" aria-pressed="true">All</button>
-        {cats.map((c) => (
-          <button type="button" class="wtab" data-cat={c} aria-pressed="false">{CAT_LABEL[c]}</button>
-        ))}
-      </div>
+      <h2 class="sec-h wtabs-h"><span class="u">All <span id="watch-all-word">videos</span><Mark kind="underline" color="blue" draw={true} /></span></h2>
+      {showCats && (
+        <div class="wtabs" role="group" aria-label="Filter by topic">
+          {/* "All" rather than "All videos": the heading directly above it
+              already says All videos, and the same two words twice in three
+              inches reads as a mistake. */}
+          <button type="button" class="wtab on" data-cat="all" aria-pressed="true">All</button>
+          {cats.map((c) => (
+            <button type="button" class="wtab" data-cat={c} aria-pressed="false">{CAT_LABEL[c]}</button>
+          ))}
+        </div>
+      )}
     </section>
 
     {/* The full library, with its own controls. The comp does not put a search
@@ -245,7 +319,8 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
         <div class="vcards vcards-lib">
           {restTalks.map((t: any) => (
             <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
-                 data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''} data-hay={hay(t)}>
+                 data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''}
+               data-kind={kindOf(t)} data-hay={hay(t)}>
               <VideoCard entry={t} />
             </div>
           ))}
@@ -266,18 +341,25 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
 
   <script>
     /* The controls are hidden in the markup and revealed here, so a reader
-       with JavaScript off is never shown a search box that does nothing. */
+       with JavaScript off is never shown a search box that does nothing.
+
+       The filtering below is no longer gated on that reveal. The kind row at
+       the top of the page is always in the markup when there is more than one
+       kind, and it has to work whether or not the library's own search box
+       exists. */
     const tools = document.getElementById('watch-tools');
-    if (tools) {
-      tools.hidden = false;
+    if (tools) tools.hidden = false;
+    {
       const q = document.getElementById('watch-q') as HTMLInputElement | null;
       const wraps = Array.from(document.querySelectorAll<HTMLElement>('.vwrap'));
       const blocks = Array.from(document.querySelectorAll<HTMLElement>('[data-year-block]'));
       const countEl = document.getElementById('watch-count');
       const emptyEl = document.getElementById('watch-empty');
       const clearBtn = document.getElementById('watch-clear');
+      const allHead = document.getElementById('watch-all-word');
       let year = 'all';
       let ser = 'all';
+      let kind = 'all';
 
       const setPressed = (group: string, val: string) => {
         document.querySelectorAll<HTMLElement>(`[data-${group}]`).forEach((b) => {
@@ -289,6 +371,10 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
       };
 
       let cat = 'all';
+      /* "All videos" is the right heading until somebody picks Podcasts, and
+         then it is the wrong one. One word changes with the filter. */
+      const HEAD_WORD: Record<string,string> =
+        { all: 'videos', video: 'videos', audio: 'audio', podcast: 'podcasts' };
       const apply = () => {
         const term = (q?.value ?? '').trim().toLowerCase();
         let shown = 0;
@@ -297,10 +383,27 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
             (year === 'all' || w.dataset.year === year) &&
             (ser === 'all' || w.dataset.series === ser) &&
             (cat === 'all' || w.dataset.cat === cat) &&
+            (kind === 'all' || w.dataset.kind === kind) &&
             (!term || (w.dataset.hay ?? '').includes(term));
           w.hidden = !ok;
           if (ok) shown++;
         });
+        if (allHead) allHead.textContent = HEAD_WORD[kind] ?? 'videos';
+        /* A heading over an empty room. Picking Video used to leave the "Audio
+           only" heading and its one-line note standing over nothing, and
+           picking Podcasts left "All videos" over nothing. Any section whose
+           cards have all been filtered away hides itself, and the library's
+           controls go with the library. */
+        document.querySelectorAll<HTMLElement>('.wrecent, #audio-only, .watch-all')
+          .forEach((sec) => {
+            const kids = sec.querySelectorAll<HTMLElement>('.vwrap');
+            if (!kids.length) return;
+            sec.hidden = ![...kids].some((k) => !k.hidden);
+          });
+        const lib = document.querySelector<HTMLElement>('.watch-all');
+        const libGone = !!lib && lib.hidden;
+        document.querySelectorAll<HTMLElement>('.wtabs-row').forEach((r) => { r.hidden = libGone; });
+        if (tools) tools.hidden = libGone;
         /* A year heading with nothing under it is a heading for an empty
            room. Hide the whole block instead. */
 
@@ -321,11 +424,15 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
       document.querySelectorAll<HTMLElement>('button[data-cat]').forEach((b) => {
         b.addEventListener('click', () => { cat = b.dataset.cat ?? 'all'; setPressed('cat', cat); apply(); });
       });
+      document.querySelectorAll<HTMLElement>('button[data-kind]').forEach((b) => {
+        b.addEventListener('click', () => { kind = b.dataset.kind ?? 'all'; setPressed('kind', kind); apply(); });
+      });
       q?.addEventListener('input', apply);
       clearBtn?.addEventListener('click', () => {
-        year = 'all'; ser = 'all'; cat = 'all';
+        year = 'all'; ser = 'all'; cat = 'all'; kind = 'all';
         if (q) q.value = '';
-        setPressed('year', 'all'); setPressed('series', 'all'); setPressed('cat', 'all');
+        setPressed('year', 'all'); setPressed('series', 'all');
+        setPressed('cat', 'all'); setPressed('kind', 'all');
         apply();
         q?.focus();
       });

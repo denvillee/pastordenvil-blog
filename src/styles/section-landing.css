@@ -44,7 +44,7 @@
 
 :root {
   /* Named for the job, not the number, so a change is one line. */
-  --lg-hero-pad:  clamp(2.6rem, 4.4vw, 4rem);   /* 42 to 64 */
+  --lg-hero-pad:  clamp(2.2rem, 3.4vw, 3rem);   /* 35 to 48 */
   --lg-to-door:   clamp(2rem, 3.2vw, 3rem);     /* 32 to 48 */
   --lg-door-out:  clamp(2.6rem, 4.2vw, 4rem);   /* 42 to 64 */
   --lg-major:     clamp(2.5rem, 5.4vw, 5rem);   /* 40 to 80, mobile to desktop */
@@ -64,7 +64,34 @@
   padding-bottom: var(--lg-hero-pad);
   margin-bottom: 0;
   border-bottom: 1px solid var(--rule);
+  /* Denvil, 2 Sep: dead space between the title, the line under it and the
+     picture beside it, as though something were missing above the rule.
+
+     Measured. The two columns were top aligned and wildly different heights:
+
+         Essays     text 131  picture 180
+         Moments    text 163  picture 174
+         Bookshelf  text 163  picture 240
+         Studies    text 163  picture 272
+
+     so on Studies a hundred pixels of nothing sat under the subtitle, beside
+     the picture, directly above the rule. Centred, the leftover splits above
+     and below the text and the sentence lands opposite the middle of the
+     picture instead of hanging off its top corner. */
+  align-items: center;
 }
+
+/* And the pictures are all one height now. Four section heroes at four
+   different heights is the other half of it: the rule landed in a different
+   place on every page, so nothing felt deliberate. */
+.arch > .arch-head .head-art,
+.arch > .mom-hero .mom-quote,
+.arch > .std-hero .std-art,
+.arch > .book-hero .imask,
+.arch > .lead-hero .lead-art { max-height: 15rem }
+.arch > .std-hero .std-art img,
+.arch > .book-hero .imask img,
+.arch > .lead-hero .lead-art img { max-height: 15rem; object-fit: cover }
 
 /* ── the doorway story ───────────────────────────────────────────────────
    A bridge, not a second hero. The pack asks for 320 to 420px on desktop and
@@ -83,11 +110,31 @@
   margin-top: var(--lg-major);
 }
 /* The doorway sets both of its own gaps, so the block after it must not add
-   a second one on top. */
-.arch > .door + * { margin-top: 0; }
+   a second one on top.
+
+   The :not chain is not decoration. The rule above it carries four classes of
+   specificity, so a plain `.arch > .door + *` at two loses to it and does
+   nothing at all. Media queries add no specificity on this project and
+   neither does being written later in the same file. */
+.arch > .door + *:not(.mk):not(.dotgrid) { margin-top: 0; }
 /* Decorative marks are positioned, not flowed. A margin on one moves nothing
    and reads as a bug when the selector above catches it. */
 .arch > .mk, .arch > .dotgrid { margin-top: 0 }
+/* And when a mark is the first thing in the frame, the hero after it is still
+   the first block a reader sees. Measured 126px from the masthead to the top
+   of every section hero, against the pack's 48 to 64: the hero was collecting
+   a major section gap for following a mark that occupies no space.
+   Named heroes rather than `.mk:first-child + *`, because Leaders opens with
+   two marks and the adjacent-sibling version left it at 126 while the other
+   five went to 48. The :not chain is only there to reach four classes of
+   specificity, which is what the rule above costs. */
+.arch > .arch-head:not(.door):not(.mk),
+.arch > .mom-hero:not(.door):not(.mk),
+.arch > .std-hero:not(.door):not(.mk),
+.arch > .book-hero:not(.door):not(.mk),
+.arch > .lead-hero:not(.door):not(.mk),
+.arch > .watch-hero:not(.door):not(.mk),
+.arch > .essays-hero:not(.door):not(.mk) { margin-top: 0 }
 
 /* Pages that still carry .band's own padding on an inner section would double
    the gap. Inside the frame, the rhythm above is the only source. */

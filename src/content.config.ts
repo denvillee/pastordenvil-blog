@@ -207,8 +207,19 @@ export const collections = {
        one. Newest is only the fallback when nothing is flagged. */
     featured: z.boolean().default(false),
       provider: z.enum(['youtube', 'vimeo']).default('youtube'),
-      /* The id only, not a URL. */
-      videoId: z.string(),
+      /* The id only, not a URL. Optional since the library took audio: a
+         podcast episode is an mp3 and has no video anywhere to point at. Every
+         video entry still has one, and the card that renders a player is only
+         reached when it does. */
+      videoId: z.string().optional(),
+      /* Whose show it is. Printed on an audio card in place of the venue,
+         because with a podcast the show is the thing a listener recognises. */
+      show: z.string().optional(),
+      /* The episode's own page on the show's site. Attribution, and the way
+         out for a listener who wants to subscribe to somebody else's podcast,
+         which is the one case where sending a reader off the site is the
+         helpful thing to do rather than the lazy thing. */
+      episodeUrl: z.string().url().optional(),
       /* The poster, self-hosted, as a file stem under /assets/img with no
          extension: the component serves .webp with a .jpg fallback. Vimeo has
          no predictable thumbnail address the way YouTube does, and pointing at
@@ -262,6 +273,14 @@ export const collections = {
          The tab row renders only the categories that actually have entries, so
          the control appears as Denvil categorises and not before. */
       category: z.enum(['teaching', 'leadership', 'conversation', 'qa']).optional(),
+      /* What kind of thing this is, which is a different question from what it
+         is about. Denvil, 2 Sep: "since we have audio and podcast maybe we can
+         put those tabs back at the top". Optional, and derived when it is not
+         set: an entry with an audio file and no video is audio, everything else
+         is video. Set it to 'podcast' by hand for an episode of somebody's
+         show, which is neither of those: it is a conversation he was a guest
+         on, and a reader looking for one is not looking for a sermon. */
+      kind: z.enum(['video', 'audio', 'podcast']).optional(),
       organization: z.string().optional(),
       location: z.string().optional(),
       scripture: z.string().optional(),
