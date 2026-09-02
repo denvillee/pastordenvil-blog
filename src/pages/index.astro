@@ -167,17 +167,22 @@ const shortcuts = [
                   whether to start something by knowing what it is part of and
                   where in the run it sits, and that decision comes before the
                   click, not after it. */}
+              {/* Two lines on purpose. Run on one, it wrapped mid-title as
+                  "Part of More Than Body and / Breath", which reads as a
+                  layout accident. The run's name is one thought and where this
+                  piece sits in it is another. */}
               {featTag && (
                 <p class="lb-ser">
-                  Part of <a href="/essays/#ser-h">{featTag.name}</a>
-                  <span class="lb-ser-sep" aria-hidden="true">&middot;</span>
-                  <span class="lb-ser-part">Part {featTag.order}{featTag.total ? ` of ${featTag.total}` : ''}</span>
-                  {featTag.firstHref && (
-                    <>
-                      <span class="lb-ser-sep" aria-hidden="true">&middot;</span>
-                      <a href={featTag.firstHref}>Start at Part 1</a>
-                    </>
-                  )}
+                  <span class="lb-ser-run">Part of <a href="/essays/#ser-h">{featTag.name}</a></span>
+                  <span class="lb-ser-at">
+                    <span class="lb-ser-part">Part {featTag.order}{featTag.total ? ` of ${featTag.total}` : ''}</span>
+                    {featTag.firstHref && (
+                      <>
+                        <span class="lb-ser-sep" aria-hidden="true">&middot;</span>
+                        <a href={featTag.firstHref}>Start at Part 1</a>
+                      </>
+                    )}
+                  </span>
                 </p>
               )}
               <a class="lb-go" href={`/essays/${featEssay.id}/`}>

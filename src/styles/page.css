@@ -1979,7 +1979,10 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 .lb-go{display:inline-flex; align-items:baseline; gap:.4rem; font-weight:700}
 .lb-go .arw{transition:translate var(--fast) var(--ease)}
 .lb-go:hover .arw{translate:.22rem 0}
-.lb-ser{font-size:.85rem; color:var(--muted); margin:0 0 .9rem}
+.lb-ser{font-size:.85rem; color:var(--muted); margin:0 0 .9rem;
+  display:grid; gap:.15rem; justify-items:start}
+.lb-ser-run{display:block}
+.lb-ser-at{display:block}
 .lb-ser a{color:var(--blue-ink); font-weight:700; text-decoration:underline;
   text-underline-offset:2px; text-decoration-thickness:1.5px}
 .lb-ser-sep{margin-inline:.45rem; color:var(--faint)}

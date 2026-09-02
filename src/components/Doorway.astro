@@ -89,13 +89,14 @@ const hasRail = Astro.slots.has('rail');
         /why-this-exists/ routes now redirect back here. */}
   </div>
 
-  {/* The rail. A doorway printing whole is a 62ch column of text on a 1280px
-      page, which left the right half of For Leaders empty for eight hundred
-      pixels. The note that was sitting unused below an empty list moves up
-      into that space, taped, with a field of dots behind it: three of the
-      design board's own elements, carrying words the room already had. No
-      rail is rendered when a page has nothing real to put there. */}
-  {!folds && hasRail && (
+  {/* The rail. It used to render only while the doorway printed whole, on the
+      reasoning that a folded doorway was too short to hold one. Measured 2 Sep,
+      with the doorway now a tinted band of its own: the band is 1200px wide and
+      the copy inside it is 613, so the right half of it was empty on every
+      section page whether the story was folded or not. The pack draws a rail
+      there on all six. So it renders whenever a page has something real to put
+      in it, folded or not, and no rail is rendered when it does not. */}
+  {hasRail && (
     <div class="door-rail door-rail-note">
       <Tape color={tone === 'yellow' ? 'coral' : 'yellow'} class="door-tape" />
       <DotGrid cols={7} rows={4} class="door-dots" />

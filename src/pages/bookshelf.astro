@@ -10,6 +10,7 @@ import CloseBand from '../components/CloseBand.astro';
 */
 import { getEntry, render } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
+import ArtPlate from '../components/ArtPlate.astro';
 import Doorway from '../components/Doorway.astro';
 import Mark from '../components/marks/Mark.astro';
 import BookCard from '../components/BookCard.astro';
@@ -71,6 +72,11 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
     {LandingBody && (
       <Doorway tone="green" collapsed={books.length > 0}>
         <LandingBody />
+        {/* The doorway band is 1200px wide and its copy is 633, so without a
+            rail the right half of it was empty tint. The pack draws a rail on
+            every section page; this is the site's own drawing, so nothing is
+            bought and nothing is invented. */}
+        <ArtPlate slot="rail" kind="shelf" class="artp-band" />
       </Doorway>
     )}
 
