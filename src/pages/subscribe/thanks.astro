@@ -1,36 +1,38 @@
 ---
 /*
-  Where Kit sends a reader the moment they submit the form.
+  Where Kit sends a reader the moment they submit the form. The only page in
+  the signup, because the signup is now one step.
 
-  Set on the Kit form, 2 Sep: "Redirect to an external page" pointing here.
-  Before that, Kit showed its own bare success message on app.kit.com, so
-  somebody who signed up on denvillee.com was handed off to a page with none
-  of his site on it.
+  Denvil, 2 Sep: the confirm step felt like an extra step, and it was. Kit's
+  form is set to auto-confirm and its confirmation email is off, so an address
+  is on the list the moment it is submitted. That also means this page is the
+  entire welcome: there is no confirmation email behind it, and no automated
+  welcome either until the plan has automations. So it says the true thing
+  plainly and then points further into the site rather than ending.
 
-  The heading used to read "You are in", which was not true yet: the list is
-  double opt-in, so nobody is in until they click the link in the email. This
-  page's whole job is to make that second step obvious enough that people
-  actually take it, because an unconfirmed subscriber is the same as no
-  subscriber.
+  It used to say "You are in. Check your inbox and confirm your email", which
+  described a flow that no longer exists.
 */
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
+import DotGrid from '../../components/marks/DotGrid.astro';
 import site from '../../data/site.json';
 ---
-<Shell title={`One more step · ${site.name}`} description="Confirm your email." noindex={true}>
+<Shell title={`You are in · ${site.name}`} description="You are on the list." noindex={true}>
   <section class="band shell sub-step">
-    <p class="sub-step-k">Almost there</p>
+    <DotGrid cols={7} rows={4} class="sub-step-dots" />
+    <p class="sub-step-k">Subscribed</p>
     <h1 class="sub-step-h is-display">
-      Check your inbox to <span class="u">confirm<Mark kind="underline" color="blue" draw={true} /></span><span class="dot">.</span>
+      You are <span class="u">in<Mark kind="underline" color="yellow" draw={true} /></span><span class="dot">.</span>
     </h1>
     <p class="sub-step-d">
-      There is an email on its way from Denvil Lee. Open it and click the
-      confirm link, and you are on the list.
+      Thanks for reading. When there is something worth sharing, it will come
+      to you.
     </p>
-    <p class="sub-step-n">
-      If it is not there in a few minutes, look in promotions or spam. Marking
-      it as not spam helps the next one land where you can see it.
-    </p>
-    <p><a class="btn btn-primary" href="/">Back home</a></p>
+    <p class="sub-step-n">Nothing else to do. Have a look around while you are here.</p>
+    <div class="sub-step-go">
+      <a class="btn btn-primary" href="/essays/">Read an essay</a>
+      <a class="btn btn-light" href="/moments/">See the moments</a>
+    </div>
   </section>
 </Shell>
