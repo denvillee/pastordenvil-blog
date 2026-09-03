@@ -174,10 +174,26 @@ const shortcuts = [
                   : <Placeholder label={`Image for ${featEssay.data.title}`} ratio="3 / 2" />}
               </ImageMask>
             </a>
+            {/* The date and the way out are one block, not two rows of the
+                column grid. Left as separate children they each took the
+                column's own gap and the link fell 40px below the date, which
+                put it out of step with "See all moments" beside it. */}
+            <div class="lb-foot">
             <p class="lb-meta lb-meta-only">
               <time datetime={isoDate(featEssay.data.publishAt)}>{displayDate(featEssay.data.publishAt)}</time>
               {featureMinutes && <> &middot; {featureMinutes} min read</>}
             </p>
+            {/* Denvil, 2 Sep: keep the way out at the foot of the column. It
+                goes to the room rather than to this one essay, the way "See
+                all moments" does beside it: the card is already the link to
+                the piece, so a second link to the same place would be the
+                only thing on the page pointing twice. Green, because the
+                eyebrow above it is green and the moment's is coral. */}
+            <a class="lb-go" href="/essays/">
+              <span class="u">See all essays<Mark kind="underline" color="green" draw={true} /></span>
+              <span class="arw" aria-hidden="true">&rarr;</span>
+            </a>
+            </div>
           </article>
         )}
 

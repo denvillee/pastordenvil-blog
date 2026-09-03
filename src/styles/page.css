@@ -2359,6 +2359,10 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
 .tf-essay .lb-art img{display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:contain;
   background:var(--paper)}
 .tf-moment-art img{aspect-ratio:3/2; object-fit:contain; background:var(--paper)}
+/* The featured essay's foot: the date, then the way out, as one block. */
+.lb-foot{display:grid; gap:.45rem; justify-items:start}
+.lb-foot .lb-meta{margin:0}
+
 .tf-moment{position:relative; display:grid; gap:clamp(.9rem,2vw,1.3rem);
   justify-items:start; align-content:start}
 /* The divider is gone. It was a drawn line stretched to whatever height the
