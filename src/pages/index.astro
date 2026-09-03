@@ -10,7 +10,7 @@ import Placeholder from '../components/Placeholder.astro';
 import ArtPlate from '../components/ArtPlate.astro';
 import Photo from '../components/Photo.astro';
 import Tape from '../components/marks/Tape.astro';
-import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries, seriesTag } from '../lib/publish';
+import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
 import QuotePlate from '../components/QuotePlate.astro';
@@ -44,10 +44,10 @@ const featureRoom = feature ? ROOMS[feature.room] : null;
    chapter. Both lines disappear on their own when the piece is not part of a
    run, or when nothing follows it yet. */
 const featureSeries = feature?.data.series as string | undefined;
-/* Denvil, 2 Sep: the line should name the run, say which part this piece is,
-   and link to the run. `seriesTag` already withholds the total while the run
-   is still open, because "Part 2 of 2" reads as finished and it is not. */
-const featTag = featEssay ? await seriesTag('essays', featEssay.data) : null;
+/* Denvil, 2 Sep: the featured essay beside the moment carries no series line
+   any more. That belongs on the essay itself. `featureNext` below is a
+   different thing and still earns its place: it is the onward link at the foot
+   of the page, not a label on a card. */
 const featureNext = feature && feature.room === 'essays'
   ? await nextInSeries('essays', featureSeries, feature.data.seriesOrder)
   : null;
@@ -151,48 +151,33 @@ const shortcuts = [
                 the art stacked on top it was landing underneath the picture
                 on one side and above it on the other. */}
             <p class="lb-k">Latest essay</p>
-            <a class="lb-art" href={`/essays/${featEssay.id}/`} tabindex="-1" aria-hidden="true">
+            {/* Denvil, 2 Sep: keep the title, the dek, the series line and the
+                call to action for the essay itself, and leave a date here.
+
+                The title card already carries the title and the dek in the
+                site's own lettering. Setting them again underneath said the
+                same two things twice in two typefaces, and then the series
+                line and "Read the essay" made a short feature into a column of
+                small print beside a picture that had already done the work.
+
+                The heading stays in the markup and out of the layout, the same
+                rule the moment beside it follows: a screen reader, the page
+                outline and search all still get it. */}
+            <h2 class="lb-h vh"><a href={`/essays/${featEssay.id}/`}>{featEssay.data.title}</a></h2>
+            <a class="lb-art" href={`/essays/${featEssay.id}/`}>
               <Tape color="green" class="lb-tape" />
               <ImageMask shape="soft">
                 {featEssay.data.image && !isStandin(featEssay.data.image)
-                  ? <img src={featEssay.data.image} alt="" width="960" height="720" loading="eager" fetchpriority="high" decoding="async" />
-                  : <Placeholder label={`Image for ${featEssay.data.title}`} ratio="4 / 3" />}
+                  ? <img src={featEssay.data.image}
+                         alt={featEssay.data.imageAlt ?? featEssay.data.title}
+                         width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async" />
+                  : <Placeholder label={`Image for ${featEssay.data.title}`} ratio="3 / 2" />}
               </ImageMask>
             </a>
-            <div class="lb-body">
-              <h2 class="lb-h"><a href={`/essays/${featEssay.id}/`}>{featEssay.data.title}</a></h2>
-              <p class="lb-d">{featEssay.data.teaser || featEssay.data.dek || openingParagraph(featEssay.body, 165)}</p>
-              <p class="lb-meta">
-                <time datetime={isoDate(featEssay.data.publishAt)}>{displayDate(featEssay.data.publishAt)}</time>
-                {featureMinutes && <> &middot; {featureMinutes} min read</>}
-              </p>
-              {/* Above the call to action, not below it. A reader decides
-                  whether to start something by knowing what it is part of and
-                  where in the run it sits, and that decision comes before the
-                  click, not after it. */}
-              {/* Two lines on purpose. Run on one, it wrapped mid-title as
-                  "Part of More Than Body and / Breath", which reads as a
-                  layout accident. The run's name is one thought and where this
-                  piece sits in it is another. */}
-              {featTag && (
-                <p class="lb-ser">
-                  <span class="lb-ser-run">Part of <a href="/essays/#ser-h">{featTag.name}</a></span>
-                  <span class="lb-ser-at">
-                    <span class="lb-ser-part">Part {featTag.order}{featTag.total ? ` of ${featTag.total}` : ''}</span>
-                    {featTag.firstHref && (
-                      <>
-                        <span class="lb-ser-sep" aria-hidden="true">&middot;</span>
-                        <a href={featTag.firstHref}>Start at Part 1</a>
-                      </>
-                    )}
-                  </span>
-                </p>
-              )}
-              <a class="lb-go" href={`/essays/${featEssay.id}/`}>
-                <span class="u">Read the essay<Mark kind="underline" color="yellow" draw={true} /></span>
-                <span class="arw" aria-hidden="true">&rarr;</span>
-              </a>
-            </div>
+            <p class="lb-meta lb-meta-only">
+              <time datetime={isoDate(featEssay.data.publishAt)}>{displayDate(featEssay.data.publishAt)}</time>
+              {featureMinutes && <> &middot; {featureMinutes} min read</>}
+            </p>
           </article>
         )}
 
