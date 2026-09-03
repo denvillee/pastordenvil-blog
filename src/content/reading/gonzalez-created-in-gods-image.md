@@ -4,6 +4,7 @@ author: "Michelle A. Gonzalez"
 year: 2007
 shelfStatus: shelf
 shelfMonth: "2026-08"
+category: theology
 spine: ember
 cover: /assets/covers/gonzalez-created-in-gods-image.jpg
 order: 9

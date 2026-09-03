@@ -1,8 +1,10 @@
 ---
+import CloseBand from '../components/CloseBand.astro';
 import { getEntry, render } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
 import Mark from '../components/marks/Mark.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
+import Tape from '../components/marks/Tape.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
 import Photo from '../components/Photo.astro';
 import CategoryIcon from '../components/CategoryIcon.astro';
@@ -71,14 +73,37 @@ const areas = [
         <h2 class="sec-h"><span class="u">Why this site exists<Mark kind="underline" color="yellow" /></span></h2>
         <p>{conviction}</p>
       </div>
-      {/* The sticky note restated the paragraph beside it in slogan form and
-          was not supplied. */}
+      {/* The comp sets a handwritten line to the right of this paragraph, in
+          large blue quote marks, with a dashed rule between the two columns.
+
+          Its wording was "The kingdom of God isn't just future — it's here, and
+          it's changing everything." Not used: Denvil's own version of that
+          sentence is already on the home page, and his is the one that goes
+          here. */}
+      {/* Denvil, 2 Sep: "the end quotation is far from the end of that
+          sentence". It was. The closing mark was pinned to the bottom RIGHT
+          CORNER of the block, so it only ever landed beside the last word by
+          accident - when the final line happened to run the full measure. Here
+          the line ends on "still coming." well short of the edge, and the mark
+          sat 228px below the opening one with nothing between them.
+
+          It follows the text now. The opening mark still hangs in the left
+          margin, which is a deliberate device and reads correctly; a closing
+          mark has nothing to hang off and belongs against the last word. No
+          space before it, so it can never break onto a line of its own. */}
+      <blockquote class="abt-quote">
+        <span class="abt-q abt-q-o" aria-hidden="true">&ldquo;</span>
+        <p>The kingdom is&#32;<span class="u">already here,<Mark kind="underline" color="blue" /></span>
+           and&#32;<span class="u">still coming.<Mark kind="underline" color="blue" /></span><span
+           class="abt-q abt-q-c" aria-hidden="true">&rdquo;</span></p>
+      </blockquote>
     </section>
 
     <section class="band shell">
       <div class="sec-head">
         <h2 class="sec-h"><span class="u">What we explore here<Mark kind="underline" color="green" /></span></h2>
       </div>
+      <div class="abt-explore">
       <div class="shortcuts abt-areas">
         {areas.map((a) => (
           <a class="short" href={a.href}>
@@ -89,18 +114,44 @@ const areas = [
           </a>
         ))}
       </div>
-    </section>
 
-    <section class="shell">
-      <div class="panel panel-light abt-sign">
-        <Mark kind="zigzag" color="yellow" class="panel-zig panel-zig-r" />
-        <h2 class="panel-h"><span class="u">Kingdom theology. Ordinary life.<Mark kind="underline" color="blue" /></span></h2>
-        <p class="panel-dek">That's the heartbeat of everything I write. Thanks for being here.</p>
-        <p class="abt-name">Denvil</p>
+      {/* The comp's blue panel: a short statement, a taped polaroid with a
+          handwritten caption, and a zigzag at the corner. */}
+      <aside class="abt-panel">
+        <h3 class="abt-panel-h">
+          <span class="u">Kingdom theology.<Mark kind="underline" color="blue" /></span><br />Ordinary life.
+        </h3>
+        <p>That is the heartbeat of everything I write. Thanks for being here.</p>
+        <figure class="abt-pola">
+          <Tape color="blue" class="abt-pola-tape" />
+          <Photo name="dl-stage-open" width={1600} height={1000}
+                 sizes="(max-width: 900px) 60vw, 18vw"
+                 alt="Denvil Lee teaching on stage in a yellow hoodie, arms open, under a Come Alive banner." />
+          <figcaption>Keep walking.<Mark kind="underline" color="coral" /></figcaption>
+        </figure>
+        <p class="abt-name">Denvil<Mark kind="underline" color="blue" /></p>
+        <Mark kind="scribble" color="yellow" class="abt-panel-zig" />
+      </aside>
       </div>
     </section>
+
+    {/* The standalone "Kingdom theology. Ordinary life." panel that used to sit
+        here is gone: the comp puts that line inside the blue panel beside
+        "What we explore here", which is where it now lives. Two of them on one
+        page said the same thing twice. His signature moved up with it. */}
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.
       The site asked for an email too often. Subscribe now lives in one
       place: the masthead action, the footer link, and /subscribe/. */}
+
+  {/* The comp closes About on a black band with an inline email field. The field
+      itself is not reproduced here: the 29 Aug decision moved every signup to
+      one place so the site stopped asking on every page, and two live forms for
+      one list is a maintenance trap, not a design gain. The band and its CTA are
+      the comp; the destination is /subscribe/. */}
+  <CloseBand tone="dark"
+             heading="Let's keep growing together."
+             mark="together"
+             dek="New essays, studies, and reflections."
+             href="/subscribe/" cta="Subscribe" />
 </Shell>

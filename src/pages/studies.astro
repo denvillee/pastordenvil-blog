@@ -1,4 +1,5 @@
 ---
+import Glyph from '../components/Glyph.astro';
 /*
   The handoff page. The studies live on grabyourbibles.com because they are a
   different kind of thing than an essay, and canonical stays there: this page
@@ -10,6 +11,7 @@
 */
 import { getEntry, render } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
+import ArtPlate from '../components/ArtPlate.astro';
 import Doorway from '../components/Doorway.astro';
 import Mark from '../components/marks/Mark.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
@@ -32,7 +34,7 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
        description="Guided Bible studies you can walk through on your own or with a group."
        current="studies">
   <div class="arch">
-    <Mark kind="zigzag" color="yellow" class="edge edge-r std-edge" />
+    <Mark kind="scribble" color="yellow" class="edge edge-r std-edge" />
     <section class="shell std-hero">
       <div>
         <h1 class="page-h is-display"><span class="u">Studies<Mark kind="underline" color="blue" draw={true} /></span></h1>
@@ -55,12 +57,17 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
     {LandingBody && (
       <Doorway tone="coral" collapsed={true}>
         <LandingBody />
+        {/* The doorway band is 1200px wide and its copy is 633, so without a
+            rail the right half of it was empty tint. The pack draws a rail on
+            every section page; this is the site's own drawing, so nothing is
+            bought and nothing is invented. */}
+        <ArtPlate slot="rail" kind="passage" class="artp-band" />
       </Doorway>
     )}
 
     <section class="shell">
       <div class="panel panel-dark std-feat">
-        <Mark kind="zigzag" color="blue" class="panel-zig" />
+        <Mark kind="scribble" color="blue" class="panel-zig" />
         <div class="std-feat-copy">
           <p class="std-eyebrow">{home.studiesPill}</p>
           <h2 class="panel-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
@@ -91,9 +98,42 @@ const { Content: LandingBody } = landingDoc ? await render(landingDoc) : { Conte
       </div>
     </section>
 
-    {/* The four-step "How studies work" block came out on 29 Aug. Grab Your
-        Bibles has its own methodology page that does the job properly, and
-        duplicating it here made denvillee.com compete with the study site. */}
+    {/* "How studies work", restored 1 Sep to match the comp.
+
+        It was removed on 29 Aug to stop denvillee.com competing with Grab Your
+        Bibles in search. That reasoning conflated two different things. GYB's
+        methodology page is the seven-move rhythm inside a session — Read,
+        Reflect, Key Truth, Respond, Go Further, Breakthrough, Next Steps. These
+        four steps are about choosing a study and fitting it into a week, which
+        GYB does not say anywhere. Nothing here is duplicated, so nothing here
+        competes, and the link still sends the method question to GYB. */}
+    <section class="shell howto">
+      <div class="sec-head">
+        <h2 class="sec-h"><span class="u">How studies work<Mark kind="underline" color="green" draw={true} /></span></h2>
+      </div>
+      <ol class="steps">
+        <li>
+          <Glyph name="book" tone="blue" />
+          <h3>Choose a study</h3>
+          <p>Pick one that fits the season you are actually in.</p>
+        </li>
+        <li>
+          <Glyph name="calendar" tone="yellow" />
+          <h3>Set your rhythm</h3>
+          <p>Work through it at your own pace, on your own or with a group.</p>
+        </li>
+        <li>
+          <Glyph name="people" tone="coral" />
+          <h3>Go deeper together</h3>
+          <p>Use the prompts and the passage to make your own observations.</p>
+        </li>
+        <li>
+          <Glyph name="plant" tone="green" />
+          <h3>Live it out</h3>
+          <p>Take what you find into the week, the work and the people in front of you.</p>
+        </li>
+      </ol>
+    </section>
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.
       The site asked for an email too often. Subscribe now lives in one

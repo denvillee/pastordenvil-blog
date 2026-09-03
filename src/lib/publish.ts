@@ -103,10 +103,15 @@ export const isoDate = (d: Date) => d.toISOString();
    `label` comes from the CMS so renaming a room renames it everywhere at once;
    `path` is the URL and `cls` is the colour, and both stay in code on purpose —
    changing a path after launch breaks every link anyone has ever shared. */
+/* `piece` is what ONE item in this room is called, in running text. Without it
+   the shared article furniture called everything an essay, so a Moment offered
+   "Read essay", "Listen to this essay" and "See the books behind this essay".
+   `sources` says whether a piece in this room is the kind of thing that has
+   books behind it; a Moment is not. */
 export const ROOMS = {
-  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '',          plural: labels.navEssays },
-  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders', plural: labels.navLeaders },
-  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments', plural: labels.navMoments },
+  essays:     { label: labels.roomEssayTag,     path: 'essays',     cls: '',          plural: labels.navEssays,  piece: 'essay',  sources: true,  listen: true },
+  leaders:    { label: labels.roomLeadersTag,   path: 'leaders',    cls: 't-leaders', plural: labels.navLeaders, piece: 'essay',  sources: true,  listen: true },
+  moments:    { label: labels.roomMomentsTag,   path: 'moments',    cls: 't-moments', plural: labels.navMoments, piece: 'moment', sources: false, listen: false },
 } as const;
 export type RoomKey = keyof typeof ROOMS;
 
@@ -184,6 +189,40 @@ export async function seriesPlace(room: RoomKey, seriesName?: string, order?: nu
   const def = all.find((s: any) => s.data.name === seriesName && s.data.room === room);
   if (!def || !def.data.parts.length) return null;
   return { name: def.data.name, order, total: def.data.parts.length };
+}
+
+/* The same placement, plus a way back to the opening piece.
+
+   Denvil, 1 Sep: if the newest essay keeps landing at the top of a list, a
+   reader arriving cold meets part two first and has no idea it is part two.
+   So the CARD says which part it is and offers the start of the run.
+
+   This does not undo his 30 Aug rule. That rule was about the essay page
+   itself, where "Part 1 of 2" made the writing read like a serialised book;
+   the article page still shows the run's name and nothing more. A card in a
+   list is a different job: it is signposting, not a chapter heading.
+
+   `total` is only reported once the run is finished. While a series is still
+   `current`, "Part 2 of 2" would tell a reader the story is over when Denvil
+   is still writing it, so the count is withheld until it is true. */
+export async function seriesTag(room: RoomKey, data: any) {
+  const name = data?.series as string | undefined;
+  const order = data?.seriesOrder as number | undefined;
+  if (!name || typeof order !== 'number') return null;
+  const all = await getCollection('series' as any);
+  const def = all.find((s: any) => s.data.name === name && s.data.room === room);
+  if (!def || !def.data.parts?.length) return null;
+
+  const posts = await live(room);
+  const first = posts.find((p: any) => p.data.series === name && p.data.seriesOrder === 1);
+
+  return {
+    name,
+    order,
+    total: def.data.current ? undefined : def.data.parts.length,
+    firstHref: first && order !== 1 ? `/${ROOMS[room].path}/${first.id}/` : undefined,
+    firstTitle: first?.data.title as string | undefined,
+  };
 }
 
 /** The next published piece in the same run, for the card at the end of a piece.

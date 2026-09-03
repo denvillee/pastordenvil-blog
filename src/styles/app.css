@@ -38,6 +38,14 @@ p{margin:0 0 1em}
 .wm-dot{color:var(--blue)}
 
 /* ── masthead ───────────────────────────────────────────────────────── */
+/* --mast-h is what anything else that wants to stick below the masthead has to
+   clear. It was referenced in two places and defined in none, so both were
+   guessing. Measured: 74px at desktop, 77px on a phone. Set a shade under the
+   real height so a sticky child tucks behind the masthead rather than leaving a
+   sliver of scrolling text visible between them; the masthead has the higher
+   z-index and paints over it. */
+:root{--mast-h:4.55rem}
+@media (max-width:520px){ :root{--mast-h:4.7rem} }
 .mast{position:sticky; top:0; z-index:40; background:var(--cream);
   border-bottom:1px solid var(--rule)}
 .mast-in{
@@ -55,7 +63,12 @@ p{margin:0 0 1em}
 @media (max-width:1080px){ .mast-nav{display:none} }
 
 .mast-cta{margin-left:auto}
-@media (max-width:1080px){ .mast-cta{display:none} }
+/* .btn is declared after this rule and also sets display, at equal specificity,
+   so a bare .mast-cta{display:none} lost the cascade and the Subscribe pill kept
+   rendering in the mobile masthead: a duplicate of the one already inside the
+   menu panel, and enough extra width to push the hamburger 15px off-screen at
+   320px. Qualifying with .btn wins on specificity rather than order. */
+@media (max-width:1080px){ .btn.mast-cta{display:none} }
 
 /* ── buttons ────────────────────────────────────────────────────────────
    The container is a squashed pill rather than a true one: the references'
@@ -131,7 +144,7 @@ p{margin:0 0 1em}
 @media (max-width:860px){ .foot-in{grid-template-columns:1fr 1fr} }
 @media (max-width:520px){ .foot-in{grid-template-columns:1fr} }
 .foot-brand p{color:var(--muted); font-size:.92rem; max-width:26ch; margin-top:.7rem}
-.foot-col h2{font-size:.7rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
+.foot-col h2{font-size:.75rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase;
   color:var(--faint); margin-bottom:.85rem}
 .foot-col ul{list-style:none; margin:0; padding:0; display:grid; gap:.5rem}
 .foot-col a{font-size:.92rem; color:var(--fg)}
@@ -142,5 +155,5 @@ p{margin:0 0 1em}
 .foot-base a:hover{color:var(--blue-ink)}
 .foot-line{font-family:var(--hand); font-size:1.05rem; color:var(--faint)}
 .foot-legal{margin-top:1rem}
-.foot-legal p{margin:0 0 .3rem; font-size:.72rem; color:var(--faint); max-width:80ch}
+.foot-legal p{margin:0 0 .3rem; font-size:.75rem; color:var(--faint); max-width:80ch}
 .foot-legal a{text-decoration:underline}

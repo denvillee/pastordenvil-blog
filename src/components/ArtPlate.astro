@@ -16,7 +16,7 @@
   Every plate is decorative: aria-hidden, and never carrying meaning that the
   page does not also say in words.
 */
-interface Props { kind: 'stack' | 'passage' | 'shelf' | 'letter' | 'timeline' | 'lost' | 'notice'; class?: string }
+interface Props { kind: 'stack' | 'passage' | 'shelf' | 'letter' | 'timeline' | 'lost' | 'notice' | 'morning' | 'shelter'; class?: string }
 const { kind, class: cls = '' } = Astro.props;
 ---
 <div class:list={['artp', `artp-${kind}`, cls]} aria-hidden="true">
@@ -42,8 +42,11 @@ const { kind, class: cls = '' } = Astro.props;
         <path d="M186 92c-22-3-44 3-46 11 -2 8 18 14 42 13 20-1 34-6 33-13 -1-6-13-10-29-11z" fill="none" stroke="var(--coral)" stroke-width="4" stroke-linecap="round" />
         <path d="M92 186h60" stroke="var(--sage)" stroke-width="5" stroke-linecap="round" />
         <circle cx="294" cy="66" r="7" fill="var(--navy)" />
-        <path d="M282 244c14-10 30-16 48-18" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" fill="none" />
-        <path d="M318 220l14 6-9 12" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+        {/* The arrow points back at the marked line, not off the edge of the
+            plate. An arrow that points at nothing is the one drawn mark a
+            reader will actually try to follow. */}
+        <path d="M340 254c-20-6-36-20-46-38" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" fill="none" />
+        <path d="M300 232l-6-16 16 3" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none" />
       </>
     )}
 
@@ -105,6 +108,63 @@ const { kind, class: cls = '' } = Astro.props;
         <path d="M264 222l20 16-18 14" fill="none" stroke="var(--navy)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
         <rect x="152" y="26" width="76" height="22" rx="1" fill="var(--gold)" opacity=".9" transform="rotate(-3 190 37)" />
         <circle cx="326" cy="176" r="7" fill="var(--gold)" />
+      </>
+    )}
+
+    {kind === 'morning' && (
+      <>
+        {/* The comp's featured Moment is a still life: an open book and a mug on
+            a table by a window, early, before the day starts. Drawn here in the
+            site's own vocabulary rather than bought as stock — the art direction
+            has been against faith stock photography from the start, and this
+            slot is one Denvil will replace with his own picture anyway. */}
+        {/* light falling through the window onto the table */}
+        <path d="M96 214l46-150h104l46 150z" fill="var(--gold)" opacity=".20" />
+        {/* the window */}
+        <rect x="136" y="30" width="128" height="150" rx="6" fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="4" />
+        <path d="M200 32v146M138 106h124" stroke="var(--rule-strong)" stroke-width="4" stroke-linecap="round" />
+        {/* the table edge */}
+        <path d="M52 236h296" stroke="var(--ink)" stroke-width="5" stroke-linecap="round" />
+        {/* an open book, spine up */}
+        <path d="M108 232c22-13 44-13 62-2 18-11 40-11 62 2-20-8-42-7-62 4-20-11-42-12-62-4z"
+              fill="var(--white)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" />
+        <path d="M170 230v-4" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" />
+        {/* a mug */}
+        <path d="M252 196h44v22a12 12 0 0 1-12 12h-20a12 12 0 0 1-12-12z"
+              fill="var(--navy)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" />
+        <path d="M296 202h7a9 9 0 0 1 0 18h-7" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round" />
+        {/* steam */}
+        <path d="M264 186c4-6-3-9 1-15M280 186c4-6-3-9 1-15" fill="none" stroke="var(--sage)" stroke-width="3.4" stroke-linecap="round" />
+        {/* the sun through the glass, and a drawn underline on the sill */}
+        <circle cx="238" cy="66" r="13" fill="var(--coral)" />
+        <path d="M92 250c34 10 74 12 112 5" fill="none" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" />
+      </>
+    )}
+
+    {kind === 'shelter' && (
+      <>
+        {/* Isaiah 32:2 -- the shadow of a great rock in a parched land, with the
+            wind coming in from the left and someone sitting in the shade of it.
+            The shade is the subject, not the rock: the whole point of the verse
+            is what the rock is FOR. */}
+        <path d="M92 232h230" stroke="var(--ink)" stroke-width="5" stroke-linecap="round" />
+        {/* the shade cast across the ground */}
+        <path d="M150 232c34-4 78-3 118 4 10 2 6 10-6 10H160c-12 0-16-12-10-14z" fill="var(--navy)" opacity=".2" />
+        {/* the rock */}
+        <path d="M158 232 196 92c3-11 15-13 21-4l72 112c8 12 16 20 24 32z"
+              fill="var(--paper)" stroke="var(--rule-strong)" stroke-width="4" stroke-linejoin="round" />
+        <path d="M196 106 176 232M214 96l26 62" stroke="var(--rule-strong)" stroke-width="3" stroke-linecap="round" />
+        {/* wind, arriving and breaking on the rock */}
+        <path d="M60 118c26-10 52-8 74 2M52 150c30-12 62-9 88 4M66 182c22-8 44-7 62 1"
+              fill="none" stroke="var(--sage)" stroke-width="4" stroke-linecap="round" />
+        {/* someone in the shade */}
+        <circle cx="242" cy="196" r="12" fill="var(--coral)" />
+        <path d="M228 232c0-12 6-22 14-22s14 10 14 22" fill="none" stroke="var(--coral)" stroke-width="5" stroke-linecap="round" />
+        {/* streams of water in the desert */}
+        <path d="M108 254c26 10 56 12 84 5" fill="none" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" />
+        <path d="M266 258c14-9 30-14 48-15" fill="none" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" />
+        <path d="M298 234l16 8-10 12" fill="none" stroke="var(--navy)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+        <circle cx="318" cy="72" r="15" fill="var(--gold)" opacity=".85" />
       </>
     )}
 

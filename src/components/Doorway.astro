@@ -42,8 +42,24 @@
   go display:inline, and only the revealed text goes back to block. The tap
   target is kept by padding the inline box rather than by giving it height.
 */
-interface Props { tone?: 'blue' | 'yellow' | 'coral' | 'green'; collapsed?: boolean; label?: string }
-const { tone = 'yellow', collapsed = false, label = 'Read more' } = Astro.props;
+interface Props {
+  tone?: 'blue' | 'yellow' | 'coral' | 'green';
+  collapsed?: boolean;
+  label?: string;
+  /* One handwritten line above the story, in the room's own colour.
+
+     Denvil's section landing pack draws this on all six pages and supplies
+     copy for it: "A space to think out loud", "Noticing the ordinary grace",
+     and so on. That copy is not used. Nobody wrote it, and a handwritten line
+     at the top of his page in his colours reads as his whether or not it is in
+     quotation marks -- the same fault as the blue note on Moments.
+
+     What is passed instead is the room's own intro dek, which he wrote, and
+     which already sits in the CMS beside the story it introduces. A room with
+     no dek renders no heading rather than borrowing one. */
+  heading?: string;
+}
+const { tone = 'yellow', collapsed = false, label = 'Read more', heading } = Astro.props;
 import Mark from './marks/Mark.astro';
 import Tape from './marks/Tape.astro';
 import DotGrid from './marks/DotGrid.astro';
@@ -55,8 +71,9 @@ const rest = cut === -1 ? '' : raw.slice(cut + 4);
 const folds = collapsed && rest.trim().length > 0;
 const hasRail = Astro.slots.has('rail');
 ---
-<section class:list={['shell', 'door', folds && 'is-folded']}>
+<section class:list={['shell', 'door', `door-${tone}`, folds && 'is-folded']}>
   <div class="door-in">
+    {heading && <p class="door-h">{heading}</p>}
     {folds ? (
       <>
         {/* The lead and the toggle are one flow on purpose: the summary has
@@ -72,13 +89,14 @@ const hasRail = Astro.slots.has('rail');
         /why-this-exists/ routes now redirect back here. */}
   </div>
 
-  {/* The rail. A doorway printing whole is a 62ch column of text on a 1280px
-      page, which left the right half of For Leaders empty for eight hundred
-      pixels. The note that was sitting unused below an empty list moves up
-      into that space, taped, with a field of dots behind it: three of the
-      design board's own elements, carrying words the room already had. No
-      rail is rendered when a page has nothing real to put there. */}
-  {!folds && hasRail && (
+  {/* The rail. It used to render only while the doorway printed whole, on the
+      reasoning that a folded doorway was too short to hold one. Measured 2 Sep,
+      with the doorway now a tinted band of its own: the band is 1200px wide and
+      the copy inside it is 613, so the right half of it was empty on every
+      section page whether the story was folded or not. The pack draws a rail
+      there on all six. So it renders whenever a page has something real to put
+      in it, folded or not, and no rail is rendered when it does not. */}
+  {hasRail && (
     <div class="door-rail door-rail-note">
       <Tape color={tone === 'yellow' ? 'coral' : 'yellow'} class="door-tape" />
       <DotGrid cols={7} rows={4} class="door-dots" />

@@ -7,6 +7,8 @@ week: 1
 series: "Now and Not Yet"
 scripture: "Mark 1:9-13"
 tags: ["mark", "devotional"]
+image: "/assets/img/mom-wilderness.jpg"
+imageAlt: "A lone figure walking a dry shoreline under an open sky, beside the words: The wilderness does not cancel the word beloved. Beloved was spoken before the wilderness began."
 ---
 
 

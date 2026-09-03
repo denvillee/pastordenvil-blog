@@ -4,17 +4,39 @@ import Mark from '../components/marks/Mark.astro';
 import DotGrid from '../components/marks/DotGrid.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
-import CategoryIcon from '../components/CategoryIcon.astro';
+import HandGlyph from '../components/HandGlyph.astro';
 import ImageMask from '../components/ImageMask.astro';
 import Placeholder from '../components/Placeholder.astro';
+import ArtPlate from '../components/ArtPlate.astro';
 import Photo from '../components/Photo.astro';
-import { latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
+import Tape from '../components/marks/Tape.astro';
+import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
+import QuotePlate from '../components/QuotePlate.astro';
+import { KIT_ACTION } from '../lib/signup';
 import home from '../data/home.json';
 import labels from '../data/labels.json';
 
-const feature = await latest();
+/* Two features, not one. `latest()` picks the newest piece across every room,
+   and Moments outnumber Essays roughly five to one and always will, because a
+   Moment is a sentence and an essay is a week. Left as it was, the front page
+   would lead with a Moment nearly every day and the essays would never surface
+   on it at all. Frequency should not decide prominence.
+
+   They are not given equal room, because they are not equal. The essay is the
+   larger commitment from him and from the reader, so it takes the bigger
+   column with its headline and its opening. The Moment is a card that already
+   contains its own sentence, so it takes the smaller column and needs nothing
+   written underneath it. */
+const featEssay = (await live('essays'))[0] ?? null;
+const featMoment = (await live('moments'))[0] ?? null;
+/* Whatever essays are left after the featured one. The row hides itself rather
+   than showing a single lonely card. */
+const recentEssays = (await live('essays'))
+  .filter((e: any) => e.id !== featEssay?.id)
+  .slice(0, 3);
+const feature = featEssay;
 const featureRoom = feature ? ROOMS[feature.room] : null;
 /* The launch module from Denvil's 30 Aug package: the featured essay carries a
    small series label under it, and once the following essay is live it is
@@ -22,6 +44,10 @@ const featureRoom = feature ? ROOMS[feature.room] : null;
    chapter. Both lines disappear on their own when the piece is not part of a
    run, or when nothing follows it yet. */
 const featureSeries = feature?.data.series as string | undefined;
+/* Denvil, 2 Sep: the featured essay beside the moment carries no series line
+   any more. That belongs on the essay itself. `featureNext` below is a
+   different thing and still earns its place: it is the onward link at the foot
+   of the page, not a label on a card. */
 const featureNext = feature && feature.room === 'essays'
   ? await nextInSeries('essays', featureSeries, feature.data.seriesOrder)
   : null;
@@ -32,17 +58,24 @@ const featureMinutes = feature && feature.body.trim().split(/\s+/).filter(Boolea
    is a doorway rather than a description: the words are his, verbatim from the
    29 Aug revision packet, and they are the same sentences that open each
    section's own page. */
+/* The six main areas, in the order Denvil's layout map sets them, with his own
+   captions. Watch joins the row: the map asks for six pathways and Watch was the
+   one room the old five-item list left out, even though it is in the masthead.
+   Each caption is a doorway rather than a description, and they are the same
+   sentences that open each section's own page. */
 const shortcuts = [
-  { kind: 'essays',  href: '/essays/',    label: labels.essaysHeading,
-    dek: 'Longer reflections where I have room to follow ideas from Scripture, theology, ministry, and life beyond what I can say in a sermon.' },
-  { kind: 'moments', href: '/moments/',   label: labels.momentsHeading,
-    dek: 'Shorter reflections on the ordinary places where something suddenly opens up and I find myself noticing God, Scripture, or life differently.' },
-  { kind: 'reading', href: '/bookshelf/', label: labels.readingHeading,
-    dek: 'A look at the books and voices I am reading, wrestling with, and returning to, especially the ones shaping how I think, teach, and lead.' },
-  { kind: 'studies', href: '/studies/',   label: labels.studiesHeading,
-    dek: 'Guided ways into Scripture designed to help you make your own observations, ask better questions, and participate in the process of transformation.' },
-  { kind: 'leaders', href: '/leaders/',   label: labels.leadersHeading,
-    dek: 'Lessons I am learning about following Jesus while leading people, teams, ministries, and organizations entrusted to our care.' },
+  { kind: 'essays',    href: '/essays/',    label: labels.essaysHeading,
+    dek: 'Ideas and reflections on faith, life, and the kingdom of God.' },
+  { kind: 'leaders',   href: '/leaders/',   label: labels.leadersHeading,
+    dek: 'Practical wisdom for pastors and everyday leaders.' },
+  { kind: 'moments',   href: '/moments/',   label: labels.momentsHeading,
+    dek: 'Short thoughts to encourage you in the in-between.' },
+  { kind: 'studies',   href: '/studies/',   label: labels.studiesHeading,
+    dek: 'Guides to help you go deeper with Scripture.' },
+  { kind: 'bookshelf', href: '/bookshelf/', label: labels.readingHeading,
+    dek: 'Books that have shaped my thinking and ministry.' },
+  { kind: 'watch',     href: '/watch/',     label: labels.watchHeading,
+    dek: 'Messages and conversations to watch and share.' },
 ] as const;
 ---
 {/* Denvil supplied this title exactly, with a pipe. */}
@@ -51,6 +84,11 @@ const shortcuts = [
   {/* ── hero ─────────────────────────────────────────────────────────── */}
   <section class="hero">
     <Mark kind="brush" color="coral" class="hero-brush" />
+    {/* The map's marginalia: a small blue star at the top corner and a green
+        coil beside the introduction. They are the difference between a layout
+        and a page somebody drew. */}
+    <Mark kind="star" color="blue" class="hero-star" />
+    <Mark kind="spiral" color="green" class="hero-coil" />
     <div class="shell hero-in">
       <div class="hero-copy">
         <h1 class="hero-h is-display">
@@ -65,18 +103,10 @@ const shortcuts = [
           I'm Denvil, a&#32;<span class="u">pastor and teacher<Mark kind="underline" color="yellow" /></span> trying to help
           people see what the good news of God's kingdom means for real life.
         </p>
-        <p class="hero-sub">
-          Most of what I write lives in that tension, the kingdom&#32;<span class="u">already here,<Mark kind="underline" color="green" /></span>
-          and&#32;<span class="u">still coming.<Mark kind="underline" color="green" /></span>
-        </p>
-        <p class="hero-acts">
-          {feature && (
-            <a class="btn btn-blue" href={`/${featureRoom!.path}/${feature.id}/`}>
-              Read the latest essay <span class="arw" aria-hidden="true">&rarr;</span>
-            </a>
-          )}
-          <a class="go hero-go" href="/studies/">Start a study <span class="arw" aria-hidden="true">&rarr;</span></a>
-        </p>
+        {/* No buttons. Denvil's layout map: "Big introduction. Clear who I am.
+            No buttons. Strong visual energy." The hero states who he is; the
+            six pathways below are where a reader chooses. A pair of calls to
+            action here asks for a decision before the page has earned one. */}
       </div>
 
       <div class="hero-art">
@@ -90,93 +120,251 @@ const shortcuts = [
                  alt="Denvil Lee teaching on stage in a coral polo, both hands reaching out as he makes a point." />
         </ImageMask>
         <ColorDisc lines={["theology","leadership","life"]} class="hero-disc" />
+        {/* The looping arrow from his kit, running into the disc, which is the
+            gesture the map draws under the photo. */}
+        <Mark kind="loop" color="ink" class="hero-curl" />
       </div>
     </div>
   </section>
 
-  {/* ── latest ───────────────────────────────────────────────────────── */}
-  <section class="band shell sec-latest">
-    <div class="sec-head">
-      <h2 class="sec-h"><span class="u">Latest essay<Mark kind="underline" color="yellow" draw={true} /></span></h2>
-      <a class="go" href="/essays/">See all essays <span class="arw" aria-hidden="true">&rarr;</span></a>
-    </div>
+  {/* ── the two features ─────────────────────────────────────────────────
+      One tinted band, two pieces: the newest essay and the newest moment.
 
-    <div class="latest-deck">
-      {feature ? (
-        <article class="feat">
-          <a class="feat-art" href={`/${featureRoom!.path}/${feature.id}/`} tabindex="-1" aria-hidden="true">
-            <ImageMask shape="soft">
-              {feature.data.image && !isStandin(feature.data.image)
-                ? <img src={feature.data.image} alt="" width="960" height="640" loading="lazy" decoding="async" />
-                : <Placeholder label={`Image for ${feature.data.title}`} ratio="3 / 2" />}
-            </ImageMask>
-            <span class="chip chip-yellow">{featureRoom!.label}</span>
-          </a>
-          <div class="feat-body">
-            <h3 class="feat-h"><a href={`/${featureRoom!.path}/${feature.id}/`}>{feature.data.title}</a></h3>
-            {/* The teaser when the piece has one: this card is the first thing a
-                stranger meets, and the deck was written for somebody already
-                on the page. */}
-            <p class="feat-dek">{feature.data.teaser ?? feature.data.dek}</p>
-            <p class="feat-open">{openingParagraph(feature.body, 190)}</p>
-            <p class="feat-meta">
-              <time datetime={isoDate(feature.data.publishAt)}>{displayDate(feature.data.publishAt)}</time>
+      Denvil, 2 Sep. Until now this slot took whatever was newest across every
+      room, which sounds fair and is not: Moments outnumber Essays about five
+      to one and always will, because a Moment is a sentence and an essay is a
+      week. The front page would have led with a Moment nearly every day and
+      the essays would never have surfaced on it.
+
+      They do not get equal room. The essay is the larger commitment, from him
+      and from the reader, so it takes the wider column with a headline, an
+      opening line and a reading time. The Moment is a card that already
+      contains its own sentence, so it takes the narrower one and carries
+      nothing written underneath. */}
+  {(featEssay || featMoment) && (
+    <section class="latestband">
+      <div class="shell twofeat">
+
+        {featEssay && (
+          <article class="tf-essay">
+            {/* The label leads, the way it does on the moment beside it. With
+                the art stacked on top it was landing underneath the picture
+                on one side and above it on the other. */}
+            <p class="lb-k">Latest essay</p>
+            {/* Denvil, 2 Sep: keep the title, the dek, the series line and the
+                call to action for the essay itself, and leave a date here.
+
+                The title card already carries the title and the dek in the
+                site's own lettering. Setting them again underneath said the
+                same two things twice in two typefaces, and then the series
+                line and "Read the essay" made a short feature into a column of
+                small print beside a picture that had already done the work.
+
+                The heading stays in the markup and out of the layout, the same
+                rule the moment beside it follows: a screen reader, the page
+                outline and search all still get it. */}
+            <h2 class="lb-h vh"><a href={`/essays/${featEssay.id}/`}>{featEssay.data.title}</a></h2>
+            <a class="lb-art" href={`/essays/${featEssay.id}/`}>
+              <Tape color="green" class="lb-tape" />
+              <ImageMask shape="soft">
+                {featEssay.data.image && !isStandin(featEssay.data.image)
+                  ? <img src={featEssay.data.image}
+                         alt={featEssay.data.imageAlt ?? featEssay.data.title}
+                         width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async" />
+                  : <Placeholder label={`Image for ${featEssay.data.title}`} ratio="3 / 2" />}
+              </ImageMask>
+            </a>
+            {/* The date and the way out are one block, not two rows of the
+                column grid. Left as separate children they each took the
+                column's own gap and the link fell 40px below the date, which
+                put it out of step with "See all moments" beside it. */}
+            <div class="lb-foot">
+            <p class="lb-meta lb-meta-only">
+              <time datetime={isoDate(featEssay.data.publishAt)}>{displayDate(featEssay.data.publishAt)}</time>
               {featureMinutes && <> &middot; {featureMinutes} min read</>}
             </p>
-            <a class="go" href={`/${featureRoom!.path}/${feature.id}/`}>Read now <span class="arw" aria-hidden="true">&rarr;</span></a>
+            {/* Denvil, 2 Sep: keep the way out at the foot of the column. It
+                goes to the room rather than to this one essay, the way "See
+                all moments" does beside it: the card is already the link to
+                the piece, so a second link to the same place would be the
+                only thing on the page pointing twice. Green, because the
+                eyebrow above it is green and the moment's is coral. */}
+            <a class="lb-go" href="/essays/">
+              <span class="u">See all essays<Mark kind="underline" color="green" draw={true} /></span>
+              <span class="arw" aria-hidden="true">&rarr;</span>
+            </a>
+            </div>
+          </article>
+        )}
 
-            {featureSeries && (
-              <p class="feat-ser">
-                Part of <a href="/essays/#ser-h">{featureSeries}</a>
-                {featureNext && (
-                  <>
-                    {' '}&middot; Next: <a href={featureNext.href}>{featureNext.title}</a>
-                  </>
-                )}
-              </p>
-            )}
-          </div>
-        </article>
-      ) : (
-        <span />
-      )}
+        {featMoment && (
+          <article class="tf-moment">
+            {/* No drawn line between the two columns. Denvil, 2 Sep: "the line
+                between these two dont look great". It did not: the path was
+                drawn for a 400-unit box and stretched over about 700px with
+                preserveAspectRatio="none", so a hand-ruled line became a slow
+                grey snake down the middle of the page. The same stretch bug as
+                every other mark that has been given a height it was not drawn
+                for. Air separates the two columns now, and the eyebrows do the
+                rest: sage over the essay, coral over the moment. */}
+            <p class="lb-k lb-k-coral">Latest moment</p>
+            {/* The card carries the sentence, so the heading is here for
+                screen readers, search and the outline and out of the layout,
+                the same rule the Moments listing and the post itself follow. */}
+            <h2 class:list={['lb-h', 'tf-moment-h', featMoment.data.titleInImage && 'vh']}>
+              <a href={`/moments/${featMoment.id}/`}>{featMoment.data.title}</a>
+            </h2>
+            <a class="tf-moment-art" href={`/moments/${featMoment.id}/`}>
+              {featMoment.data.image && !isStandin(featMoment.data.image)
+                ? <img src={featMoment.data.image} alt={featMoment.data.imageAlt ?? featMoment.data.title}
+                       width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async" />
+                : <QuotePlate text={featMoment.data.title} i={2} />}
+            </a>
+            <a class="lb-go" href="/moments/">
+              <span class="u">See all moments<Mark kind="underline" color="coral" draw={true} /></span>
+              <span class="arw" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+        )}
 
-      <div class="shortcuts">
-        {shortcuts.map((s) => (
-          <a class="short" href={s.href}>
-            <CategoryIcon kind={s.kind} />
-            <h3>{s.label}</h3>
-            <p>{s.dek}</p>
-            <span class="arw" aria-hidden="true">&rarr;</span>
+      </div>
+      <DotGrid cols={9} rows={6} class="lb-dots" />
+    </section>
+  )}
+
+  {/* ── the six pathways ───────────────────────────────────────
+      Denvil's map puts the six main areas in their own full width band, drawn
+      "Big, visual, colorful", not tucked beside something else. So they get
+      the whole measure and a row of their own rather than a column next to
+      the featured piece. */}
+  <section class="shell paths" aria-label="Explore">
+    <div class="shortcuts">
+      {shortcuts.map((s) => (
+        <a class="short" href={s.href}>
+          <HandGlyph name={s.kind} />
+          <h3>{s.label}</h3>
+          <p>{s.dek}</p>
+          <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  {/* ── Grab your Bibles, the signature banner ───────────────────────────
+      Denvil's map: "Signature section. Encouragement. Visual punch." Black
+      ground, the blue scribble at the left, a yellow splash behind the study's
+      cover, a heart, and the dots. This is the one full-bleed dark band on the
+      page and it is doing the punching, which is why the panels that used to
+      sit here have gone: two grey boxes side by side were not punching. */}
+  <section class="shell gyb-wrap">
+    <div class="gyb">
+      <Mark kind="spiral" color="blue" class="gyb-coil" />
+      {/* Heading, sentence and button are three siblings rather than two
+          groups, so the band can place them by grid area: heading over button
+          on the left with the sentence beside them on a wide screen, and
+          heading, sentence, button in that order once it stacks. Grouped the
+          other way, the phone got the button before the sentence explaining
+          what it was for. */}
+      <h2 class="gyb-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
+      <p class="gyb-dek">
+        The book of Ruth is a story of grace, loyalty, and God's faithfulness in
+        unexpected places.
+      </p>
+      <a class="btn btn-light gyb-cta" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">
+        Start reading Ruth <span class="arw" aria-hidden="true">&rarr;</span>
+      </a>
+      <div class="gyb-art">
+        <Mark kind="paint" color="yellow" class="gyb-paint" />
+        <Photo name="ruth-cover" width={520} height={720}
+               sizes="(max-width: 900px) 40vw, 16rem"
+               alt="The cover of the Quietly at Work study in the book of Ruth." />
+        <span class="gyb-heart" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></svg>
+        </span>
+      </div>
+      {/* The spray of specks that comes off the paint. */}
+      <Mark kind="sprinkle" color="white" class="gyb-speck" />
+    </div>
+  </section>
+
+  {/* ── Recent essays ────────────────────────────────────────────────────
+      "3 latest essays. Quick scan. Easy to dive in." The featured slot above
+      can hold any room, so this row is the one place on the page that is
+      always essays. */}
+  {/* Two or more, never one. With the newest essay now featured above, this
+      row had exactly one card left in it, stretched across the full page,
+      which reads as a bug. The same rule the related-pieces block already
+      follows: the whole block disappears rather than showing one lonely
+      card. It comes back on its own as he writes. */}
+  {recentEssays.length > 1 && (
+    <section class="shell recents">
+      <div class="sec-head">
+        <h2 class="recents-k">Recent essays</h2>
+        <a class="go" href="/essays/">
+          <span class="u">See all essays<Mark kind="underline" color="yellow" /></span>
+          <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+      <div class="recent-grid">
+        {recentEssays.map((e: any) => (
+          <a class="recent" href={`/essays/${e.id}/`}>
+            <span class="recent-art">
+              {e.data.image && !isStandin(e.data.image)
+                ? <img src={e.data.image} alt="" width="640" height="480" loading="lazy" decoding="async" />
+                : <ArtPlate kind="passage" />}
+            </span>
+            <span class="recent-body">
+              <span class="recent-h">{e.data.title}</span>
+              <span class="recent-d">{e.data.teaser ?? e.data.dek}</span>
+              <span class="go">Read the essay <span class="arw" aria-hidden="true">&rarr;</span></span>
+            </span>
           </a>
         ))}
       </div>
-    </div>
-  </section>
+    </section>
+  )}
 
-  {/* ── the two panels ───────────────────────────────────────────────── */}
-  <section class="band shell panels">
-    <div class="panel panel-dark">
-      <Mark kind="zigzag" color="blue" class="panel-zig" />
-      <h2 class="panel-h"><span class="u">{home.studiesHeading}<Mark kind="underline" color="blue" /></span></h2>
-      <p class="std-feat-name">Quietly at Work</p>
-      <p class="panel-dek">
-        God never speaks out loud in Ruth, and he never stops working. Seven sessions
-        learning to recognize God's presence in loss, provision, waiting, ordinary
-        faithfulness, and the parts of the story we cannot yet see.
-      </p>
-      <a class="btn btn-light" href="https://grabyourbibles.com/quietly-at-work/" rel="noopener">
-        {home.studiesCta} <span class="arw" aria-hidden="true">&rarr;</span>
-      </a>
-    </div>
+  {/* ── Stay connected ───────────────────────────────────────────────────
+      "Simple invite. Human, warm. Not salesy." So the invitation is in his
+      handwriting rather than in a headline, and the form is one field. */}
+  <section class="shell sub-wrap">
+    <div class="subband">
 
-    <div class="panel panel-light">
-      <Mark kind="zigzag" color="yellow" class="panel-zig panel-zig-r" />
-      <h2 class="panel-h"><span class="u">New here?<Mark kind="underline" color="green" /></span></h2>
-      <p class="panel-dek">A little about me, why this site exists, and where to start.</p>
-      {/* The sticky note repeated the hero's own sentence back at the reader.
-          The hero has already established it. */}
-      <a class="go" href="/about/">Start here <span class="arw" aria-hidden="true">&rarr;</span></a>
+      <div class="sub-copy">
+        <p class="sub-hand">
+          Thanks for reading.
+          <span class="sub-heart" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 20S3 15 3 9a4.5 4.5 0 0 1 9-1.7A4.5 4.5 0 0 1 21 9c0 6-9 11-9 11z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
+          </span>
+        </p>
+        <p class="sub-hand sub-hand-y">You&#8217;re not alone.</p>
+      </div>
+      <div class="sub-form">
+        <p class="sub-dek">Get new essays, moments, and resources in your inbox.</p>
+        {/* One list. This posted to Netlify Forms while /subscribe/ posted to
+            Kit, which would have split the subscribers in two and put half of
+            them in a dashboard rather than on the mailing list. Same endpoint,
+            same field names, same honeypot as /subscribe/. */}
+        <form class="sub-row" method="post" action={KIT_ACTION}>
+          <label class="vh" for="sub-email">Your email</label>
+          <input id="sub-email" type="email" name="email_address" required
+                 placeholder="Your email" autocomplete="email" />
+          <input type="hidden" name="fields[source]" value="/" />
+          <input type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp" />
+          <button type="submit" class="btn btn-gold">Subscribe <span class="arw" aria-hidden="true">&rarr;</span></button>
+        </form>
+      </div>
+      <DotGrid cols={7} rows={4} class="subband-dots" />
+      {/* The tape lives on the envelope. On its own in open blue it was a
+          green rectangle; on a corner it is tape. */}
+      <span class="sub-env" aria-hidden="true">
+        <Tape color="green" class="sub-tape" />
+        <svg viewBox="0 0 90 64" fill="none">
+          <path d="M6 12h78v46H6z" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round"/>
+          <path d="M6 14l39 27 39-27" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M78 4l5-3M86 12l5-1M74 2l1-4" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+        </svg>
+      </span>
     </div>
   </section>
 

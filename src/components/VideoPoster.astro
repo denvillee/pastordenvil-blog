@@ -1,0 +1,38 @@
+---
+/*
+  A site-native poster for a talk with no still of its own.
+
+  Denvil, 2 Sep: "Do not let random YouTube thumbnails determine the look of
+  this page... When a good sermon still does not exist, use a simple branded
+  poster with the title, series, and one playful graphic element instead of an
+  ugly or inconsistent host thumbnail."
+
+  So: the series as an eyebrow, the title set large, one mark, and the category
+  colour carried as a corner wedge. Deliberately restrained. Watch is meant to
+  read as a clean editorial library rather than as the desk that Moments is, and
+  the thing that has to dominate a video card is the video, not the decoration.
+
+  Everything is drawn: no image request, no layout shift, and it stays correct
+  when the palette changes. It sits inside .vframe, which is already 16:9 and
+  clipping, so this fills that box rather than setting its own ratio.
+*/
+interface Props { title: string; series?: string; category?: string }
+const { title, series, category } = Astro.props;
+
+/* Long titles have to stay readable inside a card that can be 250px wide, so
+   the type steps down rather than overflowing. */
+const len = title.length;
+const size = len > 46 ? 'sm' : len > 26 ? 'md' : 'lg';
+---
+<span class:list={['vnp', `vnp-${size}`, category && `vnp-${category}`]} aria-hidden="true">
+  <span class="vnp-wedge"></span>
+  <svg class="vnp-dots" viewBox="0 0 60 40" fill="none" aria-hidden="true">
+    {[0,1,2,3].map((r) => [0,1,2,3,4].map((c) => (
+      <circle cx={6 + c * 12} cy={6 + r * 10} r="1.6" fill="currentColor" />
+    )))}
+  </svg>
+  <span class="vnp-in">
+    {series && <span class="vnp-k">{series}</span>}
+    <span class="vnp-t">{title}</span>
+  </span>
+</span>

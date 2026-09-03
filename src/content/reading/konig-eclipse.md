@@ -5,6 +5,7 @@ year: 1989
 shelfStatus: now
 shelfMonth: "2026-08"
 progress: "Chapter 6 of 12"
+category: theology
 spine: cobalt
 cover: /assets/covers/konig-eclipse.jpg
 order: 0

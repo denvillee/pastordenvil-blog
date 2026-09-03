@@ -6,7 +6,7 @@ publishAt: 2026-08-28T09:00:00-04:00
 draft: false
 ---
 
-I was sixteen when someone at the McDonald's down the street decided I could be trusted with the back drive thru. I did not know much about leadership, but someone gave me responsibility, trusted me with people and a process, and expected me to figure some things out.
+I was sixteen when someone at the McDonald's down the street decided I could be trusted taking orders at the back drive thru. I did not know much about leadership, but someone gave me responsibility, trusted me with people and a process, and expected me to figure some things out.
 
 A lot has happened since then. I have led in law enforcement, churches, ministries, teams, and organizations, while also learning what it means to be a husband and father. The titles have changed and the responsibility has grown, but after all these years I still feel like I have only scratched the surface.
 

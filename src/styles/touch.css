@@ -1,0 +1,84 @@
+/* ── TOUCH TARGETS ──────────────────────────────────────────────────────
+   This file is imported LAST, on purpose.
+
+   It used to live at the middle of page.css, and three of its rules were
+   silently dead because later rules at equal specificity simply won:
+     .door-toggle{display:inline}        (page.css, later)  beat  display:inline-flex
+     .vs-tab{min-height:38px}            (page.css, later)  beat  min-height:44px
+     .chip-btn/.pill-btn/.thread-del     (cards.css, imported after page.css)
+   Media queries add no specificity, so "inside a media query" is not protection.
+   Being last is. Keep this import at the bottom of Shell.astro.
+
+   44px is the Apple and Google minimum. WCAG 2.5.8 sets the floor at 24px.
+   Applied by pointer type, not width: a small window on a laptop still has a
+   mouse and does not need chunky controls. */
+
+@media (pointer: coarse){
+  .btn{min-height:44px; padding-block:.9rem}
+  .mast-cta{min-height:44px}
+
+  /* Text links that act as controls. These were at 40px, and several controls
+     were never listed at all. */
+  .go,.share a,.foot-col a,.mob-panel a,
+  .art-series,.ra-btn{
+    display:inline-flex; align-items:center; min-height:44px;
+  }
+
+  /* A <summary>. It carried display:inline and padding, and padding on an inline
+     box does not grow its layout height, so it measured 31px however much was
+     added. inline-flex is what makes the floor real. */
+  summary.door-toggle{display:inline-flex; align-items:center; min-height:44px}
+
+  /* min-WIDTH matters as much as min-height, and was the miss: the article share
+     row's "X" link is a single glyph and measured 9px wide on a phone. A 9px
+     target is not tappable however tall it is. */
+  .share a{min-width:44px; justify-content:center; padding-inline:.55rem}
+  .thread-del{min-width:44px; min-height:44px}
+
+  /* The wordmark measured 103x22. The masthead row is already 44px tall because
+     the menu button sets that height, so this only grows the hit area; the
+     header does not get taller. */
+  .wm{display:inline-flex; align-items:center; min-height:44px}
+
+  /* Chip and pill controls, 28-31px before this. */
+  .chip-btn,.pill-btn,.vs-tab,.verse-tab,.wtab{min-height:44px; padding-inline:1rem}
+
+  /* Form fields measured as low as 21px tall. Scoped to text entry so buttons
+     and the honeypot keep their own sizing. */
+  input[type=text],input[type=email],input[type=search],
+  input[type=tel],input[type=url],select,textarea{min-height:44px}
+
+  .prose sup a{display:inline-block; min-width:28px; min-height:28px;
+    text-align:center; line-height:28px; padding:0}
+  .topic{min-height:52px}
+}
+
+/* ── SMALL LABEL TIER ON PHONES ─────────────────────────────────────────
+   The site's micro-labels (chips, eyebrows, kickers) sit at .62-.66rem, which
+   is 9.9-10.6px. That reads fine on a desktop at arm's length and is tight on a
+   phone. Raised to .72rem here only.
+
+   .78rem. This started at .72rem, which was chosen because the design system
+   already used that step. Measured on a 390px phone it renders at 11.52px,
+   which is still under twelve, so the floor it was written to enforce was not
+   being enforced. .78rem is 12.48px: above the line rather than on it, and far
+   enough above that a browser's own minimum-font setting cannot drop it back
+   under. Re-measured after the change: no eyebrow wraps to a second line.
+
+   Desktop is untouched: this is inside pointer:coarse. Deliberately excluded are
+   .bcover-t/.bcover-a and .mini.plate, which are lettering inside a drawn book
+   spine rather than copy — scaling those breaks the drawing — and the /kit/ and
+   /studio/ card mockups, which are previews of social images rendered small on
+   purpose. */
+@media (pointer: coarse){
+  /* .62-.66 tier */
+  .chip, .veyebrow, .bnote-k, .week-rest .k, .arc-count .l,
+  .shelf-row .sa, .fld > span,
+  /* .68 tier - included so eyebrows do not end up at two different sizes
+     beside each other, which is worse than all of them being small */
+  .art-kicker .type, .art-next-h, .art-onward-k, .gap-k, .idea-rail .k,
+  .ser-eyebrow, .std-eyebrow, .vs-tab,
+  /* .70 tier, same family */
+  .foot-col h2, .list-item .r, .share .lbl, .signup-eyebrow, .verse-tab{
+    font-size:.78rem}
+}

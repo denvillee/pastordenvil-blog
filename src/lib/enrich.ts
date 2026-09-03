@@ -162,6 +162,55 @@ function bigIdea(inner: string) {
     `<span class="bigidea-u">${mark('underline-double', 'yellow')}</span></aside>`;
 }
 
+/* A labelled statement. Denvil sets one of these off in the manuscript with a
+   run-in label -- THE CORE IDEA -- above the claim, which is a different move
+   from a big idea: a big idea is the sentence the paragraph was building to,
+   while this one names what the passage is about before saying it. So it gets
+   its own treatment rather than being flattened into a bigidea: a rule down
+   the side, the label in the site's small-caps voice, the claim beneath it.
+   First paragraph is the label, the rest is the claim. */
+function coreIdea(paras: string[]) {
+  const [label, ...rest] = paras;
+  const body = (rest.length ? rest : [label]).join('</p><p class="core-t">');
+  const eyebrow = rest.length ? `<p class="core-k">${label}</p>` : '';
+  return `<aside class="core">${eyebrow}<p class="core-t">${body}</p></aside>`;
+}
+
+/* The turn, built to Denvil's own printed spread: a titled panel holding two
+   states, each a label with the pivot word circled in his hand, and a plain
+   gloss under it. The first version set the two states with an arrow between
+   them; his layout is clearer, because the difference is not motion from one to
+   the other, it is what each one means.
+
+   Paragraphs: an optional title, then label and gloss in pairs. Anything the
+   author writes inside a label wrapped in .c is circled, which is how the FOR
+   and the FROM carry the whole claim. */
+/* Put the drawn loop inside every .c the author marked. Writing the SVG into
+   the markdown would put a drawing in the prose, which is exactly what the
+   callout syntax exists to avoid. */
+function withCircles(html: string) {
+  return html.replace(/<span class="c">([\s\S]*?)<\/span>/g,
+    (_m, inner) => `<span class="c">${inner}${mark('circle-loose', 'coral')}</span>`);
+}
+
+function theTurn(paras: string[]) {
+  const odd = paras.length % 2 === 1;
+  const title = odd ? paras[0] : '';
+  const body = odd ? paras.slice(1) : paras;
+  const rows: string[] = [];
+  for (let i = 0; i < body.length; i += 2) {
+    rows.push(
+      `<div class="turn-row">` +
+      `<p class="turn-l">${withCircles(body[i])}</p>` +
+      (body[i + 1] ? `<p class="turn-g">${body[i + 1]}</p>` : '') +
+      `</div>`
+    );
+  }
+  return `<aside class="turn">` +
+    (title ? `<p class="turn-k">${title}</p>` : '') +
+    `<div class="turn-in">${rows.join('')}</div></aside>`;
+}
+
 function circled(inner: string) {
   return `<aside class="bigidea bigidea-c"><p class="bigidea-t"><span class="c">${inner}${mark('circle-loose', 'coral')}</span></p></aside>`;
 }
@@ -200,13 +249,15 @@ export async function enrich(html: string): Promise<string> {
     const paras = [...job.inner.matchAll(/<p>([\s\S]*?)<\/p>/g)].map((p) => p[1].trim());
     if (!paras.length) continue;
 
-    const flag = paras[0].match(/^\[!(BIG|CIRCLE|QUOTE)\]\s*/i);
+    const flag = paras[0].match(/^\[!(BIG|CIRCLE|QUOTE|CORE|TURN)\]\s*/i);
     if (flag) {
       const kind = flag[1].toUpperCase();
       const cleaned = [paras[0].slice(flag[0].length).trim(), ...paras.slice(1)].filter(Boolean);
       if (!cleaned.length) continue;
       if (kind === 'BIG') replacements.push([job.whole, bigIdea(cleaned.join('</p><p class="bigidea-t">'))]);
       else if (kind === 'CIRCLE') replacements.push([job.whole, circled(cleaned[0])]);
+      else if (kind === 'CORE') replacements.push([job.whole, coreIdea(cleaned)]);
+      else if (kind === 'TURN') replacements.push([job.whole, theTurn(cleaned)]);
       else replacements.push([job.whole, taped(cleaned)]);
       continue;
     }

@@ -1,0 +1,86 @@
+---
+/*
+  The closing band.
+
+  Every page in the comps ends on a full-width band — black on Essays, For
+  Leaders and About, yellow on Watch — carrying exactly one call to action, with
+  a zigzag anchoring one outer corner and speckles in the opposite top corner.
+
+  It is not decoration. That band is the thing that stops a long page reading as
+  one uninterrupted column: page ground, light panel, full bleed. Reinstating it
+  is the single biggest step back toward the comps, which is why it is a
+  component rather than seven hand-built copies that will drift apart.
+
+  Mark placement follows the rule read off the comps: zigzags anchor the OUTER
+  corners, one colour each side, and speckles appear in dark bands only.
+*/
+import Mark from './marks/Mark.astro';
+
+interface Props {
+  tone?: 'dark' | 'yellow';
+  heading: string;
+  /* Which word inside the heading gets the drawn mark, and which mark. The comp
+     circles "more" in Want more teachings like this? and underlines elsewhere. */
+  mark?: string;
+  markKind?: 'underline' | 'circle-loose';
+  markColor?: 'blue' | 'yellow' | 'coral' | 'green';
+  dek?: string;
+  href?: string;
+  cta?: string;
+  external?: boolean;
+  class?: string;
+}
+const {
+  tone = 'dark', heading, mark, markKind = 'underline', markColor,
+  dek, href, cta, external = false, class: cls = '',
+} = Astro.props;
+
+/* On a dark ground the drawn mark reads blue; on yellow it reads blue too, since
+   coral on gold is the one pairing in the palette that muddies. */
+const mc = markColor ?? 'blue';
+
+/* `.u` is display:inline-block, so a marked word cannot break and any
+   punctuation right after it is pushed onto the next line. Pull a trailing full
+   stop or comma inside the marked span so the sentence stays whole. */
+let m2 = mark;
+if (mark) {
+  const at = heading.toLowerCase().indexOf(mark.toLowerCase());
+  const after1 = at >= 0 ? heading.charAt(at + mark.length) : '';
+  if (after1 === '.' || after1 === ',' || after1 === '?') m2 = mark + after1;
+}
+const i = m2 ? heading.toLowerCase().indexOf(m2.toLowerCase()) : -1;
+const before = i >= 0 ? heading.slice(0, i) : heading;
+const hit = i >= 0 ? heading.slice(i, i + (m2 as string).length) : '';
+const after = i >= 0 ? heading.slice(i + (m2 as string).length) : '';
+---
+<section class:list={['shell', 'cband-wrap', cls]}>
+  <div class:list={['cband', `cband-${tone}`]}>
+    <Mark kind="scribble" color="blue" class="cband-zig" />
+    {tone === 'dark' && (
+      <span class="cband-speck" aria-hidden="true">
+        <svg viewBox="0 0 90 60" fill="none">
+          {[[6,10],[26,4],[46,12],[68,6],[14,26],[38,22],[60,28],[80,20],[22,44],[48,40],[72,46]].map(([x,y]) => (
+            <path d={`M${x} ${y}l4-5`} stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+          ))}
+        </svg>
+      </span>
+    )}
+    <div class="cband-in">
+      <h2 class="cband-h">
+        {before}
+        {hit && <span class="u">{hit}<Mark kind={markKind} color={mc} /></span>}
+        {after}
+      </h2>
+      {dek && <p class="cband-dek">{dek}</p>}
+      <slot />
+      {href && cta && (
+        <a class:list={['btn', tone === 'dark' ? 'btn-light' : 'btn-blue']} href={href}
+           rel={external ? 'noopener' : undefined}
+           target={external ? '_blank' : undefined}>
+          {cta} <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
+      )}
+    </div>
+    <div class="cband-aside"><slot name="aside" /></div>
+  </div>
+</section>

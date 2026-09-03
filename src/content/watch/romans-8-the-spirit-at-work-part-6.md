@@ -1,5 +1,5 @@
 ---
-title: "Part 6"
+title: "Chosen to Look Like Jesus"
 year: 2022
 provider: "vimeo"
 videoId: "775871148"

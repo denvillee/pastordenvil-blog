@@ -1,4 +1,6 @@
 ---
+import CloseBand from '../components/CloseBand.astro';
+import Glyph from '../components/Glyph.astro';
 /*
   Watch. Denvil's teaching library, newest year first.
 
@@ -23,7 +25,11 @@ import { getCollection } from 'astro:content';
 import Shell from '../layouts/Shell.astro';
 import Mark from '../components/marks/Mark.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
+import { toSeconds } from '../lib/publish';
+import DotGrid from '../components/marks/DotGrid.astro';
+import Tape from '../components/marks/Tape.astro';
 import VideoCard from '../components/VideoCard.astro';
+import AudioCard from '../components/AudioCard.astro';
 import site from '../data/site.json';
 import labels from '../data/labels.json';
 
@@ -58,14 +64,86 @@ const series = [...seriesCount.entries()]
   .map(([s]) => s)
   .sort();
 
+/* The comp's category tabs. Same rule as everything else on this page: a tab
+   appears only when talks actually carry that category, so the row grows as
+   Denvil labels the library and never shows an empty tab. */
+const CAT_LABEL: Record<string,string> = {
+  teaching: 'Teaching', leadership: 'Leadership',
+  conversation: 'Conversations', qa: 'Q&A',
+};
+const catCount = new Map<string, number>();
+for (const t of talks) {
+  const c = (t as any).data.category;
+  if (c) catCount.set(c, (catCount.get(c) ?? 0) + 1);
+}
+const cats = ['teaching','leadership','conversation','qa'].filter((c) => catCount.has(c));
+
+/* Kind is not category. Category is what a talk is about; kind is what it is:
+   something to watch, something to listen to, or an episode of somebody else's
+   show that Denvil was a guest on. Derived when the entry does not say, so the
+   library labels itself and nothing has to be back-filled by hand. */
+const KIND_LABEL: Record<string,string> = {
+  video: 'Video', audio: 'Audio', podcast: 'Podcasts',
+};
+const kindOf = (t: any): string =>
+  t.data.kind ?? (t.data.audioSrc && !t.data.videoId ? 'audio' : 'video');
+const kindCount = new Map<string, number>();
+for (const t of talks) kindCount.set(kindOf(t), (kindCount.get(kindOf(t)) ?? 0) + 1);
+const kinds = ['video','audio','podcast'].filter((k) => kindCount.has(k));
+
 /* The thresholds. A control that filters a list you can see all of is noise. */
 const showSearch = talks.length >= 8;
 const showYears = years.length >= 2;
 const showSeries = series.length >= 2;
-const anyControls = showSearch || showYears || showSeries;
+/* One kind is not a choice. The row appears the day the first podcast episode
+   or audio-only teaching lands, and not a day earlier: today every one of the
+   71 entries is a video, so a Video / Audio / Podcasts row would be a control
+   with one live tab and two dead ones. */
+const showKinds = kinds.length >= 2;
+/* Same rule for the topical tabs, which have been rendering a lone "All"
+   button because nothing in the library carries a category yet. */
+const showCats = cats.length >= 1;
+/* A tab appears only when talks actually carry that category. Denvil, 2 Sep:
+   "An empty Q&A tab makes the library feel unfinished." The row grows as the
+   library gets labelled and never advertises a room with nothing in it. */
+
+/* Denvil, 1 Sep: "videos don't need years per se. Just put the content as the
+   layout is." So the year headings are gone. */
+/* The featured talk is chosen, not inherited from the sort order. It is then
+   REMOVED from everything below: the deck used to start at talks[0] as well, so
+   the same message appeared twice within one screen. */
+/* Denvil, 2 Sep: "I'd put them under 'watch' and just put them under
+   something that says Audio only". So the episodes are pulled out of the video
+   decks entirely and given their own row, rather than being dropped into a
+   grid of stills with nothing to show. The kind tabs at the top still filter
+   across all of it, which is the other half of what he asked for: the row
+   groups them, the tabs find them. */
+const heard = talks.filter((t: any) => kindOf(t) !== 'video');
+const watched = talks.filter((t: any) => kindOf(t) === 'video');
+
+const feat: any = watched.find((t: any) => t.data.featured) ?? watched[0];
+const rest = watched.filter((t: any) => t !== feat);
+
+/* One "recent" section, not two. The page ran Featured -> four cards -> Most
+   recent talks -> the library, which is three versions of the same idea before
+   a reader reaches anything they can browse. Now: Featured, Latest talks,
+   Browse the library. */
+const latest = rest.slice(0, 6);
+const restTalks = rest.slice(6);
+const anyControls = showSearch || showYears || showSeries || showCats;
 
 /* One searchable string per talk, built here rather than in the browser: the
    markup carries it, so the script does no work before the reader types. */
+const featPoster = feat?.data.poster
+  ? `/assets/img/${feat.data.poster}.jpg`
+  : (feat?.data.provider === 'youtube' ? `https://i.ytimg.com/vi/${feat.data.videoId}/hqdefault.jpg` : undefined);
+const mmss = (n?: number) => {
+  if (!n) return '';
+  const h = Math.floor(n / 3600), m = Math.floor((n % 3600) / 60), sec = n % 60;
+  return h ? `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`
+           : `${m}:${String(sec).padStart(2,'0')}`;
+};
+
 const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
   t.data.organization, t.data.scripture, t.data.location,
   ...(t.data.tags ?? [])].filter(Boolean).join(' ').toLowerCase();
@@ -85,11 +163,138 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
         {/* No empty state. */}
       </div>
       <div class="watch-feat">
+        <DotGrid cols={7} rows={5} class="watch-dots" />
+        <Tape color="blue" class="vfeat-tape" />
+        {feat && (
+          <a class="vfeat" href={`#talk-${feat.id}`}>
+            <span class="vfeat-shot">
+              {featPoster
+                ? <img src={featPoster} alt="" width="1280" height="720" loading="eager" decoding="async" />
+                : <span class="vfeat-none" aria-hidden="true"></span>}
+              {/* An outlined ring with a solid triangle, which is the comp's
+                  control. A filled white disc reads as a UI button; the ring
+                  reads as a video. */}
+              <span class="vfeat-play" aria-hidden="true">
+                <svg viewBox="0 0 64 64" fill="none">
+                  <circle cx="32" cy="32" r="29" stroke="#fff" stroke-width="2.6" />
+                  <path d="M26 20l19 12-19 12z" fill="#fff" />
+                </svg>
+              </span>
+            </span>
+            <span class="vfeat-body">
+              <span class="vfeat-k">Featured teaching</span>
+              <span class="vfeat-t">{feat.data.title}</span>
+              {feat.data.context && <span class="vfeat-d">{feat.data.context}</span>}
+              <span class="vfeat-m">
+                <span class="vfeat-go">Watch now <span class="arw" aria-hidden="true">&rarr;</span></span>
+                {/* The whole-service recordings run past an hour and a half, but
+                    the message inside them starts well in: Let's Stay Together is
+                    a 1:39:51 file whose teaching begins at 34:41. VideoCard already
+                    subtracts startsAt; this featured block was printing the raw
+                    file length, so it advertised the service, not the sermon.
+                    Denvil, 2 Sep: "lets stay together should be a bit shorter". */}
+                {feat.data.durationSeconds && (
+                  <span class="vfeat-dur">
+                    {mmss(Math.max(0,
+                      (toSeconds(feat.data.endsAt) ?? feat.data.durationSeconds)
+                      - (toSeconds(feat.data.startsAt) ?? 0)))}
+                  </span>
+                )}
+              </span>
+            </span>
+          </a>
+        )}
         <ColorDisc lines={["theology","leadership","life"]} class="watch-disc" />
       </div>
     </section>
 
-    {anyControls && (
+    {/* ── what kind of thing ──────────────────────────────────────────────
+        Denvil, 2 Sep: the tabs go back at the top now that there is audio and
+        there are podcasts. At the top is right for kind, because kind is the
+        first question a visitor answers: am I sitting down to watch, or am I
+        putting this in my ears in the car. It filters both rows below it, so
+        picking Podcasts turns the whole page into the podcast page.
+
+        What is about is a different question, and it stays down with the
+        library where a reader is already browsing titles. */}
+    {showKinds && (
+      <section class="shell wkinds-row">
+        <div class="wtabs" role="group" aria-label="Filter by kind">
+          <button type="button" class="wtab on" data-kind="all" aria-pressed="true">Everything</button>
+          {kinds.map((k) => (
+            <button type="button" class="wtab" data-kind={k} aria-pressed="false">{KIND_LABEL[k]}</button>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="shell wrecent">
+      <Mark kind="scribble" color="blue"  class="wrecent-zig-l" />
+      <Mark kind="scribble" color="green" class="wrecent-zig-r" />
+      <div class="sec-head">
+        <h2 class="sec-h"><span class="u">Latest talks<Mark kind="underline" color="yellow" draw={true} /></span></h2>
+      </div>
+      <div class="vcards vcards-lat">
+        {latest.map((t: any) => (
+          <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
+               data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''}
+               data-kind={kindOf(t)} data-hay={hay(t)}>
+            <VideoCard entry={t} />
+          </div>
+        ))}
+      </div>
+    </section>
+
+
+    {/* ── audio only ──────────────────────────────────────────────────────
+        Podcast episodes and anything else without a picture. Under Latest
+        talks, above the library, because it is a short row that would be lost
+        at the bottom of seventy videos. */}
+    {heard.length > 0 && (
+      <section class="shell aud-row" id="audio-only">
+        <div class="sec-head">
+          <h2 class="sec-h"><span class="u">Audio only<Mark kind="underline" color="coral" draw={true} /></span></h2>
+        </div>
+        <p class="aud-note">Conversations and episodes to listen to rather than watch.</p>
+        <div class="acards">
+          {heard.map((t: any) => (
+            <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
+                 data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''}
+                 data-kind={kindOf(t)} data-hay={hay(t)}>
+              <AudioCard entry={t} />
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {/* ── all videos ──────────────────────────────────────────────────────
+        Denvil, 2 Sep: all videos goes under the latest talks. It sat above
+        them, so the page opened by asking a visitor to filter a library they
+        had not seen yet. Now it reads the way the page is used: here is the
+        newest, and here is everything.
+
+        The "Browse all videos" link that used to sit on this row is gone with
+        the move. It pointed at the grid immediately below it. */}
+    <section class="shell wtabs-row">
+      <h2 class="sec-h wtabs-h"><span class="u">All <span id="watch-all-word">videos</span><Mark kind="underline" color="blue" draw={true} /></span></h2>
+      {showCats && (
+        <div class="wtabs" role="group" aria-label="Filter by topic">
+          {/* "All" rather than "All videos": the heading directly above it
+              already says All videos, and the same two words twice in three
+              inches reads as a mistake. */}
+          <button type="button" class="wtab on" data-cat="all" aria-pressed="true">All</button>
+          {cats.map((c) => (
+            <button type="button" class="wtab" data-cat={c} aria-pressed="false">{CAT_LABEL[c]}</button>
+          ))}
+        </div>
+      )}
+    </section>
+
+    {/* The full library, with its own controls. The comp does not put a search
+        box between the hero and the tab row, so it lives here with the thing it
+        actually searches. */}
+{anyControls && (
       <section class="shell watch-tools" id="watch-tools" hidden>
         {showSearch && (
           <div class="wsearch">
@@ -106,31 +311,22 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
             ))}
           </div>
         )}
-        {showYears && (
-          <div class="arc-filters" role="group" aria-label="Filter by year">
-            <button type="button" class="chip-btn on" data-year="all" aria-pressed="true">All years</button>
-            {years.map((y) => (
-              <button type="button" class="chip-btn" data-year={String(y)} aria-pressed="false">{y}</button>
-            ))}
-          </div>
-        )}
         <p class="wcount" id="watch-count" role="status" aria-live="polite"></p>
       </section>
     )}
-
-    {years.map((y) => (
-      <section class="shell watch-year" data-year-block={String(y)}>
-        <div class="sec-head"><h2 class="sec-h">{y}</h2></div>
-        <div class="vcards">
-          {talks.filter((t: any) => t.data.year === y).map((t: any) => (
-            <div class="vwrap" data-year={String(t.data.year)}
-                 data-series={t.data.series ?? ''} data-hay={hay(t)}>
+    {restTalks.length > 0 && (
+      <section class="shell watch-all" id="watch-all">
+        <div class="vcards vcards-lib">
+          {restTalks.map((t: any) => (
+            <div class="vwrap" id={`talk-${t.id}`} data-year={String(t.data.year)}
+                 data-series={t.data.series ?? ''} data-cat={t.data.category ?? ''}
+               data-kind={kindOf(t)} data-hay={hay(t)}>
               <VideoCard entry={t} />
             </div>
           ))}
         </div>
       </section>
-    ))}
+    )}
 
     {anyControls && (
       <p class="shell wempty" id="watch-empty" hidden>
@@ -145,18 +341,25 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
 
   <script>
     /* The controls are hidden in the markup and revealed here, so a reader
-       with JavaScript off is never shown a search box that does nothing. */
+       with JavaScript off is never shown a search box that does nothing.
+
+       The filtering below is no longer gated on that reveal. The kind row at
+       the top of the page is always in the markup when there is more than one
+       kind, and it has to work whether or not the library's own search box
+       exists. */
     const tools = document.getElementById('watch-tools');
-    if (tools) {
-      tools.hidden = false;
+    if (tools) tools.hidden = false;
+    {
       const q = document.getElementById('watch-q') as HTMLInputElement | null;
       const wraps = Array.from(document.querySelectorAll<HTMLElement>('.vwrap'));
       const blocks = Array.from(document.querySelectorAll<HTMLElement>('[data-year-block]'));
       const countEl = document.getElementById('watch-count');
       const emptyEl = document.getElementById('watch-empty');
       const clearBtn = document.getElementById('watch-clear');
+      const allHead = document.getElementById('watch-all-word');
       let year = 'all';
       let ser = 'all';
+      let kind = 'all';
 
       const setPressed = (group: string, val: string) => {
         document.querySelectorAll<HTMLElement>(`[data-${group}]`).forEach((b) => {
@@ -167,6 +370,11 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
         });
       };
 
+      let cat = 'all';
+      /* "All videos" is the right heading until somebody picks Podcasts, and
+         then it is the wrong one. One word changes with the filter. */
+      const HEAD_WORD: Record<string,string> =
+        { all: 'videos', video: 'videos', audio: 'audio', podcast: 'podcasts' };
       const apply = () => {
         const term = (q?.value ?? '').trim().toLowerCase();
         let shown = 0;
@@ -174,16 +382,31 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
           const ok =
             (year === 'all' || w.dataset.year === year) &&
             (ser === 'all' || w.dataset.series === ser) &&
+            (cat === 'all' || w.dataset.cat === cat) &&
+            (kind === 'all' || w.dataset.kind === kind) &&
             (!term || (w.dataset.hay ?? '').includes(term));
           w.hidden = !ok;
           if (ok) shown++;
         });
+        if (allHead) allHead.textContent = HEAD_WORD[kind] ?? 'videos';
+        /* A heading over an empty room. Picking Video used to leave the "Audio
+           only" heading and its one-line note standing over nothing, and
+           picking Podcasts left "All videos" over nothing. Any section whose
+           cards have all been filtered away hides itself, and the library's
+           controls go with the library. */
+        document.querySelectorAll<HTMLElement>('.wrecent, #audio-only, .watch-all')
+          .forEach((sec) => {
+            const kids = sec.querySelectorAll<HTMLElement>('.vwrap');
+            if (!kids.length) return;
+            sec.hidden = ![...kids].some((k) => !k.hidden);
+          });
+        const lib = document.querySelector<HTMLElement>('.watch-all');
+        const libGone = !!lib && lib.hidden;
+        document.querySelectorAll<HTMLElement>('.wtabs-row').forEach((r) => { r.hidden = libGone; });
+        if (tools) tools.hidden = libGone;
         /* A year heading with nothing under it is a heading for an empty
            room. Hide the whole block instead. */
-        blocks.forEach((b) => {
-          const any = Array.from(b.querySelectorAll<HTMLElement>('.vwrap')).some((w) => !w.hidden);
-          b.hidden = !any;
-        });
+
         if (countEl) {
           countEl.textContent = shown === wraps.length
             ? `${wraps.length} talk${wraps.length === 1 ? '' : 's'}`
@@ -198,15 +421,38 @@ const hay = (t: any) => [t.data.title, t.data.series, t.data.context,
       document.querySelectorAll<HTMLElement>('button[data-series]').forEach((b) => {
         b.addEventListener('click', () => { ser = b.dataset.series ?? 'all'; setPressed('series', ser); apply(); });
       });
+      document.querySelectorAll<HTMLElement>('button[data-cat]').forEach((b) => {
+        b.addEventListener('click', () => { cat = b.dataset.cat ?? 'all'; setPressed('cat', cat); apply(); });
+      });
+      document.querySelectorAll<HTMLElement>('button[data-kind]').forEach((b) => {
+        b.addEventListener('click', () => { kind = b.dataset.kind ?? 'all'; setPressed('kind', kind); apply(); });
+      });
       q?.addEventListener('input', apply);
       clearBtn?.addEventListener('click', () => {
-        year = 'all'; ser = 'all';
+        year = 'all'; ser = 'all'; cat = 'all'; kind = 'all';
         if (q) q.value = '';
         setPressed('year', 'all'); setPressed('series', 'all');
+        setPressed('cat', 'all'); setPressed('kind', 'all');
         apply();
         q?.focus();
       });
       apply();
     }
   </script>
+
+  {/* The comp closes Watch on a yellow band. Its three lines are the comp's own
+      copy, not Denvil's, and are flagged as such: they promise a cadence
+      ("New videos every month") that nobody has committed to, so the promise is
+      dropped and the rows describe what the room already is. */}
+  <CloseBand tone="yellow"
+             heading="Want more teachings like this?"
+             mark="more" markKind="circle-loose" markColor="blue"
+             dek="Sermons, teachings and conversations, gathered in one place."
+             href="/subscribe/" cta="Subscribe to updates">
+    <ul class="cband-pts" slot="aside">
+      <li><Glyph name="play"  tone="blue"  />Talks and full teachings</li>
+      <li><Glyph name="note"  tone="coral" />Reflections that go deeper</li>
+      <li><Glyph name="heart" tone="green" />Practical wisdom for everyday life</li>
+    </ul>
+  </CloseBand>
 </Shell>

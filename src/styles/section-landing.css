@@ -1,0 +1,214 @@
+/*
+  THE SECTION LANDING RHYTHM
+  ==========================
+
+  One spacing system for the six section pages: Essays, For Leaders, Moments,
+  Studies, Bookshelf and Watch.
+
+  From Denvil's section landing pack, 2 Sep, and from three complaints that
+  turned out to be the same bug: "the bookshelf header and the introduction
+  and what I'm reading now doesn't divide well, it just has awkward spacing",
+  "so does studies", "so does moments".
+
+  Measured before writing any of this. The gap between the doorway story and
+  whatever followed it was:
+
+      Essays      0px          Studies     0px
+      Moments    35px          Bookshelf   0px, then 0, 0, 0
+      Leaders     0px
+
+  and the gap between the hero and the doorway was 16px on five of the six.
+  So the pages were not badly spaced in a hundred small ways: every one of
+  them was missing the same two gaps, and Bookshelf, which has the most
+  sections, was missing all of them, which is why it looked the worst.
+
+  The pack's targets, and what this file sets:
+
+      masthead to hero        48 to 64px
+      hero vertical padding   48 to 72px
+      hero to doorway         32 to 48px
+      doorway to feature      48 to 64px
+      major section gaps      64 to 80px
+      mobile major gaps       40 to 56px
+
+  The pack ships its own palette. It is not used: its blue, cream, coral and
+  green are all near but not equal to the tokens, and two palettes on one site
+  is how a design system dies. Everything here resolves through tokens.css.
+
+  The one caution in the pack's README is the one that matters most here:
+  "avoid stacking existing page-specific band padding with new section
+  margins." So this file does not add padding on top of what pages already
+  have. It sets the gaps between blocks, and the page files stop setting their
+  own.
+*/
+
+:root {
+  /* Named for the job, not the number, so a change is one line. */
+  --lg-hero-pad:  clamp(2.2rem, 3.4vw, 3rem);   /* 35 to 48 */
+  --lg-to-door:   clamp(2rem, 3.2vw, 3rem);     /* 32 to 48 */
+  --lg-door-out:  clamp(2.6rem, 4.2vw, 4rem);   /* 42 to 64 */
+  --lg-major:     clamp(2.5rem, 5.4vw, 5rem);   /* 40 to 80, mobile to desktop */
+}
+
+/* ── the hero ────────────────────────────────────────────────────────────
+   Compact, and it ends with a hairline. The rule is the pack's, and it is
+   what "divides well" means on Bookshelf: without it the title, the story
+   and the first shelf ran together as one grey column. */
+.arch > .arch-head,
+.arch > .mom-hero,
+.arch > .std-hero,
+.arch > .book-hero,
+.arch > .lead-hero,
+.arch > .watch-hero,
+.arch > .essays-hero {
+  padding-bottom: var(--lg-hero-pad);
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--rule);
+  /* Denvil, 2 Sep: dead space between the title, the line under it and the
+     picture beside it, as though something were missing above the rule.
+
+     Measured. The two columns were top aligned and wildly different heights:
+
+         Essays     text 131  picture 180
+         Moments    text 163  picture 174
+         Bookshelf  text 163  picture 240
+         Studies    text 163  picture 272
+
+     so on Studies a hundred pixels of nothing sat under the subtitle, beside
+     the picture, directly above the rule. Centred, the leftover splits above
+     and below the text and the sentence lands opposite the middle of the
+     picture instead of hanging off its top corner. */
+  align-items: center;
+}
+
+/* And the pictures are all one height now. Four section heroes at four
+   different heights is the other half of it: the rule landed in a different
+   place on every page, so nothing felt deliberate. */
+.arch > .arch-head .head-art,
+.arch > .mom-hero .mom-quote,
+.arch > .std-hero .std-art,
+.arch > .book-hero .imask,
+.arch > .lead-hero .lead-art { max-height: 15rem }
+.arch > .std-hero .std-art img,
+.arch > .book-hero .imask img,
+.arch > .lead-hero .lead-art img { max-height: 15rem; object-fit: cover }
+
+/* ── the doorway story ───────────────────────────────────────────────────
+   A bridge, not a second hero. The pack asks for 320 to 420px on desktop and
+   40 to 56px of internal padding, and for real air on both sides of it. */
+.arch > .door {
+  margin-top: var(--lg-to-door);
+  margin-bottom: var(--lg-door-out);
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* ── everything after ────────────────────────────────────────────────────
+   Major sections breathe. Any element that follows another inside the page
+   frame gets the major gap unless it has already been given one above. */
+.arch > * + *:not(.door):not(.mk):not(.dotgrid) {
+  margin-top: var(--lg-major);
+}
+/* The doorway sets both of its own gaps, so the block after it must not add
+   a second one on top.
+
+   The :not chain is not decoration. The rule above it carries four classes of
+   specificity, so a plain `.arch > .door + *` at two loses to it and does
+   nothing at all. Media queries add no specificity on this project and
+   neither does being written later in the same file. */
+.arch > .door + *:not(.mk):not(.dotgrid) { margin-top: 0; }
+/* Decorative marks are positioned, not flowed. A margin on one moves nothing
+   and reads as a bug when the selector above catches it. */
+.arch > .mk, .arch > .dotgrid { margin-top: 0 }
+/* And when a mark is the first thing in the frame, the hero after it is still
+   the first block a reader sees. Measured 126px from the masthead to the top
+   of every section hero, against the pack's 48 to 64: the hero was collecting
+   a major section gap for following a mark that occupies no space.
+   Named heroes rather than `.mk:first-child + *`, because Leaders opens with
+   two marks and the adjacent-sibling version left it at 126 while the other
+   five went to 48. The :not chain is only there to reach four classes of
+   specificity, which is what the rule above costs. */
+.arch > .arch-head:not(.door):not(.mk),
+.arch > .mom-hero:not(.door):not(.mk),
+.arch > .std-hero:not(.door):not(.mk),
+.arch > .book-hero:not(.door):not(.mk),
+.arch > .lead-hero:not(.door):not(.mk),
+.arch > .watch-hero:not(.door):not(.mk),
+.arch > .essays-hero:not(.door):not(.mk) { margin-top: 0 }
+
+/* Pages that still carry .band's own padding on an inner section would double
+   the gap. Inside the frame, the rhythm above is the only source. */
+.arch > .band { padding-block: 0 }
+
+@media (max-width: 640px) {
+  :root { --lg-major: clamp(2.5rem, 8vw, 3.5rem); }
+}
+
+/* ── the doorway, given a ground and a voice ─────────────────────────────
+   The pack draws this as a tinted band with one handwritten line above the
+   story. That line is what makes the section read as somebody's page rather
+   than a category archive, and the tint is the second half of the answer to
+   "it doesn't divide well": on Bookshelf the title, the story and the first
+   shelf were three grey blocks in a column with nothing between them.
+
+   The tint is the room's own token at its palest, so the four rooms are told
+   apart by the same colours they already use everywhere else. */
+.arch > .door{
+  padding:clamp(1.8rem,3.4vw,2.6rem) clamp(1.4rem,3vw,2.4rem);
+  border-radius:var(--r-lg);
+}
+.door-yellow{background:var(--tint-gold)}
+.door-coral {background:var(--tint-coral)}
+.door-blue  {background:var(--tint-navy)}
+.door-green {background:var(--tint-sage)}
+
+/* His own sentence, in his own hand, in the room's colour. */
+.door-h{
+  font-family:var(--hand); font-weight:600;
+  font-size:clamp(1.3rem,2.2vw,1.85rem); line-height:1.2;
+  margin:0 0 1rem; max-width:34ch;
+}
+.door-yellow .door-h{color:var(--gold-ink)}
+.door-coral  .door-h{color:var(--coral-ink)}
+.door-blue   .door-h{color:var(--blue-ink)}
+.door-green  .door-h{color:var(--sage-ink)}
+
+/* The drawn rule under the doorway was separating it from the page. With a
+   ground of its own the edge does that, and the mark was landing on the
+   tint. */
+.arch > .door .door-rule{display:none}
+
+/* ── the doorway's two columns ───────────────────────────────────────────
+   Measured: the band was 1200px wide with 613px of copy in it, so the right
+   half sat empty on every section page. The pack draws a rail there and the
+   pages already pass one; it was being suppressed whenever the story folded.
+   Rail width is the pack's 12 to 18rem. */
+/* Denvil, 2 Sep: the story fills two thirds of the band and the rest is empty
+   colour, and it should wrap more of the band and shrink with the page.
+
+   Measured: band 1200, copy capped at 62ch (613), rail 15rem (240), gap 48.
+   That is 901 of 1200 used, and the 300 left over sat between the text and
+   the rail because the cap was inside the column rather than on it.
+
+   So the cap comes off the copy and goes on the grid. The text column is a
+   fraction of the band now, not a fixed measure, and the rail is a fraction
+   too. Both shrink together as the window narrows, and at 62ch the text still
+   never runs past a comfortable line: the fraction is chosen so the widest
+   case lands near it rather than beyond it. */
+.arch > .door{
+  display:grid; grid-template-columns:minmax(0,1fr) minmax(0,17rem);
+  gap:clamp(1.4rem,2.8vw,2.6rem); align-items:center;
+}
+.arch > .door .door-in{max-width:none}
+.arch > .door .door-body{max-width:72ch}
+/* The rail column was 425px wide with a 92px mark floating in it. Whatever a
+   page puts in the rail fills the column it was given, so the band reads as
+   text on the left and art on the right rather than text and a gap. */
+.arch > .door .door-rail > *:not(.tape):not(.dotgrid){width:100%; max-width:none}
+.arch > .door .door-rail .artp{max-width:none}
+.arch > .door:not(:has(.door-rail)){ grid-template-columns:minmax(0,1fr) }
+.arch > .door .door-rail{position:relative; margin:0; min-height:0; width:100%; justify-self:stretch}
+@media (max-width:820px){
+  .arch > .door{grid-template-columns:1fr}
+  .arch > .door .door-rail{display:none}
+}

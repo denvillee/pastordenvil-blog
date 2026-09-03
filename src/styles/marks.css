@@ -56,26 +56,54 @@
 .mk-zigzag{width:clamp(2.6rem,5vw,4.4rem); height:clamp(3.6rem,7vw,6rem)}
 .mk-arrow,.mk-arrow-curl{width:clamp(3.4rem,7vw,6.5rem); height:clamp(1.8rem,3.6vw,3.2rem)}
 .mk-star,.mk-asterisk{width:clamp(1.2rem,2.4vw,2rem); height:clamp(1.2rem,2.4vw,2rem)}
+.mk-spiral{width:clamp(2rem,4vw,3.4rem); height:clamp(4.2rem,9vw,7.4rem)}
+.mk-scribble{width:clamp(3rem,5.5vw,5rem); height:clamp(3rem,5.5vw,5rem)}
+.mk-paint{width:clamp(12rem,30vw,22rem); height:clamp(4.7rem,11.8vw,8.6rem)}
+.mk-sprinkle{width:clamp(6rem,14vw,11rem); height:clamp(3rem,7vw,5.5rem)}
+.mk-loop{width:clamp(4rem,8vw,7rem); height:clamp(3.3rem,6.7vw,5.8rem)}
 
 /* ── the dot grid ───────────────────────────────────────────────────── */
 .dotgrid{
   position:absolute; pointer-events:none; z-index:0;
-  --d:3px; --gap:15px;
+  --d:3px; --gap:15px; color:var(--ink);
   width:calc(var(--cols) * var(--gap)); height:calc(var(--rows) * var(--gap));
-  background-image:radial-gradient(var(--ink) var(--d), transparent var(--d));
+  /* currentColor, not --ink: a field of dots on a black or blue band has to
+     be able to be white, and every existing use inherits ink from the line
+     above, so nothing else moves. */
+  background-image:radial-gradient(currentColor var(--d), transparent var(--d));
   background-size:var(--gap) var(--gap);
-  opacity:.5;
+  /* Kit rule 10, 2 Sep: "If a mark is so faint that it reads as texture, it
+     is probably too timid for this visual system." It was at .5. */
+  opacity:.68;
 }
 
+.mk-white{color:var(--white)}
+
 /* ── tape ───────────────────────────────────────────────────────────── */
+/* Tape, not a rectangle. Denvil, 2 Sep: the green strip on the newsletter band
+   is flat and out of place. It was a solid opaque box with square corners,
+   which is a swatch. Real tape is torn at both ends, never quite parallel,
+   and you can see what is under it. So: an uneven clip on both ends, a little
+   translucency, and a highlight running along it the way light catches the
+   crease of a strip pulled off a roll. */
 .tape{
-  position:absolute; z-index:3; width:clamp(3.4rem,7vw,5.6rem); height:1.55rem;
-  transform:rotate(-1.5deg); opacity:.92;
+  position:absolute; z-index:3; width:clamp(3.4rem,7vw,5.6rem); height:1.6rem;
+  transform:rotate(-1.5deg); opacity:.86;
+  clip-path:polygon(0% 12%, 6% 2%, 30% 6%, 62% 0%, 94% 4%, 100% 16%, 97% 96%, 66% 90%, 34% 100%, 4% 94%);
   box-shadow:0 1px 2px rgba(17,17,17,.10);
+}
+/* Two hairlines, not a gradient. A soft light-to-dark ramp across the whole
+   strip made it read as a tube; tape is flat, with a crease or two in it. */
+.tape::after{
+  content:''; position:absolute; inset:0;
+  background:
+    linear-gradient(180deg, transparent 0 26%, rgba(255,255,255,.34) 26% 28%,
+                    transparent 28% 71%, rgba(17,17,17,.08) 71% 73%, transparent 73%);
 }
 .tape-blue{background:var(--blue)}
 .tape-coral{background:var(--coral)}
 .tape-yellow{background:var(--yellow)}
+.tape-green{background:var(--tape-green)}
 .tape-neutral{background:var(--tape)}
 
 /* ── the colour disc ────────────────────────────────────────────────── */
@@ -118,10 +146,19 @@
 .note-yellow{background:var(--yellow); color:var(--on-yellow)}
 .note-green{background:var(--green); color:var(--on-green)}
 .note-coral{background:var(--coral); color:var(--on-coral)}
+/* Navy tape on a navy note was a lump on the top edge. The tape has to sit
+   against whatever it is holding down, so the dark notes get a warm one. */
+.note-blue .note-tape,.note-coral .note-tape{background:var(--gold)}
 .note-tape{
   position:absolute; top:-.7rem; left:50%; translate:-50% 0;
-  width:4.2rem; height:1.4rem; background:var(--blue); opacity:.9;
+  width:4.6rem; height:1.5rem; background:var(--blue); opacity:.88;
   transform:rotate(-2deg);
+  clip-path:polygon(0% 12%, 6% 2%, 30% 6%, 62% 0%, 94% 4%, 100% 16%, 97% 96%, 66% 90%, 34% 100%, 4% 94%);
+}
+.note-tape::after{
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 0 26%, rgba(255,255,255,.3) 26% 28%,
+                             transparent 28% 71%, rgba(17,17,17,.07) 71% 73%, transparent 73%);
 }
 .note p{margin:0 0 .5em}
 .note p:last-child{margin-bottom:0}
@@ -143,7 +180,10 @@
 /* ── small screens ──────────────────────────────────────────────────────
    Decoration gets out of the way rather than sitting on top of the words. */
 @media (max-width:760px){
-  .mk-brush,.mk-zigzag,.mk-arrow,.mk-arrow-curl,.dotgrid{display:none}
+  .mk-brush,.mk-zigzag,.mk-spiral,.mk-scribble,.mk-arrow,.mk-arrow-curl,.mk-loop,.dotgrid{display:none}
   .disc{width:5.4rem; font-size:.9rem}
-  .note{transform:none}
+  /* Half the tilt rather than none. Flat on a phone is what made these read
+     as filled boxes; the original worry was corners colliding with body copy,
+     and half a degree on a full width note clears that by itself. */
+  .note{transform:rotate(calc(var(--tilt,-1.4deg) * .5))}
 }

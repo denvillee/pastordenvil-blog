@@ -11,11 +11,7 @@ import DotGrid from '../../components/marks/DotGrid.astro';
 import ArtPlate from '../../components/ArtPlate.astro';
 import Tape from '../../components/marks/Tape.astro';
 import site from '../../data/site.json';
-
-const formId = import.meta.env.PUBLIC_KIT_FORM_ID;
-const action = formId
-  ? 'https://app.kit.com/forms/' + formId + '/subscriptions'
-  : '/subscribe/thanks/';
+import { KIT_ACTION } from '../../lib/signup';
 ---
 <Shell title={`Subscribe · ${site.name}`}
        description="New essays, reflections and studies, straight to your inbox.">
@@ -24,7 +20,7 @@ const action = formId
       <h1 class="page-h is-display">Good news in your <span class="u">inbox<span class="dot">.</span><Mark kind="underline" color="blue" draw={true} /></span></h1>
       <p class="page-dek">{site.signupCopy}</p>
 
-      <form class="form sub-form" method="post" action={action}>
+      <form class="form sub-form" method="post" action={KIT_ACTION}>
         <label class="sr-only" for="email">Email address</label>
         <input class="fake" id="email" name="email_address" type="email" required
                placeholder="you@example.com" autocomplete="email" />

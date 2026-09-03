@@ -1,0 +1,39 @@
+---
+/*
+  A Moment card the site draws for itself.
+
+  Denvil's Moments are photo cards: the sentence set inside artwork he makes.
+  Not every Moment has one yet, and the first pass left those as small
+  handwritten scraps sitting in a wall of full-bleed pictures, which made the
+  ones without art look like the ones that were broken.
+
+  So a Moment with no card gets a card. Same 3:2 frame, same decorative
+  language as his kit -- tape, a scribble in the margin, a dot field, a drawn
+  underline -- and no photograph, because a bought stock picture is the one
+  thing this site has never done. It is deliberately quieter than his artwork:
+  it should read as the site holding a place, not as competition for it.
+
+  The accent rotates by position so a wall of them is not one colour, and the
+  rotation is by index rather than random, so the same post gets the same card
+  on every build and diffs stay quiet.
+*/
+import Mark from './marks/Mark.astro';
+import DotGrid from './marks/DotGrid.astro';
+import Tape from './marks/Tape.astro';
+
+interface Props { text: string; i?: number; class?: string }
+const { text, i = 0, class: cls = '' } = Astro.props;
+
+const TONES = ['blue', 'yellow', 'coral', 'green'] as const;
+const tone = TONES[i % TONES.length];
+
+/* Long quotes step down rather than overflowing a card that can be 260px
+   wide on a phone. */
+const size = text.length > 120 ? 'sm' : text.length > 70 ? 'md' : 'lg';
+---
+<span class:list={['qplate', `qplate-${tone}`, `qplate-${size}`, cls]} aria-hidden="true">
+  <DotGrid cols={6} rows={4} class="qplate-dots" />
+  <Tape color={tone === 'blue' ? 'blue' : tone === 'yellow' ? 'yellow' : tone === 'green' ? 'green' : 'coral'} class="qplate-tape" />
+  <span class="qplate-t"><span class="u">{text}<Mark kind="underline" color={tone} /></span></span>
+  <Mark kind="scribble" color={tone} class="qplate-mk" />
+</span>

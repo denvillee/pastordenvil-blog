@@ -1,16 +1,38 @@
 ---
+/*
+  Where Kit sends a reader the moment they submit the form. The only page in
+  the signup, because the signup is now one step.
+
+  Denvil, 2 Sep: the confirm step felt like an extra step, and it was. Kit's
+  form is set to auto-confirm and its confirmation email is off, so an address
+  is on the list the moment it is submitted. That also means this page is the
+  entire welcome: there is no confirmation email behind it, and no automated
+  welcome either until the plan has automations. So it says the true thing
+  plainly and then points further into the site rather than ending.
+
+  It used to say "You are in. Check your inbox and confirm your email", which
+  described a flow that no longer exists.
+*/
 import Shell from '../../layouts/Shell.astro';
+import Mark from '../../components/marks/Mark.astro';
+import DotGrid from '../../components/marks/DotGrid.astro';
 import site from '../../data/site.json';
 ---
-<Shell title={`You are in · ${site.name}`} description="Confirm your email." noindex={true}>
-  <section class="band shell err">
-    <div>
-      <h1 style="font-size:clamp(2rem,7vw,4rem)">You are in</h1>
-      <p class="art-dek" style="margin-inline:auto">
-        Check your inbox and confirm your email. If it is not there in a few minutes, look in
-        promotions.
-      </p>
-      <p><a class="btn btn-primary" href="/">Back home</a></p>
+<Shell title={`You are in · ${site.name}`} description="You are on the list." noindex={true}>
+  <section class="band shell sub-step">
+    <DotGrid cols={7} rows={4} class="sub-step-dots" />
+    <p class="sub-step-k">Subscribed</p>
+    <h1 class="sub-step-h is-display">
+      You are <span class="u">in<Mark kind="underline" color="yellow" draw={true} /></span><span class="dot">.</span>
+    </h1>
+    <p class="sub-step-d">
+      Thanks for reading. When there is something worth sharing, it will come
+      to you.
+    </p>
+    <p class="sub-step-n">Nothing else to do. Have a look around while you are here.</p>
+    <div class="sub-step-go">
+      <a class="btn btn-primary" href="/essays/">Read an essay</a>
+      <a class="btn btn-light" href="/moments/">See the moments</a>
     </div>
   </section>
 </Shell>

@@ -4,6 +4,7 @@ author: "Hillary L. McBride"
 year: 2021
 shelfStatus: shelf
 shelfMonth: "2026-08"
+category: formation
 spine: ivy
 cover: /assets/covers/mcbride-wisdom-of-your-body.jpg
 order: 10

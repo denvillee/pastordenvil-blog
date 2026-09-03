@@ -1,26 +1,35 @@
 ---
 import ImageMask from './ImageMask.astro';
 import Placeholder from './Placeholder.astro';
+import ArtPlate from './ArtPlate.astro';
 import { readMinutes, displayDate, isoDate } from '../lib/publish';
 import { isStandin } from '../lib/media';
+import SeriesTag from './SeriesTag.astro';
 
-interface Props { href: string; entry: any; room: string; tone?: string }
-const { href, entry, room, tone = 'yellow' } = Astro.props;
+interface Props { href: string; entry: any; room: string; tone?: string ; plate?: string }
+const { href, entry, room, tone = 'yellow' , plate } = Astro.props;
 const d = entry.data;
 const words = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
 const mins = words >= 150 ? readMinutes(entry.body) : undefined;
+/* A Moments card sets its sentence inside the artwork. Printing the same
+   sentence again underneath is the words twice, so the heading stays in the
+   document for screen readers and search and comes out of the layout. */
+const inArt = !!d.titleInImage && !!d.image;
 ---
 <article class="ecard">
   <a class="ecard-art" href={href} tabindex="-1" aria-hidden="true">
     <ImageMask shape="soft">
       {d.image && !isStandin(d.image)
         ? <img src={d.image} alt="" width="720" height="480" loading="lazy" decoding="async" />
-        : <Placeholder label={`Image for ${d.title}`} ratio="3 / 2" />}
+        : plate
+          ? <span class="ecard-plate"><ArtPlate kind={plate as any} /></span>
+          : <Placeholder label={`Image for ${d.title}`} ratio="3 / 2" />}
     </ImageMask>
   </a>
-  <h3 class="ecard-h"><a href={href}>{d.title}</a></h3>
+  <h3 class:list={['ecard-h', inArt && 'vh']}><a href={href}>{d.title}</a></h3>
+  <SeriesTag room="essays" data={d} />
   {/* The teaser when the piece has one, the deck otherwise. */}
-    <p class="ecard-dek">{d.teaser ?? d.dek}</p>
+  {!inArt && <p class="ecard-dek">{d.teaser ?? d.dek}</p>}
   <p class="ecard-meta">
     <time datetime={isoDate(d.publishAt)}>{displayDate(d.publishAt)}</time>
     {mins && <> &middot; {mins} min read</>}

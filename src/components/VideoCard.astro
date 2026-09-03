@@ -1,5 +1,6 @@
 ---
 import labels from '../data/labels.json';
+import VideoPoster from './VideoPoster.astro';
 import { toSeconds, clockTime } from '../lib/publish';
 /*
   Click to load. The poster is a still; the player is only built when somebody
@@ -56,6 +57,12 @@ const runtime = d.durationSeconds
   ? Math.max(0, (endAt ?? d.durationSeconds) - (startAt ?? 0))
   : undefined;
 const len = clockTime(runtime);
+
+/* The four kinds the comp's tab row names. */
+const CAT: Record<string,string> = {
+  teaching: 'Teaching', leadership: 'Leadership',
+  conversation: 'Conversations', qa: 'Q&A',
+};
 ---
 <article class:list={['vcard', featured && 'vcard-feat']}>
   <div class="vframe" data-embed={embed} data-title={d.title} data-source={sourceUrl} data-fallback={labels.watchFallback}>
@@ -69,15 +76,22 @@ const len = clockTime(runtime);
       ) : remotePoster ? (
         <img src={remotePoster} alt="" width="640" height="360"
              loading={featured ? 'eager' : 'lazy'} decoding="async" referrerpolicy="no-referrer" />
-      ) : <span class="vposter-none" aria-hidden="true"></span>}
+      ) : <VideoPoster title={d.title} series={d.series} category={d.category} />}
       <span class="vveil" aria-hidden="true"></span>
       <span class="vtri" aria-hidden="true">&#9654;</span>
       {len && <span class="vlen">{len}</span>}
     </button>
   </div>
   <div class="vmeta">
-    {d.context && <p class="veyebrow">{d.context}</p>}
+    {/* The comp's kicker is the CATEGORY, coloured per kind — Teaching gold,
+        Leadership blue, Conversations green, Q&A coral — not the venue. Where a
+        talk carries no category the venue is still better than an empty line,
+        so it falls back to that. */}
+    {d.category
+      ? <p class:list={['veyebrow', `vcat-${d.category}`]}>{CAT[d.category]}</p>
+      : d.context && <p class="veyebrow">{d.context}</p>}
     <Tag class="vtitle">{d.title}</Tag>
+    {d.description && <p class="vdek">{d.description}</p>}
     <p class="vsub">
       {d.givenOn
         ? <time datetime={d.givenOn.toISOString().slice(0, 10)}>{given}</time>

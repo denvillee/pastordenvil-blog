@@ -1,4 +1,8 @@
 ---
+import Glyph from '../../components/Glyph.astro';
+import leadData from '../../data/leader-topics.json';
+import TopicList from '../../components/TopicList.astro';
+import CloseBand from '../../components/CloseBand.astro';
 import { render } from 'astro:content';
 import Shell from '../../layouts/Shell.astro';
 import Mark from '../../components/marks/Mark.astro';
@@ -39,6 +43,14 @@ const [featured, ...rest] = entries;
             <a class="btn btn-blue" href={`/leaders/${featured.id}/`}>
               Read the latest essay <span class="arw" aria-hidden="true">&rarr;</span>
             </a>
+            {/* The comp writes a handwritten note beside this button with an
+                arrow pointing back at it. Its words were "Practical wisdom for
+                everyday ministry"; Denvil's own description of this room, from
+                the site's own labels, is used instead. */}
+            <span class="hero-anno">
+              <Mark kind="arrow" color="ink" class="hero-anno-arw" />
+              <span class="hero-anno-t">{labels.leadersDek}</span>
+            </span>
           </p>
         )}
       </div>
@@ -48,6 +60,14 @@ const [featured, ...rest] = entries;
                  sizes="(max-width: 900px) 92vw, 46vw"
                  alt="Denvil Lee at a lectern in a cream shirt, one hand resting on his chest." />
         </ImageMask>
+        {/* The comp sets a blue blob over the corner of this photograph with
+            three short lines in it, the same device as the coral disc elsewhere. */}
+        {/* The same coral disc every other page carries. The blue one here read
+            "Lead well. Love deep. Finish strong.", which Denvil cut on 29 Aug as
+            a slogan rather than as him; it came back in the comp rebuild by
+            mistake. Denvil, 2 Sep: "I like the circle over the pic from the old
+            one better." */}
+        <ColorDisc lines={["theology","leadership","life"]} class="lead-blob" />
         {/* The "Lead well. Love deep. Finish strong." disc came out 29 Aug at
             Denvil's instruction: it read as a slogan rather than as him. The
             McDonald's story in the doorway below establishes the page instead. */}
@@ -55,12 +75,12 @@ const [featured, ...rest] = entries;
     </section>
 
     {IntroBody && (
-      <Doorway tone="blue" collapsed={entries.length > 0}>
+      <Doorway tone="blue" heading={intro?.data.dek} collapsed={entries.length > 0}>
         <IntroBody />
         {/* While the room is empty the note moves up beside the doorway. The
             aside below it has nothing to sit against yet, and the doorway's
             own column left the right half of the page blank for 800px. */}
-        <StickyNote slot="rail" tone="blue" tilt={-1.6} tape={false} class="side-note">
+        <StickyNote slot="rail" tone="blue" tilt={-1.6} tape={true} class="side-note">
           Leadership isn't about having all the answers. It's about keeping your
           eyes on Jesus and serving the people in front of you.
         </StickyNote>
@@ -72,35 +92,86 @@ const [featured, ...rest] = entries;
         {/* No empty state: the doorway carries the page until there is a piece. */}
         {featured && (
           <FeaturedEssay href={`/leaders/${featured.id}/`} entry={featured}
-                         label="Featured essay" room={labels.leadersHeading} tone="blue" />
+                         label="Featured essay" room={labels.leadersHeading} tone="blue"
+                         plate={featured.data.plate} />
         )}
 
-        {rest.length > 0 && (
-          <>
-            <div class="sec-head arch-sub">
-              <h2 class="sec-h">Short reflections for real leadership</h2>
-              <span class="count">{entries.length}</span>
-            </div>
-            <div class="ecards">
-              {rest.map((e: any) => (
-                <EssayCard href={`/leaders/${e.id}/`} entry={e} room={labels.leadersHeading} tone="blue" />
-              ))}
-            </div>
-          </>
-        )}
       </div>
 
       {entries.length > 0 && (
         <aside class="arch-side" aria-label="More on this site">
-          <StickyNote tone="blue" tilt={-1.6} tape={false} class="side-note">
+          {/* The comp gives For Leaders its own taxonomy row — Leading Yourself,
+              Vision & Calling, People & Culture, Ministry in Context — as five
+              coloured circle icons. Those five categories exist only in the comp:
+              no post carries them, and no page would be behind them. Rather than
+              invent a taxonomy and five empty rooms, this is the same device
+              driven by the tags posts actually carry, scoped to this room. It
+              fills out as he writes. */}
+          <TopicList rooms={['leaders']} />
+
+          <StickyNote tone="blue" tilt={-1.6} tape={true} class="side-note">
             Leadership isn't about having all the answers. It's about keeping your
             eyes on Jesus and serving the people in front of you.
           </StickyNote>
         </aside>
       )}
     </div>
+
+    {/* The comp's two taxonomies. Both are content Denvil fills; the rows and
+        their icons are copied from the comp exactly. */}
+    <section class="shell ltopics">
+      <div class="sec-head">
+        <h2 class="sec-h"><span class="u">Leadership topics<Mark kind="underline" color="yellow" draw={true} /></span></h2>
+      </div>
+      <ul class="lgrid">
+        {leadData.topics.map((t: any) => (
+          <li>
+            <Glyph name={t.icon} tone={t.tone} />
+            <h3>{t.label}</h3>
+            <p>{t.dek}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="shell lthemes">
+      <div class="sec-head">
+        <h2 class="sec-h"><span class="u">Explore by theme<Mark kind="underline" color="blue" draw={true} /></span></h2>
+      </div>
+      <ul class="lgrid lgrid-5">
+        {leadData.themes.map((t: any) => (
+          <li class="lcard">
+            <Glyph name={t.icon} tone={t.tone} />
+            <h3>{t.label}</h3>
+            <p>{t.dek}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
   </div>
   {/* The Subscribe block was removed from every content page on 29 Aug.
       The site asked for an email too often. Subscribe now lives in one
       place: the masthead action, the footer link, and /subscribe/. */}
+
+  {/* The comp closes For Leaders on a black band with a second panel beside it.
+      The comp's band read "Weekly essays and reflections" — a cadence promise
+      nobody has made — so the dek says what the room is instead. */}
+  <CloseBand tone="dark"
+             heading="Keep growing. Keep leading."
+             mark="growing"
+             dek="Lessons I am learning about following Jesus while leading people."
+             href="/subscribe/" cta="Subscribe">
+    {/* Denvil, 2 Sep: Speaking and Coaching should be an invitation on this
+        page, not a line in the footer. This is the room where somebody who
+        might book him is already reading, and it is the only page on the site
+        where that is true. "A note from Denvil" pointing at /about/ was here
+        before; About is already in the masthead and the footer, and this is
+        the more useful thing to offer a leader. */}
+    <div class="cband-note" slot="aside">
+      <p class="cband-note-k">Speaking + Coaching</p>
+      <h3 class="cband-note-h">Bring this to your team.</h3>
+      <p>Teaching, coaching, and time with leaders and teams who are carrying something.</p>
+      <a class="go go-light" href="/speaking/">Start a conversation <span class="arw" aria-hidden="true">&rarr;</span></a>
+    </div>
+  </CloseBand>
 </Shell>

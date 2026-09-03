@@ -1,0 +1,21 @@
+# Build output and caches. None of this belongs in the repository, and until
+# now the repo had no .gitignore at all: `git add -A` would have committed
+# node_modules whole.
+node_modules/
+dist/
+.astro/
+.netlify/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+*.swp
+
+# Working notes kept beside the code for this session's benefit only. These are
+# behind-the-scenes and must never ship.
+.notes/

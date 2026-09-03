@@ -4,6 +4,7 @@ author: "J. Richard Middleton"
 year: 2005
 shelfStatus: shelf
 shelfMonth: "2026-08"
+category: theology
 spine: cobalt
 cover: /assets/covers/middleton-liberating-image.jpg
 order: 7

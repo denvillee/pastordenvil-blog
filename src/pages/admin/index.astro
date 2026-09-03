@@ -83,6 +83,32 @@ border-bottom:1px solid rgba(243,241,234,.08);
 #deskhelp .rooms li:last-child{border-bottom:0}
 #deskhelp .rooms .tab{flex:none; width:118px; font-weight:800}
 #deskhelp .rooms .where{color:rgba(243,241,234,.75)}
+
+/* Phones. The bar is one nowrap flex row, so on a narrow screen the three
+   buttons simply ran off the right edge: at 320px the close button sat 253px
+   past the viewport and could not be reached at all. It wraps here instead,
+   the message takes its own row, and each control gets a full-width 44px
+   target. The close button moves to the corner so it never eats a row. */
+@media (max-width:640px){
+  #deskbar{
+    flex-wrap:wrap; height:auto; gap:8px; padding:10px 46px 10px 12px;
+  }
+  #deskbar .msg{flex:1 1 100%; white-space:normal; overflow:visible; text-overflow:clip}
+  #deskbar .msg small{font-size:11.5px}
+  #deskbar .spacer{display:none}
+  #deskbar a, #deskbar button.linkish{
+    flex:1 1 auto; justify-content:center; min-height:44px; padding:10px 12px;
+  }
+  #deskbar button.x{
+    position:absolute; top:6px; right:6px;
+    min-width:44px; min-height:44px; padding:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  #deskpeek{min-height:44px; padding:10px 14px}
+  #deskhelp{right:8px; left:8px; width:auto; bottom:64px; padding:18px 16px 16px}
+  #deskhelp .rooms li{flex-wrap:wrap; gap:2px}
+  #deskhelp .rooms .tab{width:100%}
+}
 </style>
 </head>
 <body>

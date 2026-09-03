@@ -4,6 +4,7 @@ author: "Joel B. Green"
 year: 2008
 shelfStatus: shelf
 shelfMonth: "2026-08"
+category: theology
 spine: ivy
 cover: /assets/covers/green-body-soul.jpg
 order: 5

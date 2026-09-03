@@ -14,298 +14,158 @@ scripture: "Genesis 1:27"
 tags: ["anthropology", "image of God", "Genesis", "temple", "vocation"]
 ---
 
-Genesis says human beings are God’s image. The phrase is familiar enough that it can lose its force. But the first hearers of Genesis lived in a world already crowded with images, temples, kings, and claims about divine presence.
+Genesis says human beings are ***God’s image***, the *imago Dei*, made to bear his image in the world.
 
-So what would it have meant for Genesis to say that the image of God is not locked inside a temple or reserved for the person at the top, but is carried by human beings?
+The phrase “made in God’s image” is familiar enough that it can lose some of its force and beauty. But if we are going to hear it with anything close to its original weight, we must remember that the first hearers of Genesis lived in a world already crowded with images, temples, kings, and claims about divine presence.
 
-That is where the claim gets much bigger.
+> [!BIG]
+> An image only makes sense in relationship to the one whose image it is.
 
-The ancient world would have understood this image language more immediately than we do, because that world was full of images, many of which we would call **idols**.
+That sounds obvious, but consider how differently we imagine God. Some imagine him primarily as a punisher, others as a competitor, and others almost as an equal we are trying to negotiate with. Each picture produces a different kind of relationship and, eventually, a different kind of life. Genesis, however, introduces us to the Creator, the One who speaks, blesses, gives, entrusts, and comes near.
 
-A divine image was more than religious art. It represented the presence and authority of a god in a particular place. You did not approach the image simply to admire the craftsmanship. It functioned as an earthly representation of the deity.
+The rest of Scripture will fill out that relationship with language like Father, Shepherd, and King, but Genesis begins with **Creator and image**. Relationship with God is not founded first on our successful performance of a predetermined set of Christian markers. Those practices matter, but they are downstream from relationship. Christian discipleship is best approached by beginning where the Bible begins: with who God is and who we are in relationship to him.
 
-Genesis speaks into that world and uses its vocabulary on purpose. The Hebrew word for image, *tselem*, is also used elsewhere in the Old Testament for carved and cast images Israel is repeatedly told to tear down (Numbers 33:52; 2 Kings 11:18; Ezekiel 7:20).
+So when Genesis says humanity is made as God’s image, the question is not only, *What is an image?* It is also, *Whose image are we?* And what should the life of that image make visible about the One it represents?
 
-The image language was not only religious. It was also used for kings. In Egypt and Mesopotamia, kings could be described as the image of a god, living representatives of divine rule in the land. It was a kind of royal propaganda. The king stood at the top as the earthly representative of divine authority, while everybody else lived somewhere beneath him.[^1]
+## A world already full of images
 
-And that is where Genesis becomes radically polemical.
+For the ancient world, image language was not abstract or metaphorical. Their world was full of images, many of which we would now call ***idols***. A divine image represented the presence and authority of a nation’s god, functioning as an earthly representation of the deity. Genesis speaks polemically into that world, using language its first hearers would have recognized.
 
-Genesis takes language associated with gods and kings and announces:
+The Hebrew word for image, *tselem*, is also used elsewhere in the Old Testament to refer to those carved and cast images that Israel is repeatedly told to tear down (Numbers 33:52; 2 Kings 11:18; Ezekiel 7:20).
+
+Though the language of idols and idol worship pertained to a nation’s temple, it also showed up in political language and propaganda. In Egypt and Mesopotamia, kings could be described as the image of a god, the living representative of divine rule in the land. The king stood at the top as the earthly representative of divine authority, while everybody else lived somewhere beneath him.[^1]
+
+And this is where Genesis does something the hierarchical systems of the ancient world would not have expected.
 
 > “God created mankind in his own image.... male and female he created them” (Genesis 1:27).
 
-Not only the king.
-
-The farmer.
-
-The slave.
-
-The woman.
-
-The child.
+> [!BIG]
+> Not only the king.
+>
+> The farmer.
+>
+> The slave.
+>
+> The woman.
+>
+> The child.
 
 > [!CIRCLE]
-> The human being is the image.
+> ALL HUMAN BEINGS ARE THE IMAGE.
 
-Do not move past that too quickly.
+Yes, all! Not just faithful Israel, not just Christians, not the religious.... ALL of them.
 
-Genesis takes something the surrounding world could associate with the person at the top and distributes it across humanity. Male and female, not just the elite and powerful, are named as God’s image.
+Genesis takes language the surrounding culture could associate with the person at the top of the social and political world and extends it across humanity. Male and female, not just the elite and powerful, are named as God’s image.
+
+If that wasn’t enough, this also means that humans do not work their way into becoming God’s image by representing him well. They are given responsibility because they are already his image. That is the same movement we saw before: not working for identity, but working from it.
 
 > [!BIG]
-> Every human life has royal dignity because every human life belongs to the Creator and has been commissioned to represent his rule.
+> Image is identity. Representation is vocation.
 
-And if this is not radical enough, the imagery reaches even farther....
+Every human life therefore carries a dignity that cannot be increased by usefulness or diminished by weakness. Faithful image-bearing can be distorted, neglected, or resisted, but the human being does not stop being the image because the vocation has gone wrong.
 
-Old Testament scholar John Walton argues that Genesis 1 presents creation in the pattern of a cosmic temple being ordered and filled. When God “rests” on the seventh day, Walton argues, the picture is not of an exhausted God taking a break. It is the language of God taking up his rule in an ordered creation.[^2]
+Now, this is great news for humans whose value has been tied to their belief, status, ability, or other cultural factors. But we also know that for anyone who has put a great deal of stock in being at the top of the social or religious ladder, this can be hard to accept.
 
-N. T. Wright makes the imagery vivid and explains that temples in the ancient world were places where heaven and earth “would come together, would overlap and interlock.” And in this reading of Genesis, the final image placed within God's cosmic temple is not a statue made of stone.... It is humanity.
+## The image in the temple
 
-> [!QUOTE]
-> “Reflecting the divine presence into the world and channelling worship from creation back to the creator.”[^3]
->
-> ~ N. T. Wright, on the human vocation
+So, we have this parallel language of image and idol drawing us more deeply into the world in which Genesis 1 was first heard. In that world, an image represented the presence and authority of a god, and a king could function as that god’s royal image, representing divine rule within the nation.
 
-That is an enormous claim.
+But Genesis does something noteworthy with that common language and understanding. The image of Israel’s God is not a carved statue or merely a king sitting at the top of a social hierarchy. Instead, it is the humans.... they are God’s living images.
 
-The image in the temple represents the presence and rule of the one whose image it is.
+So, if the humans are the image, then the imagery reaches even farther because images belonged in temples.
 
-And Genesis says:
+Old Testament scholar John Walton maintains that the Genesis 1 creation narrative has a similar pattern, as a cosmic temple being ordered and filled. And when God “rests” on the seventh day, the picture is not of an exhausted God finally taking a break. It is the language of God taking up his rule within an ordered creation.[^3]
 
-> [!CIRCLE]
-> That is what you are.
+N. T. Wright makes the imagery vivid by describing temples in the ancient world as places where heaven and earth “would come together, would overlap and interlock.” In that kind of world, the temple was understood as a meeting place between the divine realm and the human one.[^2]
 
-Genesis 2 then places God's human images in a garden that the rest of Scripture teaches us to recognize as sacred space, a place where heaven and earth meet. As the story unfolds, human beings are not simply living near that meeting place.
+When we put those ideas together, creation is pictured as God’s cosmic temple, and the image placed within it is not a statue fashioned by human hands. It is living humanity fashioned by God.
 
-They are meant to become living signs of it.
+*Wright describes the human vocation as “reflecting the divine presence into the world and channelling worship from creation back to the creator.”*[^4]
 
-God's presence reflected into his world.
+In an ancient temple, an image signaled the presence and rule of the one whose image it was. Genesis says that God places living human beings within his world as the image.
 
-Creation's worship offered back toward God.
+God’s image is not locked behind temple doors. It walks around, eats, works, raises children, builds things, makes decisions, rests, celebrates, grieves, and carries responsibility. The place where heaven and earth meet has a body, a name, a job, and a Wednesday afternoon.
 
-His goodness and rule made visible through embodied human lives.
+Genesis 2 then brings the picture closer. God’s human images are placed within a garden that the rest of Scripture teaches us to recognize as sacred space, a place associated with God’s presence and the meeting of heaven and earth. Human beings are not simply living near that meeting place. In a real way, they are meant to become living signs of it, receiving life in God’s presence and carrying his goodness and rule outward through embodied human lives.
 
-This is where identity begins opening toward vocation.
+And this is where identity naturally begins opening toward vocation.
 
-You are God's living image in his world.
+We do not do these things in order to become the image. We live this way because image is what God has already made us.
 
-And if that is **who** you are, then we are getting very close to the second question:
+The image does not simply exist in God’s world. It represents him within it. Genesis begins to show that representation through humans who hear God’s word, serve within his presence, receive responsibility for his world, and carry his blessing outward.
 
-**What do you think you're doing?**
-
-## The language we’ll need later
-
-There is one more piece of language I want to put in your hands before we move on, because the rest of the biblical story will keep returning to it.
-
-Later in Israel’s history, three offices become especially important: **prophet, priest, and king**.
-
-Though Genesis never calls Adam and Eve prophets, priests, or kings, their human vocation contains dimensions that later become more visible, more specialized, and eventually concentrated in those three offices.
-
-Start with something simple.
-
-### **God speaks**
-
-Genesis 1 is a world created by the word of God.
-
-“God said....”
-
-Again and again.
-
-And when God creates humans, he speaks **to them**:
-
-> “God blessed them and said to them, ‘Be fruitful and increase in number.... fill the earth and subdue it. Rule....’” (Genesis 1:28).
-
-Genesis 2 does it again. God gives the human a word to receive and obey concerning the trees of the garden (Genesis 2:16-17).
-
-The human being is not simply alive in God’s world. The human is addressed by God and expected to respond.
-
-Later, Israel will know people whose particular calling is to hear the word of God and speak it faithfully. God tells Moses that he will raise up a prophet and “put my words in his mouth” (Deuteronomy 18:18). Jeremiah describes it even more vividly: the Lord touches his mouth and says, “I have put my words in your mouth” (Jeremiah 1:9).
-
-That later office helps us recognize a dimension that was already present in ordinary human life:
-
-**Hear and respond.**
-
-That is the prophetic dimension.
-
-### **God dwells and blesses**
-
-Then there is the garden itself.
-
-Genesis 2:15 says God places the human in the garden “to work it and take care of it.” The Hebrew verbs are *abad* and *shamar*: to work or serve, and to keep or guard.
-
-Those words become important later because the Torah uses the same vocabulary for service connected to the tabernacle. The Levites are commissioned to *serve* and *guard* the sanctuary and its responsibilities (Numbers 3:7-8; 8:26; see also 18:5-7).
-
-Genesis never calls Adam a priest.
-
-But when you keep reading the Torah, the language begins to sound familiar.
-
-The human serves and guards a place filled with God’s presence. Later, priests serve and guard sacred space.
-
-And the priestly movement runs in two directions. The high priest carries the names of Israel over his heart when he enters God’s presence (Exodus 28:29), and then priests turn toward the people and speak God’s blessing over them:
-
-> “The LORD bless you and keep you; the LORD make his face shine on you....” (Numbers 6:24-25).
-
-That gives us another dimension of the human vocation:
-
-**Serve and bless.**
-
-Receive life in God’s presence and carry his goodness outward.
-
-That is the priestly dimension.
-
-### **God rules**
-
-The third one requires less inference because Genesis says it directly.
-
-God creates humanity as his image **“so that they may rule”** (Genesis 1:26).
-
-Then God blesses them and entrusts his world to their care:
-
-> “Fill the earth and subdue it. Rule over the fish in the sea and the birds in the sky and over every living creature....” (Genesis 1:28).
-
-Psalm 8 later sings the same human vocation back to God:
-
-> “You made them rulers over the works of your hands; you put everything under their feet” (Psalm 8:6).
-
-Human rule is never independent rule. We do not own the world. God does.
-
-We exercise authority under the authority of the Creator.
-
-So the third movement is:
-
-**Rule and steward.**
-
-Receive responsibility for what belongs to God and care for it according to his purposes.
-
-That is the kingly, or royal, dimension.
-
-Now put the three together.
-
-God speaks, and humans **hear and respond**.
-
-God dwells with and blesses his creation, and humans **serve and bless**.
-
-God rules his world, and humans **rule and steward** under him.
-
-That is what I mean when I say the original human vocation contains prophetic, priestly, and kingly dimensions.
-
-Not three titles.
-
-Not three professions.
-
-One human vocation, lived together.
-
-Later, in a fractured world, those dimensions become increasingly concentrated. Prophets hear and speak the word. Priests approach sacred space and carry blessing. Kings exercise rule.
-
-We will follow that story across the essays that come next.
-
-For now, just keep these three movements in your hands:
-
-> [!QUOTE]
-> **Hear and respond.**
->
-> **Serve and bless.**
->
-> **Rule and steward.**
-
-We will meet them again in Israel, watch them gather faithfully in Jesus, and see what happens when Jesus pours out his Spirit on a people.
+But before we turn fully to what that vocation looks like, the biblical story brings the image and temple threads together in one person.
 
 ## The true Image and the temple with a pulse
 
-If Genesis gives us the first answer to the question *Who do you think you are?*, the New Testament brings that answer into even sharper focus in the person of Jesus.
+If Genesis gives us the first great picture of humanity as God’s image, the New Testament brings that picture into focus in the person of Jesus. Paul calls him “the image of the invisible God” (Colossians 1:15). John tells us that the Word became flesh and “made his dwelling among us” (John 1:14), language that reaches back toward the tabernacle, the place where God chose to dwell in the middle of his people.
 
-Paul calls him “the image of the invisible God” (Colossians 1:15).
+When Jesus stands in the temple courts and says, “Destroy this temple, and I will raise it again in three days,” John makes sure we do not miss the point: “the temple he had spoken of was his body” (John 2:19-21).
 
-John tells us that the Word became flesh and “made his dwelling among us” (John 1:14). The language reaches back toward the tabernacle, the place where God chose to dwell in the middle of his people.
-
-Then Jesus stands in the temple courts and says something almost impossible to miss once John explains it:
-
-*“Destroy this temple, and I will raise it again in three days.”*
-
-John adds, “the temple he had spoken of was his body” (John 2:19-21).
-
-Jesus is not merely another person standing at the overlap of heaven and earth.
+As he joins himself to the plight of our humanity, Jesus is not merely another person standing at the overlap of heaven and earth.
 
 > [!CIRCLE]
-> He is the overlap.
+> Jesus is the overlap.
 
 > [!BIG]
-> The true Image has come in the flesh. The presence of God has taken on a human face. The temple now has a pulse.
+> THE TEMPLE NOW HAS A PULSE.
 
-And in Jesus we finally see what faithful image-bearing looks like.
+In Jesus, the true Image has come in the flesh. The presence of God has taken on a human face, and in Jesus we finally see faithful image-bearing without distortion.
 
-He hears and responds perfectly to the Father.
+But notice again what drives his image-bearing activity. As we saw in the first essay, Jesus lives from perfect relationship with the Father. His activity flows from identity, and that identity is lived in relationship with the Father.
 
-He carries the presence and blessing of God wherever he goes.
+Now, Jesus isn’t just an exemplar. He’s also an enabler.... in all the best ways.
 
-He exercises authority without domination, rules by serving, and uses power for the good of others.
+Jesus does something that makes this our story, not just his. Through his life, death, resurrection, and exaltation, he pours out the Holy Spirit on his people.
 
-Everything we have been talking about begins to come together in him.
-
-And then Jesus does something that makes this our story, not just his.
-
-Through his life, death, resurrection, and exaltation, he pours out the Holy Spirit on his people. Peter says that the exalted Jesus received the promised Spirit from the Father and “poured out what you now see and hear” (Acts 2:33).
+Peter says the exalted Jesus received the promised Spirit from the Father and “poured out what you now see and hear” (Acts 2:33).
 
 Paul tells the church, “you yourselves are God’s temple and God’s Spirit dwells in your midst” (1 Corinthians 3:16).
 
-Peter calls believers “living stones” being built together into a spiritual house (1 Peter 2:5).
+Peter calls believers “living stones” being built together into a spiritual house and then names them “a royal priesthood” (1 Peter 2:5, 9).
 
-The image was never erased from humanity.
+As Christians, we hold that every human being remains God’s image. The New Testament does not reserve image-bearing for Christians. But it does say something particular about those who are in Christ.... by the Spirit, God is forming a people in whom his presence dwells and through whom the human vocation begins to be restored.
 
-But the human vocation had become disordered.
+The Spirit does not simply hand us more religious activity to perform so that we can prove who we are. He forms a people whose lives increasingly correspond to the relationship they have received in Christ. Christian practices matter, obedience matters, worship matters, but none of them manufactures the image. They are ways a restored people learns to live from what God is already making real in them by the Spirit.
 
-And now, in Christ and by the Spirit, restoration has begun.
-
-That is the already of the Kingdom.
-
-The world is not yet what it will be. Creation still groans. Bodies still break. People still hide. The fullness of God’s Kingdom has not yet filled everything.
-
-But something has already happened.
-
-The King has come.
-
-The Spirit has been poured out.
-
-God is making his home among his people again.
-
-Which brings us back to where we started.
-
-**Who do you think you are?**
-
-You are not the sum total of what life has called you.
-
-You are not your usefulness, your title, your productivity, your intelligence, your failures, or your successes.
-
-You are not simply a body with a soul parked inside it, and you are not a spirit inconvenienced by a body.
+The image was never erased from humanity, but the vocation became disordered. And now, in Christ and by the Spirit, restoration has begun.
 
 > [!BIG]
-> You are an embodied image-bearer, a whole human being made by God to represent him in his world.
+> That is the already of the Kingdom.
 
-And if you are in Christ, by his Spirit, you are being restored to live faithfully into that calling.
+The world is not yet what it will be. Creation still groans, bodies still break, and people still hide, exploit, dominate, and forget who they are. The fullness of God’s Kingdom has not yet filled everything.
 
-That is not something you earn on a good week or lose on a bad one.
+But something has already happened: the King has come, the Spirit has been poured out, and God is making his home among his people again.
 
-It is who you are.
+---
 
-And if identity really does precede activity, then answering that first question creates another one.
+> [!BIG]
+> An image only makes sense in relationship to the one whose image it is.
 
-Because if this is **who** you are....
+Genesis says you are God’s image. That is not only a statement about human value, though it establishes a dignity no empire, diagnosis, achievement, failure, or circumstance can take away. It is also a statement about belonging to God and representing him. We are creatures of the Creator, made to live in his world as visible signs of his goodness, presence, and rule.
 
-if you were made to hear and respond....
+All creation, human and non-human, is meant to experience the goodness of that rule. Our systems, powers, and relationships are meant to exist under it.
 
-to serve and bless....
+But keep the order straight.... you do not become the image by doing that well.
 
-to rule and steward....
+> [!BIG]
+> Image is identity. Faithful representation is vocation.
 
-if you were made to represent God in the world he loves....
+We work from identity, not for it.
 
-then eventually we have to ask:
+And if who we are is already pointing toward what we are for, then the second question becomes unavoidable.
 
-**What do you think you’re doing?**
+> [!CIRCLE]
+> What do you think you’re doing?
 
-That is the question I want to take up next.
+That is where we go next.
+
+---
 
 [^1]: See J. Richard Middleton, *The Liberating Image: The Imago Dei in Genesis 1* (Grand Rapids: Brazos, 2005), especially his treatment of royal image ideology and Genesis’s extension of image-bearing to humanity as a whole.
 
-[^2]: John H. Walton, *The Lost World of Genesis One: Ancient Cosmology and the Origins Debate* (Downers Grove, IL: IVP Academic, 2009); see also *The Lost World of Adam and Eve* (IVP Academic, 2015). For the fuller canonical argument that Eden functions as sanctuary and that the biblical story moves toward God’s presence filling creation, see G. K. Beale, *The Temple and the Church’s Mission* (Downers Grove, IL: IVP Academic, 2004).
+[^2]: N. T. Wright, “Space, Time and History: Jesus and the Challenge of God,” St Hild Lecture, Harrogate School of Theology and Mission, January 12, 2019.
 
-[^3]: N. T. Wright, “Space, Time and History: Jesus and the Challenge of God,” St Hild Lecture, Harrogate School of Theology and Mission, January 12, 2019. Wright describes creation as a temple whose human image reflects divine presence into creation and channels creation’s worship back toward the Creator.
+[^3]: John H. Walton, *The Lost World of Genesis One: Ancient Cosmology and the Origins Debate* (Downers Grove, IL: IVP Academic, 2009); see also *The Lost World of Adam and Eve* (IVP Academic, 2015). For the fuller canonical argument that Eden functions as sanctuary and that the biblical story moves toward God’s presence filling creation, see G. K. Beale, *The Temple and the Church’s Mission* (Downers Grove, IL: IVP Academic, 2004).
+
+[^4]: Wright, “Space, Time and History.”

@@ -16,7 +16,7 @@ const items = (await live(room)).filter((e: any) => e.id !== slug).slice(0, 3);
   <section class="band shell related">
     <div class="sec-head">
       <h2 class="sec-h">More from {meta.label}</h2>
-      <a class="go" href={`/${meta.path}/`}>See all <span class="arw" aria-hidden="true">&rarr;</span></a>
+      <a class="go" href={`/${meta.path}/`}>See all {meta.plural.toLowerCase()} <span class="arw" aria-hidden="true">&rarr;</span></a>
     </div>
     <div class="ecards">
       {items.map((e: any) => (

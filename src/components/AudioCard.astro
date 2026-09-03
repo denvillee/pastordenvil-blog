@@ -1,0 +1,91 @@
+---
+import { clockTime } from '../lib/publish';
+/*
+  An episode, not a video.
+
+  Denvil, 2 Sep: "I'd put them under 'watch' and just put them under something
+  that says Audio only".
+
+  The video card is a 16:9 still with a play ring over it. An mp3 has no still
+  and no aspect ratio, so this is a different card rather than a variant: a
+  drawn plate in the room's own language, the show's name where the venue would
+  go on a talk, and a player that appears when somebody asks for it.
+
+  Click to load, the same rule the video card follows. `preload="none"` means
+  the browser fetches nothing until play is pressed, so a page of six episodes
+  costs no bandwidth to open. The audio element is native on purpose: it gives
+  a keyboard, a screen reader and a locked phone screen the controls they
+  already know, and it is the one player on this site that contacts nobody
+  until it is used.
+*/
+interface Props { entry: any; featured?: boolean }
+const { entry, featured = false } = Astro.props;
+const Tag = featured ? 'h2' : 'h3';
+const d = entry.data;
+
+const given = d.givenOn
+  ? d.givenOn.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })
+  : undefined;
+const len = clockTime(d.durationSeconds);
+
+/* The plate behind the title. Four colourways so a row of episodes is not four
+   identical rectangles, picked from the title so a given episode always draws
+   the same one rather than shuffling on every build. */
+const TONES = ['blue', 'coral', 'green', 'yellow'] as const;
+let n = 0;
+for (const ch of d.title) n = (n + ch.charCodeAt(0)) % 997;
+const tone = TONES[n % TONES.length];
+---
+<article class:list={['acard', featured && 'acard-feat']}>
+  <div class:list={['aplate', `aplate-${tone}`]}>
+    {/* Not a waveform. A waveform implies a scrubbable picture of the audio,
+        which this is not; these are four hand-drawn bars that read as sound
+        without promising anything the player does not do. */}
+    <svg class="abars" viewBox="0 0 120 48" fill="none" aria-hidden="true">
+      <path d="M10 30 C 12 18, 16 16, 18 27 C 20 36, 24 34, 26 24" stroke="currentColor"
+            stroke-width="3.2" stroke-linecap="round" />
+      <path d="M34 22 C 37 8, 42 9, 44 24 C 46 38, 51 36, 53 20" stroke="currentColor"
+            stroke-width="3.2" stroke-linecap="round" />
+      <path d="M62 26 C 64 14, 69 13, 71 28 C 73 40, 77 37, 79 26" stroke="currentColor"
+            stroke-width="3.2" stroke-linecap="round" />
+      <path d="M88 24 C 91 12, 96 14, 98 26 C 100 35, 104 33, 107 25" stroke="currentColor"
+            stroke-width="3.2" stroke-linecap="round" />
+    </svg>
+    {/* No "Audio only" badge here. The section heading directly above these
+        cards already says it, and the same two words twice in three inches
+        reads as a mistake rather than as emphasis. The drawn bars and the
+        absence of a still say it anyway. */}
+    {len && <span class="alen">{len}</span>}
+  </div>
+
+  <div class="ameta">
+    {/* On a podcast the show is what a listener recognises, so it leads the
+        card the way the venue leads a talk. */}
+    {d.show && <p class="aeyebrow">{d.show}</p>}
+    <Tag class="atitle">{d.title}</Tag>
+    {d.description && <p class="adek">{d.description}</p>}
+    <p class="asub">
+      {d.givenOn
+        ? <time datetime={d.givenOn.toISOString().slice(0, 10)}>{given}</time>
+        : d.year}
+    </p>
+
+    <div class="aplayer">
+      <audio class="aaudio" controls preload="none" src={d.audioSrc}
+             aria-label={`Listen: ${d.title}`}></audio>
+    </div>
+
+    {/* The site's rule is that a reader is never pushed off it to watch his own
+        teaching. A guest appearance is the opposite case: it is somebody else's
+        show, they made it, and a listener who liked it should be able to go and
+        subscribe to it. So this link appears only when the entry names an
+        episode page. */}
+    {d.episodeUrl && (
+      <p class="asrc">
+        <a class="go" href={d.episodeUrl} rel="noopener">
+          Episode page{d.show ? ` at ${d.show}` : ''} <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
+      </p>
+    )}
+  </div>
+</article>

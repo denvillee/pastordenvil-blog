@@ -4,6 +4,7 @@ author: "Cole Arthur Riley"
 year: 2022
 shelfStatus: shelf
 shelfMonth: "2026-08"
+category: culture
 spine: brass
 cover: /assets/covers/riley-this-here-flesh.jpg
 order: 11
