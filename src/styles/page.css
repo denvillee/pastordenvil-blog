@@ -1833,13 +1833,23 @@ a.ser-t:focus-visible{outline:2px solid var(--ink); outline-offset:2px; border-r
 @media (min-width:821px){
   .abt-why-copy{border-right:1px dashed var(--rule-strong); padding-right:clamp(1.4rem,4vw,3.2rem)}
 }
-.abt-quote{position:relative; margin:0; padding:0 1.6rem}
+/* A gutter on the right that the closing mark hangs into. Without it the
+   glyph has to fit inside the measure, and on a 390px phone the last line
+   ended flush so the mark wrapped alone onto the next line - the same
+   complaint in a different place. */
+.abt-quote{position:relative; margin:0; padding:0 1.1rem 0 1.6rem}
 .abt-quote p{margin:0; font-family:var(--hand); font-size:clamp(1.25rem,2.4vw,1.6rem);
   line-height:1.55; color:var(--ink)}
 .abt-q{position:absolute; font-size:2.6rem; line-height:1; color:var(--blue);
   font-family:var(--sans); font-weight:800}
-.abt-q-o{left:0; top:-.25rem}
-.abt-q-c{right:0; bottom:-1.1rem}
+.abt-q-o{position:absolute; left:0; top:-.25rem}
+/* The closer rides the last word instead of the corner. Inline, with a zero
+   line height so a 2.6rem glyph cannot push the final line apart. */
+.abt-q-c{position:static; display:inline-block; line-height:0;
+  vertical-align:-.32em; margin-left:.04em;
+  /* Negative margin cancels the glyph's own advance, so it never counts
+     against the line and never forces a wrap. It sits in the gutter above. */
+  margin-right:-.6em}
 
 /* "What we explore here" runs beside the blue panel in the comp. */
 .abt-explore{display:grid; grid-template-columns:1.9fr 1fr;
