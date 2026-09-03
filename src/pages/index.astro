@@ -1,6 +1,7 @@
 ---
 import Shell from '../layouts/Shell.astro';
 import Mark from '../components/marks/Mark.astro';
+import SeriesPart from '../components/SeriesPart.astro';
 import DotGrid from '../components/marks/DotGrid.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
@@ -173,6 +174,7 @@ const shortcuts = [
                          width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async" />
                   : <Placeholder label={`Image for ${featEssay.data.title}`} ratio="3 / 2" />}
               </ImageMask>
+              <SeriesPart order={featEssay.data.seriesOrder} name={featEssay.data.series} />
             </a>
             {/* The date and the way out are one block, not two rows of the
                 column grid. Left as separate children they each took the

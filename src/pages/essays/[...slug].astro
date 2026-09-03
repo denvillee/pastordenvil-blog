@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import Article from '../../layouts/Article.astro';
-import { live, allLive, readMinutes, weekSiblings, weekIdea, seriesPlace, nextInSeries } from '../../lib/publish';
+import { live, allLive, readMinutes, weekSiblings, weekIdea, seriesPlace, nextInSeries, prevInSeries } from '../../lib/publish';
 import { getDiagram } from '../../lib/diagrams';
 
 export async function getStaticPaths() {
@@ -18,6 +18,7 @@ const siblings = await weekSiblings(entry.data.week, entry.id);
 const Diagram = getDiagram(entry.data.diagram);
 const place = await seriesPlace('essays', entry.data.series, entry.data.seriesOrder);
 const next = await nextInSeries('essays', entry.data.series, entry.data.seriesOrder);
+const prev = await prevInSeries('essays', entry.data.series, entry.data.seriesOrder);
 ---
 <Article
   slug={entry.id}
@@ -34,6 +35,7 @@ const next = await nextInSeries('essays', entry.data.series, entry.data.seriesOr
   series={entry.data.series}
   seriesPlace={place}
   next={next}
+  prev={prev}
   week={entry.data.week}
   idea={idea}
   movement={movement}

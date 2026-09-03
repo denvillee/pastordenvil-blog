@@ -5,6 +5,7 @@ import ArtPlate from './ArtPlate.astro';
 import { openingParagraph, readMinutes, displayDate, isoDate } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import SeriesTag from './SeriesTag.astro';
+import SeriesPart from './SeriesPart.astro';
 
 interface Props { href: string; entry: any; label?: string; room: string; tone?: string; plate?: string; piece?: string }
 /* `plate` names a drawn ArtPlate to stand in when the entry carries no picture.
@@ -24,6 +25,7 @@ const mins = words >= 150 ? readMinutes(entry.body) : undefined;
       : plate
         ? <span class="fcard-plate"><ArtPlate kind={plate as any} /></span>
         : <Placeholder label={`Image for ${d.title}`} ratio="9 / 7" />}
+    <SeriesPart order={d.seriesOrder} name={d.series} />
   </a>
   <div class="fcard-body">
     <h2 class="fcard-h"><a href={href}>{d.title}</a></h2>

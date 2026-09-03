@@ -1,0 +1,24 @@
+---
+/*
+  The part number, on the artwork.
+
+  Denvil, 3 Sep: "the individual essay images should bare an image showing its
+  a part of the set". The title cards already carry the series name across the
+  top, so the only thing missing is where in the run this one sits. That is one
+  number, and it goes on the picture rather than beside it so that it travels
+  with the card everywhere the card appears: the front page, the essays list,
+  the top of the essay itself.
+
+  Drawn rather than baked in, so the next essay does not need new artwork to
+  get its number, and a run that grows from two parts to six does not need six
+  files re-exported.
+*/
+interface Props { order?: number; total?: number; name?: string; class?: string }
+const { order, total, name, class: cls = '' } = Astro.props;
+---
+{typeof order === 'number' && (
+  <span class:list={['spart', cls]} aria-label={name ? `${name}, part ${order}` : `Part ${order}`}>
+    <span class="spart-k" aria-hidden="true">Part</span>
+    <span class="spart-n" aria-hidden="true">{order}{total ? <span class="spart-of">/{total}</span> : null}</span>
+  </span>
+)}

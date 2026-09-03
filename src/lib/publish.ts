@@ -229,6 +229,26 @@ export async function seriesTag(room: RoomKey, data: any) {
     Returns null when the next one has not been written yet, which is the whole
     point: Denvil's instruction is that the card stays hidden until the essay it
     points at is actually live, so a reader is never invited to click nothing. */
+/* The part before this one. The onward card at the foot of an essay used to
+   render only when a NEXT part existed, so the newest piece in a run - which
+   is the one the front page features, and therefore the one most readers
+   arrive on - ended with no way into the series at all. */
+export async function prevInSeries(room: RoomKey, seriesName?: string, order?: number) {
+  if (!seriesName || typeof order !== 'number' || order <= 1) return null;
+  const posts = await live(room);
+  const prev = posts.find(
+    (p: any) => p.data.series === seriesName && p.data.seriesOrder === order - 1,
+  );
+  if (!prev) return null;
+  return {
+    series: seriesName,
+    order: order - 1,
+    title: prev.data.title as string,
+    dek: (prev.data.teaser ?? prev.data.dek) as string,
+    href: `/${ROOMS[room].path}/${prev.id}/`,
+  };
+}
+
 export async function nextInSeries(room: RoomKey, seriesName?: string, order?: number) {
   if (!seriesName || typeof order !== 'number') return null;
   const posts = await live(room);

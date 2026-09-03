@@ -20,6 +20,7 @@ interface Props {
   respond?: boolean;
   image?: string; imageAlt?: string;
   next?: { series: string; title: string; dek: string; href: string } | null;
+  prev?: { series: string; order: number; title: string; dek: string; href: string } | null;
   publishAt: Date; scripture?: string; series?: string;
   week?: number; idea?: string | null; movement?: string | null;
   seriesPlace?: { name: string; order: number; total: number } | null;
@@ -36,7 +37,7 @@ interface Props {
 }
 const {
   room, title, dek, metaDescription, respond = false, image, imageAlt, next = null, publishAt, scripture, series,
-  week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
+  week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null, prev = null,
   titleMark, titleInImage = false, slug,
 } = Astro.props;
 
@@ -45,6 +46,26 @@ const markIdx = titleMark ? title.toLowerCase().indexOf(titleMark.toLowerCase())
 const titleParts = markIdx >= 0
   ? [title.slice(0, markIdx), title.slice(markIdx, markIdx + titleMark!.length), title.slice(markIdx + titleMark!.length)]
   : null;
+
+/* The writing is authored as plain markdown and designed here. enrich() finds
+   the callouts and the scripture quotations in the rendered HTML and gives
+   them the treatments the rest of the site uses. See lib/enrich.ts. */
+/* Then every book named anywhere in the piece, footnotes included, becomes a
+   link to its Bookshelf entry, the same way the notes block already works.
+   Enrich first so a title inside a pulled quotation gets linked too. */
+const prose = await linkCitedBooks(await enrich((await Astro.slots.render('default')) ?? ''));
+
+/* Eight of the ten Moments carry no dek, and a Moment's title IS its sentence,
+   so there was nothing left to describe it with: those eight pages shipped
+   with no meta description at all and Google wrote its own snippet. The piece's
+   own opening line is the honest fallback, cut at a word boundary. */
+const metaDesc = (metaDescription || dek || '').trim() || (() => {
+  const t = prose.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!t) return '';
+  if (t.length <= 155) return t;
+  const cut = t.slice(0, 155);
+  return cut.slice(0, cut.lastIndexOf(' ')) + '\u2026';
+})() || title;
 
 const meta = ROOMS[room];
 /* Any book named in "Where this comes from" that is already on the Bookshelf
@@ -57,7 +78,7 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Article',
   headline: title,
-  description: metaDescription ?? dek,
+  description: metaDesc,
   datePublished: isoDate(publishAt),
   author: { '@type': 'Person', name: site.name, url: new URL('/', Astro.site).href },
   publisher: { '@type': 'Person', name: site.name },
@@ -65,17 +86,10 @@ const jsonLd = {
 };
 const passages = await getPassages(scripture);
 
-/* The writing is authored as plain markdown and designed here. enrich() finds
-   the callouts and the scripture quotations in the rendered HTML and gives
-   them the treatments the rest of the site uses. See lib/enrich.ts. */
-/* Then every book named anywhere in the piece, footnotes included, becomes a
-   link to its Bookshelf entry, the same way the notes block already works.
-   Enrich first so a title inside a pulled quotation gets linked too. */
-const prose = await linkCitedBooks(await enrich((await Astro.slots.render('default')) ?? ''));
 ---
 <Shell
   title={`${title} · ${site.name}`}
-  description={metaDescription ?? dek}
+  description={metaDesc}
   ogType="article"
   ogImage={ogImage}
   publishedTime={isoDate(publishAt)}
@@ -207,6 +221,25 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
           <p class="art-onward-d">{next.dek}</p>
           <p class="art-onward-a">
             <a class="btn btn-blue" href={next.href}>Continue the series <span class="arw" aria-hidden="true">&rarr;</span></a>
+          </p>
+        </aside>
+      )}
+
+      {/* And when there is no next part yet, the way back. Denvil, 3 Sep: each
+          essay should link on to the next one. The newest part has no next -
+          it is also the one the front page features, so it is the piece most
+          readers land on first, and it used to end with no route into the run
+          at all. It points back to the part before it instead, which is the
+          only honest onward move a reader can make. */}
+      {!next && prev && (
+        <aside class="art-onward art-onward-back">
+          <p class="art-onward-k">Earlier in {prev.series}</p>
+          <h2 class="art-onward-t"><a href={prev.href}>{prev.title}</a></h2>
+          <p class="art-onward-d">{prev.dek}</p>
+          <p class="art-onward-a">
+            <a class="btn btn-blue" href={prev.href}>
+              <span class="arw" aria-hidden="true">&larr;</span> Read part {prev.order}
+            </a>
           </p>
         </aside>
       )}
