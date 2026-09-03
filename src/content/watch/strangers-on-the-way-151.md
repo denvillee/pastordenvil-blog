@@ -6,8 +6,7 @@ show: "Strangers on The Way"
 context: "Strangers on The Way"
 givenOn: 2026-05-18
 durationSeconds: 4086
-audioSrc: "https://www.buzzsprout.com/2113014/episodes/19166110-episode-151-denvil-lee-from-policeman-to-pastor-planting-small-seeds-and-being-found-by-god.mp3"
-episodeUrl: "https://strangersontheway.buzzsprout.com/"
+episodeUrl: "https://strangersontheway.buzzsprout.com/2113014/episodes/19166110"
 description: "Episode 151. Lauren Hansen asks about the road from McDonald's to retail, to policing and investigation, to pastoring, and what it means to keep going back to walk alongside people rather than stay at the top."
 order: 4
 ---

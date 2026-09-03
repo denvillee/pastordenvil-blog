@@ -70,10 +70,20 @@ const tone = TONES[n % TONES.length];
         : d.year}
     </p>
 
-    <div class="aplayer">
-      <audio class="aaudio" controls preload="none" src={d.audioSrc}
-             aria-label={`Listen: ${d.title}`}></audio>
-    </div>
+    {/* A player only when there is a file this site may actually play.
+
+        Denvil's own church feed serves its audio in a way the browser will
+        take. Somebody else's show is a different case twice over: their host
+        redirects a browser to a CDN, which the site's own content policy
+        stops dead, and every play would be billed to their bandwidth rather
+        than to his. So a guest appearance carries the link out instead, which
+        is where a listener should be going anyway. */}
+    {d.audioSrc && (
+      <div class="aplayer">
+        <audio class="aaudio" controls preload="none" src={d.audioSrc}
+               aria-label={`Listen: ${d.title}`}></audio>
+      </div>
+    )}
 
     {/* The site's rule is that a reader is never pushed off it to watch his own
         teaching. A guest appearance is the opposite case: it is somebody else's
@@ -83,7 +93,8 @@ const tone = TONES[n % TONES.length];
     {d.episodeUrl && (
       <p class="asrc">
         <a class="go" href={d.episodeUrl} rel="noopener">
-          Episode page{d.show ? ` at ${d.show}` : ''} <span class="arw" aria-hidden="true">&rarr;</span>
+          {d.audioSrc ? 'Episode page' : 'Listen'}{d.show ? ` at ${d.show}` : ''}
+          <span class="arw" aria-hidden="true">&rarr;</span>
         </a>
       </p>
     )}
