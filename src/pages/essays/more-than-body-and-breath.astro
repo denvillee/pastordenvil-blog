@@ -104,22 +104,35 @@ const [lead, ...rest] = essays;
         names and email addresses that nothing could reply to. Asking people to
         raise a hand and then going silent is worse than not asking.
 
-        Both are satisfied by putting the invitation on the page with NO FORM.
-        It says what the circle is and points at the one action that already
-        works, which is Follow. Nobody hands over an address that goes nowhere,
-        nothing is promised that does not exist, and the idea is in front of the
-        readers who reach the foot of this page.
+        Book resolved it on 4 Sep with a Google Form rather than by waiting on
+        Kit, and the reasoning is worth keeping: the Reader Circle was never a
+        newsletter. It is ten to twenty people Denvil picks and emails by name,
+        which is a Gmail job, and Gmail works today. Responses land in a Sheet
+        beside the evidence log. Only the Follow tier still waits on A8.
+
+        Verified before linking: the form loads for someone who is not signed
+        in to Google, takes an email as an ordinary field rather than harvesting
+        the account, and its own description says it does not sign anybody up.
+
+        LINKED, not embedded. The site's CSP allows frames from YouTube and
+        Vimeo only, so an embedded form would be blocked outright, and widening
+        the policy for a grey Google panel in the middle of the page is a bad
+        trade against a section that is meant to be quiet.
 
         The copy obeys Book's constraint: no invitations promised, no early
-        material, no group, no rhythm, no date. When email works, this becomes a
-        real form and the heading can stay exactly as it is. */}
+        material, no group, no rhythm, no date. Only that a list is kept. */}
     <section class="shell rc">
       <h2 class="rc-h">Want to help shape the conversation?</h2>
       <p class="rc-p">
         Some of these essays get read closely before they are finished, by people
         who tell me where they stopped believing me. That is the Reader Circle.
-        It is not open yet. When it is, I will ask from the people already
-        following along, so following is the way in.
+        I am keeping a list of people I might ask.
+      </p>
+      <p class="rc-a">
+        <a class="go" href="https://docs.google.com/forms/d/e/1FAIpQLSdCDKyFAE6i13IwxqF4SP3U8b_uvmTew5RLxUxulsZN6o8sfQ/viewform"
+           target="_blank" rel="noopener">
+          Put your name on it <span class="arw" aria-hidden="true">&rarr;</span>
+        </a>
       </p>
     </section>
   </div>
@@ -158,4 +171,5 @@ const [lead, ...rest] = essays;
   }
   .rc-h { font-size: 1rem; margin: 0 0 .45rem; }
   .rc-p { margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.6; }
+  .rc-a { margin: .8rem 0 0; font-size: .95rem; }
 </style>
