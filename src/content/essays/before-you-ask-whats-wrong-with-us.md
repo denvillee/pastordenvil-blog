@@ -74,7 +74,8 @@ If nothing glorious was there first, the Fall wouldn't be a tragedy. It would ju
 
 To put it another way:
 
-**Identity precedes activity.**
+> [!BIG]
+> Identity precedes activity.
 
 Who God made us to be is older than what we've done, for better and for worse.
 
@@ -116,15 +117,16 @@ If my anthropology begins in Genesis 3, salvation can easily become mostly rescu
 
 But if it begins in Genesis 1, salvation becomes God's restoration of what he intended for us all along.
 
-You cannot understand salvation until you understand what God is saving.
+> [!BIG]
+> You cannot understand salvation until you understand what God is saving.
 
 Some gospel presentations ask:
 
-*What are you being saved from?*
+*What are you being saved <span class="c">from</span>?*
 
 The Bible keeps pressing another question:
 
-*What are you being saved for?*
+*What are you being saved <span class="c">for</span>?*
 
 Forgiveness still matters, but now forgiveness belongs inside restoration.
 
