@@ -20,7 +20,7 @@ const items = (await live(room)).filter((e: any) => e.id !== slug).slice(0, 3);
     </div>
     <div class="ecards">
       {items.map((e: any) => (
-        <EssayCard href={`/${meta.path}/${e.id}/`} entry={e} room={meta.label} />
+        <EssayCard href={`/${meta.path}/${e.id}/`} entry={e} room={meta.label} plate={e.data.plate} />
       ))}
     </div>
   </section>

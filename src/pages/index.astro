@@ -1,7 +1,6 @@
 ---
 import Shell from '../layouts/Shell.astro';
 import Mark from '../components/marks/Mark.astro';
-import SeriesPart from '../components/SeriesPart.astro';
 import DotGrid from '../components/marks/DotGrid.astro';
 import ColorDisc from '../components/marks/ColorDisc.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
@@ -11,7 +10,7 @@ import Placeholder from '../components/Placeholder.astro';
 import ArtPlate from '../components/ArtPlate.astro';
 import Photo from '../components/Photo.astro';
 import Tape from '../components/marks/Tape.astro';
-import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS, nextInSeries } from '../lib/publish';
+import { live, latest, openingParagraph, readMinutes, displayDate, isoDate, ROOMS } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import site from '../data/site.json';
 import QuotePlate from '../components/QuotePlate.astro';
@@ -39,19 +38,14 @@ const recentEssays = (await live('essays'))
   .slice(0, 3);
 const feature = featEssay;
 const featureRoom = feature ? ROOMS[feature.room] : null;
-/* The launch module from Denvil's 30 Aug package: the featured essay carries a
-   small series label under it, and once the following essay is live it is
-   surfaced as the next essay rather than the two reading as halves of one
-   chapter. Both lines disappear on their own when the piece is not part of a
-   run, or when nothing follows it yet. */
-const featureSeries = feature?.data.series as string | undefined;
-/* Denvil, 2 Sep: the featured essay beside the moment carries no series line
-   any more. That belongs on the essay itself. `featureNext` below is a
-   different thing and still earns its place: it is the onward link at the foot
-   of the page, not a label on a card. */
-const featureNext = feature && feature.room === 'essays'
-  ? await nextInSeries('essays', featureSeries, feature.data.seriesOrder)
-  : null;
+/* `featureSeries` and `featureNext` were computed here and never rendered: the
+   series label came off the featured card on 2 Sep and the onward link was
+   dropped with it, but both constants stayed, and `featureNext` kept calling
+   into the serialisation helpers. Removed with those helpers on 4 Sep. */
+/* A real title card, as opposed to a stand-in. It decides two things at once:
+   whether the picture carries the title, and therefore whether the heading
+   underneath it is redundant or essential. */
+const hasTitleCard = !!featEssay?.data.image && !isStandin(featEssay.data.image);
 const featureMinutes = feature && feature.body.trim().split(/\s+/).filter(Boolean).length >= 150
   ? readMinutes(feature.body) : undefined;
 
@@ -164,17 +158,27 @@ const shortcuts = [
                 The heading stays in the markup and out of the layout, the same
                 rule the moment beside it follows: a screen reader, the page
                 outline and search all still get it. */}
-            <h2 class="lb-h vh"><a href={`/essays/${featEssay.id}/`}>{featEssay.data.title}</a></h2>
+            {/* The heading is hidden ONLY when the title card is doing its job.
+                That card carries the title in the site's own lettering, so
+                setting it again underneath said the same thing twice. But the
+                rule was written when every essay had one, and an essay without
+                a title card rendered this slot as a grey box with no title on
+                it at all: the front page's lead, blank. The heading comes back
+                whenever the art is not carrying it. */}
+            <h2 class:list={['lb-h', hasTitleCard && 'vh']}>
+              <a href={`/essays/${featEssay.id}/`}>{featEssay.data.title}</a>
+            </h2>
             <a class="lb-art" href={`/essays/${featEssay.id}/`}>
               <Tape color="green" class="lb-tape" />
               <ImageMask shape="soft">
-                {featEssay.data.image && !isStandin(featEssay.data.image)
+                {hasTitleCard
                   ? <img src={featEssay.data.image}
                          alt={featEssay.data.imageAlt ?? featEssay.data.title}
                          width="1536" height="1024" loading="eager" fetchpriority="high" decoding="async" />
-                  : <Placeholder label={`Image for ${featEssay.data.title}`} ratio="3 / 2" />}
+                  : featEssay.data.plate
+                    ? <span class="lb-plate"><ArtPlate kind={featEssay.data.plate} /></span>
+                    : <Placeholder label={`Image for ${featEssay.data.title}`} ratio="3 / 2" />}
               </ImageMask>
-              <SeriesPart order={featEssay.data.seriesOrder} name={featEssay.data.series} />
             </a>
             {/* The date and the way out are one block, not two rows of the
                 column grid. Left as separate children they each took the

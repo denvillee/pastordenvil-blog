@@ -49,7 +49,10 @@ const ogAbs = new URL(ogImage, Astro.site).href;
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
-  {noindex && <meta name="robots" content="noindex" />}
+  {/* nofollow as well as noindex. noindex stops a page being listed; it does
+      not stop a crawler that reached it from following its links onward into
+      the rest of a private area. The two belong together on anything unlisted. */}
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
 
   <meta property="og:type" content={ogType} />
   <meta property="og:site_name" content={site.name} />

@@ -19,9 +19,8 @@ import FeaturedEssay from '../../components/FeaturedEssay.astro';
 import EssayCard from '../../components/EssayCard.astro';
 import TopicList from '../../components/TopicList.astro';
 import Tape from '../../components/marks/Tape.astro';
-import SeriesBlock from '../../components/SeriesBlock.astro';
 import Doorway from '../../components/Doorway.astro';
-import { live, introPost, currentSeries } from '../../lib/publish';
+import { live, introPost } from '../../lib/publish';
 import site from '../../data/site.json';
 import labels from '../../data/labels.json';
 
@@ -31,7 +30,6 @@ const intro = await introPost('essays');
    Denvil's revision packet asks each section to open with a doorway in his
    own voice. It is still the same real, linkable, CMS-editable post. */
 const { Content: IntroBody } = intro ? await render(intro) : { Content: null };
-const series = await currentSeries('essays');
 
 /* The featured slot honours `pinned`, matching what latest() does for the home
    page. Before this they disagreed: home showed the pinned opening essay while
@@ -79,14 +77,21 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
 
     <div class="shell arch-deck">
       <div class="arch-main">
+        {/* `plate` was never passed here, so an essay without a photograph fell
+            back to the labelled grey box. Both essays that existed carried an
+            image, which hid it until a new one arrived without art and the
+            room's front door became a placeholder. For Leaders has always
+            passed it. */}
         {featured && (
           <FeaturedEssay href={`/essays/${featured.id}/`} entry={featured}
-                         room={labels.essaysHeading} />
+                         room={labels.essaysHeading} plate={featured.data.plate} />
         )}
 
-        {series && series.parts.length > 1 && (
-          <SeriesBlock name={series.name} dek={series.dek} parts={series.parts} />
-        )}
+        {/* The run block was here: the whole series drawn out with each part
+            marked live or forthcoming. Removed 4 Sep. The collection is
+            unordered in public now, so there are no parts to draw and no
+            forthcoming list to promise. What a reader needs about the thread
+            is at the foot of each essay instead. */}
 
         {/* No empty state. If nothing is published the doorway carries the
             page on its own. */}
@@ -115,7 +120,7 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
         {frontDoor && (
           <section class="side-card side-new" aria-labelledby="newhere-h">
             <h2 class="side-h" id="newhere-h">New here?</h2>
-            <p>Start where the run starts.</p>
+            <p>A good place to begin.</p>
             <a class="go" href={`/essays/${frontDoor.id}/`}>
               {frontDoor.data.title} <span class="arw" aria-hidden="true">&rarr;</span>
             </a>
@@ -140,7 +145,7 @@ const frontDoor = entries.find((e: any) => e.data.pinned);
         </div>
         <div class="ecards">
           {rest.map((e: any) => (
-            <EssayCard href={`/essays/${e.id}/`} entry={e} room={labels.essaysHeading} />
+            <EssayCard href={`/essays/${e.id}/`} entry={e} room={labels.essaysHeading} plate={e.data.plate} />
           ))}
         </div>
       </section>

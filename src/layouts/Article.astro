@@ -4,6 +4,7 @@ import Mark from '../components/marks/Mark.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
 import RelatedContent from '../components/RelatedContent.astro';
 import Respond from '../components/Respond.astro';
+import SeriesFooter from '../components/SeriesFooter.astro';
 import ReadAloud from '../components/ReadAloud.astro';
 import { displayDate, isoDate, ROOMS, linkCitedBooks, type RoomKey } from '../lib/publish';
 import { getPassages } from '../lib/bible';
@@ -19,11 +20,8 @@ interface Props {
      comments section and why Moments do not get one by default. */
   respond?: boolean;
   image?: string; imageAlt?: string;
-  next?: { series: string; title: string; dek: string; href: string } | null;
-  prev?: { series: string; order: number; title: string; dek: string; href: string } | null;
   publishAt: Date; scripture?: string; series?: string;
   week?: number; idea?: string | null; movement?: string | null;
-  seriesPlace?: { name: string; order: number; total: number } | null;
   readMinutes?: number; notes?: string;
   ogImage?: string; siblings?: Sibling[];
   /* One word in the title may be circled by hand, the way the references mark
@@ -36,8 +34,8 @@ interface Props {
   slug?: string;
 }
 const {
-  room, title, dek, metaDescription, respond = false, image, imageAlt, next = null, publishAt, scripture, series,
-  week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null, prev = null,
+  room, title, dek, metaDescription, respond = false, image, imageAlt, publishAt, scripture, series,
+  week, idea, movement, readMinutes, notes, ogImage, siblings = [],
   titleMark, titleInImage = false, slug,
 } = Astro.props;
 
@@ -123,9 +121,7 @@ const passages = await getPassages(scripture);
             out as standalone essays, with no chapter numbers and no language
             that makes the site look like a book being serialised. The name is
             the useful half anyway. */}
-        {seriesPlace
-          ? <span><a class="art-series" href={`/${meta.path}/#ser-h`}>{seriesPlace.name}</a></span>
-          : series && <span>{series}</span>}
+        {series && <span>{series}</span>}
       </div>
 
       {/* The hero. It sits under the meta row rather than above the headline
@@ -191,6 +187,10 @@ const passages = await getPassages(scripture);
         </div>
       )}
 
+      {room === 'essays' && series && (
+        <SeriesFooter name={series} piece={ROOMS[room].piece} />
+      )}
+
       <div class="art-end">
         <div class="share">
         <span class="lbl">{labels.articleShareLabel}</span>
@@ -212,37 +212,11 @@ const passages = await getPassages(scripture);
         </p>
       </div>
 
-      {/* The next essay in the run. It renders only when that essay is live,
-          so the last piece published never shows a card pointing at nothing. */}
-      {next && (
-        <aside class="art-onward">
-          <p class="art-onward-k">Next in {next.series}</p>
-          <h2 class="art-onward-t"><a href={next.href}>{next.title}</a></h2>
-          <p class="art-onward-d">{next.dek}</p>
-          <p class="art-onward-a">
-            <a class="btn btn-blue" href={next.href}>Continue the series <span class="arw" aria-hidden="true">&rarr;</span></a>
-          </p>
-        </aside>
-      )}
-
-      {/* And when there is no next part yet, the way back. Denvil, 3 Sep: each
-          essay should link on to the next one. The newest part has no next -
-          it is also the one the front page features, so it is the piece most
-          readers land on first, and it used to end with no route into the run
-          at all. It points back to the part before it instead, which is the
-          only honest onward move a reader can make. */}
-      {!next && prev && (
-        <aside class="art-onward art-onward-back">
-          <p class="art-onward-k">Earlier in {prev.series}</p>
-          <h2 class="art-onward-t"><a href={prev.href}>{prev.title}</a></h2>
-          <p class="art-onward-d">{prev.dek}</p>
-          <p class="art-onward-a">
-            <a class="btn btn-blue" href={prev.href}>
-              <span class="arw" aria-hidden="true">&larr;</span> Read part {prev.order}
-            </a>
-          </p>
-        </aside>
-      )}
+      {/* The serialised onward cards ("Next in ...", "Read part 2") were removed
+          on 4 Sep. The site presents standalone essays now, so there is no next
+          part to point at and no part number to name. What replaces them is the
+          series footer above: the thread this piece belongs to, and a way to get
+          the next one, with no order and no promise attached. */}
 
       {/* Denvil's own invitation, on the pieces he is writing in public.
           Not a comments section and never labelled feedback: see

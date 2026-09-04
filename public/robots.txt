@@ -2,6 +2,10 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /kit/
+Disallow: /studio/
 
-# Phase A. Swap the host when denvillee.com becomes primary.
-Sitemap: https://pastordenvil.com/sitemap-index.xml
+# denvillee.com is the primary domain and the host the sitemap is built with.
+# This line named pastordenvil.com until 4 Sep 2026, which 301s here, so every
+# crawler asking for the sitemap was answered with a redirect to a different
+# hostname than the one inside the file.
+Sitemap: https://denvillee.com/sitemap-index.xml

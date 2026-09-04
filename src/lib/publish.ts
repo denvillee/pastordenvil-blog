@@ -97,6 +97,19 @@ const FMT = new Intl.DateTimeFormat('en-US', {
   month: 'long', day: 'numeric', year: 'numeric', timeZone: 'America/New_York',
 });
 export const displayDate = (d: Date) => FMT.format(d);
+
+/* A date written in front matter as a bare day, with no time and no offset.
+
+   `publishAt` carries a real instant (`2026-08-13T07:00:00-04:00`) and belongs
+   in New York time. A bare `2026-09-04` is parsed as midnight UTC, which is
+   8pm the previous evening in New York, so running it through the same
+   formatter prints the day before. Every chapter date and note date was one day
+   early until this existed. Format these in UTC and they read back exactly as
+   they were typed. */
+const DAY = new Intl.DateTimeFormat('en-US', {
+  month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC',
+});
+export const plainDate = (d: Date) => DAY.format(d);
 export const isoDate = (d: Date) => d.toISOString();
 
 /* The tag that sits on top of every article and on the Archive tiles.
@@ -148,121 +161,16 @@ export async function latest(): Promise<LatestItem | undefined> {
   return (pinned.length ? pinned : all).sort(byDate)[0];
 }
 
-/* The running series for a section, with each part marked live or forthcoming.
+/* currentSeries, seriesPlace, seriesTag, nextInSeries and prevInSeries lived
+   here until 4 Sep. They built the site's serialised view of a run: which part
+   a piece was, how many parts there were, what came next. The public site no
+   longer has runs. A `series` value is a collection label and nothing more, so
+   every one of them had become a function with no caller and an invitation to
+   rebuild the thing that was just taken out.
 
-   Parts come from the series entry rather than from counting posts, so the
-   shape of the whole run shows before the later parts exist as files. A part
-   is live when a published piece in that section carries the series name and
-   that seriesOrder. */
-export async function currentSeries(room: RoomKey) {
-  const all = await getCollection('series' as any);
-  const def = all.find((s: any) => s.data.current && s.data.room === room);
-  if (!def) return null;
-  const posts = await live(room);
-  const byOrder = new Map<number, any>();
-  for (const p of posts) {
-    if (p.data.series === def.data.name && typeof p.data.seriesOrder === 'number') {
-      byOrder.set(p.data.seriesOrder, p);
-    }
-  }
-  const parts = [...def.data.parts]
-    .sort((a: any, b: any) => a.order - b.order)
-    .map((part: any) => {
-      const post = byOrder.get(part.order);
-      return {
-        order: part.order,
-        /* The published piece's own title wins: it is the one a reader will
-           actually see, and it may have been sharpened since the run was
-           planned. */
-        title: post?.data.title ?? part.title,
-        href: post ? `/${ROOMS[room].path}/${post.id}/` : undefined,
-        live: !!post,
-      };
-    });
-  return { name: def.data.name, dek: def.data.dek, parts, total: parts.length };
-}
-
-/** Where a single piece sits in its series, for the line under its title. */
-export async function seriesPlace(room: RoomKey, seriesName?: string, order?: number) {
-  if (!seriesName || typeof order !== 'number') return null;
-  const all = await getCollection('series' as any);
-  const def = all.find((s: any) => s.data.name === seriesName && s.data.room === room);
-  if (!def || !def.data.parts.length) return null;
-  return { name: def.data.name, order, total: def.data.parts.length };
-}
-
-/* The same placement, plus a way back to the opening piece.
-
-   Denvil, 1 Sep: if the newest essay keeps landing at the top of a list, a
-   reader arriving cold meets part two first and has no idea it is part two.
-   So the CARD says which part it is and offers the start of the run.
-
-   This does not undo his 30 Aug rule. That rule was about the essay page
-   itself, where "Part 1 of 2" made the writing read like a serialised book;
-   the article page still shows the run's name and nothing more. A card in a
-   list is a different job: it is signposting, not a chapter heading.
-
-   `total` is only reported once the run is finished. While a series is still
-   `current`, "Part 2 of 2" would tell a reader the story is over when Denvil
-   is still writing it, so the count is withheld until it is true. */
-export async function seriesTag(room: RoomKey, data: any) {
-  const name = data?.series as string | undefined;
-  const order = data?.seriesOrder as number | undefined;
-  if (!name || typeof order !== 'number') return null;
-  const all = await getCollection('series' as any);
-  const def = all.find((s: any) => s.data.name === name && s.data.room === room);
-  if (!def || !def.data.parts?.length) return null;
-
-  const posts = await live(room);
-  const first = posts.find((p: any) => p.data.series === name && p.data.seriesOrder === 1);
-
-  return {
-    name,
-    order,
-    total: def.data.current ? undefined : def.data.parts.length,
-    firstHref: first && order !== 1 ? `/${ROOMS[room].path}/${first.id}/` : undefined,
-    firstTitle: first?.data.title as string | undefined,
-  };
-}
-
-/** The next published piece in the same run, for the card at the end of a piece.
-    Returns null when the next one has not been written yet, which is the whole
-    point: Denvil's instruction is that the card stays hidden until the essay it
-    points at is actually live, so a reader is never invited to click nothing. */
-/* The part before this one. The onward card at the foot of an essay used to
-   render only when a NEXT part existed, so the newest piece in a run - which
-   is the one the front page features, and therefore the one most readers
-   arrive on - ended with no way into the series at all. */
-export async function prevInSeries(room: RoomKey, seriesName?: string, order?: number) {
-  if (!seriesName || typeof order !== 'number' || order <= 1) return null;
-  const posts = await live(room);
-  const prev = posts.find(
-    (p: any) => p.data.series === seriesName && p.data.seriesOrder === order - 1,
-  );
-  if (!prev) return null;
-  return {
-    series: seriesName,
-    order: order - 1,
-    title: prev.data.title as string,
-    dek: (prev.data.teaser ?? prev.data.dek) as string,
-    href: `/${ROOMS[room].path}/${prev.id}/`,
-  };
-}
-
-export async function nextInSeries(room: RoomKey, seriesName?: string, order?: number) {
-  if (!seriesName || typeof order !== 'number') return null;
-  const posts = await live(room);
-  const next = posts.find(
-    (p: any) => p.data.series === seriesName && p.data.seriesOrder === order + 1,
-  );
-  if (!next) return null;
-  return {
-    series: seriesName,
-    title: next.data.title as string,
-    dek: (next.data.teaser ?? next.data.dek) as string,
-    href: `/${ROOMS[room].path}/${next.id}/`,
-  };
-}
+   What replaced them is smaller than any of them: components/SeriesFooter.astro
+   prints the collection's name and a way to get the next piece, with no order,
+   no total and no date. */
 
 /** The other pieces published in the same week, for the "rest of this week" block. */
 export async function weekSiblings(week: number | undefined, selfId: string) {

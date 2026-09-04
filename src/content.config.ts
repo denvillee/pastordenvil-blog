@@ -27,6 +27,11 @@ const roomSchema = z.object({
   /* Position inside that series. Built into the shared shape rather than onto
      essays alone, so a run of Moments or For Leaders posts needs no new field. */
   seriesOrder: z.number().optional(),
+  /* Where the piece sits in the private manuscript. Deliberately NOT seriesOrder:
+     `series` is now the public collection label, unordered and unnumbered, while
+     the ordering lives only behind /studio/book/. Denvil, 3 Sep: the site is a
+     collection of standalone essays, not a book published a chapter at a time. */
+  bookChapter: z.number().optional(),
   scripture: z.string().optional(),
   tags: z.array(z.string()).default([]),
   ogImage: z.string().optional(),
@@ -96,22 +101,20 @@ const landing = defineCollection({
   }),
 });
 
-/* A named run of pieces. The series exists as its own thing rather than being
-   inferred from the posts, because it needs a name and a line of its own, and
-   because a reader should see the shape of the whole run on arrival: the parts
-   still to come are listed here before they exist as files.
+/* A collection of pieces, by name.
 
-   A part is live when a piece in the matching stream carries this series name
-   and that seriesOrder. Everything else in `parts` shows as forthcoming, with
-   no date attached, because a date not yet chosen is a promise not yet made. */
+   This was "a named run": it carried `current`, and a `parts` array listing the
+   whole run so the shape of it showed before the later parts existed. Denvil,
+   3 Sep: the site is a collection of standalone essays, not a book published a
+   chapter at a time. So a series is now a label and a line, and the fields that
+   made it a run are gone rather than left empty. Leaving `parts` in place would
+   have kept it one CMS edit away from coming back. */
 const series = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/series' }),
   schema: z.object({
     name: z.string(),
     dek: z.string(),
     room: z.enum(['essays', 'moments', 'leaders']).default('essays'),
-    current: z.boolean().default(false),
-    parts: z.array(z.object({ order: z.number(), title: z.string() })).default([]),
   }),
 });
 

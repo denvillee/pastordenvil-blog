@@ -3,7 +3,13 @@
 backend:
   name: github
   repo: denvillee/pastordenvil-blog
-  branch: staging
+  # Was `staging` until 4 Sep 2026. That branch is 271 commits behind `main`,
+  # so anything written in the CMS would have committed to a dead branch and
+  # never appeared anywhere. Edits go to the working branch instead, which is
+  # the one Denvil has checked out in GitHub Desktop, and reach production the
+  # same way every other change does: a PR preview, then his approval, then one
+  # merge.
+  branch: comp-rebuild
   commit_messages:
     create: 'Add {{collection}} “{{slug}}”'
     update: 'Update {{collection}} “{{slug}}”'
@@ -12,7 +18,7 @@ backend:
     deleteMedia: 'Delete “{{path}}”'
 
 site_url: https://denvillee.com
-display_url: https://staging--dainty-queijadas-becadc.netlify.app
+display_url: https://comp-rebuild--dainty-queijadas-becadc.netlify.app
 logo_url: /favicon.svg
 
 media_folder: /public/assets/img/uploads

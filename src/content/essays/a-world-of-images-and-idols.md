@@ -9,7 +9,7 @@ image: "/assets/img/essay-a-world-of-images-and-idols.jpg"
 imageAlt: "The essay's title card: More Than Body and Breath above the title A World of Images and Idols, with carved heads, a winged figure, a stone lion and a ziggurat in sepia beside a dark silhouette of a person."
 ogImage: "/assets/img/og-a-world-of-images-and-idols.jpg"
 series: "More Than Body and Breath"
-seriesOrder: 2
+bookChapter: 2
 scripture: "Genesis 1:27"
 tags: ["anthropology", "image of God", "Genesis", "temple", "vocation"]
 ---
