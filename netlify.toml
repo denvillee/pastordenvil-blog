@@ -23,21 +23,37 @@
 # The three section introductions used to have their own article URLs. They are
 # now rendered in full at the top of their section page, which is the canonical
 # and only copy, so the old addresses point at the section.
-# The opening essay of More Than Body and Breath was published as "More Than
-# Body and Breath" before that became the name of the whole series. Denvil's
-# 30 Aug handoff retitles the piece "Who Do You Think You Are?", so the old
-# address moves rather than breaking.
+# /essays/more-than-body-and-breath/ used to 301 to "Who Do You Think You Are?",
+# because the opening essay was published under the series' name before that
+# became the name of the whole series. On 4 Sep that address became a real page,
+# the series' own landing page, so the forced redirect had to go: `force = true`
+# shadows a static file, and leaving it would have redirected the new page to a
+# piece that is no longer public. Anyone who saved the old address now lands on
+# the project it named all along, which is a better destination than the essay.
+
+# The two essays drawn from the manuscript came off the public site on 4 Sep.
+# They were public from late August and linked from the front page, so their
+# addresses move to the series page rather than breaking. Not forced: if either
+# is ever un-drafted, its own page wins again with no edit here.
 [[redirects]]
-  from = "/essays/more-than-body-and-breath"
-  to = "/essays/who-do-you-think-you-are/"
+  from = "/essays/who-do-you-think-you-are"
+  to = "/essays/more-than-body-and-breath/"
   status = 301
-  force = true
 
 [[redirects]]
-  from = "/essays/more-than-body-and-breath/*"
-  to = "/essays/who-do-you-think-you-are/"
+  from = "/essays/who-do-you-think-you-are/*"
+  to = "/essays/more-than-body-and-breath/"
   status = 301
-  force = true
+
+[[redirects]]
+  from = "/essays/a-world-of-images-and-idols"
+  to = "/essays/more-than-body-and-breath/"
+  status = 301
+
+[[redirects]]
+  from = "/essays/a-world-of-images-and-idols/*"
+  to = "/essays/more-than-body-and-breath/"
+  status = 301
 
 # Essay two was built and previewed as "The World Was Full of Images" before
 # Denvil ruled on 30 Aug that a post's title must match its artwork. The card
@@ -46,13 +62,13 @@
 # the preview link was shared, so it points at the real page rather than a 404.
 [[redirects]]
   from = "/essays/the-world-was-full-of-images"
-  to = "/essays/a-world-of-images-and-idols/"
+  to = "/essays/more-than-body-and-breath/"
   status = 301
   force = true
 
 [[redirects]]
   from = "/essays/the-world-was-full-of-images/*"
-  to = "/essays/a-world-of-images-and-idols/"
+  to = "/essays/more-than-body-and-breath/"
   status = 301
   force = true
 

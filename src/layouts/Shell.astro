@@ -49,7 +49,10 @@ const ogAbs = new URL(ogImage, Astro.site).href;
   <title>{title}</title>
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
-  {noindex && <meta name="robots" content="noindex" />}
+  {/* nofollow as well as noindex. noindex stops a page being listed; it does
+      not stop a crawler that reached it from following its links onward into
+      the rest of a private area. The two belong together on anything unlisted. */}
+  {noindex && <meta name="robots" content="noindex, nofollow" />}
 
   <meta property="og:type" content={ogType} />
   <meta property="og:site_name" content={site.name} />
@@ -66,11 +69,12 @@ const ogAbs = new URL(ogImage, Astro.site).href;
       browser that cached an icon for this domain under its previous host keeps
       serving it, and only a changed URL dislodges it. The .ico carries 16, 32,
       48 and 64 because a single large frame scales badly down to a tab. */}
-  <link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
-  <link rel="icon" href="/favicon.ico?v=2" sizes="16x16 32x32 48x48 64x64" />
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
-  <link rel="icon" href="/icon-192.png?v=2" type="image/png" sizes="192x192" />
-  <link rel="icon" href="/icon-512.png?v=2" type="image/png" sizes="512x512" />
+  <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml" />
+  <link rel="icon" href="/favicon.ico?v=3" sizes="16x16 32x32 48x48 64x64" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
+  <link rel="icon" href="/icon-192.png?v=3" type="image/png" sizes="192x192" />
+  <link rel="icon" href="/icon-512.png?v=3" type="image/png" sizes="512x512" />
+  <link rel="manifest" href="/site.webmanifest" />
   <link rel="alternate" type="application/rss+xml" title={site.name} href="/rss.xml" />
 
   <link rel="preload" as="font" type="font/woff2" href="/fonts/archivo-100_900-latin.woff2" crossorigin />

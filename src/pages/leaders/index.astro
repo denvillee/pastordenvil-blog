@@ -117,6 +117,25 @@ const [featured, ...rest] = entries;
       )}
     </div>
 
+    {/* Only the newest post was ever rendered here. Everything older was
+        built, reachable and linkable, and invisible to anyone browsing the
+        room: `rest` was destructured and then never used. The listing is the
+        same one Essays uses, at the full measure rather than inside the rail's
+        column, for the same reason it is there. */}
+    {rest.length > 0 && (
+      <section class="shell arch-list">
+        <div class="sec-head">
+          <h2 class="sec-h">All posts</h2>
+          <span class="count">{entries.length} {entries.length === 1 ? 'post' : 'posts'}</span>
+        </div>
+        <div class="ecards">
+          {rest.map((e: any) => (
+            <EssayCard href={`/leaders/${e.id}/`} entry={e} room={labels.leadersHeading} tone="blue" plate={e.data.plate} />
+          ))}
+        </div>
+      </section>
+    )}
+
     {/* The comp's two taxonomies. Both are content Denvil fills; the rows and
         their icons are copied from the comp exactly. */}
     <section class="shell ltopics">

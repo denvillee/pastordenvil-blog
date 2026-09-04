@@ -1099,6 +1099,11 @@
 .art-onward-t a:hover{text-decoration:underline; text-underline-offset:3px}
 .art-onward-d{color:var(--muted); line-height:1.6; margin:0}
 .art-onward-a{margin-top:1.1rem !important}
+/* The back card points the other way, so its arrow leads the label and
+   leans left on hover. The shared .btn rule slides every arrow right,
+   which on a 'go back' button reads as a typo. */
+.art-onward-back .btn .arw{margin-right:.1rem}
+.art-onward-back .btn:hover .arw{translate:-.22rem 0}
 
 /* His own divider between movements inside a piece. */
 hr.mid{border:0; height:auto; margin:clamp(1.6rem,4vw,2.4rem) auto; width:100%;
@@ -2395,6 +2400,26 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
   letter-spacing:.15em; text-transform:uppercase; color:var(--gold);
   margin:0 0 .5rem}
 
+/* ── the part number on a series card ────────────────────────────────────
+   Bottom right, where the title cards are quietest: the series line sits top
+   centre and the title fills the left, so a badge in that corner never lands
+   on lettering. Navy on cream, the same pairing the cards already use. */
+.spart{position:absolute; right:.7rem; bottom:.7rem; z-index:3;
+  display:inline-flex; align-items:baseline; gap:.3rem;
+  background:var(--cream); color:var(--navy);
+  border:1px solid var(--navy); border-radius:var(--r-sm);
+  padding:.3rem .55rem; line-height:1;
+  box-shadow:0 1px 0 rgba(20,18,16,.08)}
+.spart-k{font-size:.62rem; font-weight:800; letter-spacing:.13em;
+  text-transform:uppercase; opacity:.8}
+.spart-n{font-size:.95rem; font-weight:800; font-variant-numeric:tabular-nums}
+.spart-of{font-size:.7rem; font-weight:700; opacity:.65}
+@media (max-width:520px){
+  .spart{right:.5rem; bottom:.5rem; padding:.24rem .45rem}
+  .spart-k{font-size:.56rem}
+  .spart-n{font-size:.85rem}
+}
+
 /* ── audio only ──────────────────────────────────────────────────────────
    Denvil, 2 Sep: "I'd put them under 'watch' and just put them under something
    that says Audio only".
@@ -2467,3 +2492,32 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
   .wkinds-row .wtabs{flex-wrap:nowrap}
   .wkinds-row .wtab{white-space:nowrap}
 }
+
+/* ── the opening passage, quieter ───────────────────────────────────────
+   Denvil, 4 Sep: the translation selector is useful and stays, but three
+   version buttons set above a five-minute essay made the page read like a
+   study tool before the essay had started. The passage in the BODY keeps its
+   presence, because there it is the thing being looked at. The one at the head
+   is context for the piece, so it steps back behind the title and the opening.
+
+   Scoped to .vs-head only, and placed after the base rules so it wins at equal
+   specificity. It changes weight and scale, not the control: the reader can
+   still change translation, the licence credit still shows, and nothing moves. */
+.vs-head .vs-pane{
+  font-size:var(--step-0);
+  font-weight:500;
+  line-height:1.6;
+  color:var(--muted);
+}
+.vs-head .vs-pane strong{font-weight:700; color:var(--ink)}
+.vs-head .vs-tab{font-size:.72rem; padding:.24rem .5rem}
+.vs-head .vs-ref{font-size:.7rem}
+.vs-head .vs-cite{margin-top:.75rem; padding-top:.55rem}
+
+/* The series name in the byline is a link. `.art-series` was only ever styled
+   in site.css, which no page loads (checklist E1), so it arrived unstyled. */
+.art-series{
+  color:inherit; text-decoration:none;
+  border-bottom:1px solid var(--rule-strong);
+}
+.art-series:hover{border-bottom-color:var(--navy); color:var(--navy)}

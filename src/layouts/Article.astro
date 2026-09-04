@@ -4,6 +4,7 @@ import Mark from '../components/marks/Mark.astro';
 import StickyNote from '../components/marks/StickyNote.astro';
 import RelatedContent from '../components/RelatedContent.astro';
 import Respond from '../components/Respond.astro';
+import SeriesFooter from '../components/SeriesFooter.astro';
 import ReadAloud from '../components/ReadAloud.astro';
 import { displayDate, isoDate, ROOMS, linkCitedBooks, type RoomKey } from '../lib/publish';
 import { getPassages } from '../lib/bible';
@@ -19,10 +20,8 @@ interface Props {
      comments section and why Moments do not get one by default. */
   respond?: boolean;
   image?: string; imageAlt?: string;
-  next?: { series: string; title: string; dek: string; href: string } | null;
   publishAt: Date; scripture?: string; series?: string;
   week?: number; idea?: string | null; movement?: string | null;
-  seriesPlace?: { name: string; order: number; total: number } | null;
   readMinutes?: number; notes?: string;
   ogImage?: string; siblings?: Sibling[];
   /* One word in the title may be circled by hand, the way the references mark
@@ -35,8 +34,8 @@ interface Props {
   slug?: string;
 }
 const {
-  room, title, dek, metaDescription, respond = false, image, imageAlt, next = null, publishAt, scripture, series,
-  week, idea, movement, readMinutes, notes, ogImage, siblings = [], seriesPlace = null,
+  room, title, dek, metaDescription, respond = false, image, imageAlt, publishAt, scripture, series,
+  week, idea, movement, readMinutes, notes, ogImage, siblings = [],
   titleMark, titleInImage = false, slug,
 } = Astro.props;
 
@@ -46,25 +45,6 @@ const titleParts = markIdx >= 0
   ? [title.slice(0, markIdx), title.slice(markIdx, markIdx + titleMark!.length), title.slice(markIdx + titleMark!.length)]
   : null;
 
-const meta = ROOMS[room];
-/* Any book named in "Where this comes from" that is already on the Bookshelf
-   becomes a link to its entry there, which is what makes Essays and Bookshelf
-   feel like one site rather than two lists. */
-const notesLinked = await linkCitedBooks(notes ?? '');
-const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const enc = encodeURIComponent;
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: title,
-  description: metaDescription ?? dek,
-  datePublished: isoDate(publishAt),
-  author: { '@type': 'Person', name: site.name, url: new URL('/', Astro.site).href },
-  publisher: { '@type': 'Person', name: site.name },
-  mainEntityOfPage: canonical,
-};
-const passages = await getPassages(scripture);
-
 /* The writing is authored as plain markdown and designed here. enrich() finds
    the callouts and the scripture quotations in the rendered HTML and gives
    them the treatments the rest of the site uses. See lib/enrich.ts. */
@@ -72,10 +52,48 @@ const passages = await getPassages(scripture);
    link to its Bookshelf entry, the same way the notes block already works.
    Enrich first so a title inside a pulled quotation gets linked too. */
 const prose = await linkCitedBooks(await enrich((await Astro.slots.render('default')) ?? ''));
+
+/* Eight of the ten Moments carry no dek, and a Moment's title IS its sentence,
+   so there was nothing left to describe it with: those eight pages shipped
+   with no meta description at all and Google wrote its own snippet. The piece's
+   own opening line is the honest fallback, cut at a word boundary. */
+const metaDesc = (metaDescription || dek || '').trim() || (() => {
+  const t = prose.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+  if (!t) return '';
+  if (t.length <= 155) return t;
+  const cut = t.slice(0, 155);
+  return cut.slice(0, cut.lastIndexOf(' ')) + '\u2026';
+})() || title;
+
+const meta = ROOMS[room];
+/* Any book named in "Where this comes from" that is already on the Bookshelf
+   becomes a link to its entry there, which is what makes Essays and Bookshelf
+   feel like one site rather than two lists. */
+const notesLinked = await linkCitedBooks(notes ?? '');
+
+/* The full stop after a headline is a design mark, not punctuation, and it only
+   works on a title that does not already end in one. "What If We Started at the
+   Beginning?" came out as "Beginning?." Titles ending in a question mark, an
+   exclamation mark, an ellipsis or a period keep their own ending. */
+const endsOpen = !/[.?!\u2026]$/.test(title.trim());
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const enc = encodeURIComponent;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description: metaDesc,
+  datePublished: isoDate(publishAt),
+  author: { '@type': 'Person', name: site.name, url: new URL('/', Astro.site).href },
+  publisher: { '@type': 'Person', name: site.name },
+  mainEntityOfPage: canonical,
+};
+const passages = await getPassages(scripture);
+
 ---
 <Shell
   title={`${title} · ${site.name}`}
-  description={metaDescription ?? dek}
+  description={metaDesc}
   ogType="article"
   ogImage={ogImage}
   publishedTime={isoDate(publishAt)}
@@ -91,7 +109,7 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
       </div>
       <h1 class:list={['art-title', 'is-display', titleInImage && 'vh']}>{titleParts
         ? <>{titleParts[0]}<span class="c">{titleParts[1]}<Mark kind="circle" color="yellow" draw={true} /></span>{titleParts[2]}</>
-        : title}<span class="dot">.</span></h1>
+        : title}{endsOpen && <span class="dot">.</span>}</h1>
       {!titleInImage && <p class="art-dek">{dek}</p>}
       <div class="art-meta">
         {/* The site's own mark rather than a photograph. A face at 30px is a
@@ -109,9 +127,10 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
             out as standalone essays, with no chapter numbers and no language
             that makes the site look like a book being serialised. The name is
             the useful half anyway. */}
-        {seriesPlace
-          ? <span><a class="art-series" href={`/${meta.path}/#ser-h`}>{seriesPlace.name}</a></span>
-          : series && <span>{series}</span>}
+        {/* The series name in the byline is a link now, not a label. This is the
+            line Denvil meant on 4 Sep: it read like the name of the project and
+            went nowhere, or worse, back to the general room. */}
+        {series && <span><a class="art-series" href="/essays/more-than-body-and-breath/">{series}</a></span>}
       </div>
 
       {/* The hero. It sits under the meta row rather than above the headline
@@ -177,6 +196,10 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
         </div>
       )}
 
+      {room === 'essays' && series && (
+        <SeriesFooter name={series} piece={ROOMS[room].piece} />
+      )}
+
       <div class="art-end">
         <div class="share">
         <span class="lbl">{labels.articleShareLabel}</span>
@@ -186,30 +209,26 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
         <a href={canonical} data-copy-link>Copy link</a>
         </div>
 
-        {/* The comp closes a piece with a handwritten thanks and a drawn arrow
-            pointing back at the share row. Its wording was "Thanks for reading!
-            If this helped you, share it with a friend." — Denvil's own version of
-            that sentence already exists, at the end of his For Leaders
-            introduction, so his is used rather than the comp's. */}
-        <p class="art-thanks">
-          I hope this helps. If not, just share it with somebody you think it
-          might benefit.
-          <Mark kind="arrow-curl" color="ink" class="art-thanks-arw" />
-        </p>
+        {/* The handwritten thanks, "I hope this helps. If not, just share it with
+            somebody you think it might benefit.", is Denvil's own line and still
+            closes a Moment or a Leaders post. It comes off ESSAYS as of 4 Sep.
+            An essay already ends twice: on its own last line, and then on the
+            series footer. A third ending in a third voice took the weight off
+            the first, and on this essay the first is "God did." */}
+        {room !== 'essays' && (
+          <p class="art-thanks">
+            I hope this helps. If not, just share it with somebody you think it
+            might benefit.
+            <Mark kind="arrow-curl" color="ink" class="art-thanks-arw" />
+          </p>
+        )}
       </div>
 
-      {/* The next essay in the run. It renders only when that essay is live,
-          so the last piece published never shows a card pointing at nothing. */}
-      {next && (
-        <aside class="art-onward">
-          <p class="art-onward-k">Next in {next.series}</p>
-          <h2 class="art-onward-t"><a href={next.href}>{next.title}</a></h2>
-          <p class="art-onward-d">{next.dek}</p>
-          <p class="art-onward-a">
-            <a class="btn btn-blue" href={next.href}>Continue the series <span class="arw" aria-hidden="true">&rarr;</span></a>
-          </p>
-        </aside>
-      )}
+      {/* The serialised onward cards ("Next in ...", "Read part 2") were removed
+          on 4 Sep. The site presents standalone essays now, so there is no next
+          part to point at and no part number to name. What replaces them is the
+          series footer above: the thread this piece belongs to, and a way to get
+          the next one, with no order and no promise attached. */}
 
       {/* Denvil's own invitation, on the pieces he is writing in public.
           Not a comments section and never labelled feedback: see
@@ -288,12 +307,22 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
           if (!text) throw new Error('empty');
           nltMemory.set(ref, text);
         }
+        /* Keep the licence credit. The pane ships with a .vs-src paragraph
+           naming the New Living Translation, and clearing the pane to write
+           the fetched text used to delete it, so a reader who clicked NLT saw
+           Tyndale's words with no attribution anywhere on the page. The node
+           is lifted out and put back rather than rebuilt, so the markup stays
+           the one place the credit is written. */
+        const credit = pane.querySelector('.vs-src');
         pane.textContent = '';
         const p = document.createElement('p');
         p.textContent = text;
         pane.appendChild(p);
+        if (credit) pane.appendChild(credit);
         pane.dataset.loaded = ref;
       } catch {
+        /* Same on the failure path: the pane is cleared here too. */
+        const credit = pane.querySelector('.vs-src');
         pane.textContent = '';
         const p = document.createElement('p');
         p.className = 'vs-wait';
@@ -301,6 +330,7 @@ const prose = await linkCitedBooks(await enrich((await Astro.slots.render('defau
           ? 'The New Living Translation could not be loaded just now.'
           : 'The New Living Translation needs a connection.';
         pane.appendChild(p);
+        if (credit) pane.appendChild(credit);
       }
     }
 

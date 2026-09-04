@@ -1,16 +1,14 @@
 ---
 name: "More Than Body and Breath"
-dek: "A biblical exploration of what it means to be human."
+dek: "What does it mean to be human?"
 room: "essays"
-current: true
-parts:
-  - order: 1
-    title: "Who Do You Think You Are?"
-  - order: 2
-    title: "A World of Images and Idols"
 ---
 
-More Than Body and Breath is an ongoing essay series exploring biblical anthropology
-through Scripture, theology, and the life of the Kingdom. It asks what human beings
-are, what we were made for, what has gone wrong, and how the biblical story comes into
-focus in Jesus.
+Christians have spent considerable energy asking when human life begins, what happens
+when we die, and what separates us from God. Those questions matter. But Scripture
+begins somewhere earlier. Before Genesis tells us what went wrong with humanity, it
+tells us who we are, whose image we bear, and what kind of life we were made for.
+
+More Than Body and Breath is a collection of essays exploring identity, vocation,
+embodiment, relationship, community, human dignity, and the life God intended for us
+from creation through Christ and new creation.

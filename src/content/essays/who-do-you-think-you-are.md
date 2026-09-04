@@ -4,14 +4,19 @@ dek: "Identity and the Image of God"
 metaDescription: "Before Genesis tells us what went wrong with humanity, it tells us who we are: embodied image-bearers made to represent God in his world."
 teaser: "Who gets to tell you who you are? This essay begins before Genesis 3 and asks what changes when human identity starts with the image of God."
 publishAt: 2026-08-26T06:00:00-04:00
-draft: false
-pinned: true
+# Retired from the public site 4 Sep 2026, at Denvil's direction. It stays in the
+# repo, and its URL 301s to /more-than-body-and-breath/, because it was public
+# from late August and has been linked from the front page: a bare 404 would
+# break links people already have. The chapter behind it lives in the Book
+# stream, which is where the manuscript is developed. Setting draft rather than
+# deleting keeps the piece one line away from returning.
+draft: true
 respond: true
 image: "/assets/img/essay-who-do-you-think-you-are-v2.jpg"
 imageAlt: "The essay's title card: More Than Body and Breath above the title Who Do You Think You Are?, on cream, with a strip of tape, a blue underline and a gold one, and a torn coral shape in the corner."
 ogImage: "/assets/img/og-who-do-you-think-you-are-v2.jpg"
 series: "More Than Body and Breath"
-seriesOrder: 1
+bookChapter: 1
 scripture: "Genesis 1:26-27"
 tags: ["anthropology", "image of God", "Genesis", "identity", "vocation"]
 notes: "This essay grows out of my Fuller Seminary paper &ldquo;Beyond Body and Breath: Towards a More Holistic Theological Anthropology&rdquo; (ST506, March 2024), which also draws on Stanley Grenz, <em>The Social God and the Relational Self</em>; Karl Barth, <em>Church Dogmatics</em> III/2; Paul Sands, &ldquo;The Imago Dei as Vocation&rdquo;; and N. T. Wright, <em>Surprised by Hope</em>."

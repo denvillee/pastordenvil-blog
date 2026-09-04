@@ -14,11 +14,22 @@ import remarkSmartypants from 'remark-smartypants';
 // override, which is the way round that fails safe.
 const site = process.env.SITE_URL || 'https://denvillee.com';
 
-/* The private pages are noindex and stay out of the sitemap. Match the path
-   exactly: a substring test would also swallow a future
-   /essays/kitchen-table-theology/. */
-const excluded = new Set(['/kit/', '/studio/']);
-const isExcluded = (page) => excluded.has(new URL(page).pathname);
+/* The private areas are noindex and stay out of the sitemap.
+
+   This was an exact-path match, which was right when /studio/ was a single
+   page and wrong the moment /studio/book/ existed: the manuscript view landed
+   in the sitemap on its first build. It is now a directory-prefix match on the
+   trailing-slash form, so everything under a private area is excluded and
+   anything added there later is covered without remembering to come back here.
+
+   The trailing slash is what keeps the original worry honest: '/studio/' can
+   only match inside that directory, so a future /essays/kitchen-table-theology/
+   is still safe. */
+const privateAreas = ['/kit/', '/studio/'];
+const isExcluded = (page) => {
+  const { pathname } = new URL(page);
+  return privateAreas.some((dir) => pathname === dir || pathname.startsWith(dir));
+};
 
 export default defineConfig({
   /* Typography, with one deliberate exception.

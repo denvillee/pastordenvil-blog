@@ -39,7 +39,7 @@ const { topic, items } = Astro.props;
     </div>
     <div class="ecards">
       {items.map(({ e, room }: any) => (
-        <EssayCard href={`/${ROOMS[room].path}/${e.id}/`} entry={e} room={ROOMS[room].label} />
+        <EssayCard href={`/${ROOMS[room].path}/${e.id}/`} entry={e} room={ROOMS[room].label} plate={e.data.plate} />
       ))}
     </div>
     <p class="mt"><a class="go" href="/essays/">All essays <span class="arw" aria-hidden="true">&rarr;</span></a></p>

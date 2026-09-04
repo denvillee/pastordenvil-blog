@@ -6,12 +6,13 @@ import { openingParagraph, readMinutes, displayDate, isoDate } from '../lib/publ
 import { isStandin } from '../lib/media';
 import SeriesTag from './SeriesTag.astro';
 
-interface Props { href: string; entry: any; label?: string; room: string; tone?: string; plate?: string; piece?: string }
+interface Props { href: string; entry: any; label?: string; room: string; tone?: string; plate?: string; piece?: string; showSeries?: boolean }
 /* `plate` names a drawn ArtPlate to stand in when the entry carries no picture.
    Without it the slot falls back to the labelled grey box, which is right for a
    piece that is waiting on a photograph and wrong for a room where the design
    calls for artwork rather than a photograph of Denvil. */
-const { href, entry, label = 'Featured essay', room, tone = 'yellow', plate, piece = 'essay' } = Astro.props;
+/* See EssayCard: off on the collection's own page. */
+const { href, entry, label = 'Featured essay', room, tone = 'yellow', plate, piece = 'essay', showSeries = true } = Astro.props;
 const d = entry.data;
 const words = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
 const mins = words >= 150 ? readMinutes(entry.body) : undefined;
@@ -27,7 +28,7 @@ const mins = words >= 150 ? readMinutes(entry.body) : undefined;
   </a>
   <div class="fcard-body">
     <h2 class="fcard-h"><a href={href}>{d.title}</a></h2>
-    <SeriesTag room="essays" data={d} />
+    {showSeries && <SeriesTag room="essays" data={d} />}
     {/* The teaser when the piece has one, the deck otherwise. */}
     <p class="fcard-dek">{d.teaser ?? d.dek}</p>
     <p class="fcard-open">{openingParagraph(entry.body, 150)}</p>

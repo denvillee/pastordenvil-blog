@@ -1,0 +1,58 @@
+---
+/*
+  The foot of a public essay: what thread it belongs to, and how to get the next
+  one.
+
+  Writer, 4 Sep: this is series navigation, not body copy, and it has to be
+  visually separated so the essay's own last line stays its last line. In
+  "Before You Ask What's Wrong With Us" that line is "God did.", and a follow
+  invitation set as an ordinary closing paragraph would steal it.
+
+  The wording is Denvil's, from the 4 Sep fixes. Three things about it are
+  deliberate and should survive future edits:
+
+    - It names the thread, not a newsletter. A reader is being invited to keep
+      reading one argument, not to join a mailing list in general.
+    - It promises no cadence. "when it lands", never a week or a month. The site
+      has never made a schedule promise and is not going to start at the foot of
+      an essay.
+    - It gives no part number and no total. The collection is unordered in
+      public; the ordering lives with the manuscript, which is not on this site.
+*/
+interface Props {
+  /* The collection this piece belongs to, from its front matter. */
+  name: string;
+  /* What one item in this room is called, so a Moment never calls itself an essay. */
+  piece?: string;
+  /* Where the collection is read. */
+  href?: string;
+}
+/* The series' own page, not the Essays room. Denvil, 4 Sep: clicking the
+   series name should enter this specific conversation, and the room is the one
+   place that cannot explain what the project is. */
+const { name, piece = 'essay', href = '/essays/more-than-body-and-breath/' } = Astro.props;
+---
+<aside class="sfoot" aria-label={`About ${name}`}>
+  <p class="sfoot-p">
+    This {piece} is part of a longer thread called <a class="sfoot-n" href={href}><em>{name}</em></a>,
+    a slow argument about what a human being actually is. If you want the next
+    one when it lands, <a class="sfoot-a" href="/subscribe/">follow along here</a>.
+  </p>
+</aside>
+
+<style>
+  .sfoot {
+    margin-top: 3rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--rule);
+  }
+  .sfoot-p {
+    margin: 0;
+    color: var(--muted);
+    font-size: .95rem;
+    line-height: 1.6;
+    max-width: 34rem;
+  }
+  .sfoot-n { color: var(--ink); font-weight: 700; }
+  .sfoot-a { font-weight: 700; }
+</style>
