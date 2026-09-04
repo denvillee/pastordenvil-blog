@@ -70,6 +70,12 @@ const meta = ROOMS[room];
    becomes a link to its entry there, which is what makes Essays and Bookshelf
    feel like one site rather than two lists. */
 const notesLinked = await linkCitedBooks(notes ?? '');
+
+/* The full stop after a headline is a design mark, not punctuation, and it only
+   works on a title that does not already end in one. "What If We Started at the
+   Beginning?" came out as "Beginning?." Titles ending in a question mark, an
+   exclamation mark, an ellipsis or a period keep their own ending. */
+const endsOpen = !/[.?!\u2026]$/.test(title.trim());
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const enc = encodeURIComponent;
 const jsonLd = {
@@ -103,7 +109,7 @@ const passages = await getPassages(scripture);
       </div>
       <h1 class:list={['art-title', 'is-display', titleInImage && 'vh']}>{titleParts
         ? <>{titleParts[0]}<span class="c">{titleParts[1]}<Mark kind="circle" color="yellow" draw={true} /></span>{titleParts[2]}</>
-        : title}<span class="dot">.</span></h1>
+        : title}{endsOpen && <span class="dot">.</span>}</h1>
       {!titleInImage && <p class="art-dek">{dek}</p>}
       <div class="art-meta">
         {/* The site's own mark rather than a photograph. A face at 30px is a
