@@ -47,7 +47,10 @@ const [lead, ...rest] = essays;
   <div class="arch">
     <section class="shell mtbb-head">
       <Mark kind="star" color="green" class="edge edge-l mtbb-edge" />
-      <p class="mtbb-k">A running series</p>
+      {/* Denvil, 4 Sep: "a running series" leans toward serialised chapters, which
+          is the thing this whole direction moved away from. A collection is
+          unordered and open-ended, which is what this actually is. */}
+      <p class="mtbb-k">An ongoing collection</p>
       <h1 class="page-h is-display">
         <span class="u">{NAME}<Mark kind="underline" color="yellow" draw={true} /></span>
       </h1>
@@ -75,13 +78,13 @@ const [lead, ...rest] = essays;
         {lead && (
           <FeaturedEssay href={`/essays/${lead.id}/`} entry={lead}
                          label="Start here" room={labels.essaysHeading}
-                         plate={lead.data.plate} />
+                         plate={lead.data.plate} showSeries={false} />
         )}
         {rest.length > 0 && (
           <div class="ecards mtbb-rest">
             {rest.map((e: any) => (
               <EssayCard href={`/essays/${e.id}/`} entry={e}
-                         room={labels.essaysHeading} plate={e.data.plate} />
+                         room={labels.essaysHeading} plate={e.data.plate} showSeries={false} />
             ))}
           </div>
         )}
@@ -92,13 +95,33 @@ const [lead, ...rest] = essays;
       <p class="shell mtbb-empty">The first essay is on its way.</p>
     )}
 
-    {/* The Reader Circle belongs here eventually and is deliberately absent
-        today. Book's 4 Sep ruling: denvillee.com mail is still blocked behind
-        the nameserver change and Kit is not sending, so a form would collect
-        addresses that nothing could reply to. Asking people to raise a hand and
-        then going silent is worse than not asking. It goes in when email works,
-        and its copy may not promise invitations, early material, a group or a
-        rhythm, because none of those exist yet. */}
+    {/* The Reader Circle.
+
+        Denvil asked for it here, below Follow, and quieter. Book's 4 Sep ruling
+        said not yet, and the reason was a Site fact rather than an editorial
+        one: denvillee.com mail is still blocked behind the nameserver change
+        (checklist A8) and Kit is not sending, so a signup form would collect
+        names and email addresses that nothing could reply to. Asking people to
+        raise a hand and then going silent is worse than not asking.
+
+        Both are satisfied by putting the invitation on the page with NO FORM.
+        It says what the circle is and points at the one action that already
+        works, which is Follow. Nobody hands over an address that goes nowhere,
+        nothing is promised that does not exist, and the idea is in front of the
+        readers who reach the foot of this page.
+
+        The copy obeys Book's constraint: no invitations promised, no early
+        material, no group, no rhythm, no date. When email works, this becomes a
+        real form and the heading can stay exactly as it is. */}
+    <section class="shell rc">
+      <h2 class="rc-h">Want to help shape the conversation?</h2>
+      <p class="rc-p">
+        Some of these essays get read closely before they are finished, by people
+        who tell me where they stopped believing me. That is the Reader Circle.
+        It is not open yet. When it is, I will ask from the people already
+        following along, so following is the way in.
+      </p>
+    </section>
   </div>
 
   <CloseBand tone="dark"
@@ -123,4 +146,16 @@ const [lead, ...rest] = essays;
   .mtbb-rest { margin-top: clamp(1.6rem, 4vw, 2.4rem); }
   .mtbb-list { padding-block: clamp(1.6rem, 4vw, 2.6rem); }
   .mtbb-empty { color: var(--muted); padding-block: 2rem; }
+  /* Quieter than everything above it on purpose: a second invitation that
+     competes with the first is two invitations and no priority. No panel, no
+     colour, no button. A rule, a heading at body scale, and one paragraph. */
+  .rc {
+    max-width: 34rem;
+    margin-top: clamp(1.4rem, 4vw, 2.4rem);
+    padding-top: 1.3rem;
+    padding-bottom: clamp(1.6rem, 4vw, 2.4rem);
+    border-top: 1px solid var(--rule);
+  }
+  .rc-h { font-size: 1rem; margin: 0 0 .45rem; }
+  .rc-p { margin: 0; color: var(--muted); font-size: .95rem; line-height: 1.6; }
 </style>
