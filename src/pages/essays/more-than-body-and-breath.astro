@@ -1,0 +1,126 @@
+---
+/*
+  The More Than Body and Breath landing page.
+
+  Denvil, 4 Sep: the series identifier should lead somewhere. Until now clicking
+  it dropped a reader back into the general Essays room, which is the one place
+  that cannot explain what the project is, because Essays is deliberately the
+  broader ecosystem and this is one thread inside it.
+
+  It sits at /essays/more-than-body-and-breath/ rather than at the top level for
+  the same reason. A top-level address would make the project a peer of the
+  rooms; nested, it reads as what it is, one significant run of writing inside
+  his essays. The address is also not new: it used to 301 to the opening essay,
+  because that essay was published under the series' name before the series had
+  one. That redirect is gone from netlify.toml, and it had to be, since it was
+  forced and a forced redirect shadows a real page.
+
+  What is deliberately NOT here: a Reader Circle signup. See the note below the
+  essay list.
+*/
+import Shell from '../../layouts/Shell.astro';
+import EssayCard from '../../components/EssayCard.astro';
+import FeaturedEssay from '../../components/FeaturedEssay.astro';
+import Mark from '../../components/marks/Mark.astro';
+import CloseBand from '../../components/CloseBand.astro';
+import { getCollection, render } from 'astro:content';
+import { live } from '../../lib/publish';
+import site from '../../data/site.json';
+import labels from '../../data/labels.json';
+
+const NAME = 'More Than Body and Breath';
+
+const all = await getCollection('series' as any);
+const def: any = all.find((s: any) => s.data.name === NAME);
+const { Content: About } = def ? await render(def) : { Content: null };
+
+/* Only the public standalone essays. `live()` already drops drafts, which is
+   what the two manuscript-derived pieces became on 4 Sep, so they leave this
+   list the moment they leave the site and nothing here has to know about
+   them. */
+const essays = (await live('essays')).filter((e: any) => e.data.series === NAME);
+const [lead, ...rest] = essays;
+---
+<Shell title={`${NAME} · ${site.name}`}
+       description={def?.data.dek ?? 'What does it mean to be human?'}
+       current="essays">
+  <div class="arch">
+    <section class="shell mtbb-head">
+      <Mark kind="star" color="green" class="edge edge-l mtbb-edge" />
+      <p class="mtbb-k">A running series</p>
+      <h1 class="page-h is-display">
+        <span class="u">{NAME}<Mark kind="underline" color="yellow" draw={true} /></span>
+      </h1>
+      <p class="page-dek mtbb-q">{def?.data.dek}</p>
+    </section>
+
+    {About && (
+      <section class="shell mtbb-about">
+        <div class="prose"><About /></div>
+      </section>
+    )}
+
+    {essays.length > 0 && (
+      <section class="shell mtbb-list">
+        <div class="sec-head">
+          <h2 class="sec-h"><span class="u">The essays<Mark kind="underline" color="blue" draw={true} /></span></h2>
+          <span class="count">{essays.length} so far</span>
+        </div>
+        {/* No numbers and no order. The collection is unordered in public; the
+            ordering belongs to the manuscript, which is not on this site. */}
+        {/* The newest essay leads at full measure and the rest follow as cards.
+            With one essay published a card grid put a quarter-width card alone
+            in an empty row, which reads as a thin project rather than a new
+            one. */}
+        {lead && (
+          <FeaturedEssay href={`/essays/${lead.id}/`} entry={lead}
+                         label="Start here" room={labels.essaysHeading}
+                         plate={lead.data.plate} />
+        )}
+        {rest.length > 0 && (
+          <div class="ecards mtbb-rest">
+            {rest.map((e: any) => (
+              <EssayCard href={`/essays/${e.id}/`} entry={e}
+                         room={labels.essaysHeading} plate={e.data.plate} />
+            ))}
+          </div>
+        )}
+      </section>
+    )}
+
+    {essays.length === 0 && (
+      <p class="shell mtbb-empty">The first essay is on its way.</p>
+    )}
+
+    {/* The Reader Circle belongs here eventually and is deliberately absent
+        today. Book's 4 Sep ruling: denvillee.com mail is still blocked behind
+        the nameserver change and Kit is not sending, so a form would collect
+        addresses that nothing could reply to. Asking people to raise a hand and
+        then going silent is worse than not asking. It goes in when email works,
+        and its copy may not promise invitations, early material, a group or a
+        rhythm, because none of those exist yet. */}
+  </div>
+
+  <CloseBand tone="dark"
+             heading="Follow the thread."
+             mark="thread"
+             dek="I will let you know when the next one lands."
+             href="/subscribe/" cta={`Follow ${NAME}`} />
+</Shell>
+
+<style>
+  .mtbb-head { padding-block: clamp(2.2rem, 6vw, 3.6rem) 0; position: relative; }
+  .mtbb-k {
+    font-size: .72rem; font-weight: 800; letter-spacing: .16em;
+    text-transform: uppercase; color: var(--coral-ink); margin: 0 0 .6rem;
+  }
+  .mtbb-q { max-width: 34rem; }
+  .mtbb-about { padding-block: clamp(1.4rem, 3vw, 2rem); }
+  .mtbb-about .prose { max-width: 38rem; }
+  /* No drop cap here. The prose treatment opens an essay, and this paragraph
+     describes a project; the large initial made it read as the start of one. */
+  .mtbb-about .prose > p:first-of-type::first-letter { all: unset; }
+  .mtbb-rest { margin-top: clamp(1.6rem, 4vw, 2.4rem); }
+  .mtbb-list { padding-block: clamp(1.6rem, 4vw, 2.6rem); }
+  .mtbb-empty { color: var(--muted); padding-block: 2rem; }
+</style>
