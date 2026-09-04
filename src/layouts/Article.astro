@@ -307,12 +307,22 @@ const passages = await getPassages(scripture);
           if (!text) throw new Error('empty');
           nltMemory.set(ref, text);
         }
+        /* Keep the licence credit. The pane ships with a .vs-src paragraph
+           naming the New Living Translation, and clearing the pane to write
+           the fetched text used to delete it, so a reader who clicked NLT saw
+           Tyndale's words with no attribution anywhere on the page. The node
+           is lifted out and put back rather than rebuilt, so the markup stays
+           the one place the credit is written. */
+        const credit = pane.querySelector('.vs-src');
         pane.textContent = '';
         const p = document.createElement('p');
         p.textContent = text;
         pane.appendChild(p);
+        if (credit) pane.appendChild(credit);
         pane.dataset.loaded = ref;
       } catch {
+        /* Same on the failure path: the pane is cleared here too. */
+        const credit = pane.querySelector('.vs-src');
         pane.textContent = '';
         const p = document.createElement('p');
         p.className = 'vs-wait';
@@ -320,6 +330,7 @@ const passages = await getPassages(scripture);
           ? 'The New Living Translation could not be loaded just now.'
           : 'The New Living Translation needs a connection.';
         pane.appendChild(p);
+        if (credit) pane.appendChild(credit);
       }
     }
 
