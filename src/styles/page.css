@@ -2492,3 +2492,32 @@ li:nth-child(4n) .cico,li:nth-child(4n) .tico-wrap{rotate:-2deg}
   .wkinds-row .wtabs{flex-wrap:nowrap}
   .wkinds-row .wtab{white-space:nowrap}
 }
+
+/* ── the opening passage, quieter ───────────────────────────────────────
+   Denvil, 4 Sep: the translation selector is useful and stays, but three
+   version buttons set above a five-minute essay made the page read like a
+   study tool before the essay had started. The passage in the BODY keeps its
+   presence, because there it is the thing being looked at. The one at the head
+   is context for the piece, so it steps back behind the title and the opening.
+
+   Scoped to .vs-head only, and placed after the base rules so it wins at equal
+   specificity. It changes weight and scale, not the control: the reader can
+   still change translation, the licence credit still shows, and nothing moves. */
+.vs-head .vs-pane{
+  font-size:var(--step-0);
+  font-weight:500;
+  line-height:1.6;
+  color:var(--muted);
+}
+.vs-head .vs-pane strong{font-weight:700; color:var(--ink)}
+.vs-head .vs-tab{font-size:.72rem; padding:.24rem .5rem}
+.vs-head .vs-ref{font-size:.7rem}
+.vs-head .vs-cite{margin-top:.75rem; padding-top:.55rem}
+
+/* The series name in the byline is a link. `.art-series` was only ever styled
+   in site.css, which no page loads (checklist E1), so it arrived unstyled. */
+.art-series{
+  color:inherit; text-decoration:none;
+  border-bottom:1px solid var(--rule-strong);
+}
+.art-series:hover{border-bottom-color:var(--navy); color:var(--navy)}
