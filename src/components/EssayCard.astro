@@ -6,8 +6,11 @@ import { readMinutes, displayDate, isoDate } from '../lib/publish';
 import { isStandin } from '../lib/media';
 import SeriesTag from './SeriesTag.astro';
 
-interface Props { href: string; entry: any; room: string; tone?: string ; plate?: string }
-const { href, entry, room, tone = 'yellow' , plate } = Astro.props;
+interface Props { href: string; entry: any; room: string; tone?: string ; plate?: string; showSeries?: boolean }
+/* The collection label is on by default and turned OFF on the collection's own
+   page, where every card carries the same name and links back to the page the
+   reader is already standing on. */
+const { href, entry, room, tone = 'yellow' , plate, showSeries = true } = Astro.props;
 const d = entry.data;
 const words = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
 const mins = words >= 150 ? readMinutes(entry.body) : undefined;
@@ -27,7 +30,7 @@ const inArt = !!d.titleInImage && !!d.image;
     </ImageMask>
   </a>
   <h3 class:list={['ecard-h', inArt && 'vh']}><a href={href}>{d.title}</a></h3>
-  <SeriesTag room="essays" data={d} />
+  {showSeries && <SeriesTag room="essays" data={d} />}
   {/* The teaser when the piece has one, the deck otherwise. */}
   {!inArt && <p class="ecard-dek">{d.teaser ?? d.dek}</p>}
   <p class="ecard-meta">
