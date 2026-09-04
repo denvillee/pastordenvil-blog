@@ -6,8 +6,10 @@
    number, no count, no "start at part 1" - every one of those said serial, and
    a reader arriving at any essay should find a whole thing, not an instalment.
 
-   The manuscript order still exists; it lives on `bookChapter` and is rendered
-   only behind /studio/book/, which is private and noindexed.
+   Denvil, 4 Sep: the name is now a link to the series' own page. That is the
+   opposite of a part number, not a step back toward one. A number tells a
+   reader they arrived in the middle of something; a link offers them the rest
+   of the conversation and lets them decline it.
 */
 interface Props { room: any; data: any; }
 const { data } = Astro.props;
@@ -15,6 +17,6 @@ const name = data?.series;
 ---
 {name && (
   <p class="stag">
-    <span class="stag-name">{name}</span>
+    <a class="stag-name" href="/essays/more-than-body-and-breath/">{name}</a>
   </p>
 )}

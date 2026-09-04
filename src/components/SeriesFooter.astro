@@ -27,7 +27,10 @@ interface Props {
   /* Where the collection is read. */
   href?: string;
 }
-const { name, piece = 'essay', href = '/essays/' } = Astro.props;
+/* The series' own page, not the Essays room. Denvil, 4 Sep: clicking the
+   series name should enter this specific conversation, and the room is the one
+   place that cannot explain what the project is. */
+const { name, piece = 'essay', href = '/essays/more-than-body-and-breath/' } = Astro.props;
 ---
 <aside class="sfoot" aria-label={`About ${name}`}>
   <p class="sfoot-p">
