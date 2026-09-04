@@ -121,7 +121,10 @@ const passages = await getPassages(scripture);
             out as standalone essays, with no chapter numbers and no language
             that makes the site look like a book being serialised. The name is
             the useful half anyway. */}
-        {series && <span>{series}</span>}
+        {/* The series name in the byline is a link now, not a label. This is the
+            line Denvil meant on 4 Sep: it read like the name of the project and
+            went nowhere, or worse, back to the general room. */}
+        {series && <span><a class="art-series" href="/essays/more-than-body-and-breath/">{series}</a></span>}
       </div>
 
       {/* The hero. It sits under the meta row rather than above the headline
@@ -200,16 +203,19 @@ const passages = await getPassages(scripture);
         <a href={canonical} data-copy-link>Copy link</a>
         </div>
 
-        {/* The comp closes a piece with a handwritten thanks and a drawn arrow
-            pointing back at the share row. Its wording was "Thanks for reading!
-            If this helped you, share it with a friend." — Denvil's own version of
-            that sentence already exists, at the end of his For Leaders
-            introduction, so his is used rather than the comp's. */}
-        <p class="art-thanks">
-          I hope this helps. If not, just share it with somebody you think it
-          might benefit.
-          <Mark kind="arrow-curl" color="ink" class="art-thanks-arw" />
-        </p>
+        {/* The handwritten thanks, "I hope this helps. If not, just share it with
+            somebody you think it might benefit.", is Denvil's own line and still
+            closes a Moment or a Leaders post. It comes off ESSAYS as of 4 Sep.
+            An essay already ends twice: on its own last line, and then on the
+            series footer. A third ending in a third voice took the weight off
+            the first, and on this essay the first is "God did." */}
+        {room !== 'essays' && (
+          <p class="art-thanks">
+            I hope this helps. If not, just share it with somebody you think it
+            might benefit.
+            <Mark kind="arrow-curl" color="ink" class="art-thanks-arw" />
+          </p>
+        )}
       </div>
 
       {/* The serialised onward cards ("Next in ...", "Read part 2") were removed
