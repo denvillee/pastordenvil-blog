@@ -4,7 +4,13 @@ dek: "Identity and the Image of God"
 metaDescription: "Before Genesis tells us what went wrong with humanity, it tells us who we are: embodied image-bearers made to represent God in his world."
 teaser: "Who gets to tell you who you are? This essay begins before Genesis 3 and asks what changes when human identity starts with the image of God."
 publishAt: 2026-08-26T06:00:00-04:00
-draft: false
+# Retired from the public site 4 Sep 2026, at Denvil's direction. It stays in the
+# repo, and its URL 301s to /more-than-body-and-breath/, because it was public
+# from late August and has been linked from the front page: a bare 404 would
+# break links people already have. The chapter behind it lives in the Book
+# stream, which is where the manuscript is developed. Setting draft rather than
+# deleting keeps the piece one line away from returning.
+draft: true
 respond: true
 image: "/assets/img/essay-who-do-you-think-you-are-v2.jpg"
 imageAlt: "The essay's title card: More Than Body and Breath above the title Who Do You Think You Are?, on cream, with a strip of tape, a blue underline and a gold one, and a torn coral shape in the corner."

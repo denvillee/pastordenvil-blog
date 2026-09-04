@@ -3,7 +3,13 @@ title: "A World of Images and Idols"
 dek: "What it means to bear God's image in a world of idols, temples, and kings"
 teaser: "In a world filled with idols, temples, and royal images, Genesis makes a startling claim: male and female human beings are God's image."
 publishAt: 2026-08-30T06:00:00-04:00
-draft: false
+# Retired from the public site 4 Sep 2026, at Denvil's direction. It stays in the
+# repo, and its URL 301s to /more-than-body-and-breath/, because it was public
+# from late August and has been linked from the front page: a bare 404 would
+# break links people already have. The chapter behind it lives in the Book
+# stream, which is where the manuscript is developed. Setting draft rather than
+# deleting keeps the piece one line away from returning.
+draft: true
 respond: true
 image: "/assets/img/essay-a-world-of-images-and-idols.jpg"
 imageAlt: "The essay's title card: More Than Body and Breath above the title A World of Images and Idols, with carved heads, a winged figure, a stone lion and a ziggurat in sepia beside a dark silhouette of a person."
